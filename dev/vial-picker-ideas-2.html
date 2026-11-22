@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vial picker ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--ink:#26221f;--paper:#f7f5f0;--page:#f3f0eb;--gold:#d9b46a;--gold-d:#8a6a2a;--soft:#6b635b;--line:rgba(38,34,31,.14);--line2:rgba(38,34,31,.08);--card:#fffdf9;--tint:#efe9df;--ease:cubic-bezier(.16,1,.3,1);--serif:'Cormorant Garamond',Georgia,serif;--sans:'Instrument Sans',system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 var(--sans)}
+img{max-width:100%;display:block;-webkit-user-drag:none}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+h3{margin:0}
+p{margin:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.stage:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px 96px}
+.top{padding:56px 0 8px}
+h1{font:400 60px/1 var(--serif);letter-spacing:-.02em;margin:0 0 14px}
+.lede{color:var(--soft);max-width:78ch}
+.jump{display:flex;flex-wrap:wrap;gap:6px;margin-top:22px}
+.jump a{font-size:12.5px;color:var(--ink);background:var(--card);border:1px solid var(--line2);padding:9px 14px;border-radius:99px;text-decoration:none;min-height:40px;display:inline-flex;align-items:center}
+.jump a:hover{border-color:var(--ink)}
+.idea{margin-top:72px;scroll-margin-top:16px}
+.ih{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;align-items:baseline;margin-bottom:18px}
+.ih .no{font:400 46px/1 var(--serif);color:var(--gold)}
+.ih h2{font:400 36px/1.05 var(--serif);margin:0;letter-spacing:-.01em}
+.ih p{grid-column:2;color:var(--soft);max-width:82ch}
+.stage{background:var(--paper);border:1px solid var(--line2);padding:40px;position:relative}
+.k{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+.serif{font-family:var(--serif)}
+.tag{display:inline-block;background:var(--gold);color:var(--ink);border-radius:99px;font:600 10px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:5px 8px;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 26px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:99px;font-weight:600;font-size:14px;letter-spacing:.02em;transition:transform .3s var(--ease),opacity .3s}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.btn.wide{width:100%}
+.btn[aria-disabled=true]{opacity:.38;cursor:not-allowed}
+.lnk{background:none;border:0;padding:0 2px;min-height:44px;text-decoration:underline;text-underline-offset:3px;font-size:13px;font-weight:500}
+.tg{min-height:40px;padding:0 18px;border:1px solid var(--ink);background:transparent;border-radius:99px;font-size:13px;font-weight:600;white-space:nowrap;transition:transform .3s var(--ease),opacity .3s,background-color .2s,color .2s}
+.tg.on{background:var(--ink);color:var(--paper)}
+.tg[aria-disabled=true]{opacity:.35;cursor:not-allowed}
+.tw{position:relative;display:inline-flex}
+.tip{position:absolute;bottom:calc(100% + 8px);right:0;background:var(--ink);color:var(--paper);font:500 12px/1.3 var(--sans);padding:7px 10px;border-radius:4px;white-space:nowrap;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .25s var(--ease);z-index:6}
+.tw:hover .tip,.tw:focus-within .tip,.tw.nudge .tip{opacity:1;transform:none}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+.pop{animation:pop .55s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.94)}}
+.enter{animation:enter .5s var(--ease)}
+@keyframes enter{from{opacity:0;transform:translateX(18px)}}
+.ph{width:100%;height:100%;object-fit:contain}
+.bt{display:grid;place-items:center;width:100%;height:100%;background:#ebe4d8;color:var(--ink)}
+.bt span{font:500 12px/1.2 var(--serif);letter-spacing:.16em;text-transform:uppercase;text-align:center;border-top:1px solid var(--gold);border-bottom:1px solid var(--gold);padding:7px 4px;max-width:88%}
+.vi{height:100%;width:auto;object-fit:contain}
+.ln{margin:0;display:grid;gap:6px;font-size:14px}
+.ln div{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.ln dt{color:var(--soft)}
+.ln dd{margin:0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ln .dc dd,.ln .dc dt{color:var(--gold-d)}
+.ln .tt{border-top:1px solid var(--line);padding-top:10px;margin-top:2px}
+.ln .tt dt{color:inherit;font-weight:600}
+.ln .tt dd{font:400 32px/1 var(--serif)}
+.hint{font-size:12.5px;color:var(--soft);margin-top:8px}
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--tint);padding:12px 14px;font-size:13.5px;line-height:1.45;margin-bottom:18px}
+.note b{flex:none;width:20px;height:20px;border-radius:50%;border:1px solid currentColor;display:grid;place-items:center;font:italic 500 14px/1 var(--serif);margin-top:1px}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--card);border:1px solid var(--line2);border-radius:99px;padding:4px;gap:2px}
+.seg button{border:0;background:none;border-radius:99px;padding:0 16px;min-height:42px;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:background-color .2s,color .2s}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,24px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);padding:14px 18px;border-radius:12px;font-size:14px;max-width:min(560px,calc(100vw - 32px));width:max-content;z-index:100;transition:opacity .3s,transform .4s var(--ease);box-shadow:0 12px 40px rgba(0,0,0,.18)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* 01 Wizard */
+.i1-steps{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;counter-reset:s}
+.i1-steps button{width:100%;min-height:52px;border:0;border-top:2px solid var(--line);background:none;text-align:left;padding:10px 0 0;display:flex;gap:10px;align-items:baseline;color:var(--soft);transition:color .2s,border-color .3s}
+.i1-steps button span{font:400 24px/1 var(--serif)}
+.i1-steps button[aria-current=step]{border-color:var(--ink);color:var(--ink)}
+.i1-steps button.done{border-color:var(--gold);color:var(--ink)}
+.i1-h{font:400 34px/1.05 var(--serif);margin-bottom:6px;outline-offset:6px}
+.i1-sub{color:var(--soft);margin-bottom:20px;font-size:14px}
+.i1-sets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.i1-set{position:relative;background:var(--card);border:1px solid var(--line2);border-radius:6px;padding:18px;text-align:left;display:grid;gap:2px;min-height:200px;align-content:start;transition:transform .35s var(--ease),border-color .2s}
+.i1-set:hover{transform:translateY(-3px)}
+.i1-set[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.i1-set .tag{position:absolute;top:14px;right:14px}
+.i1-vials{height:72px;display:flex;align-items:flex-end;gap:4px;margin-bottom:12px}
+.i1-nm{font:400 26px/1 var(--serif)}
+.i1-ml{font-size:13px;color:var(--soft)}
+.i1-pr{margin-top:auto;padding-top:14px;font-size:14px}
+.i1-pr small{color:var(--soft);font-size:12px}
+.i1-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.i1-card{background:var(--card);border:1px solid var(--line2);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:2px;transition:border-color .2s,opacity .3s}
+.i1-card.on{border-color:var(--ink)}
+.i1-img{height:120px;margin-bottom:10px;position:relative}
+.i1-card.on .i1-img::after{content:'\2713';position:absolute;top:0;left:0;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:12px}
+.i1-name{font:400 20px/1.05 var(--serif)}
+.i1-name span{font:500 11px var(--sans);color:var(--soft)}
+.i1-price{font-size:13px;margin:6px 0 12px}
+.i1-price span{color:var(--soft)}
+.i1-card .tw{margin-top:auto}
+.i1-card .tg{width:100%}
+.i1-card .tw{width:100%}
+.i1-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:24px;flex-wrap:wrap}
+.i1-rev{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:8px;max-width:620px}
+.i1-rev li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--card);padding:10px 16px;border-radius:6px}
+.i1-rev li .vi{height:52px}
+.i1-rev .rn{font:400 20px/1.1 var(--serif)}
+.i1-review{max-width:620px}
+.i1-bar{margin-top:28px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px;color:var(--soft)}
+.i1-bar strong{font:400 26px/1 var(--serif);color:var(--ink)}
+
+/* 02 Fill the box */
+.i2-top{display:flex;flex-wrap:wrap;gap:20px 32px;margin-bottom:28px}
+.i2-top .k{display:block;margin-bottom:8px}
+.i2-main{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:32px;align-items:start}
+.i2-box{background:var(--ink);color:var(--paper);border-radius:10px;padding:24px;box-shadow:inset 0 0 0 1px rgba(217,180,106,.35)}
+.i2-bh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:16px}
+.i2-bh h3{font:400 30px/1 var(--serif)}
+.i2-bh span{font-size:13px;opacity:.7}
+.i2-slots{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:8px;margin-bottom:18px}
+.i2-slot{min-height:190px;border-radius:6px;border:1px dashed rgba(247,245,240,.3);background:rgba(255,255,255,.03);color:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding:12px 6px;text-align:center;transition:background-color .2s,border-color .2s}
+.i2-slot.full{border-style:solid;border-color:rgba(217,180,106,.45);background:rgba(255,255,255,.06)}
+.i2-slot:hover{border-color:var(--gold)}
+.i2-slot .vw{height:100px;display:flex;align-items:flex-end}
+.i2-slot .sn{font:400 16px/1.05 var(--serif)}
+.i2-slot .sp{font-size:12px;opacity:.7}
+.i2-slot .sx{font-size:11px;opacity:.55;text-decoration:underline;text-underline-offset:2px}
+.i2-slot .plus{width:34px;height:34px;border-radius:50%;border:1px dashed rgba(247,245,240,.45);display:grid;place-items:center;font-size:18px;margin:auto 0 8px}
+.i2-slot .sv{font-size:12px;opacity:.6}
+.i2-box .ln dt{color:rgba(247,245,240,.65)}
+.i2-box .ln .dc dt,.i2-box .ln .dc dd{color:var(--gold)}
+.i2-box .ln .tt{border-color:rgba(247,245,240,.2)}
+.i2-box .hint{color:rgba(247,245,240,.6)}
+.i2-acts{display:flex;gap:6px 16px;flex-wrap:wrap;margin:14px 0 18px}
+.i2-acts .lnk{color:var(--paper)}
+.i2-box .btn{background:var(--gold);border-color:var(--gold);color:var(--ink);width:100%}
+.i2-shelf p.k{margin-bottom:12px;color:var(--soft)}
+.i2-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.i2-tiles .tw{display:flex}
+.i2-tile{width:100%;display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line2);border-radius:6px;padding:8px 12px 8px 8px;min-height:64px;transition:border-color .2s,opacity .3s}
+.i2-tile .th{height:48px}
+.i2-tile .tn{font:400 17px/1.05 var(--serif);display:block}
+.i2-tile .tp{font-size:12px;color:var(--soft)}
+.i2-tile[aria-pressed=true]{border-color:var(--ink);background:var(--tint)}
+.i2-tile[aria-pressed=true] .tp::after{content:' \00b7  in the box';color:var(--ink);font-weight:600}
+.i2-tile[aria-disabled=true]{opacity:.4;cursor:not-allowed}
+.i2-tiles .tip{right:auto;left:50%;transform:translate(-50%,4px)}
+.i2-tiles .tw:hover .tip,.i2-tiles .tw:focus-within .tip,.i2-tiles .tw.nudge .tip{transform:translate(-50%,0)}
+
+/* 03 Split view */
+.i3{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:36px;align-items:start}
+.i3-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:18px}
+.i3-tabs button{border:1px solid var(--line);background:transparent;border-radius:6px;padding:10px 12px;text-align:left;min-height:56px;display:grid;gap:0;position:relative;transition:background-color .2s,color .2s}
+.i3-tabs button .serif{font-size:19px;line-height:1.1}
+.i3-tabs button small{font-size:12px;opacity:.7}
+.i3-tabs button .tag{position:absolute;top:8px;right:8px;font-size:9px;padding:4px 6px}
+.i3-tabs button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.i3-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.i3-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line2);border-radius:6px;padding:10px 12px 10px 10px;transition:opacity .3s,border-color .2s}
+.i3-row.on{border-color:var(--ink)}
+.i3-th{height:64px}
+.i3-nm{display:block;font:400 18px/1.1 var(--serif)}
+.i3-pr{font-size:12px;color:var(--soft)}
+.i3-box{position:sticky;top:16px;background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:24px}
+.i3-box h3{font:400 40px/1 var(--serif);margin:6px 0 2px}
+.i3-box .meta{font-size:13px;color:var(--soft)}
+.i3-line{list-style:none;margin:18px 0;padding:22px 10px 12px;display:flex;justify-content:center;gap:10px;background:radial-gradient(ellipse at 50% 100%,#efe7d9,transparent 70%);border-bottom:1px solid var(--line)}
+.i3-v{flex:1 1 0;min-width:0;max-width:80px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.i3-v .vw{height:var(--vh);display:flex;align-items:flex-end}
+.i3-v .vn{font:400 14px/1.05 var(--serif);overflow-wrap:anywhere}
+.i3-v .vp{font-size:11px;color:var(--soft)}
+.i3-v.empty .ghost{height:var(--vh);width:22px;border:1px dashed var(--line);border-radius:6px 6px 4px 4px}
+.i3-v.empty .vn{color:var(--soft);font-family:var(--sans);font-size:11px}
+.i3-box .btn{width:100%;margin-top:16px}
+
+/* 04 Table */
+.i4-head{display:grid;gap:10px;margin-bottom:22px}
+.i4-sets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.i4-sets button{border:1px solid var(--line);background:transparent;border-radius:6px;padding:10px 12px;min-height:58px;text-align:left;display:grid;align-content:center;transition:background-color .2s,color .2s}
+.i4-sets b{font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.i4-sets span{font-size:12px;opacity:.75}
+.i4-sets button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.i4-sets em{font-style:normal;color:var(--gold-d);font-weight:600}
+.i4-sets button[aria-pressed=true] em{color:var(--gold)}
+.i4-setline{font-size:13px;color:var(--soft)}
+.i4-t{width:100%;border-collapse:collapse;table-layout:fixed;background:var(--card)}
+.i4-t th,.i4-t td{padding:10px 14px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:middle}
+.i4-t thead th{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);background:var(--paper);border-bottom:1px solid var(--line)}
+.i4-t thead button{border:0;background:none;padding:0;min-height:40px;font:inherit;letter-spacing:inherit;text-transform:inherit;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.i4-t thead button .ar{font-size:13px;letter-spacing:0;opacity:.35}
+.i4-t thead th[aria-sort=ascending] .ar,.i4-t thead th[aria-sort=descending] .ar{opacity:1}
+.i4-t tbody th{font-weight:400}
+.i4-t .k{display:block;color:var(--soft);font-size:10.5px}
+.i4-nm{font:400 19px/1.15 var(--serif)}
+.i4-nm i{font:500 11px var(--sans);color:var(--soft);font-style:normal}
+.i4-num{text-align:right!important;font-variant-numeric:tabular-nums;width:150px}
+.i4-vs{width:130px;color:var(--soft);font-size:13px;text-align:right!important;font-variant-numeric:tabular-nums}
+.i4-pk{width:78px;text-align:center!important}
+.i4-t tbody tr{transition:background-color .2s}
+.i4-t tbody tr.on{background:#f4eee2}
+.i4-ck{width:44px;height:44px;border-radius:8px;border:1px solid var(--ink);background:transparent;display:grid;place-items:center;padding:0;transition:background-color .2s,color .2s}
+.i4-ck span{font-size:16px;opacity:0;transform:scale(.6);transition:opacity .2s,transform .3s var(--ease)}
+.i4-ck[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.i4-ck[aria-pressed=true] span{opacity:1;transform:none}
+.i4-ck[aria-disabled=true]{opacity:.3;cursor:not-allowed}
+.i4-foot{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:end;margin-top:20px}
+.i4-foot .btn{width:100%;margin-top:12px}
+
+/* 05 Presets */
+.i5-sets{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:26px}
+.i5-sets button{border:1px solid var(--line);background:transparent;border-radius:99px;padding:0 16px;min-height:44px;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;transition:background-color .2s,color .2s}
+.i5-sets button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.i5-sets small{opacity:.7}
+.i5 h3{font:400 26px/1 var(--serif);margin-bottom:12px}
+.i5-pre{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:30px}
+.i5-p{background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:200px;transition:transform .35s var(--ease),border-color .2s}
+.i5-p:hover{transform:translateY(-3px)}
+.i5-p[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.i5-p[aria-disabled=true]{opacity:.45;cursor:not-allowed}
+.i5-p[aria-disabled=true]:hover{transform:none}
+.i5-pn{font:400 22px/1 var(--serif)}
+.i5-pd{font-size:12.5px;color:var(--soft)}
+.i5-pl{font-size:12px;line-height:1.4;border-top:1px solid var(--line2);padding-top:8px;margin-top:4px}
+.i5-pt{margin-top:auto;font:400 26px/1 var(--serif)}
+.i5-pt small{font:400 11px var(--sans);color:var(--soft);display:block;margin-bottom:2px}
+.i5-body{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px;align-items:start}
+.i5-picked{list-style:none;margin:0 0 20px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.i5-picked li{background:var(--card);border-radius:6px;padding:10px 6px 10px 12px;display:grid;grid-template-columns:18px minmax(0,1fr) 44px;gap:10px;align-items:center;min-height:64px}
+.i5-picked li.empty{background:transparent;border:1px dashed var(--line);color:var(--soft);font-size:12px;grid-template-columns:1fr;text-align:center}
+.i5-picked .vi{height:40px}
+.i5-picked .pn{font:400 16px/1.05 var(--serif);display:block}
+.i5-picked .pp{font-size:11.5px;color:var(--soft)}
+.x{width:44px;height:44px;border:0;background:none;border-radius:50%;font-size:18px;line-height:1;color:var(--soft);display:grid;place-items:center}
+.x:hover{background:var(--tint);color:var(--ink)}
+.i5-chips{display:flex;flex-wrap:wrap;gap:6px}
+.i5-chips .tg{font-weight:500;padding:0 14px;min-height:40px}
+.i5-chips .tg.on::before{content:'\2713  '}
+.i5-sum{background:var(--card);border-radius:8px;padding:20px}
+.i5-sum .btn{width:100%;margin-top:14px}
+
+/* 06 Dark boutique */
+.stage.dark{background:#1d1916;border-color:#1d1916;color:#efe8dc}
+.i6{display:grid;grid-template-columns:240px minmax(0,1fr);gap:36px}
+.i6 :focus-visible{outline-color:var(--gold)}
+.i6-sets{display:grid;gap:2px;align-content:start}
+.i6-set{border:0;border-left:1px solid rgba(239,232,220,.15);background:none;color:inherit;text-align:left;padding:12px 0 12px 18px;display:grid;grid-template-columns:28px minmax(0,1fr);gap:0 6px;min-height:64px;transition:border-color .3s,background-color .3s}
+.i6-set .rn{font:italic 400 16px/1.4 var(--serif);color:rgba(239,232,220,.45);grid-row:span 3}
+.i6-set .sn{font:400 22px/1.05 var(--serif)}
+.i6-set .sm,.i6-set .sf{font-size:12px;color:rgba(239,232,220,.6)}
+.i6-set .sm em{font-style:normal;color:var(--gold)}
+.i6-set[aria-pressed=true]{border-left:2px solid var(--gold);background:linear-gradient(90deg,rgba(217,180,106,.1),transparent)}
+.i6-set[aria-pressed=true] .rn{color:var(--gold)}
+.i6-hd{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:16px}
+.i6-hd h3{font:400 34px/1 var(--serif)}
+.i6-hd p{font-size:13px;color:rgba(239,232,220,.6);margin-top:4px}
+.i6-arrows{display:flex;gap:6px;flex:none}
+.i6-arrows button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(239,232,220,.3);background:none;color:inherit;font-size:18px}
+.i6-arrows button:hover{border-color:var(--gold);color:var(--gold)}
+.i6-shelf{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 18px;scrollbar-width:thin;scrollbar-color:rgba(217,180,106,.5) transparent;overscroll-behavior-x:contain}
+.i6-card{flex:0 0 200px;scroll-snap-align:start;background:#26211d;border:1px solid rgba(239,232,220,.08);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:3px;transition:border-color .3s}
+.i6-card.on{border-color:var(--gold)}
+.i6-img{height:190px;margin:-14px -14px 12px;padding:22px 20px 10px;background:radial-gradient(ellipse 60% 70% at 50% 85%,rgba(217,180,106,.22),transparent 70%),linear-gradient(#26211d,#2e2823);border-radius:8px 8px 0 0;border-bottom:1px solid rgba(217,180,106,.25)}
+.i6-img .bt{background:transparent;color:#efe8dc}
+.i6-h{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.i6-n{font:400 21px/1.05 var(--serif)}
+.i6-p{font-size:12.5px;color:rgba(239,232,220,.65);margin:4px 0 12px}
+.i6-card .tw{margin-top:auto;width:100%}
+.i6-card .tg{width:100%;border-color:rgba(217,180,106,.7);color:var(--gold)}
+.i6-card .tg.on{background:var(--gold);color:#1d1916}
+.i6-card .tip{background:var(--gold);color:#1d1916;right:auto;left:0}
+.i6-sum{margin-top:18px;border-top:1px solid rgba(217,180,106,.35);padding-top:20px;display:grid;grid-template-columns:auto minmax(0,1fr) 260px;gap:28px;align-items:center}
+.i6-vials{display:flex;gap:8px;align-items:flex-end;height:80px}
+.i6-vials .vw{height:var(--vh);display:flex;align-items:flex-end}
+.i6-vials .ghost{width:16px;height:var(--vh);border:1px dashed rgba(239,232,220,.3);border-radius:4px}
+.i6-sum .ln dt{color:rgba(239,232,220,.6)}
+.i6-sum .ln .dc dt,.i6-sum .ln .dc dd{color:var(--gold)}
+.i6-sum .ln .tt{border-color:rgba(239,232,220,.15)}
+.i6-sum .hint{color:rgba(239,232,220,.55)}
+.i6-sum .btn{width:100%}
+
+/* 07 Shelf to box */
+.i7-sets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:28px}
+.i7-set{border:1px solid var(--line);background:transparent;border-radius:6px;padding:12px;display:grid;gap:6px;justify-items:start;text-align:left;min-height:120px;transition:background-color .2s,border-color .2s}
+.i7-set[aria-pressed=true]{background:var(--card);border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.i7-mini{display:grid;grid-template-columns:repeat(var(--c),10px);gap:3px;padding:5px;border:1px solid var(--ink);border-radius:3px;background:#e9dcc4;height:46px;align-content:end}
+.i7-mini i{display:block;height:var(--h);background:var(--ink);border-radius:2px 2px 1px 1px;opacity:.8}
+.i7-set b{font:400 19px/1 var(--serif);font-weight:400}
+.i7-set small{font-size:12px;color:var(--soft)}
+.i7-set .tag{font-size:9px;padding:4px 6px}
+.i7{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:32px;align-items:start}
+.i7-shelf{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));row-gap:22px}
+.i7-cell{display:flex;position:relative;border-bottom:7px solid #d6c4a3;box-shadow:0 7px 0 -5px #b9a27a}
+.i7-b{width:100%;border:0;background:none;padding:6px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;user-select:none;-webkit-user-select:none;cursor:grab;transition:opacity .3s,transform .35s var(--ease)}
+.i7-b:hover{transform:translateY(-4px)}
+.i7-b .th{height:118px;width:100%;margin-bottom:6px}
+.i7-b .th .bt{width:72%;margin:0 auto}
+.i7-b .bn{font:400 15px/1.05 var(--serif)}
+.i7-b .bp{font-size:11.5px;color:var(--soft)}
+.i7-b[aria-pressed=true] .th{opacity:.28}
+.i7-b[aria-pressed=true] .bp::after{content:' \00b7  in box';color:var(--ink);font-weight:600}
+.i7-b[aria-disabled=true]{opacity:.4;cursor:not-allowed}
+.i7-cell .tip{right:auto;left:50%;transform:translate(-50%,4px)}
+.i7-cell:hover .tip,.i7-cell:focus-within .tip,.i7-cell.nudge .tip{transform:translate(-50%,0)}
+.i7-box{background:#e9dcc4;border-radius:8px;padding:20px;border:2px solid transparent;transition:border-color .2s,transform .3s var(--ease);position:sticky;top:16px}
+.i7-box.over{border-color:var(--ink);transform:scale(1.015)}
+.i7-box h3{font:400 28px/1 var(--serif)}
+.i7-box .bm{font-size:12.5px;color:#6a5a42;margin:4px 0 14px}
+.i7-slots{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:6px;background:#cdb995;padding:6px;border-radius:4px;margin-bottom:16px}
+.i7-slot{background:#f3ead9;border-radius:3px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:8px 2px 4px;text-align:center;position:relative}
+.i7-slot.empty{background:#dccaa8;box-shadow:inset 0 3px 8px rgba(0,0,0,.12);justify-content:center;color:#6a5a42;font-size:11px}
+.i7-slot .vw{height:84px;display:flex;align-items:flex-end}
+.i7-slot .sn{font:400 13px/1.05 var(--serif);overflow-wrap:anywhere}
+.i7-slot .x{width:44px;height:36px;font-size:15px}
+.i7-box .ln dt{color:#6a5a42}
+.i7-box .btn{width:100%;margin-top:14px}
+.i7-ghost{position:fixed;left:0;top:0;width:64px;height:110px;pointer-events:none;z-index:90;filter:drop-shadow(0 12px 18px rgba(0,0,0,.25))}
+
+/* 08 Bottom sheet */
+.i8-wrap{display:grid;grid-template-columns:minmax(0,1fr) 390px minmax(0,1fr);gap:32px;align-items:center}
+.i8-side{font-size:13.5px;color:var(--soft);display:grid;gap:10px}
+.i8-side b{color:var(--ink);font-weight:600}
+.i8-phone{position:relative;height:740px;background:var(--paper);border:10px solid var(--ink);border-radius:44px;overflow:hidden;display:flex;flex-direction:column}
+.i8-top{padding:22px 18px 10px;background:var(--paper);border-bottom:1px solid var(--line2)}
+.i8-top h3{font:400 30px/1 var(--serif)}
+.i8-pills{display:flex;gap:6px;overflow-x:auto;margin:12px -18px 0;padding:0 18px 6px;scrollbar-width:none}
+.i8-pills::-webkit-scrollbar{display:none}
+.i8-pills button{flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:0 14px;min-height:44px;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+.i8-pills button[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.i8-pills .tag{font-size:9px;padding:4px 6px}
+.i8-sub{font-size:12.5px;color:var(--soft);margin-top:6px}
+.i8-list{list-style:none;margin:0;padding:8px 14px 96px;overflow-y:auto;flex:1;overscroll-behavior:contain}
+.i8-list li{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:12px;align-items:center;padding:10px 4px;border-bottom:1px solid var(--line2)}
+.i8-list .th{height:56px}
+.i8-list .k{color:var(--soft);font-size:10px;display:block}
+.i8-list .nm{font:400 18px/1.1 var(--serif);display:block}
+.i8-list .pr{font-size:12px;color:var(--soft)}
+.i8-rb{width:48px;height:48px;border-radius:50%;border:1px solid var(--ink);background:transparent;font-size:20px;line-height:1;display:grid;place-items:center;padding:0;transition:background-color .2s,color .2s}
+.i8-rb.on{background:var(--ink);color:var(--paper);font-size:16px}
+.i8-rb[aria-disabled=true]{opacity:.3;cursor:not-allowed}
+.i8-list .tip{right:0}
+.i8-bar{position:absolute;left:10px;right:10px;bottom:12px;z-index:3}
+.i8-barbtn{width:100%;min-height:64px;border:0;border-radius:18px;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 16px;text-align:left;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.i8-dots{display:flex;gap:3px}
+.i8-dots i{width:7px;height:16px;border-radius:2px;border:1px solid rgba(247,245,240,.5)}
+.i8-dots i.f{background:var(--gold);border-color:var(--gold)}
+.i8-barbtn b{display:block;font-weight:600;font-size:13px}
+.i8-barbtn span.t{font:400 22px/1 var(--serif)}
+.i8-barbtn .v{font-size:12.5px;opacity:.8;white-space:nowrap}
+.i8-scrim{position:absolute;inset:0;background:rgba(38,34,31,.4);opacity:0;pointer-events:none;transition:opacity .3s;z-index:4;border:0;padding:0;width:100%;cursor:default}
+.i8-scrim.open{opacity:1;pointer-events:auto}
+.i8-sheet{position:absolute;left:0;right:0;bottom:0;max-height:86%;overflow-y:auto;background:var(--paper);border-radius:22px 22px 0 0;padding:10px 18px 22px;transform:translateY(105%);transition:transform .45s var(--ease);z-index:5;box-shadow:0 -10px 40px rgba(0,0,0,.15)}
+.i8-sheet.open{transform:none}
+.i8-grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.i8-sh{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.i8-sh h4{font:400 28px/1 var(--serif);margin:0;outline-offset:4px}
+.i8-pk{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:6px}
+.i8-pk li{display:grid;grid-template-columns:20px minmax(0,1fr) auto 44px;gap:10px;align-items:center;background:var(--card);border-radius:10px;padding:6px 4px 6px 12px;min-height:56px}
+.i8-pk li.empty{grid-template-columns:1fr;background:transparent;border:1px dashed var(--line);color:var(--soft);font-size:12.5px;padding:12px;text-align:center}
+.i8-pk .vi{height:40px}
+.i8-pk .nm{font:400 17px/1.1 var(--serif)}
+.i8-pk .pr{font-size:12.5px;font-variant-numeric:tabular-nums}
+.i8-sheet .btn{width:100%;margin-top:14px}
+
+/* 09 Price meter */
+.i9-sets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:28px}
+.i9-set{border:1px solid var(--line);background:transparent;border-radius:6px;padding:12px;text-align:left;display:grid;gap:2px;min-height:110px;align-content:start;transition:background-color .2s,border-color .2s}
+.i9-set[aria-pressed=true]{background:var(--card);border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.i9-set b{font:400 20px/1 var(--serif)}
+.i9-set small{font-size:12px;color:var(--soft)}
+.i9-set .tag{justify-self:start;font-size:9px;padding:4px 6px;margin-top:2px}
+.i9-track{position:relative;height:4px;background:var(--line2);border-radius:2px;margin:12px 0 6px}
+.i9-span{position:absolute;top:0;bottom:0;background:var(--ink);border-radius:2px}
+.i9-rg{font-size:11.5px;font-variant-numeric:tabular-nums}
+.i9-meter{background:var(--card);border-radius:10px;padding:24px 28px;margin-bottom:24px;display:grid;grid-template-columns:260px minmax(0,1fr);gap:36px;align-items:center}
+.i9-total{font:400 48px/1 var(--serif);display:block;margin:6px 0 4px}
+.i9-status{font-size:13px;color:var(--soft)}
+.i9-mt{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,#efe7d9,#e2cfa6)}
+.i9-fill{position:absolute;inset:0;border-radius:5px;background:var(--ink);transform-origin:left;transform:scaleX(0);transition:transform .6s var(--ease)}
+.i9-mk{position:absolute;inset:-9px 0;transform:translateX(0);transition:transform .6s var(--ease);pointer-events:none}
+.i9-mk span{position:absolute;left:-14px;top:0;width:28px;height:28px;border-radius:50%;background:var(--gold);border:3px solid var(--card);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.i9-ml{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:12px;color:var(--soft)}
+.i9-ml b{display:block;color:var(--ink);font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.i9-ml span:last-child{text-align:right}
+.i9-lad{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.i9-row{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr) 90px 120px auto;gap:16px;align-items:center;padding:8px 12px;border-radius:6px;transition:background-color .2s}
+.i9-row.on{background:var(--card)}
+.i9-nm{font:400 18px/1.1 var(--serif)}
+.i9-nm .k{display:block;font-family:var(--sans);font-size:10px;color:var(--soft)}
+.i9-bar{height:6px;background:var(--line2);border-radius:3px;overflow:hidden}
+.i9-bar span{display:block;height:100%;background:#cbb68c;transform-origin:left;transition:transform .5s var(--ease)}
+.i9-row.on .i9-bar span{background:var(--ink)}
+.i9-pr{text-align:right;font-variant-numeric:tabular-nums;font-size:14px}
+.i9-d{font-size:12px;color:var(--soft);text-align:right;font-variant-numeric:tabular-nums}
+.i9-row.on .i9-d{color:var(--ink);font-weight:600}
+.i9-foot{display:flex;justify-content:flex-end;gap:24px;align-items:end;margin-top:22px;flex-wrap:wrap}
+.i9-foot .ln{min-width:280px}
+.i9-foot .ctaw{min-width:260px}
+.i9-foot .btn{width:100%}
+
+/* 10 Swap */
+.i10-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.i10-head h3{font:400 44px/1 var(--serif);margin:4px 0 4px}
+.i10-head p{font-size:13.5px;color:var(--soft)}
+.i10-chg{display:inline-flex;align-items:center;gap:8px}
+.i10-chg .chev{display:inline-block;transition:transform .3s var(--ease)}
+.i10-chg[aria-expanded=true] .chev{transform:rotate(180deg)}
+.i10-sets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-bottom:22px}
+.i10-sets[hidden]{display:none}
+.i10-sets button{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:12px;text-align:left;display:grid;gap:2px;min-height:96px;align-content:start}
+.i10-sets button[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.i10-sets b{font:400 20px/1 var(--serif)}
+.i10-sets small{font-size:12px;color:var(--soft)}
+.i10-line{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.i10-v{background:var(--card);border:1px solid var(--line2);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:2px;transition:border-color .2s}
+.i10-v.open{border-color:var(--ink)}
+.i10-ix{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);display:flex;justify-content:space-between;align-items:center}
+.i10-ix .vw{height:28px}
+.i10-img{height:120px;margin:8px 0 10px}
+.i10-v .h{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+.i10-v .n{font:400 20px/1.05 var(--serif)}
+.i10-v .p{font-size:13px;margin:4px 0 12px}
+.i10-v .tg{margin-top:auto;width:100%}
+.i10-alts{background:var(--tint);border-radius:8px;padding:18px;margin-bottom:20px}
+.i10-alts[hidden]{display:none}
+.i10-ah{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.i10-ah h4{margin:0;font:400 22px/1.1 var(--serif);outline-offset:4px}
+.i10-al{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.i10-al button{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid transparent;border-radius:6px;padding:8px 12px 8px 8px;min-height:60px}
+.i10-al button:hover{border-color:var(--ink)}
+.i10-al .th{height:44px}
+.i10-al .an{font:400 16px/1.1 var(--serif);display:block}
+.i10-al .ap{font-size:11.5px;color:var(--soft)}
+.i10-al .d{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.i10-al .d.up{color:var(--ink)}
+.i10-al .d.down{color:#4f7a4a}
+.i10-foot{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:end;border-top:1px solid var(--line);padding-top:18px}
+.i10-foot .range{font-size:13px;color:var(--soft)}
+.i10-foot .btn{width:100%;margin-top:12px}
+
+@media (max-width:1100px){
+  .i1-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .i3{grid-template-columns:minmax(0,1fr) 340px}
+  .i3-list{grid-template-columns:minmax(0,1fr)}
+  .i4-sets,.i7-sets,.i9-sets,.i10-sets{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .i5-pre{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .i6{grid-template-columns:minmax(0,1fr)}
+  .i6-sets{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .i6-sum{grid-template-columns:auto minmax(0,1fr)}
+  .i6-sum .ctaw{grid-column:1/-1}
+  .i8-wrap{grid-template-columns:minmax(0,1fr) 390px}
+  .i8-side.r{display:none}
+  .i9-row{grid-template-columns:minmax(0,220px) minmax(0,1fr) 80px 100px auto}
+}
+@media (max-width:860px){
+  .i2-main,.i3,.i5-body,.i7,.i4-foot,.i10-foot{grid-template-columns:minmax(0,1fr)}
+  .i3-box{position:sticky;top:auto;bottom:0;padding:14px 16px;border-radius:10px 10px 0 0;box-shadow:0 -8px 24px rgba(0,0,0,.08);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;align-items:center}
+  .i3-box .k,.i3-box .meta,.i3-box .ln .dc,.i3-box .hint,.i3-box .ln div:first-child{display:none}
+  .i3-box h3{font-size:24px;margin:0;grid-column:1}
+  .i3-line{grid-column:1/-1;grid-row:2;margin:6px 0;padding:6px 0;background:none;border:0;justify-content:flex-start;gap:6px}
+  .i3-v{flex:0 0 auto;max-width:none}
+  .i3-v .vw,.i3-v.empty .ghost{height:calc(var(--vh) * .4)}
+  .i3-v .vn,.i3-v .vp{display:none}
+  .i3-box .ln{grid-column:2;grid-row:1}
+  .i3-box .ln .tt{border:0;padding:0;margin:0}
+  .i3-box .ln .tt dt{display:none}
+  .i3-box .btn{grid-column:1/-1;margin-top:6px}
+  .i7-box{position:static}
+  .i8-wrap{grid-template-columns:minmax(0,1fr)}
+  .i8-side{display:none}
+  .i8-phone{margin:0 auto;width:100%;max-width:390px}
+  .i9-meter{grid-template-columns:minmax(0,1fr);gap:20px}
+}
+@media (max-width:720px){
+  .wrap{padding:0 16px 72px}
+  .top{padding-top:36px}
+  h1{font-size:42px}
+  .idea{margin-top:56px}
+  .ih{grid-template-columns:minmax(0,1fr)}
+  .ih p{grid-column:1}
+  .ih .no{font-size:34px}
+  .ih h2{font-size:30px}
+  .stage{padding:20px 16px}
+  .tg{min-height:44px}
+  .i1-sets{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .i1-set{min-height:180px;padding:14px}
+  .i1-set .tag{top:10px;right:10px}
+  .i1-nm{font-size:22px}
+  .i1-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .i1-card{padding:10px}
+  .i1-img{height:96px}
+  .i1-nav .btn{flex:1 1 100%}
+  .i1-steps button{font-size:12.5px;gap:6px}
+  .i2-box{padding:16px}
+  .i2-slots{grid-template-columns:repeat(var(--m),minmax(0,1fr))}
+  .i2-slot{min-height:160px}
+  .i2-slot .vw{height:76px}
+  .i2-tiles{grid-template-columns:minmax(0,1fr)}
+  .i3-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i4-sets{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i4-vs{display:none}
+  .i4-t th,.i4-t td{padding:10px 8px}
+  .i4-num{width:92px}
+  .i4-pk{width:60px}
+  .i4-t thead th:first-child button{font-size:10.5px}
+  .i5-pre{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i5-p{min-height:170px;padding:12px}
+  .i6-sets{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i6-set{padding-left:12px}
+  .i6-hd h3{font-size:28px}
+  .i6-card{flex-basis:170px}
+  .i6-sum{grid-template-columns:minmax(0,1fr)}
+  .i7-sets{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i7-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .i7-slots{grid-template-columns:repeat(var(--m),minmax(0,1fr))}
+  .i8-phone{height:680px;border-width:6px;border-radius:28px}
+  .i9-sets{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i9-meter{padding:18px}
+  .i9-total{font-size:40px}
+  .i9-row{grid-template-columns:minmax(0,1fr) auto auto;gap:4px 10px;padding:10px 8px}
+  .i9-nm{grid-column:1}
+  .i9-pr{grid-column:2;grid-row:1}
+  .i9-row .tw{grid-column:3;grid-row:1/3}
+  .i9-bar{grid-column:1;grid-row:2}
+  .i9-d{grid-column:2;grid-row:2}
+  .i9-foot .ln,.i9-foot .ctaw{min-width:0;width:100%}
+  .i10-sets{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i10-head h3{font-size:36px}
+  .i10-line{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .i10-img{height:96px}
+  .i10-al{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="k" style="color:var(--soft);margin-bottom:10px">Samyó · Build your set</p>
+    <h1>Vial picker: 10 ideas</h1>
+    <p class="lede">Ten working mini-versions of the whole page: choose a set, pick the scents, see the live total. Every one uses the real sets and prices, takes 10% off the two sixes, allows each perfume once per set and stops at a full set. Prices in PHP. "Add set to bag" only shows a message here.</p>
+    <nav class="jump" aria-label="Jump to an idea" id="jump"></nav>
+  </header>
+  <main id="ideas"></main>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+  /* ---------- Data (real numbers only) ---------- */
+  const VIAL = { 1: '../assets/sample-decant-square.webp', 2: '../assets/sample-decant-clear.webp', 5: '../assets/sample-decant-amber.webp', 10: '../assets/sample-decant-amber.webp' };
+  const VH = { 1: 0.44, 2: 0.62, 5: 0.82, 10: 1 };
+  const SCENTS = [
+    { id: 'eros', house: 'Versace', name: 'Eros', conc: 'EDT', short: 'Eros', p: { 1: 185, 2: 320, 5: 705, 10: 1365 }, img: 'shop-images/samyo-brand-versace-1.webp' },
+    { id: 'one', house: 'Dolce & Gabbana', name: 'The One for Men', conc: 'EDP', short: 'The One', p: { 1: 185, 2: 320, 5: 710, 10: 1375 }, img: 'shop-images/samyo-dg-the-one.webp' },
+    { id: 'terre', house: 'Hermès', name: "Terre d'Hermès", conc: 'EDT', short: "Terre d'Hermès", p: { 1: 190, 2: 335, 5: 745, 10: 1450 }, img: 'shop-images/samyo-brand-hermes-1.webp' },
+    { id: 'roma', house: 'Valentino', name: 'Uomo Born in Roma', conc: 'EDT', short: 'Born in Roma', p: { 1: 285, 2: 525, 5: 1205, 10: 2365 }, img: 'shop-images/samyo-brand-valentino-2.webp' },
+    { id: 'wsss', house: 'Jo Malone London', name: 'Wood Sage & Sea Salt', conc: 'Cologne', short: 'Wood Sage', p: { 1: 305, 2: 560, 5: 1290, 10: 2540 }, img: null },
+    { id: 'swy', house: 'Emporio Armani', name: 'Stronger With You Intensely', conc: '', short: 'Stronger With You', p: { 1: 305, 2: 560, 5: 1295, 10: 2545 }, img: 'shop-images/samyo-armani-stronger-with-you-intensely.webp' },
+    { id: 'y', house: 'Yves Saint Laurent', name: 'Y', conc: 'EDP', short: 'YSL Y', p: { 1: 340, 2: 630, 5: 1455, 10: 2870 }, img: null },
+    { id: 'sauvage', house: 'Dior', name: 'Sauvage', conc: 'EDP', short: 'Sauvage', p: { 1: 360, 2: 670, 5: 1555, 10: 3065 }, img: 'shop-images/samyo-dior-sauvage-edp.webp' },
+    { id: 'homme', house: 'Dior', name: 'Homme Intense', conc: '', short: 'Homme Intense', p: { 1: 365, 2: 680, 5: 1575, 10: 3110 }, img: 'shop-images/samyo-dior-homme-intense.webp' },
+    { id: 'oud', house: 'Tom Ford', name: 'Oud Wood', conc: 'EDP', short: 'Oud Wood', p: { 1: 615, 2: 1180, 5: 2800, 10: 5560 }, img: 'shop-images/samyo-brand-tom-ford-3.webp' }
+  ];
+  const SETS = [
+    { id: '3x1', name: 'Try trio', count: 3, size: 1, off: 0 },
+    { id: '6x1', name: 'Discovery six', count: 6, size: 1, off: 10 },
+    { id: '3x2', name: 'Wear trio', count: 3, size: 2, off: 0 },
+    { id: '6x2', name: 'Wardrobe six', count: 6, size: 2, off: 10 },
+    { id: '2x5', name: 'Signature duo', count: 2, size: 5, off: 0 },
+    { id: '1x10', name: 'Travel ten', count: 1, size: 10, off: 0 }
+  ];
+  const S = {};
+  SCENTS.forEach((s) => { S[s.id] = s; });
+  const SET = {};
+  SETS.forEach((s) => { SET[s.id] = s; });
+
+  /* ---------- Helpers ---------- */
+  const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const r2 = (n) => Math.round(n * 100) / 100;
+  const money = (n) => '₱' + Number(n).toLocaleString('en-PH', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const full = (s) => s.house + ' ' + s.name;
+  const sum = (arr) => arr.reduce((a, b) => a + b, 0);
+  const afterOff = (sub, set) => r2(sub - Math.round(sub * set.off) / 100);
+  const byPrice = (size) => SCENTS.slice().sort((a, b) => a.p[size] - b.p[size]).map((s) => s.id);
+  function range(set) {
+    const ids = byPrice(set.size);
+    const lo = sum(ids.slice(0, set.count).map((id) => S[id].p[set.size]));
+    const hi = sum(ids.slice(-set.count).map((id) => S[id].p[set.size]));
+    return [afterOff(lo, set), afterOff(hi, set)];
+  }
+  const totalOf = (ids, set) => afterOff(sum(ids.map((id) => S[id].p[set.size])), set);
+  const thumb = (s) => s.img
+    ? `<img class="ph" src="${s.img}" alt="" loading="lazy" decoding="async" draggable="false">`
+    : `<span class="bt" aria-hidden="true"><span>${esc(s.house)}</span></span>`;
+  const vial = (size) => `<img class="vi" src="${VIAL[size]}" alt="" loading="lazy" draggable="false">`;
+  const vialRow = (set, max = 6) => Array.from({ length: Math.min(set.count, max) }, () => vial(set.size)).join('');
+  const tagOff = (set) => (set.off ? `<span class="tag">${set.off}% off</span>` : '');
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+
+  // Re-render a region; keep focus (by data-k) and scroll position.
+  function patch(el, html) {
+    if (!el) return;
+    const a = document.activeElement;
+    const k = a && el.contains(a) ? a.dataset.k : null;
+    const sl = el.scrollLeft, st = el.scrollTop;
+    el.innerHTML = html;
+    el.scrollLeft = sl; el.scrollTop = st;
+    if (k) {
+      const n = el.querySelector(`[data-k="${k}"]`);
+      if (n) n.focus({ preventScroll: true });
+      else if (el.closest('.stage')) el.closest('.stage').focus({ preventScroll: true });
+    }
+  }
+
+  let toastT;
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove('show'), 3600);
+  }
+  function shake(el) {
+    if (!el || reduced()) return;
+    el.classList.remove('shake');
+    void el.offsetWidth;
+    el.classList.add('shake');
+  }
+
+  /* ---------- The set model ---------- */
+  function Picker(setId, prefill = true) {
+    const m = { set: SET[setId], picks: [], fresh: null, fns: [], prefill };
+    m.price = (id) => S[id].p[m.set.size];
+    m.has = (id) => m.picks.includes(id);
+    m.full = () => m.picks.length >= m.set.count;
+    m.left = () => m.set.count - m.picks.length;
+    m.cheapest = (n, exclude) => byPrice(m.set.size).filter((id) => !exclude.includes(id)).slice(0, Math.max(0, n));
+    m.emit = () => { m.fns.forEach((f) => f()); m.fresh = null; };
+    m.on = (f) => { m.fns.push(f); f(); };
+    m.fill = () => { m.picks = m.picks.concat(m.cheapest(m.left(), m.picks)); m.emit(); };
+    m.choose = (id) => {
+      m.set = SET[id];
+      m.picks = m.picks.slice(0, m.set.count);
+      if (m.prefill) m.picks = m.picks.concat(m.cheapest(m.left(), m.picks));
+      m.emit();
+    };
+    m.add = (id) => { if (m.has(id) || m.full()) return false; m.picks.push(id); m.fresh = id; m.emit(); return true; };
+    m.remove = (id) => { m.picks = m.picks.filter((x) => x !== id); m.emit(); };
+    m.toggle = (id) => (m.has(id) ? m.remove(id) : m.add(id));
+    m.swap = (a, b) => { const i = m.picks.indexOf(a); if (i < 0 || m.has(b)) return; m.picks[i] = b; m.fresh = b; m.emit(); };
+    m.setPicks = (ids) => { m.picks = ids.slice(0, m.set.count); m.emit(); };
+    m.totals = () => {
+      const sub = sum(m.picks.map(m.price));
+      const disc = Math.round(sub * m.set.off) / 100;
+      return { sub, disc, total: r2(sub - disc) };
+    };
+    if (prefill) m.picks = m.cheapest(m.set.count, []);
+    return m;
+  }
+
+  /* ---------- Shared fragments ---------- */
+  function toggle(m, s, p, o = {}) {
+    const on = m.has(s.id), blocked = !on && m.full();
+    const tipId = `${p}-tip-${s.id}`;
+    const label = o.label ? o.label(on) : `${on ? 'Remove' : 'Add'} ${full(s)}`;
+    const inner = o.html ? o.html(on) : (on ? (o.off || 'Remove') : (o.on || 'Add'));
+    const cls = o.cls || ('tg' + (on ? ' on' : ''));
+    return `<span class="tw ${o.wrap || ''}"><button type="button" class="${cls}" data-act="toggle" data-id="${s.id}" data-k="${p}-t-${s.id}"${o.drag ? ` data-drag="${s.id}"` : ''} aria-label="${esc(label)}"${o.pressed ? ` aria-pressed="${on}"` : ''}${blocked ? ` aria-disabled="true" aria-describedby="${tipId}"` : ''}>${inner}</button>${blocked ? `<span class="tip" role="tooltip" id="${tipId}">Remove one to add this</span>` : ''}</span>`;
+  }
+  function lines(m) {
+    const t = m.totals();
+    return `<dl class="ln"><div><dt>Subtotal · ${m.picks.length} of ${m.set.count}</dt><dd>${money(t.sub)}</dd></div>${m.set.off ? `<div class="dc"><dt>Six-vial set, ${m.set.off}% off</dt><dd>−${money(t.disc)}</dd></div>` : ''}<div class="tt"><dt>Total</dt><dd>${money(t.total)}</dd></div></dl>`;
+  }
+  function cta(m, p, cls = '') {
+    const left = m.left();
+    return `<button type="button" class="btn ${cls}" data-act="bag" data-k="${p}-bag"${left ? ' aria-disabled="true"' : ''}>Add set to bag</button><p class="hint">${left ? `Pick ${plural(left, 'more scent')} to finish the set.` : 'Set complete. To swap one, remove it and add another.'}</p>`;
+  }
+  const NOTE = `<p class="note"><b aria-hidden="true">i</b><span>We start every set with our lowest-priced scents. Don't want one? Remove it, then add any scent you like instead.</span></p>`;
+
+  function wire(stage, m, extra) {
+    stage.tabIndex = -1;
+    stage.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-act]');
+      if (!b || !stage.contains(b)) return;
+      const act = b.dataset.act;
+      if (b.getAttribute('aria-disabled') === 'true') {
+        if (b.dataset.reason) toast(b.dataset.reason);
+        else if (act === 'toggle') {
+          const w = b.closest('.tw');
+          if (w) { w.classList.add('nudge'); setTimeout(() => w.classList.remove('nudge'), 1800); }
+        } else toast(`Pick ${plural(m.left(), 'more scent')} first.`);
+        shake(b);
+        return;
+      }
+      if (extra && extra(act, b, e) === true) return;
+      switch (act) {
+        case 'set': m.choose(b.dataset.id); break;
+        case 'toggle': m.toggle(b.dataset.id); break;
+        case 'remove': m.remove(b.dataset.id); break;
+        case 'fill': m.fill(); break;
+        case 'clear': m.setPicks([]); break;
+        case 'bag': toast(`${m.set.name} added to your bag: ${m.picks.map((id) => S[id].short).join(', ')}. ${money(m.totals().total)} (preview only).`); break;
+        default: break;
+      }
+    });
+    const live = document.createElement('p');
+    live.className = 'sr';
+    live.setAttribute('aria-live', 'polite');
+    stage.appendChild(live);
+    let first = true;
+    m.on(() => {
+      if (first) { first = false; return; }
+      live.textContent = `${m.set.name}: ${m.picks.length} of ${m.set.count} picked. Total ${money(m.totals().total)}.`;
+    });
+  }
+  const R = (stage) => (n) => stage.querySelector(`[data-r="${n}"]`);
+
+  /* ---------- 01 Three quiet steps ---------- */
+  function idea1(stage) {
+    const p = 'i1', m = Picker('3x1'), r = R(stage);
+    let step = 1, last = 1;
+    stage.innerHTML = `<div class="i1"><ol class="i1-steps" data-r="steps"></ol><div data-r="panel"></div><div class="i1-bar" data-r="bar"></div></div>`;
+    const go = (n) => {
+      step = n; render();
+      const h = stage.querySelector('.i1-h');
+      if (h) h.focus({ preventScroll: true });
+      const top = stage.getBoundingClientRect().top;
+      if (top < 0) stage.scrollIntoView({ behavior: reduced() ? 'auto' : 'smooth', block: 'start' });
+    };
+    function render() {
+      const names = ['Set', 'Scents', 'Review'];
+      patch(r('steps'), names.map((n, i) => `<li><button type="button" data-act="go" data-step="${i + 1}" data-k="${p}-st${i + 1}"${step === i + 1 ? ' aria-current="step"' : ''} class="${step > i + 1 ? 'done' : ''}"${i === 2 && m.left() ? ' aria-disabled="true"' : ''}><span>${i + 1}</span>${n}</button></li>`).join(''));
+      let h = '';
+      if (step === 1) {
+        h = `<h3 class="i1-h" tabindex="-1">Choose your set</h3><p class="i1-sub">Each perfume has its own price per vial. Your set costs the vials you pick, added up.</p>
+        <div class="i1-sets">${SETS.map((s) => { const [lo, hi] = range(s); return `<button type="button" class="i1-set" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}">${tagOff(s)}<span class="i1-vials" aria-hidden="true">${vialRow(s).replace(/class="vi"/g, `class="vi" style="height:${Math.round(VH[s.size] * 100)}%"`)}</span><span class="i1-nm">${s.name}</span><span class="i1-ml">${s.count} × ${s.size} ml</span><span class="i1-pr"><small>from</small> ${money(lo)}<br><small>up to ${money(hi)}</small></span></button>`; }).join('')}</div>
+        <div class="i1-nav"><span></span><button type="button" class="btn" data-act="go" data-step="2" data-k="${p}-n2">Next: pick ${plural(m.set.count, 'scent')} →</button></div>`;
+      } else if (step === 2) {
+        h = `<h3 class="i1-h" tabindex="-1">Pick ${plural(m.set.count, 'scent')} for your ${m.set.name}</h3><p class="i1-sub">${m.set.count} × ${m.set.size} ml · each perfume once per set.</p>${NOTE}
+        <div class="i1-grid">${SCENTS.map((s) => `<div class="i1-card ${m.has(s.id) ? 'on' : ''} ${m.fresh === s.id ? 'pop' : ''}"><div class="i1-img">${thumb(s)}</div><p class="k">${esc(s.house)}</p><p class="i1-name">${esc(s.name)} <span>${s.conc}</span></p><p class="i1-price">${money(m.price(s.id))} <span>per ${m.set.size} ml vial</span></p>${toggle(m, s, p)}</div>`).join('')}</div>
+        <div class="i1-nav"><button type="button" class="btn ghost" data-act="go" data-step="1" data-k="${p}-b1">← Change set</button><button type="button" class="btn" data-act="go" data-step="3" data-k="${p}-n3"${m.left() ? ' aria-disabled="true"' : ''}>${m.left() ? `Pick ${m.left()} more` : 'Review set →'}</button></div>`;
+      } else {
+        h = `<div class="i1-review"><h3 class="i1-h" tabindex="-1">Your ${m.set.name}</h3><p class="i1-sub">${m.set.count} × ${m.set.size} ml</p>
+        <ol class="i1-rev">${m.picks.map((id) => `<li>${vial(m.set.size)}<span><span class="k" style="color:var(--soft)">${esc(S[id].house)}</span><br><span class="rn">${esc(S[id].name)}</span></span><span>${money(m.price(id))}</span></li>`).join('')}</ol>
+        ${lines(m)}<div class="i1-nav"><button type="button" class="btn ghost" data-act="go" data-step="2" data-k="${p}-b2">← Change scents</button><span>${cta(m, p).replace('<p class="hint">', '<p class="hint" hidden>')}</span></div></div>`;
+      }
+      patch(r('panel'), `<div class="${step !== last ? 'enter' : ''}">${h}</div>`);
+      last = step;
+      patch(r('bar'), `<span>${m.set.name} · ${m.picks.length} of ${m.set.count} picked</span><strong>${money(m.totals().total)}</strong>`);
+    }
+    wire(stage, m, (act, b) => { if (act === 'go') { go(+b.dataset.step); return true; } });
+    m.on(render);
+  }
+
+  /* ---------- 02 Fill the box ---------- */
+  function idea2(stage) {
+    const p = 'i2', m = Picker('3x1', false), r = R(stage);
+    stage.innerHTML = `<div class="i2"><div class="i2-top"><div><span class="k">1 · Vial size</span><div class="seg" data-r="sizes" role="group" aria-label="Vial size"></div></div><div><span class="k">2 · How many vials</span><div class="seg" data-r="counts" role="group" aria-label="How many vials"></div></div></div>
+      <div class="i2-main"><div class="i2-box" data-r="box"></div><div class="i2-shelf"><p class="k">3 · Tap a scent to drop it into the next empty vial</p><div class="i2-tiles" data-r="tiles"></div></div></div></div>`;
+    function render() {
+      patch(r('sizes'), [1, 2, 5, 10].map((z) => `<button type="button" data-act="size" data-size="${z}" data-k="${p}-z${z}" aria-pressed="${m.set.size === z}">${z} ml</button>`).join(''));
+      patch(r('counts'), SETS.filter((s) => s.size === m.set.size).map((s) => `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-c-${s.id}" aria-pressed="${s === m.set}">${plural(s.count, 'vial')}${tagOff(s)}</button>`).join(''));
+      const slots = Array.from({ length: m.set.count }, (_, i) => {
+        const id = m.picks[i];
+        if (!id) return `<button type="button" class="i2-slot" data-act="pickfor" data-k="${p}-sl${i}" aria-label="Vial ${i + 1} is empty. Choose a scent"><span class="plus" aria-hidden="true">+</span><span class="sv">Vial ${i + 1}</span></button>`;
+        const s = S[id];
+        return `<button type="button" class="i2-slot full ${m.fresh === id ? 'pop' : ''}" data-act="remove" data-id="${id}" data-k="${p}-sl${i}" aria-label="Vial ${i + 1}: ${esc(full(s))}, ${money(m.price(id))}. Remove"><span class="vw" style="height:${Math.round(100 * VH[m.set.size])}px">${vial(m.set.size)}</span><span class="sn">${esc(s.short)}</span><span class="sp">${money(m.price(id))}</span><span class="sx" aria-hidden="true">Remove</span></button>`;
+      }).join('');
+      patch(r('box'), `<div class="i2-bh"><h3>${m.set.name}</h3><span>${m.set.count} × ${m.set.size} ml</span></div><div class="i2-slots" style="--n:${m.set.count};--m:${Math.min(m.set.count, 3)}">${slots}</div>
+        ${lines(m)}<div class="i2-acts">${m.left() ? `<button type="button" class="lnk" data-act="fill" data-k="${p}-fill">Fill empty vials with our lowest-priced scents</button>` : ''}${m.picks.length ? `<button type="button" class="lnk" data-act="clear" data-k="${p}-clear">Empty the box</button>` : ''}</div>${cta(m, p)}`);
+      patch(r('tiles'), SCENTS.map((s) => toggle(m, s, p, { pressed: true, cls: 'i2-tile', label: () => `${full(s)}, ${money(m.price(s.id))}`, html: () => `<span class="th">${thumb(s)}</span><span><span class="tn">${esc(s.name)}</span><span class="tp">${esc(s.house)} · ${money(m.price(s.id))}</span></span>` })).join(''));
+    }
+    wire(stage, m, (act, b) => {
+      if (act === 'size') {
+        const z = +b.dataset.size;
+        const s = SETS.find((x) => x.size === z && x.count === m.set.count) || SETS.find((x) => x.size === z);
+        m.choose(s.id); return true;
+      }
+      if (act === 'pickfor') { const t = stage.querySelector('.i2-tile:not([aria-pressed="true"])'); if (t) t.focus(); return true; }
+    });
+    m.on(render);
+  }
+
+  /* ---------- 03 Live box preview ---------- */
+  function idea3(stage) {
+    const p = 'i3', m = Picker('6x1'), r = R(stage);
+    stage.innerHTML = `<div class="i3"><div><div class="i3-tabs" data-r="tabs" role="group" aria-label="Set"></div>${NOTE}<div class="i3-list" data-r="list"></div></div><aside class="i3-box" data-r="box" aria-label="Your set"></aside></div>`;
+    function render() {
+      patch(r('tabs'), SETS.map((s) => `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><span class="serif">${s.name}</span><small>${s.count} × ${s.size} ml</small>${tagOff(s)}</button>`).join(''));
+      patch(r('list'), SCENTS.map((s) => `<div class="i3-row ${m.has(s.id) ? 'on' : ''}"><span class="i3-th">${thumb(s)}</span><span><span class="k" style="color:var(--soft);font-size:10px">${esc(s.house)}</span><span class="i3-nm">${esc(s.name)}</span><span class="i3-pr">${money(m.price(s.id))} per ${m.set.size} ml vial</span></span>${toggle(m, s, p)}</div>`).join(''));
+      const vh = Math.round((m.set.count > 3 ? 120 : 160) * VH[m.set.size] + (m.set.size >= 5 ? 20 : 0));
+      const line = Array.from({ length: m.set.count }, (_, i) => {
+        const id = m.picks[i];
+        return id ? `<li class="i3-v ${m.fresh === id ? 'pop' : ''}"><span class="vw">${vial(m.set.size)}</span><span class="vn">${esc(S[id].short)}</span><span class="vp">${money(m.price(id))}</span></li>`
+          : `<li class="i3-v empty"><span class="ghost"></span><span class="vn">Vial ${i + 1}</span></li>`;
+      }).join('');
+      patch(r('box'), `<p class="k">Your set</p><h3>${m.set.name}</h3><p class="meta">${m.set.count} × ${m.set.size} ml${m.set.off ? ' · 10% off the set' : ''}</p><ol class="i3-line" style="--vh:${vh}px" aria-label="Vials in your set">${line}</ol>${lines(m)}${cta(m, p)}`);
+    }
+    wire(stage, m);
+    m.on(render);
+  }
+
+  /* ---------- 04 Price list ---------- */
+  function idea4(stage) {
+    const p = 'i4', m = Picker('3x2'), r = R(stage);
+    let by = 'price', dir = 1;
+    stage.innerHTML = `<div class="i4"><div class="i4-head"><span class="k">Set</span><div class="i4-sets" data-r="sets" role="group" aria-label="Set"></div><p class="i4-setline" data-r="setline"></p></div><div data-r="table"></div><div class="i4-foot" data-r="foot"></div></div>`;
+    function render() {
+      patch(r('sets'), SETS.map((s) => `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><b>${s.count} × ${s.size} ml</b><span>${s.name}${s.off ? ' · <em>−10%</em>' : ''}</span></button>`).join(''));
+      const [lo, hi] = range(m.set);
+      patch(r('setline'), `${m.set.name}: pick ${plural(m.set.count, 'different scent')}. Set price from ${money(lo)} up to ${money(hi)}${m.set.off ? ', after 10% off' : ''}.`);
+      const z = m.set.size, min = Math.min(...SCENTS.map((s) => s.p[z]));
+      const rows = SCENTS.slice().sort((a, b) => by === 'price' ? dir * (a.p[z] - b.p[z]) : dir * (full(a).localeCompare(full(b))));
+      const sortAttr = (k) => (by === k ? (dir > 0 ? 'ascending' : 'descending') : 'none');
+      const arrow = (k) => (by === k ? (dir > 0 ? '↑' : '↓') : '↕');
+      patch(r('table'), `<table class="i4-t"><caption class="sr">Scents for the ${m.set.name}, price per ${z} ml vial</caption>
+        <thead><tr><th scope="col" aria-sort="${sortAttr('name')}"><button type="button" data-act="sort" data-by="name" data-k="${p}-sn">Perfume <span class="ar" aria-hidden="true">${arrow('name')}</span></button></th><th scope="col" class="i4-num" aria-sort="${sortAttr('price')}"><button type="button" data-act="sort" data-by="price" data-k="${p}-sp">Per ${z} ml <span class="ar" aria-hidden="true">${arrow('price')}</span></button></th><th scope="col" class="i4-vs">vs lowest</th><th scope="col" class="i4-pk"><span class="sr">In set</span></th></tr></thead>
+        <tbody>${rows.map((s) => { const d = s.p[z] - min; return `<tr class="${m.has(s.id) ? 'on' : ''}"><th scope="row"><span class="k">${esc(s.house)}</span><span class="i4-nm">${esc(s.name)} <i>${s.conc}</i></span></th><td class="i4-num">${money(s.p[z])}</td><td class="i4-vs">${d ? '+' + money(d) : 'lowest'}</td><td class="i4-pk">${toggle(m, s, p, { pressed: true, cls: 'i4-ck', label: () => full(s), html: () => '<span aria-hidden="true">✓</span>' })}</td></tr>`; }).join('')}</tbody></table>`);
+      patch(r('foot'), `<p class="i4-setline">${m.picks.length ? 'In your set: ' + m.picks.map((id) => esc(S[id].short)).join(' · ') : 'Nothing picked yet.'}</p><div>${lines(m)}${cta(m, p)}</div>`);
+    }
+    wire(stage, m, (act, b) => {
+      if (act === 'sort') { const k = b.dataset.by; if (by === k) dir = -dir; else { by = k; dir = 1; } render(); return true; }
+    });
+    m.on(render);
+  }
+
+  /* ---------- 05 Start from a preset ---------- */
+  function idea5(stage) {
+    const p = 'i5', m = Picker('3x1'), r = R(stage);
+    stage.innerHTML = `<div class="i5"><div class="i5-sets" data-r="sets" role="group" aria-label="Set"></div><h3>Start from</h3><div class="i5-pre" data-r="pre"></div>
+      <div class="i5-body"><div><h3>Your vials</h3><ol class="i5-picked" data-r="picked"></ol><p class="k" style="color:var(--soft);margin-bottom:10px">Fine-tune</p><div class="i5-chips" data-r="chips"></div></div><div class="i5-sum" data-r="sum"></div></div></div>`;
+    function presets() {
+      const n = m.set.count, ids = byPrice(m.set.size), L = ids.length;
+      const dior = ['sauvage', 'homme'];
+      return [
+        { id: 'low', name: 'Lowest price', desc: 'Our lowest-priced scents for this set.', ids: ids.slice(0, n) },
+        { id: 'dior', name: 'Dior pair', desc: 'Sauvage and Homme Intense, the rest at the lowest price.', ids: n >= 2 ? dior.concat(ids.filter((x) => !dior.includes(x)).slice(0, n - 2)) : null, reason: 'The Dior pair needs a set of 2 or more vials.' },
+        { id: 'spread', name: 'Low to high', desc: 'Spread evenly across the price list.', ids: n === 1 ? [ids[Math.floor((L - 1) / 2)]] : Array.from({ length: n }, (_, i) => ids[Math.round(i * (L - 1) / (n - 1))]) },
+        { id: 'top', name: 'Top of the list', desc: 'Our highest-priced scents for this set.', ids: ids.slice(-n).reverse() },
+        { id: 'rnd', name: 'Surprise me', desc: 'A random mix, different every tap.', ids: null }
+      ];
+    }
+    const same = (a, b) => a && a.length === b.length && a.every((x) => b.includes(x));
+    function render() {
+      patch(r('sets'), SETS.map((s) => `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}">${s.name} <small>${s.count}×${s.size} ml</small>${tagOff(s)}</button>`).join(''));
+      patch(r('pre'), presets().map((x) => {
+        const dis = x.id === 'dior' && !x.ids;
+        return `<button type="button" class="i5-p" data-act="preset" data-id="${x.id}" data-k="${p}-p-${x.id}" aria-pressed="${x.id !== 'rnd' && same(x.ids, m.picks)}"${dis ? ` aria-disabled="true" data-reason="${esc(x.reason)}"` : ''}><span class="i5-pn">${x.name}</span><span class="i5-pd">${x.desc}</span><span class="i5-pl">${x.ids ? x.ids.map((id) => esc(S[id].short)).join(' · ') : dis ? 'Choose a bigger set' : 'Any ' + plural(m.set.count, 'scent')}</span><span class="i5-pt">${x.ids ? `<small>${m.set.name}</small>${money(totalOf(x.ids, m.set))}` : '<small>Total</small>varies'}</span></button>`;
+      }).join(''));
+      patch(r('picked'), Array.from({ length: m.set.count }, (_, i) => {
+        const id = m.picks[i];
+        return id ? `<li class="${m.fresh === id ? 'pop' : ''}">${vial(m.set.size)}<span><span class="pn">${esc(S[id].short)}</span><span class="pp">${money(m.price(id))}</span></span><button type="button" class="x" data-act="remove" data-id="${id}" data-k="${p}-x-${id}" aria-label="Remove ${esc(full(S[id]))}">×</button></li>` : `<li class="empty">Vial ${i + 1}: pick below</li>`;
+      }).join(''));
+      patch(r('chips'), SCENTS.map((s) => toggle(m, s, p, { pressed: true, cls: 'tg' + (m.has(s.id) ? ' on' : ''), label: () => `${full(s)}, ${money(m.price(s.id))}`, html: () => `${esc(s.short)} · ${money(m.price(s.id))}` })).join(''));
+      patch(r('sum'), `<p class="k" style="margin-bottom:10px">${m.set.name} · ${m.set.count} × ${m.set.size} ml</p>${lines(m)}${cta(m, p)}`);
+    }
+    wire(stage, m, (act, b) => {
+      if (act === 'preset') {
+        const x = presets().find((q) => q.id === b.dataset.id);
+        if (x.id === 'rnd') {
+          const pool = SCENTS.map((s) => s.id);
+          for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+          m.setPicks(pool.slice(0, m.set.count));
+        } else m.setPicks(x.ids);
+        return true;
+      }
+    });
+    m.on(render);
+  }
+
+  /* ---------- 06 Dark boutique ---------- */
+  function idea6(stage) {
+    const p = 'i6', m = Picker('2x5'), r = R(stage);
+    stage.classList.add('dark');
+    const RN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+    stage.innerHTML = `<div class="i6"><div class="i6-sets" data-r="sets" role="group" aria-label="Set"></div><div><div class="i6-hd"><div><h3>The shelf</h3><p data-r="hint"></p></div><div class="i6-arrows"><button type="button" data-act="prev" aria-label="Scroll the shelf back">‹</button><button type="button" data-act="next" aria-label="Scroll the shelf forward">›</button></div></div><div class="i6-shelf" data-r="shelf" role="list" aria-label="Scents"></div><div class="i6-sum" data-r="sum"></div></div></div>`;
+    function render() {
+      patch(r('sets'), SETS.map((s, i) => { const [lo] = range(s); return `<button type="button" class="i6-set" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><span class="rn" aria-hidden="true">${RN[i]}</span><span class="sn">${s.name}</span><span class="sm">${s.count} × ${s.size} ml${s.off ? ' · <em>10% off</em>' : ''}</span><span class="sf">from ${money(lo)}</span></button>`; }).join(''));
+      patch(r('hint'), `${m.set.name}: ${plural(m.set.count, 'scent')}, ${m.set.size} ml each. Each perfume once.`);
+      patch(r('shelf'), SCENTS.map((s) => `<div class="i6-card ${m.has(s.id) ? 'on' : ''}" role="listitem"><div class="i6-img">${thumb(s)}</div><p class="i6-h">${esc(s.house)}</p><p class="i6-n">${esc(s.name)}</p><p class="i6-p">${money(m.price(s.id))} · ${m.set.size} ml vial</p>${toggle(m, s, p, { on: 'Add to set' })}</div>`).join(''));
+      const vh = Math.round(80 * VH[m.set.size]);
+      patch(r('sum'), `<div class="i6-vials" style="--vh:${vh}px" aria-hidden="true">${Array.from({ length: m.set.count }, (_, i) => m.picks[i] ? `<span class="vw ${m.fresh === m.picks[i] ? 'pop' : ''}">${vial(m.set.size)}</span>` : '<span class="ghost"></span>').join('')}</div><div>${lines(m)}</div><div class="ctaw">${cta(m, p, 'gold')}</div>`);
+    }
+    wire(stage, m, (act) => {
+      if (act === 'prev' || act === 'next') {
+        const sh = r('shelf');
+        sh.scrollBy({ left: (act === 'next' ? 1 : -1) * sh.clientWidth * 0.8, behavior: reduced() ? 'auto' : 'smooth' });
+        return true;
+      }
+    });
+    m.on(render);
+  }
+
+  /* ---------- 07 Shelf to box ---------- */
+  function idea7(stage) {
+    const p = 'i7', m = Picker('3x1', false), r = R(stage);
+    stage.innerHTML = `<div class="i7-sets" data-r="sets" role="group" aria-label="Box"></div><div class="i7"><div><p class="k" style="color:var(--soft);margin-bottom:14px">Drag a bottle into the box, or tap it</p><div class="i7-shelf" data-r="shelf"></div></div><div class="i7-box" data-r="box" data-drop></div></div>`;
+    const H = { 1: 12, 2: 18, 5: 26, 10: 34 };
+    function render() {
+      patch(r('sets'), SETS.map((s) => `<button type="button" class="i7-set" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><span class="i7-mini" style="--c:${Math.min(s.count, 6)}" aria-hidden="true">${Array.from({ length: s.count }, () => `<i style="--h:${H[s.size]}px"></i>`).join('')}</span><b>${s.name}</b><small>${s.count} × ${s.size} ml</small>${tagOff(s)}</button>`).join(''));
+      patch(r('shelf'), SCENTS.map((s) => toggle(m, s, p, { pressed: true, drag: true, wrap: 'i7-cell', cls: 'i7-b', label: () => `${full(s)}, ${money(m.price(s.id))}`, html: () => `<span class="th">${thumb(s)}</span><span class="bn">${esc(s.short)}</span><span class="bp">${money(m.price(s.id))}</span>` })).join(''));
+      patch(r('box'), `<h3>${m.set.name}</h3><p class="bm">${m.set.count} × ${m.set.size} ml · ${m.left() ? `${plural(m.left(), 'space')} left` : 'box full'}</p>
+        <div class="i7-slots" style="--n:${m.set.count};--m:${Math.min(m.set.count, 3)}">${Array.from({ length: m.set.count }, (_, i) => { const id = m.picks[i]; return id ? `<div class="i7-slot ${m.fresh === id ? 'pop' : ''}"><span class="vw">${vial(m.set.size)}</span><span class="sn">${esc(S[id].short)}</span><button type="button" class="x" data-act="remove" data-id="${id}" data-k="${p}-x-${id}" aria-label="Take ${esc(full(S[id]))} out of the box">×</button></div>` : `<div class="i7-slot empty">empty</div>`; }).join('')}</div>
+        ${m.left() ? `<button type="button" class="lnk" data-act="fill" data-k="${p}-fill" style="margin:-8px 0 8px">Fill the rest with our lowest-priced scents</button>` : ''}${lines(m)}${cta(m, p)}`);
+    }
+    wire(stage, m);
+    // Drag (mouse and pen; touch uses tap).
+    let drag = null, swallow = false;
+    stage.addEventListener('pointerdown', (e) => {
+      const b = e.target.closest('[data-drag]');
+      if (!b || e.pointerType === 'touch' || e.button !== 0) return;
+      drag = { id: b.dataset.drag, x: e.clientX, y: e.clientY, on: false, ghost: null, over: false };
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      if (!drag.on) {
+        if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) < 6) return;
+        if (m.has(drag.id)) { drag = null; return; }
+        drag.on = true;
+        drag.ghost = document.createElement('div');
+        drag.ghost.className = 'i7-ghost';
+        drag.ghost.innerHTML = thumb(S[drag.id]);
+        document.body.appendChild(drag.ghost);
+      }
+      drag.ghost.style.transform = `translate(${e.clientX - 32}px, ${e.clientY - 60}px)`;
+      const box = stage.querySelector('[data-drop]'), rc = box.getBoundingClientRect();
+      drag.over = e.clientX >= rc.left && e.clientX <= rc.right && e.clientY >= rc.top && e.clientY <= rc.bottom;
+      box.classList.toggle('over', drag.over);
+    });
+    const end = () => {
+      if (!drag) return;
+      if (drag.on) {
+        drag.ghost.remove();
+        const box = stage.querySelector('[data-drop]');
+        box.classList.remove('over');
+        swallow = true; setTimeout(() => { swallow = false; }, 60);
+        if (drag.over) {
+          if (m.full()) { toast('The box is full. Take one out to add this.'); shake(box); }
+          else m.add(drag.id);
+        }
+      }
+      drag = null;
+    };
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+    stage.addEventListener('click', (e) => { if (swallow) { e.stopPropagation(); e.preventDefault(); } }, true);
+    m.on(render);
+  }
+
+  /* ---------- 08 Bottom sheet ---------- */
+  function idea8(stage) {
+    const p = 'i8', m = Picker('3x1'), r = R(stage);
+    let open = false;
+    stage.innerHTML = `<div class="i8-wrap"><div class="i8-side"><p><b>Whole screen for the list.</b> Set pills scroll sideways at the top; every row has one round 48px button in thumb reach.</p><p><b>The set is one tap away.</b> The bar shows how many vials are filled and the live total; it opens into a sheet with the vials, the 10% line and checkout.</p></div>
+      <div class="i8-phone"><div class="i8-top"><h3>Build your set</h3><div class="i8-pills" data-r="pills" role="group" aria-label="Set"></div><p class="i8-sub" data-r="sub"></p></div><ul class="i8-list" data-r="list"></ul>
+      <div class="i8-bar" data-r="bar"></div><button type="button" class="i8-scrim" data-act="sheet" tabindex="-1" aria-label="Close your set" data-r="scrim"></button><div class="i8-sheet" id="i8-sheet" role="dialog" aria-label="Your set" data-r="sheet" inert></div></div>
+      <div class="i8-side r"><p><b>Closed sheet is inert</b>, so keyboard and screen-reader users never land in it by accident. Escape closes it.</p></div></div>`;
+    function render() {
+      patch(r('pills'), SETS.map((s) => `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}">${s.name}${tagOff(s)}</button>`).join(''));
+      patch(r('sub'), `${m.set.count} × ${m.set.size} ml · each perfume once · we start you with the lowest-priced`);
+      patch(r('list'), SCENTS.map((s) => `<li><span class="th">${thumb(s)}</span><span><span class="k">${esc(s.house)}</span><span class="nm">${esc(s.name)}</span><span class="pr">${money(m.price(s.id))} per ${m.set.size} ml vial</span></span>${toggle(m, s, p, { cls: 'i8-rb' + (m.has(s.id) ? ' on' : ''), html: (on) => (on ? '✓' : '+') })}</li>`).join(''));
+      patch(r('bar'), `<button type="button" class="i8-barbtn" data-act="sheet" data-k="${p}-bar" aria-expanded="${open}" aria-controls="i8-sheet"><span class="i8-dots" aria-hidden="true">${Array.from({ length: m.set.count }, (_, i) => `<i class="${m.picks[i] ? 'f' : ''}"></i>`).join('')}</span><span><b>${m.set.name} · ${m.picks.length} of ${m.set.count}</b><span class="t">${money(m.totals().total)}</span></span><span class="v">View set ▴</span></button>`);
+      patch(r('sheet'), `<div class="i8-grab" aria-hidden="true"></div><div class="i8-sh"><h4 tabindex="-1">Your ${m.set.name}</h4><button type="button" class="x" data-act="sheet" data-k="${p}-close" aria-label="Close your set">×</button></div>
+        <ul class="i8-pk">${Array.from({ length: m.set.count }, (_, i) => { const id = m.picks[i]; return id ? `<li>${vial(m.set.size)}<span class="nm">${esc(S[id].short)}</span><span class="pr">${money(m.price(id))}</span><button type="button" class="x" data-act="remove" data-id="${id}" data-k="${p}-x-${id}" aria-label="Remove ${esc(full(S[id]))}">×</button></li>` : `<li class="empty">Vial ${i + 1} is empty. Pick one from the list.</li>`; }).join('')}</ul>${lines(m)}${cta(m, p)}`);
+      const sh = r('sheet');
+      sh.classList.toggle('open', open);
+      sh.inert = !open;
+      r('scrim').classList.toggle('open', open);
+    }
+    const setOpen = (v) => {
+      open = v; render();
+      if (open) r('sheet').querySelector('h4').focus({ preventScroll: true });
+      else { const b = r('bar').querySelector('button'); if (b) b.focus({ preventScroll: true }); }
+    };
+    wire(stage, m, (act) => { if (act === 'sheet') { setOpen(!open); return true; } });
+    stage.addEventListener('keydown', (e) => { if (e.key === 'Escape' && open) setOpen(false); });
+    m.on(render);
+  }
+
+  /* ---------- 09 Price meter ---------- */
+  function idea9(stage) {
+    const p = 'i9', m = Picker('6x2'), r = R(stage);
+    const maxAll = Math.max(...SETS.map((s) => range(s)[1]));
+    stage.innerHTML = `<div class="i9"><div class="i9-sets" data-r="sets" role="group" aria-label="Set"></div>
+      <div class="i9-meter"><div><span class="k" data-r="mk"></span><strong class="i9-total" data-r="mt"></strong><span class="i9-status" data-r="ms"></span></div>
+      <div><div class="i9-mt" aria-hidden="true"><span class="i9-fill" data-r="fill"></span><span class="i9-mk" data-r="mark"><span></span></span></div><div class="i9-ml"><span>Lowest possible<b data-r="lo"></b></span><span>Highest possible<b data-r="hi"></b></span></div></div></div>
+      <p class="k" style="color:var(--soft);margin-bottom:8px" data-r="lh"></p><ol class="i9-lad" data-r="lad"></ol><div class="i9-foot" data-r="foot"></div></div>`;
+    function render() {
+      patch(r('sets'), SETS.map((s) => { const [lo, hi] = range(s); return `<button type="button" class="i9-set" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><b>${s.name}</b><small>${s.count} × ${s.size} ml</small><span class="i9-track" aria-hidden="true"><span class="i9-span" style="left:${(lo / maxAll * 100).toFixed(2)}%;width:${Math.max(1.5, (hi - lo) / maxAll * 100).toFixed(2)}%"></span></span><span class="i9-rg">${money(lo)}–${money(hi)}</span>${tagOff(s)}</button>`; }).join(''));
+      const [lo, hi] = range(m.set);
+      const t = m.totals().total;
+      const proj = m.full() ? t : totalOf(m.picks.concat(m.cheapest(m.left(), m.picks)), m.set);
+      const pct = hi > lo ? Math.min(1, Math.max(0, (proj - lo) / (hi - lo))) : 0;
+      r('mk').textContent = `Your ${m.set.name}`;
+      r('mt').textContent = money(t);
+      r('ms').textContent = !m.full() ? `Pick ${plural(m.left(), 'more')}: at least ${money(proj)} once full.` : proj === lo ? 'The lowest price this set can be.' : `${money(r2(proj - lo))} above the lowest; ${money(r2(hi - proj))} below the highest.`;
+      r('lo').textContent = money(lo);
+      r('hi').textContent = money(hi);
+      r('fill').style.transform = `scaleX(${pct})`;
+      r('mark').style.transform = `translateX(${(pct * 100).toFixed(2)}%)`;
+      r('lh').textContent = `Price per ${m.set.size} ml vial, lowest first${m.set.off ? ' · what each adds after 10% off' : ' · what each adds'}`;
+      const z = m.set.size, mx = Math.max(...SCENTS.map((s) => s.p[z]));
+      patch(r('lad'), byPrice(z).map((id) => { const s = S[id], on = m.has(id); return `<li class="i9-row ${on ? 'on' : ''}"><span class="i9-nm"><span class="k">${esc(s.house)}</span>${esc(s.name)}</span><span class="i9-bar" aria-hidden="true"><span style="transform:scaleX(${(s.p[z] / mx).toFixed(3)})"></span></span><span class="i9-pr">${money(s.p[z])}</span><span class="i9-d">${on ? 'in your set' : m.full() ? 'set full' : '+' + money(afterOff(s.p[z], m.set))}</span>${toggle(m, s, p)}</li>`; }).join(''));
+      patch(r('foot'), `${lines(m)}<div class="ctaw">${cta(m, p)}</div>`);
+    }
+    wire(stage, m);
+    m.on(render);
+  }
+
+  /* ---------- 10 Ready-made, swap to taste ---------- */
+  function idea10(stage) {
+    const p = 'i10', m = Picker('3x1'), r = R(stage);
+    let slot = null, setsOpen = false;
+    stage.innerHTML = `<div class="i10"><div class="i10-head" data-r="head"></div><div class="i10-sets" id="i10-sets" data-r="sets" role="group" aria-label="Set" hidden></div><ol class="i10-line" data-r="line" aria-label="Vials in your set"></ol><div class="i10-alts" id="i10-alts" data-r="alts" hidden></div><div class="i10-foot" data-r="foot"></div></div>`;
+    function render() {
+      patch(r('head'), `<div><p class="k">Your set, ready to go</p><h3>${m.set.name}</h3><p>${m.set.count} × ${m.set.size} ml${m.set.off ? ', 10% off' : ''} · filled with our lowest-priced scents. Swap any vial you like.</p></div><button type="button" class="btn ghost i10-chg" data-act="sets" data-k="${p}-chg" aria-expanded="${setsOpen}" aria-controls="i10-sets">Change set <span class="chev" aria-hidden="true">▾</span></button>`);
+      const sets = r('sets');
+      sets.hidden = !setsOpen;
+      patch(sets, SETS.map((s) => { const [lo, hi] = range(s); return `<button type="button" data-act="set" data-id="${s.id}" data-k="${p}-s-${s.id}" aria-pressed="${s === m.set}"><b>${s.name}</b><small>${s.count} × ${s.size} ml</small><small>from ${money(lo)} up to ${money(hi)}</small>${s.off ? '<span><span class="tag">10% off</span></span>' : ''}</button>`; }).join(''));
+      patch(r('line'), m.picks.map((id, i) => { const s = S[id]; return `<li class="i10-v ${slot === i ? 'open' : ''} ${m.fresh === id ? 'pop' : ''}"><span class="i10-ix">Vial ${i + 1}<span class="vw" aria-hidden="true">${vial(m.set.size)}</span></span><div class="i10-img">${thumb(s)}</div><span class="h">${esc(s.house)}</span><span class="n">${esc(s.name)}</span><span class="p">${money(m.price(id))} · ${m.set.size} ml</span><button type="button" class="tg ${slot === i ? 'on' : ''}" data-act="swap" data-i="${i}" data-k="${p}-sw-${i}" aria-expanded="${slot === i}" aria-controls="i10-alts" aria-label="Swap vial ${i + 1}, ${esc(full(s))}">Swap</button></li>`; }).join(''));
+      const alts = r('alts');
+      alts.hidden = slot === null;
+      if (slot !== null) {
+        const cur = m.picks[slot], cp = m.price(cur);
+        const opts = byPrice(m.set.size).filter((id) => !m.has(id));
+        patch(alts, `<div class="i10-ah"><h4 tabindex="-1">Swap vial ${slot + 1} (${esc(S[cur].short)}, ${money(cp)}) for</h4><button type="button" class="x" data-act="close" data-k="${p}-close" aria-label="Keep ${esc(S[cur].short)}">×</button></div>
+          <div class="i10-al">${opts.map((id) => { const s = S[id], d = afterOff(m.price(id), m.set) - afterOff(cp, m.set); return `<button type="button" data-act="to" data-id="${id}" data-k="${p}-to-${id}"><span class="th">${thumb(s)}</span><span><span class="an">${esc(s.name)}</span><span class="ap">${esc(s.house)} · ${money(m.price(id))}</span></span><span class="d ${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${d > 0 ? '+' + money(r2(d)) : d < 0 ? '−' + money(r2(-d)) : 'same'}</span></button>`; }).join('')}</div>
+          <p class="hint">The difference shown is what the swap does to your total${m.set.off ? ', after 10% off' : ''}.</p>`);
+      }
+      const [lo, hi] = range(m.set);
+      patch(r('foot'), `<p class="range">This set costs from ${money(lo)} up to ${money(hi)}, depending on the scents.<br>Each perfume appears once per set.</p><div>${lines(m)}${cta(m, p).replace('To swap one, remove it and add another.', 'Tap Swap on any vial to change it.')}</div>`);
+    }
+    wire(stage, m, (act, b) => {
+      if (act === 'sets') { setsOpen = !setsOpen; render(); return true; }
+      if (act === 'set') { setsOpen = false; slot = null; m.choose(b.dataset.id); const c = stage.querySelector(`[data-k="${p}-chg"]`); if (c) c.focus({ preventScroll: true }); return true; }
+      if (act === 'swap') { const i = +b.dataset.i; slot = slot === i ? null : i; render(); if (slot !== null) r('alts').querySelector('h4').focus({ preventScroll: true }); return true; }
+      if (act === 'close') { const i = slot; slot = null; render(); const sw = stage.querySelector(`[data-k="${p}-sw-${i}"]`); if (sw) sw.focus({ preventScroll: true }); return true; }
+      if (act === 'to') { const i = slot; slot = null; m.swap(m.picks[i], b.dataset.id); const sw = stage.querySelector(`[data-k="${p}-sw-${i}"]`); if (sw) sw.focus({ preventScroll: true }); return true; }
+    });
+    m.on(render);
+  }
+
+  /* ---------- Page ---------- */
+  const IDEAS = [
+    ['Three quiet steps', 'One decision per screen (set, scents, review) with a running total underneath; on a phone you never scroll past six set cards to reach the scents or the price.', idea1],
+    ['Fill the box', 'Pick the vial size, then how many; the set is a dark box with empty holes, so "how many left" is impossible to miss, and nothing is chosen for you unless you ask.', idea2],
+    ['Live box preview', 'Split view: the vials you are building stand beside the list at full size and update with every Add or Remove; on phones it collapses into a sticky mini tray.', idea3],
+    ['Price list', 'A sortable table for people who shop by price: all ten scents on one screen, the price for the chosen size, how far each sits above the lowest, one tick to pick.', idea4],
+    ['Start from a preset', 'One tap fills a sensible set (lowest price, Dior pair, low to high, top of the list, surprise) and each preset shows its total for your set before you tap.', idea5],
+    ['Dark boutique', 'Ink and gold with large bottle photos on a lit shelf: the feel of a perfume counter, sets listed like a menu, the same rules and totals underneath.', idea6],
+    ['Shelf to box', 'Drag bottles from the shelf into the box (or tap them); the box shapes double as the set chooser, so size and count are understood at a glance.', idea7],
+    ['Bottom sheet', 'Mobile-first: the scent list gets the whole screen, the set lives in a thumb-reach bar with the live total that opens into a sheet with the vials and checkout.', idea8],
+    ['Price meter', 'Shows where your set lands between its lowest and highest possible price, and exactly what each scent would add, after the 10% on the sixes.', idea9],
+    ['Ready-made, swap to taste', 'The set opens filled, so the only action is Swap; each option shows its price difference, and there is never a "set full" dead end.', idea10]
+  ];
+  const main = document.getElementById('ideas'), jump = document.getElementById('jump');
+  IDEAS.forEach(([name, why, fn], i) => {
+    const n = String(i + 1).padStart(2, '0');
+    const sec = document.createElement('section');
+    sec.className = 'idea';
+    sec.id = 'idea-' + n;
+    sec.setAttribute('aria-labelledby', 'h-' + n);
+    sec.innerHTML = `<div class="ih"><span class="no" aria-hidden="true">${n}</span><h2 id="h-${n}"><span class="sr">${n}. </span>${name}</h2><p>${why}</p></div><div class="stage"></div>`;
+    main.appendChild(sec);
+    jump.insertAdjacentHTML('beforeend', `<a href="#idea-${n}">${n} ${name}</a>`);
+    fn(sec.querySelector('.stage'));
+  });
+})();
+</script>
+</body>
+</html>

@@ -1523,5 +1523,30 @@
         "default": "Small-parcel estimates; final delivery fees and available services are shown at checkout. Same-day services and larger parcels are quoted separately."
       }
     ]
+    },
+  {
+    "name": "Samyó vial sizes",
+    "settings": [
+      { "type": "paragraph", "content": "Used by the vial size guide on the homepage decants and the vial picker. Measure your own vials, cap included, and enter the height in millimetres." },
+      { "type": "range", "id": "pf_vial_h_1", "label": "1 ml vial height", "min": 20, "max": 120, "step": 1, "unit": "mm", "default": 40 },
+      { "type": "range", "id": "pf_vial_h_2", "label": "2 ml vial height", "min": 20, "max": 120, "step": 1, "unit": "mm", "default": 55 },
+      { "type": "range", "id": "pf_vial_h_5", "label": "5 ml vial height", "min": 20, "max": 120, "step": 1, "unit": "mm", "default": 70 },
+      { "type": "range", "id": "pf_vial_h_10", "label": "10 ml vial height", "min": 20, "max": 120, "step": 1, "unit": "mm", "default": 85 },
+      { "type": "text", "id": "pf_vial_size_label", "label": "Button label", "default": "See the vials at actual size" },
+      { "type": "text", "id": "pf_vial_size_title", "label": "Popup title", "default": "Vials at actual size" },
+      { "type": "text", "id": "pf_vial_hold_title", "label": "Hold-it-up heading and button", "default": "Hold it up" },
+      { "type": "textarea", "id": "pf_vial_hold_text", "label": "Hold-it-up intro", "default": "Each vial is shown at its real height. Tap Hold it up to fill the screen with it, then lay a real vial or card on the screen to compare." },
+      { "type": "text", "id": "pf_vial_sold_1", "label": "How 1 ml is sold", "default": "Try trio (3 vials) or Discovery six (6 vials, 10% off)." },
+      { "type": "text", "id": "pf_vial_sold_2", "label": "How 2 ml is sold", "default": "Wear trio (3 vials) or Wardrobe six (6 vials, 10% off)." },
+      { "type": "text", "id": "pf_vial_sold_5", "label": "How 5 ml is sold", "default": "Signature duo (2 vials)." },
+      { "type": "text", "id": "pf_vial_sold_10", "label": "How 10 ml is sold", "default": "Travel ten: on its own." },
+      { "type": "text", "id": "pf_vial_set_link", "label": "Set link", "default": "Build a set in this size" },
+      { "type": "checkbox", "id": "pf_vial_show_last", "label": "Show how long each vial lasts", "info": "A quiet line: sprays per vial and days at your sprays per day. Quantity only, not how long a scent lasts on skin.", "default": true },
+      { "type": "range", "id": "pf_vial_sprays_per_ml", "label": "Sprays per ml", "info": "Test your atomiser: count the sprays from 1 ml.", "min": 5, "max": 20, "step": 1, "default": 10 },
+      { "type": "range", "id": "pf_vial_sprays_per_day", "label": "Sprays a day (for the estimate)", "min": 1, "max": 6, "step": 1, "default": 2 },
+      { "type": "text", "id": "pf_vial_calibrate_title", "label": "Calibration title", "default": "Make it exact on this screen" },
+      { "type": "text", "id": "pf_vial_calibrate_label", "label": "Calibration hint", "default": "Hold a bank card against the outline and drag until the edges match." },
+      { "type": "text", "id": "pf_vial_size_note", "label": "Note under the guide", "default": "Heights include the cap. Each screen shows sizes a little differently until you match the card." }
+    ]
   }
 ]

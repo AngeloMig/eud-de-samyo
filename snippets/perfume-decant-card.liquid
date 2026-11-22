@@ -12,6 +12,8 @@
   - featured: true for the large dark card.
   - featured_label: the label on the featured card (e.g. "Our pick").
   - from_label, to_label: "from [price]", "up to [price]".
+  - bg_text: large faint word behind the featured card (blank = the set's italic word).
+  - show_wm: false hides the faint word on the smaller cards.
   - soon_label: shown when there is nowhere to link to.
 {%- endcomment -%}
 {%- liquid
@@ -20,13 +22,13 @@
   case bs
     when '1'
       assign v_img = 'sample-decant-square.webp'
-      assign v_h = 44
+      assign v_h = 60
     when '2'
       assign v_img = 'sample-decant-clear.webp'
-      assign v_h = 62
+      assign v_h = 76
     when '5'
       assign v_img = 'sample-decant-amber.webp'
-      assign v_h = 82
+      assign v_h = 92
     else
       assign v_img = 'sample-decant-amber.webp'
       assign v_h = 100
@@ -57,10 +59,15 @@
   endif
 -%}
 <{{ tag }} class="pdf__card{% if featured %} pdf__card--feature{% endif %}"{% if b_url != blank %} href="{{ b_url }}"{% endif %} {{ block.shopify_attributes }}>
+  {%- comment -%} A large faint word behind the card: the set's italic word (e.g. "trio"); the featured card can use its own. {%- endcomment -%}
+  {%- if featured -%}
+    {%- assign wm = bg_text | default: block.settings.title_italic | default: block.settings.title -%}
+  {%- else -%}
+    {%- assign wm = block.settings.title_italic | default: block.settings.title -%}
+  {%- endif -%}
+  {%- if wm != blank and show_wm != false -%}<span class="pdf__wm" aria-hidden="true">{{ wm | escape }}</span>{%- endif -%}
   {%- if featured and featured_label != blank -%}
     <span class="pdc__badge pdf__badge">{{ featured_label | escape }}</span>
-  {%- elsif featured != true and block.settings.badge != blank -%}
-    <span class="pdc__badge pdf__badge">{{ block.settings.badge | escape }}</span>
   {%- endif -%}
   <span class="pdf__vials" style="--vh: {{ v_h }}%;" data-n="{{ v_shown }}" aria-hidden="true">
     {%- for i in (1..v_shown) -%}
@@ -68,7 +75,8 @@
     {%- endfor -%}
   </span>
   <span class="pdf__name">{{ block.settings.title | escape }}{% if block.settings.title_italic != blank %} <em>{{ block.settings.title_italic | escape }}</em>{% endif %}</span>
-  <span class="pdf__what">{{ block.settings.count }} × {{ bs }} ml{% if featured and block.settings.badge != blank %} · {{ block.settings.badge | escape }}{% endif %}</span>
+  <span class="pdf__what">{{ block.settings.count }} × {{ bs }} ml</span>
+  {%- if block.settings.badge != blank -%}<span class="pdf__deal">{{ block.settings.badge | escape }}</span>{%- endif -%}
   <span class="pdf__price">{{ from_txt | escape }}</span>
   {%- if featured -%}
     {%- if p_hi != blank -%}<span class="pdf__to">{{ to_txt | escape }}</span>{%- endif -%}

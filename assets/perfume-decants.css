@@ -298,10 +298,42 @@ a.pdf__own:focus-visible {
 }
 
 .pdf__card--feature {
-  background: var(--pdc-ink, #292521);
+  background: transparent;
   color: var(--pdc-bg, #f7f5f0);
   grid-row: span 2;
-  padding: 36px 30px;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 36px 20px;
+}
+
+/* The dark colour: solid along the bottom 20%, then the top 80% fades up into the
+   page on a "smootherstep" curve (flat at both ends, 24 steps), so there is no
+   visible start or end to the fade */
+.pdf__card--feature::before {
+  background: var(--pdc-ink, #292521);
+  content: '';
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to top, #000 20%, rgba(0, 0, 0, 0.999) 23.33%, rgba(0, 0, 0, 0.995) 26.67%, rgba(0, 0, 0, 0.984) 30.00%, rgba(0, 0, 0, 0.965) 33.33%, rgba(0, 0, 0, 0.935) 36.67%, rgba(0, 0, 0, 0.896) 40.00%, rgba(0, 0, 0, 0.848) 43.33%, rgba(0, 0, 0, 0.790) 46.67%, rgba(0, 0, 0, 0.725) 50.00%, rgba(0, 0, 0, 0.653) 53.33%, rgba(0, 0, 0, 0.578) 56.67%, rgba(0, 0, 0, 0.500) 60.00%, rgba(0, 0, 0, 0.422) 63.33%, rgba(0, 0, 0, 0.347) 66.67%, rgba(0, 0, 0, 0.275) 70.00%, rgba(0, 0, 0, 0.210) 73.33%, rgba(0, 0, 0, 0.152) 76.67%, rgba(0, 0, 0, 0.104) 80.00%, rgba(0, 0, 0, 0.065) 83.33%, rgba(0, 0, 0, 0.035) 86.67%, rgba(0, 0, 0, 0.016) 90.00%, rgba(0, 0, 0, 0.005) 93.33%, rgba(0, 0, 0, 0.001) 96.67%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 20%, rgba(0, 0, 0, 0.999) 23.33%, rgba(0, 0, 0, 0.995) 26.67%, rgba(0, 0, 0, 0.984) 30.00%, rgba(0, 0, 0, 0.965) 33.33%, rgba(0, 0, 0, 0.935) 36.67%, rgba(0, 0, 0, 0.896) 40.00%, rgba(0, 0, 0, 0.848) 43.33%, rgba(0, 0, 0, 0.790) 46.67%, rgba(0, 0, 0, 0.725) 50.00%, rgba(0, 0, 0, 0.653) 53.33%, rgba(0, 0, 0, 0.578) 56.67%, rgba(0, 0, 0, 0.500) 60.00%, rgba(0, 0, 0, 0.422) 63.33%, rgba(0, 0, 0, 0.347) 66.67%, rgba(0, 0, 0, 0.275) 70.00%, rgba(0, 0, 0, 0.210) 73.33%, rgba(0, 0, 0, 0.152) 76.67%, rgba(0, 0, 0, 0.104) 80.00%, rgba(0, 0, 0, 0.065) 83.33%, rgba(0, 0, 0, 0.035) 86.67%, rgba(0, 0, 0, 0.016) 90.00%, rgba(0, 0, 0, 0.005) 93.33%, rgba(0, 0, 0, 0.001) 96.67%, transparent 100%);
+  position: absolute;
+  z-index: -2;
+}
+
+/* A large, faint word behind the vials (e.g. "six") */
+.pdf__wm {
+  color: #d9b46a;
+  font-family: var(--pf-font-serif);
+  font-size: clamp(200px, 24vw, 340px);
+  font-style: italic;
+  left: 50%;
+  line-height: 0.8;
+  opacity: 0.13;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  translate: -50% -12%; /* at the very top of the card, its upper edge just cropped */
+  white-space: nowrap;
+  z-index: -1;
 }
 
 .pdf__badge {
@@ -312,20 +344,22 @@ a.pdf__own:focus-visible {
 .pdf__vials {
   align-items: flex-end;
   display: flex;
-  height: 96px;
+  height: 250px;
   justify-content: center;
   margin-bottom: 10px;
   width: 100%;
 }
 
 .pdf__card--feature .pdf__vials {
-  height: 220px;
+  height: 360px;
   margin-bottom: 18px;
 }
 
 .pdf__vials img {
   filter: drop-shadow(0 10px 8px rgba(41, 37, 33, 0.22));
+  flex: 0 1 auto; /* six big vials narrow down to fit the card instead of spilling */
   height: var(--vh, 60%);
+  min-width: 0;
   object-fit: contain;
   transition: translate 0.5s var(--pf-ease-out, ease);
   transition-delay: calc(var(--j, 0) * 45ms);
@@ -368,6 +402,25 @@ a.pdf__card:hover .pdf__vials img {
   opacity: 0.65;
 }
 
+/* The set's deal (e.g. "10% off"), right above the price so it can't be missed */
+.pdf__deal {
+  background: #d9b46a;
+  border-radius: 999px;
+  color: #292521;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-top: 10px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+}
+
+.pdf__card--feature .pdf__deal {
+  font-size: 14px;
+  margin-top: 14px;
+  padding: 7px 14px;
+}
+
 .pdf__price {
   font-family: var(--pf-font-serif);
   font-size: 20px;
@@ -377,6 +430,7 @@ a.pdf__card:hover .pdf__vials img {
 }
 
 .pdf__card--feature .pdf__price {
+  color: #d9b46a;
   font-size: 30px;
   margin-top: 14px;
 }
@@ -396,7 +450,82 @@ a.pdf__card:hover .pdf__vials img {
 
 .pdf__own {
   background: transparent;
-  border: 1px solid var(--pdc-ink, #292521);
+  border: 1px dashed var(--pdc-ink, #292521);
+}
+
+/* Three empty vial slots: the tile reads as a set waiting to be filled */
+.pdf__slots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.pdf__slots i {
+  align-items: center;
+  border: 1.5px dashed color-mix(in srgb, var(--pdc-ink, #292521) 35%, transparent);
+  border-radius: 4px;
+  display: flex;
+  font-size: 13px;
+  font-style: normal;
+  height: 60px;
+  justify-content: center;
+  opacity: 0.75;
+  transition: translate 0.4s var(--pf-ease-out, ease);
+  width: 22px;
+}
+
+a.pdf__own:hover .pdf__slots i {
+  translate: 0 -3px;
+}
+
+a.pdf__own:hover .pdf__slots i:nth-child(2) {
+  transition-delay: 0.05s;
+}
+
+a.pdf__own:hover .pdf__slots i:nth-child(3) {
+  transition-delay: 0.1s;
+}
+
+.pdf__own-btn {
+  align-items: center;
+  background: var(--pdc-ink, #292521);
+  border-radius: 999px;
+  color: var(--pdc-bg, #f7f5f0);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 6px;
+  margin-top: 16px;
+  min-height: 44px;
+  padding: 0 20px;
+}
+
+/* The five smaller set cards: white, the top 65% fading into the page on the same
+   smooth curve as the featured card, so the vials seem to rise out of it */
+.pdf__card:not(.pdf__card--feature) {
+  background: transparent;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.pdf__card:not(.pdf__card--feature)::before {
+  background: var(--pdc-card, #fff);
+  content: '';
+  inset: 0;
+  -webkit-mask-image: linear-gradient(to top, #000 35%, rgba(0, 0, 0, 0.999) 37.71%, rgba(0, 0, 0, 0.995) 40.42%, rgba(0, 0, 0, 0.984) 43.12%, rgba(0, 0, 0, 0.965) 45.83%, rgba(0, 0, 0, 0.935) 48.54%, rgba(0, 0, 0, 0.896) 51.25%, rgba(0, 0, 0, 0.848) 53.96%, rgba(0, 0, 0, 0.790) 56.67%, rgba(0, 0, 0, 0.725) 59.38%, rgba(0, 0, 0, 0.653) 62.08%, rgba(0, 0, 0, 0.578) 64.79%, rgba(0, 0, 0, 0.500) 67.50%, rgba(0, 0, 0, 0.422) 70.21%, rgba(0, 0, 0, 0.347) 72.92%, rgba(0, 0, 0, 0.275) 75.62%, rgba(0, 0, 0, 0.210) 78.33%, rgba(0, 0, 0, 0.152) 81.04%, rgba(0, 0, 0, 0.104) 83.75%, rgba(0, 0, 0, 0.065) 86.46%, rgba(0, 0, 0, 0.035) 89.17%, rgba(0, 0, 0, 0.016) 91.88%, rgba(0, 0, 0, 0.005) 94.58%, rgba(0, 0, 0, 0.001) 97.29%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 35%, rgba(0, 0, 0, 0.999) 37.71%, rgba(0, 0, 0, 0.995) 40.42%, rgba(0, 0, 0, 0.984) 43.12%, rgba(0, 0, 0, 0.965) 45.83%, rgba(0, 0, 0, 0.935) 48.54%, rgba(0, 0, 0, 0.896) 51.25%, rgba(0, 0, 0, 0.848) 53.96%, rgba(0, 0, 0, 0.790) 56.67%, rgba(0, 0, 0, 0.725) 59.38%, rgba(0, 0, 0, 0.653) 62.08%, rgba(0, 0, 0, 0.578) 64.79%, rgba(0, 0, 0, 0.500) 67.50%, rgba(0, 0, 0, 0.422) 70.21%, rgba(0, 0, 0, 0.347) 72.92%, rgba(0, 0, 0, 0.275) 75.62%, rgba(0, 0, 0, 0.210) 78.33%, rgba(0, 0, 0, 0.152) 81.04%, rgba(0, 0, 0, 0.104) 83.75%, rgba(0, 0, 0, 0.065) 86.46%, rgba(0, 0, 0, 0.035) 89.17%, rgba(0, 0, 0, 0.016) 91.88%, rgba(0, 0, 0, 0.005) 94.58%, rgba(0, 0, 0, 0.001) 97.29%, transparent 100%);
+  position: absolute;
+  z-index: -1;
+}
+
+/* The five smaller set cards: the price sits small in the top-left corner */
+.pdf__card:not(.pdf__card--feature) .pdf__price {
+  font-size: 15px;
+  left: 16px;
+  margin: 0;
+  position: absolute;
+  top: 14px;
 }
 
 a.pdf__own:hover {
@@ -439,8 +568,12 @@ a.pdf__own:hover .pdf__what span {
     padding: 28px 18px;
   }
 
+  .pdf__vials {
+    height: 190px;
+  }
+
   .pdf__card--feature .pdf__vials {
-    height: 160px;
+    height: 330px;
   }
 
   .pdf__card--feature .pdf__name {
@@ -463,6 +596,7 @@ a.pdf__own:hover .pdf__what span {
   a.pdf__card:hover,
   a.pdf__own:hover,
   a.pdf__card:hover .pdf__vials img,
+  a.pdf__own:hover .pdf__slots i,
   a.pdf__own:hover .pdf__what span {
     translate: none;
   }
@@ -772,4 +906,28 @@ a.pdc__set-card:hover .pdc__set-cta span {
   .pdc__cta:hover {
     translate: none;
   }
+}
+
+/* Vial size guide under the sets (snippets/perfume-vial-size.liquid) */
+.pdc__size-guide {
+  margin-top: 28px;
+  text-align: left;
+}
+
+/* The five smaller cards: the deal (e.g. "10% off") sits small in the top-right
+   corner, opposite the price */
+.pdf__card:not(.pdf__card--feature) .pdf__deal {
+  font-size: 10px;
+  margin: 0;
+  padding: 5px 9px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+/* The faint word on the smaller cards: ink instead of gold, and smaller */
+.pdf__card:not(.pdf__card--feature) .pdf__wm {
+  color: var(--pdc-ink, #292521);
+  font-size: clamp(110px, 10vw, 170px);
+  opacity: 0.07;
 }

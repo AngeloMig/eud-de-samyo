@@ -1,0 +1,898 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Decants improvements</title><link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
+>
+<link rel="stylesheet" href="../assets/perfume-tokens.css?v=1795319811259">
+<link rel="stylesheet" href="../assets/perfume-decants.css?v=1795372926451">
+<link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889"><style>
+body{margin:0;background:#ece8e1;font-family:'Instrument Sans',sans-serif;color:#26221f}
+.top{max-width:1240px;margin:auto;padding:40px 24px 8px}
+.top h1{font:400 44px/1.05 'Cormorant Garamond',serif;margin:0 0 6px}
+.top p{margin:0;opacity:.7;max-width:760px}
+.iv{margin:28px 0}
+.iv-label{max-width:1240px;margin:0 auto;padding:0 24px 10px;display:flex;gap:14px;align-items:baseline}
+.iv-label b{font:500 26px/1.1 'Cormorant Garamond',serif}
+.iv-label span.n{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.iv-label p{margin:4px 0 0;opacity:.7;font-size:14px;max-width:780px}
+.iv .pdc{background:#f7f5f0}
+.iv .pdc__head, .iv .pvs, .iv .pdc__size-guide{display:none}
+.iv .pdc{padding-top:36px}
+/* 1 */
+.iv-was{opacity:.5;font-size:.7em;margin-right:4px}
+.iv-save{display:inline-block;margin-top:6px;font-size:12px;font-weight:600;color:#7a5a17}
+.pdf__card--feature .iv-save{color:#d9b46a}
+/* 2 */
+.iv-per{display:block;margin-top:6px;font-size:12px;opacity:.6}
+/* 3, 7 */
+.iv-cta{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:9px 16px;border-radius:999px;background:#26221f;color:#f7f5f0;font-size:12px;font-weight:600;min-height:36px}
+.pdf__card--feature .iv-cta{background:#d9b46a;color:#26221f}
+/* 4 */
+.iv-4 .pdf__card{position:relative}
+.iv-group{position:absolute;top:14px;left:14px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.iv-4 .pdf__card[data-size="1"]:not(.pdf__card--feature){background:linear-gradient(#fbf3ea,#fff 60%)}
+.iv-4 .pdf__card[data-size="2"]{background:linear-gradient(#eef2f6,#fff 60%)}
+.iv-4 .pdf__card[data-size="5"],.iv-4 .pdf__card[data-size="10"]{background:linear-gradient(#f7efe2,#fff 60%)}
+/* 5 */
+.iv-5 .pdf__vials{position:relative;isolation:isolate}
+.iv-5 .pdf__vials::before{content:'';position:absolute;z-index:-1;left:50%;bottom:-6%;width:150%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,rgba(217,180,106,.28),transparent)}
+.iv-5 .pdf__vials::after{content:'';position:absolute;z-index:-1;left:50%;bottom:-6px;width:90%;height:12px;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,rgba(38,34,31,.22),transparent)}
+.iv-5 .pdf__card--feature .pdf__vials::before{background:radial-gradient(closest-side,rgba(255,214,150,.22),transparent)}
+/* 6 */
+.iv-6 .pdf__card{transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s;box-shadow:inset 0 0 0 0 #d9b46a}
+.iv-6 .pdf__card:hover,.iv-6 .pdf__card:focus-visible{transform:translateY(-6px);box-shadow:inset 0 0 0 1px #d9b46a,0 18px 40px rgba(38,34,31,.12)}
+.iv-6 .pdf__vials img{transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.iv-6 .pdf__card:hover .pdf__vials img{transform:rotate(calc((var(--j) - 2.5) * 3deg)) translateY(-4px)}
+@media (prefers-reduced-motion:reduce){.iv-6 .pdf__card,.iv-6 .pdf__vials img{transition:none}.iv-6 .pdf__card:hover .pdf__vials img{transform:none}}
+/* 7 */
+.iv-slots{display:flex;gap:8px;justify-content:center;margin-bottom:12px}
+.iv-slots i{width:22px;height:60px;border:1.5px dashed rgba(38,34,31,.35);border-radius:4px;display:flex;align-items:center;justify-content:center;font-style:normal;opacity:.7}
+.iv-7 .pdf__own{border-style:dashed}
+/* 8 */
+.iv-inside{display:block;margin-top:14px;font-size:12px;line-height:1.5;opacity:.85;max-width:320px}
+.iv-inside b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#d9b46a;margin-bottom:2px}
+.iv-inside small{opacity:.7}
+/* 9 */
+.iv-height{display:flex;align-items:center;gap:6px;justify-content:center;font-size:10px;letter-spacing:.06em;opacity:.55;margin:-4px 0 8px}
+.iv-height i{width:28px;height:1px;background:currentColor}
+/* 10 */
+.iv-10 .phone{width:390px;max-width:calc(100vw - 32px);margin:0 auto;border:10px solid #26221f;border-radius:36px;overflow:hidden;background:#f7f5f0}
+.iv-10 .pdc{padding:28px 0 24px}
+.iv-10 .pdc__wrap{padding:0}
+.iv-10 .pdf{display:flex !important;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px 8px;grid-template-columns:none !important}
+.iv-10 .pdf>*{flex:0 0 72%;scroll-snap-align:start;min-height:260px}
+.iv-10 .pdf>.pdf__card--feature{flex-basis:82%}
+.iv-10 .pdf::-webkit-scrollbar{display:none}
+@media (max-width:420px){.top h1{font-size:34px}}
+</style></head><body>
+<header class="top"><h1>Decants section: 10 small improvements</h1><p>Same design as now (real section, real prices). Each version below changes one thing. Pick any mix, e.g. "1, 3, 5", and I'll add them together.</p></header>
+<div class="iv iv-1" aria-label="Idea 1"><div class="iv-label"><div><span class="n">01</span> <b>Show the saving on the sixes</b><p>The 10% is shown in pesos: the full price is crossed out and "You save from ₱145.50" sits under it, so the deal is obvious at a glance.</p></div></div><section id="PerfumeDecants-iv1" class="pdc" aria-labelledby="PerfumeDecants-iv1-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv1-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price"><s class="iv-was">₱1,455</s> from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span><span class="iv-save">You save from ₱145.50</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price"><s class="iv-was">₱2,620</s> from ₱2,358</span><span class="iv-save">You save from ₱262</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv1" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv1" aria-labelledby="PfVialSize-iv1-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv1-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv1-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv1-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-2" aria-label="Idea 2"><div class="iv-label"><div><span class="n">02</span> <b>Price per vial</b><p>A quiet "from ₱187 a vial" line under each price, so people can compare a trio with a six without doing the maths.</p></div></div><section id="PerfumeDecants-iv2" class="pdc" aria-labelledby="PerfumeDecants-iv2-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv2-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span><span class="iv-per">from ₱218 a vial</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span><span class="iv-per">from ₱187 a vial</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span><span class="iv-per">from ₱325 a vial</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span><span class="iv-per">from ₱393 a vial</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span><span class="iv-per">from ₱708 a vial</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span><span class="iv-per">from ₱1,365 a vial</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv2" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv2" aria-labelledby="PfVialSize-iv2-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv2-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv2-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv2-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-3" aria-label="Idea 3"><div class="iv-label"><div><span class="n">03</span> <b>A clear button on every card</b><p>Each card gets a small "Choose scents →" button at the bottom. Right now there is no visible thing to tap.</p></div></div><section id="PerfumeDecants-iv3" class="pdc" aria-labelledby="PerfumeDecants-iv3-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv3-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span><span class="iv-cta">Choose scents <span aria-hidden="true">→</span></span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv3" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv3" aria-labelledby="PfVialSize-iv3-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv3-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv3-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv3-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-4" aria-label="Idea 4"><div class="iv-label"><div><span class="n">04</span> <b>Size groups: Try · Wear · Keep · Travel</b><p>A small label on each card plus a soft tint per size (amber for 1 ml, cool for 2 ml, warm for 5 and 10 ml) groups the six cards into a simple story.</p></div></div><section id="PerfumeDecants-iv4" class="pdc" aria-labelledby="PerfumeDecants-iv4-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv4-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a data-size="1" class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="iv-group">Try</span><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a data-size="1" class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="iv-group">Try</span><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a data-size="2" class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="iv-group">Wear</span><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a data-size="2" class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="iv-group">Wear</span><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a data-size="5" class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="iv-group">Keep</span><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a data-size="10" class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="iv-group">Travel</span><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv4" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv4" aria-labelledby="PfVialSize-iv4-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv4-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv4-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv4-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-5" aria-label="Idea 5"><div class="iv-label"><div><span class="n">05</span> <b>Glow behind the vials</b><p>A soft round glow behind the vials and a shadow on the floor, matching the faded circles on the brand boxes, so the cards feel less flat.</p></div></div><section id="PerfumeDecants-iv5" class="pdc" aria-labelledby="PerfumeDecants-iv5-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv5-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv5" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv5" aria-labelledby="PfVialSize-iv5-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv5-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv5-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv5-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-6" aria-label="Idea 6"><div class="iv-label"><div><span class="n">06</span> <b>Hover and tap polish</b><p>On hover or keyboard focus the card lifts, its vials fan out slightly and a thin gold line appears. Hover over the cards to see it.</p></div></div><section id="PerfumeDecants-iv6" class="pdc" aria-labelledby="PerfumeDecants-iv6-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv6-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv6" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv6" aria-labelledby="PfVialSize-iv6-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv6-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv6-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv6-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-7" aria-label="Idea 7"><div class="iv-label"><div><span class="n">07</span> <b>Better "Build your own" tile</b><p>The empty tile gets three "+" vial slots and a button, so it looks like something you can start, not a blank box.</p></div></div><section id="PerfumeDecants-iv7" class="pdc" aria-labelledby="PerfumeDecants-iv7-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv7-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html"><span class="iv-slots" aria-hidden="true"><i>+</i><i>+</i><i>+</i></span>
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span><span class="iv-cta">Start building <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv7" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv7" aria-labelledby="PfVialSize-iv7-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv7-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv7-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv7-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-8" aria-label="Idea 8"><div class="iv-label"><div><span class="n">08</span> <b>Show what's in the featured six</b><p>The dark card lists the six scents it starts with and says they can be swapped, which builds trust before the click.</p></div></div><section id="PerfumeDecants-iv8" class="pdc" aria-labelledby="PerfumeDecants-iv8-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv8-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="iv-inside"><b>Starts with</b> Eros · The One · Terre d’Hermès · Uomo Born in Roma · Wood Sage &amp; Sea Salt · Stronger With You Intensely<br><small>Swap any of them before you add it to your bag.</small></span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv8" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv8" aria-labelledby="PfVialSize-iv8-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv8-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv8-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv8-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-9" aria-label="Idea 9"><div class="iv-label"><div><span class="n">09</span> <b>Real height under the vials</b><p>A thin line under each card's vials says how tall one vial is ("4 cm tall"), using the same heights as the size popup.</p></div></div><section id="PerfumeDecants-iv9" class="pdc" aria-labelledby="PerfumeDecants-iv9-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv9-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv9" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv9" aria-labelledby="PfVialSize-iv9-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv9-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv9-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv9-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></section>
+<div class="iv iv-10" aria-label="Idea 10"><div class="iv-label"><div><span class="n">10</span> <b>Swipe rail on phones</b><p>On phones the cards become a sideways swipe rail with the next card peeking in, instead of a long stack. Shown here in a phone-width frame. Desktop stays the same.</p></div></div><div class="phone"><section id="PerfumeDecants-iv10" class="pdc" aria-labelledby="PerfumeDecants-iv10-h" data-pdc data-first="1">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div><p class="pf-kicker pdc__kicker">Decants</p><h2 class="pdc__h" id="PerfumeDecants-iv10-h">Try it before <em>the full bottle</em></h2>
+      </div><div class="pdc__text"><p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p></div><img src="" alt="" class="pdc__hero" loading="lazy"></div><div class="pdf"><a class="pdf__card pdf__card--feature" href="vial-picker.html?set=6x1" data-block-id="decants-b6"><span class="pdc__badge pdf__badge">Our pick</span><span class="pdf__vials" style="--vh: 44%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Discovery <em>six</em></span>
+  <span class="pdf__what">6 × 1 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱1,309.50</span><span class="pdf__to">up to ₱2,061</span><span class="pdf__why">Six different perfumes, a few days each: the easiest way to find your signature scent.</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x1" data-block-id="decants-b5"><span class="pdf__vials" style="--vh: 44%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Try <em>trio</em></span>
+  <span class="pdf__what">3 × 1 ml</span><span class="pdf__price">from ₱560</span></a>
+<a class="pdf__card" href="vial-picker.html?set=3x2" data-block-id="decants-b7"><span class="pdf__vials" style="--vh: 62%;" data-n="3" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"></span>
+  <span class="pdf__name">Wear <em>trio</em></span>
+  <span class="pdf__what">3 × 2 ml</span><span class="pdf__price">from ₱975</span></a>
+<a class="pdf__card" href="vial-picker.html?set=6x2" data-block-id="decants-b8"><span class="pdf__vials" style="--vh: 62%;" data-n="6" aria-hidden="true"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 1;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 2;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 3;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 4;"><img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="40" height="160" loading="lazy" style="--j: 5;"></span>
+  <span class="pdf__name">Wardrobe <em>six</em></span>
+  <span class="pdf__what">6 × 2 ml</span><span class="pdf__deal">10% off</span><span class="pdf__price">from ₱2,358</span></a>
+<a class="pdf__card" href="vial-picker.html?set=2x5" data-block-id="decants-b9"><span class="pdf__vials" style="--vh: 82%;" data-n="2" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 1;"></span>
+  <span class="pdf__name">Signature <em>duo</em></span>
+  <span class="pdf__what">2 × 5 ml</span><span class="pdf__price">from ₱1,415</span></a>
+<a class="pdf__card" href="vial-picker.html?set=1x10" data-block-id="decants-b10"><span class="pdf__vials" style="--vh: 100%;" data-n="1" aria-hidden="true"><img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="40" height="160" loading="lazy" style="--j: 0;"></span>
+  <span class="pdf__name">Travel <em>ten</em></span>
+  <span class="pdf__what">1 × 10 ml</span><span class="pdf__price">from ₱1,365</span></a>
+<a class="pdf__own" href="vial-picker.html">
+              <span class="pdf__name">Build your own set</span><span class="pdf__what">Mix any scents. Each perfume once per set. <span aria-hidden="true">→</span></span></a></div><link rel="stylesheet" href="../assets/perfume-vial-size.css?v=1795373868889">
+<script src="../assets/perfume-vial-size.js?v=1795373641082" defer="defer"></script><perfume-vial-size class="pvs pdc__size-guide" data-max-mm="85">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="PfVialSize-iv10" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>See the vials at actual size</span>
+  </button>
+  <dialog class="pvs__dialog" id="PfVialSize-iv10" aria-labelledby="PfVialSize-iv10-t" data-pvs-dialog>
+    <div class="pvs__dialog-head">
+      <h2 class="pvs__title" id="PfVialSize-iv10-t">Vials at actual size</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="pvs__body">
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__vials">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div><figure class="pvs__vial" style="--h: 40;" data-pvs-vial="1">
+              <img src="../assets/sample-decant-square.webp?v=1795356291192" alt="" width="168" height="700" loading="lazy">
+              <figcaption><b>1 ml</b><span>40 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 55;" data-pvs-vial="2">
+              <img src="../assets/sample-decant-clear.webp?v=1795356291191" alt="" width="90" height="533" loading="lazy">
+              <figcaption><b>2 ml</b><span>55 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 70;" data-pvs-vial="5">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>5 ml</b><span>70 mm</span></figcaption>
+            </figure><figure class="pvs__vial" style="--h: 85;" data-pvs-vial="10">
+              <img src="../assets/sample-decant-amber.webp?v=1795356291190" alt="" width="97" height="700" loading="lazy">
+              <figcaption><b>10 ml</b><span>85 mm</span></figcaption>
+            </figure></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+      </div>
+
+      <div class="pvs__side">
+        <div class="pvs__chips" role="group" aria-label="Vial size"><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="1">1 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="2">2 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="5">5 ml</button><button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="10">10 ml</button></div><div class="pvs__info" data-pvs-info="1">
+            <p class="pvs__info-size">1 ml <span>· 40 mm tall, cap included</span></p><p class="pvs__info-last">≈ 10 sprays · about 5 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x1">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="2" hidden>
+            <p class="pvs__info-size">2 ml <span>· 55 mm tall, cap included</span></p><p class="pvs__info-last">≈ 20 sprays · about 10 days at 2 a day</p><p class="pvs__info-how">In sets of 3 or 6 different scents.</p><a class="pvs__info-link" href="vial-picker.html?set=3x2">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="5" hidden>
+            <p class="pvs__info-size">5 ml <span>· 70 mm tall, cap included</span></p><p class="pvs__info-last">≈ 50 sprays · about 25 days at 2 a day</p><p class="pvs__info-how">In a set of 2 scents.</p><a class="pvs__info-link" href="vial-picker.html?set=2x5">Build a set in this size <span aria-hidden="true">→</span></a></div><div class="pvs__info" data-pvs-info="10" hidden>
+            <p class="pvs__info-size">10 ml <span>· 85 mm tall, cap included</span></p><p class="pvs__info-last">≈ 100 sprays · about 50 days at 2 a day</p><p class="pvs__info-how">On its own, or as a set of 1.</p><a class="pvs__info-link" href="vial-picker.html?set=1x10">Build a set in this size <span aria-hidden="true">→</span></a></div><label class="pvs__switch">
+          <input type="checkbox" checked data-pvs-card-toggle>
+          <span>Show a bank card for scale</span>
+        </label>
+
+        <details class="pvs__calibrate">
+          <summary>Make it exact on this screen</summary>
+          <label for="PfVialSize-iv10-scale">Hold a bank card against the outline and drag until the edges match.</label>
+          <div class="pvs__calibrate-row">
+            <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+            <input type="range" id="PfVialSize-iv10-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+            <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          </div>
+          <div class="pvs__calibrate-foot">
+            <span data-pvs-state></span>
+            <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+          </div>
+        </details></div>
+    </div>
+  </dialog>
+</perfume-vial-size>
+</div>
+</section></div></div>
+</body></html>

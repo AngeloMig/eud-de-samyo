@@ -1,0 +1,656 @@
+/* Vial size guide, "Hold it up" (snippets/perfume-vial-size.liquid).
+   Real sizes are mm × --pxmm (CSS px per mm, set by the script). */
+.pvs {
+  --pxmm: 3.78;
+  --pvs-ink: #26221f;
+  --pvs-paper: #f7f5f0;
+  --pvs-soft: rgba(38, 34, 31, 0.62);
+  --pvs-line: rgba(38, 34, 31, 0.14);
+  --pvs-gold: #d9b46a;
+  display: block;
+}
+
+/* The button that opens it */
+.pvs__toggle {
+  align-items: center;
+  background: none;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 18px 8px 14px;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.pvs__toggle:hover {
+  background: color-mix(in srgb, currentColor 6%, transparent);
+  border-color: currentColor;
+}
+
+.pvs__ruler-icon {
+  flex: 0 0 auto;
+}
+
+/* The popup: a fixed size so nothing moves while the scale changes */
+.pvs__dialog {
+  background: var(--pvs-paper);
+  border: 0;
+  box-shadow: 0 30px 80px rgba(20, 16, 12, 0.35);
+  color: var(--pvs-ink);
+  display: none;
+  flex-direction: column;
+  height: min(760px, calc(100dvh - 32px));
+  margin: max(16px, calc((100dvh - 760px) / 2)) auto auto;
+  max-height: none;
+  max-width: none;
+  overflow: hidden;
+  padding: 0;
+  width: min(1100px, calc(100vw - 32px));
+}
+
+.pvs__dialog[open] {
+  animation: pvs-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+}
+
+.pvs__dialog::backdrop {
+  background: rgba(38, 34, 31, 0.45);
+}
+
+@keyframes pvs-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+html.pvs-open {
+  overflow: hidden;
+}
+
+.pvs__head {
+  align-items: center;
+  border-bottom: 1px solid var(--pvs-line);
+  display: flex;
+  flex: none;
+  justify-content: space-between;
+  padding: 10px 14px 10px 24px;
+}
+
+.pvs__title {
+  font-family: var(--pf-font-serif, serif);
+  font-size: 22px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.pvs__close {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.pvs__close:hover {
+  background: rgba(38, 34, 31, 0.07);
+}
+
+/* Details on the left, the vial at real size on the right */
+.pvs__main {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(300px, 1fr) minmax(0, 1fr);
+  min-height: 0;
+}
+
+.pvs__side {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow: auto;
+  padding: 22px 24px;
+}
+
+.pvs__side p {
+  margin: 0;
+}
+
+.pvs__big {
+  font-family: var(--pf-font-serif, serif);
+  font-size: 38px;
+  line-height: 1;
+}
+
+.pvs__intro {
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 460px;
+}
+
+.pvs__lbl {
+  color: var(--pvs-soft);
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.pvs__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pvs__chip {
+  background: none;
+  border: 1px solid rgba(38, 34, 31, 0.25);
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+  min-width: 60px;
+  padding: 0 14px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.pvs__chip[aria-pressed='true'] {
+  background: var(--pvs-ink);
+  border-color: var(--pvs-ink);
+  color: var(--pvs-paper);
+}
+
+/* The chosen size's details */
+.pvs__spec {
+  border-top: 1px solid var(--pvs-line);
+  padding-top: 12px;
+  width: 100%;
+}
+
+.pvs__spec[hidden] {
+  display: none;
+}
+
+.pvs__size {
+  font-family: var(--pf-font-serif, serif);
+  font-size: 30px;
+  line-height: 1.1;
+}
+
+.pvs__size span {
+  color: var(--pvs-soft);
+  display: block;
+  font-family: var(--font-body-family, sans-serif);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.pvs__spec dl {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+}
+
+.pvs__spec dl div {
+  display: grid;
+  font-size: 13px;
+  gap: 10px;
+  grid-template-columns: 100px 1fr;
+}
+
+.pvs__spec dt {
+  color: var(--pvs-soft);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  padding-top: 3px;
+  text-transform: uppercase;
+}
+
+.pvs__spec dd {
+  margin: 0;
+}
+
+.pvs__quiet {
+  opacity: 0.6;
+}
+
+.pvs__link {
+  color: inherit;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 10px;
+  text-underline-offset: 3px;
+}
+
+/* The four sizes side by side, small, the chosen one dark */
+.pvs__compare {
+  align-items: flex-end;
+  display: flex;
+  gap: 16px;
+  height: 64px;
+}
+
+.pvs__compare span {
+  align-items: center;
+  color: var(--pvs-soft);
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  gap: 4px;
+}
+
+.pvs__compare i {
+  background: rgba(38, 34, 31, 0.22);
+  border-radius: 2px 2px 3px 3px;
+  height: calc(var(--h) * 0.55px);
+  transition: background-color 0.2s;
+  width: 10px;
+}
+
+.pvs__compare .is-on {
+  color: var(--pvs-ink);
+  font-weight: 600;
+}
+
+.pvs__compare .is-on i {
+  background: var(--pvs-ink);
+}
+
+.pvs__go {
+  align-items: center;
+  background: var(--pvs-ink);
+  border: 0;
+  border-radius: 999px;
+  color: var(--pvs-paper);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 0 22px;
+}
+
+.pvs__steps {
+  color: var(--pvs-soft);
+  display: grid;
+  font-size: 13px;
+  gap: 6px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.pvs__steps b {
+  color: var(--pvs-ink);
+  font-weight: 600;
+}
+
+.pvs__note {
+  color: var(--pvs-soft);
+  font-size: 11px;
+}
+
+/* The vial at real size, standing on a base line beside the ruler */
+.pvs__stage {
+  align-items: flex-end;
+  align-items: safe flex-end;
+  background: #fff;
+  border-left: 1px solid var(--pvs-line);
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+  padding: 24px 24px 28px;
+}
+
+.pvs__row {
+  align-items: flex-end;
+  border-bottom: 1px solid currentColor;
+  display: flex;
+  gap: calc(10 * var(--pxmm) * 1px);
+  padding-right: 24px;
+}
+
+.pvs__vial {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.pvs__vial[hidden] {
+  display: none;
+}
+
+.pvs__vial figcaption {
+  display: grid;
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pvs__vial figcaption span {
+  color: var(--pvs-soft);
+}
+
+/* The image is the whole vial, cap included: its height is the vial's real height. */
+.pvs__vial img {
+  display: block;
+  height: calc(var(--h) * var(--pxmm) * 1px);
+  max-width: none;
+  width: auto;
+}
+
+/* Rulers: ticks placed by mm from the bottom */
+.pvs__ruler,
+.pvs__hold-ruler {
+  border-right: 1px solid currentColor;
+  flex: 0 0 auto;
+  height: calc(var(--rmm, 100) * var(--pxmm) * 1px);
+  position: relative;
+  width: 26px;
+}
+
+.pvs__tick {
+  border-top: 1px solid currentColor;
+  bottom: calc(var(--m) * var(--pxmm) * 1px);
+  font-size: 10px;
+  height: 0;
+  line-height: 0;
+  position: absolute;
+  right: 0;
+  text-indent: -16px;
+  width: 4px;
+}
+
+.pvs__tick.is-half {
+  width: 7px;
+}
+
+.pvs__tick.is-cm {
+  width: 11px;
+}
+
+.pvs__unit {
+  font-size: 10px;
+  left: 0;
+  opacity: 0.6;
+  position: absolute;
+  top: -16px;
+}
+
+/* Hold it up: the popup takes the whole screen */
+.pvs__dialog.is-holding {
+  animation: none;
+  box-shadow: none;
+  height: 100vh;
+  height: 100dvh;
+  inset: 0;
+  margin: 0;
+  width: 100vw;
+}
+
+.pvs__dialog.is-holding > :not(.pvs__hold) {
+  display: none;
+}
+
+.pvs__hold {
+  background: var(--pvs-paper);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.pvs__hold[hidden] {
+  display: none;
+}
+
+.pvs__hold-top {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  padding: max(10px, env(safe-area-inset-top)) 16px 10px;
+}
+
+.pvs__hold-stage {
+  --base: calc(28px + env(safe-area-inset-bottom));
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.pvs__hold-tip {
+  color: var(--pvs-soft);
+  font-size: 12px;
+  margin: 0;
+  max-width: 220px;
+  position: absolute;
+  right: 16px;
+  text-align: right;
+  top: 8px;
+}
+
+.pvs__hold-base {
+  border-top: 1px solid currentColor;
+  bottom: var(--base);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.pvs__hold-ruler {
+  bottom: var(--base);
+  left: max(8px, env(safe-area-inset-left));
+  position: absolute;
+}
+
+.pvs__card {
+  border: 1.5px dashed rgba(38, 34, 31, 0.45);
+  border-radius: calc(3.2 * var(--pxmm) * 1px);
+  bottom: var(--base);
+  font-size: 11px;
+  height: calc(53.98 * var(--pxmm) * 1px);
+  left: 50%;
+  opacity: 0.7;
+  padding: 8px 10px;
+  position: absolute;
+  transform: translateX(-50%);
+  width: calc(85.6 * var(--pxmm) * 1px);
+}
+
+.pvs__card.is-upright {
+  height: calc(85.6 * var(--pxmm) * 1px);
+  width: calc(53.98 * var(--pxmm) * 1px);
+}
+
+.pvs__hold-slot {
+  bottom: var(--base);
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+/* Make it exact: a footer that never moves while you drag */
+.pvs__foot {
+  background: var(--pvs-paper);
+  border-top: 1px solid var(--pvs-line);
+  flex: none;
+  font-size: 12px;
+  max-height: 46vh;
+  overflow: auto;
+}
+
+.pvs__foot summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 13px;
+  font-weight: 600;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0 24px;
+}
+
+.pvs__state {
+  color: var(--pvs-soft);
+  font-weight: 400;
+}
+
+.pvs__cal {
+  display: grid;
+  gap: 8px;
+  padding: 0 24px 16px;
+}
+
+.pvs__cal label {
+  opacity: 0.75;
+}
+
+.pvs__cal-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.pvs__cal input {
+  accent-color: var(--pvs-ink);
+  cursor: grab;
+  flex: 1 1 auto;
+  min-height: 44px;
+  min-width: 0;
+  touch-action: pan-y;
+}
+
+.pvs__step {
+  background: none;
+  border: 1px solid rgba(38, 34, 31, 0.25);
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  flex: 0 0 auto;
+  font-size: 18px;
+  height: 44px;
+  width: 44px;
+}
+
+.pvs__reset {
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  min-height: 44px;
+  padding: 0 4px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The card to match while calibrating */
+.pvs__cal-card {
+  align-items: flex-end;
+  border: 1.5px dashed rgba(38, 34, 31, 0.45);
+  border-radius: calc(3.2 * var(--pxmm) * 1px);
+  display: flex;
+  font-size: 11px;
+  height: calc(53.98 * var(--pxmm) * 1px);
+  max-width: none;
+  padding: 8px 10px;
+  width: calc(85.6 * var(--pxmm) * 1px);
+}
+
+.pvs__toggle:focus-visible,
+.pvs__close:focus-visible,
+.pvs__chip:focus-visible,
+.pvs__go:focus-visible,
+.pvs__step:focus-visible,
+.pvs__reset:focus-visible,
+.pvs__link:focus-visible,
+.pvs__foot summary:focus-visible,
+.pvs__cal input:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@media screen and (max-width: 899px) {
+  .pvs__dialog {
+    height: calc(100dvh - 16px);
+    margin: 8px auto auto;
+    width: calc(100vw - 16px);
+  }
+
+  .pvs__main {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .pvs__side {
+    order: 2;
+    overflow: visible;
+    padding: 18px 16px;
+  }
+
+  .pvs__stage {
+    border-bottom: 1px solid var(--pvs-line);
+    border-left: 0;
+    flex: none;
+    order: 1;
+    overflow: visible;
+    padding: 28px 16px 20px;
+  }
+
+  .pvs__big {
+    font-size: 30px;
+  }
+
+  .pvs__head {
+    padding-left: 16px;
+  }
+
+  .pvs__foot summary,
+  .pvs__cal {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* The card to match must fit the screen: upright on phones */
+  .pvs__cal-card {
+    height: calc(85.6 * var(--pxmm) * 1px);
+    width: calc(53.98 * var(--pxmm) * 1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pvs__dialog[open] {
+    animation: none;
+  }
+
+  .pvs__chip,
+  .pvs__compare i {
+    transition: none;
+  }
+}

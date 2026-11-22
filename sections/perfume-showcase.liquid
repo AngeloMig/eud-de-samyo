@@ -24,6 +24,15 @@
   assign sid = 'PerfumeShowcase-' | append: section.id
   assign perfumes = section.blocks | where: 'type', 'perfume'
   assign total = perfumes.size
+  assign sc_hide_key = ','
+  if section.settings.hide_set_sizes
+    assign sc_hide_raw = section.settings.set_sizes | downcase | remove: ' '
+    assign sc_hide_key = ',' | append: sc_hide_raw | append: ','
+  endif
+  assign sc_picker_url = section.settings.picker_page.url
+  if sc_picker_url == blank
+    assign sc_picker_url = pages['build-your-set'].url
+  endif
   assign first = perfumes.first
   assign show_notes = section.settings.show_notes
   assign show_captions = section.settings.show_captions
@@ -84,8 +93,47 @@
       assign is_first = forloop.first
       assign p = block.settings.product
       assign current = blank
+      assign hidden_count = 0
+      assign hidden_min = 0
       if p != blank
         assign current = p.selected_or_first_available_variant
+        comment
+          Decant sizes sold only in sets (e.g. 1, 2, 5 ml) are not offered one by
+          one here: they are left out of the size pills, and a line links to the
+          vial picker with this scent instead.
+        endcomment
+        if section.settings.hide_set_sizes
+          for v in p.variants
+            assign vk = v.title | downcase | remove: ' '
+            assign vkey = ',' | append: vk | append: ','
+            if sc_hide_key contains vkey
+              assign hidden_count = hidden_count | plus: 1
+              if hidden_min == 0 or v.price < hidden_min
+                assign hidden_min = v.price
+              endif
+            endif
+          endfor
+          assign ck = current.title | downcase | remove: ' '
+          assign ckey = ',' | append: ck | append: ','
+          if hidden_count > 0 and sc_hide_key contains ckey
+            assign picked = false
+            for v in p.variants
+              assign vk = v.title | downcase | remove: ' '
+              assign vkey = ',' | append: vk | append: ','
+              unless sc_hide_key contains vkey
+                if picked == false
+                  assign current = v
+                  assign picked = true
+                elsif v.available and current.available == false
+                  assign current = v
+                endif
+              endunless
+            endfor
+            if picked == false
+              assign current = blank
+            endif
+          endif
+        endif
       endif
 
       assign name = block.settings.title
@@ -364,6 +412,9 @@
                 <legend class="pf-kicker">{{ section.settings.size_label | escape }}</legend>
                 <div class="ps-sizes__list">
                   {%- for variant in p.variants -%}
+                    {%- assign vk = variant.title | downcase | remove: ' ' -%}
+                    {%- assign vkey = ',' | append: vk | append: ',' -%}
+                    {%- if sc_hide_key contains vkey -%}{%- continue -%}{%- endif -%}
                     <label class="ps-size">
                       <input
                         type="radio"
@@ -379,6 +430,13 @@
                   {%- endfor -%}
                 </div>
               </fieldset>
+              {%- if hidden_count > 0 and sc_picker_url != blank -%}
+                {%- assign hidden_price = hidden_min | money -%}
+                <p class="ps-sets-link">
+                  {{ section.settings.sets_text | replace: '[price]', hidden_price | escape }}
+                  <a href="{{ sc_picker_url }}?scent={{ p.handle | url_encode }}">{{ section.settings.sets_link | escape }} <span aria-hidden="true">→</span></a>
+                </p>
+              {%- endif -%}
             {%- endif -%}
             <input type="hidden" name="quantity" value="1">
             <div class="ps-panel__actions">
@@ -685,6 +743,39 @@
       "id": "size_label",
       "label": "Sizes label",
       "default": "Size"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_set_sizes",
+      "label": "Hide decant sizes sold only in sets",
+      "info": "Those sizes are bought through the vial picker, not one by one.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "set_sizes",
+      "label": "Sizes sold only in sets",
+      "info": "Variant names, separated by commas.",
+      "default": "1 ml, 2 ml, 5 ml"
+    },
+    {
+      "type": "page",
+      "id": "picker_page",
+      "label": "Vial picker page",
+      "info": "Leave empty to use the page with the handle build-your-set."
+    },
+    {
+      "type": "text",
+      "id": "sets_text",
+      "label": "Line under the sizes",
+      "info": "[price] = the cheapest hidden size.",
+      "default": "Smaller sizes, from [price] a vial, come in sets."
+    },
+    {
+      "type": "text",
+      "id": "sets_link",
+      "label": "Set link",
+      "default": "Build a set"
     },
     {
       "type": "text",

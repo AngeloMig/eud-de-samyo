@@ -78,6 +78,9 @@
       {%- if section.settings.kicker != blank -%}<p class="pf-kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
       <h1 class="pvp__h" id="{{ vid }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</h1>
       {%- if section.settings.text != blank -%}<div class="pvp__text">{{ section.settings.text }}</div>{%- endif -%}
+      {%- if section.settings.show_size_guide -%}
+        {%- render 'perfume-vial-size', id: section.id, class: 'pvp__size-guide' -%}
+      {%- endif -%}
     </header>
 
     <noscript><p class="pvp__hint">{{ section.settings.nojs_label | escape }}</p></noscript>
@@ -171,7 +174,8 @@
                   {%- if media != blank -%}
                     {{ media.preview_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(min-width: 990px) 15vw, 40vw', alt: '', loading: 'lazy' }}
                   {%- else -%}
-                    <img class="pvp__scent-vial" src="{{ 'sample-decant-clear.webp' | asset_url }}" alt="" width="90" height="533" loading="lazy">
+                    {%- comment -%} No product photo yet: the brand name, never a stand-in bottle. {%- endcomment -%}
+                    <span class="pvp__scent-mono">{{ p.vendor | default: p.title | escape }}</span>
                   {%- endif -%}
                 </span>
                 <span class="pvp__scent-vendor">{{ p.vendor | escape }}</span>
@@ -219,6 +223,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Build your" },
     { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "set" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Choose a set, then pick a scent for every vial. Poured by hand from authentic full bottles.</p>" },
+    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Samyó vial sizes.", "default": true },
     { "type": "collection", "id": "collection", "label": "Scents to choose from", "info": "Leave empty to use all products. A perfume shows in a size when it has a variant for it, e.g. 1 ml." },
     { "type": "checkbox", "id": "allow_repeats", "label": "Allow the same scent more than once", "info": "Off: every vial in a set is a different scent, and set prices show the cheapest and dearest different scents.", "default": false },
     { "type": "header", "content": "Labels" },

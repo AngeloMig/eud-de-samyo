@@ -78,15 +78,17 @@
       -%}
       {%- if bundles.size > 0 -%}
         <div class="pdf">
-          {%- render 'perfume-decant-card', block: feat, picker_url: picker_url, featured: true, featured_label: section.settings.featured_label, from_label: section.settings.set_from_label, to_label: section.settings.set_to_label, soon_label: section.settings.soon_label -%}
+          {%- render 'perfume-decant-card', block: feat, picker_url: picker_url, featured: true, featured_label: section.settings.featured_label, bg_text: section.settings.featured_bg_text, from_label: section.settings.set_from_label, to_label: section.settings.set_to_label, soon_label: section.settings.soon_label -%}
           {%- for block in bundles -%}
             {%- if forloop.index == feat_i -%}{%- continue -%}{%- endif -%}
             {%- render 'perfume-decant-card', block: block, picker_url: picker_url, featured: false, from_label: section.settings.set_from_label, to_label: section.settings.set_to_label, soon_label: section.settings.soon_label -%}
           {%- endfor -%}
           {%- if picker_url != blank and section.settings.cta_label != blank -%}
             <a class="pdf__own" href="{{ picker_url }}">
+              <span class="pdf__slots" aria-hidden="true"><i>+</i><i>+</i><i>+</i></span>
               <span class="pdf__name">{{ section.settings.cta_label | escape }}</span>
-              {%- if section.settings.cta_note != blank -%}<span class="pdf__what">{{ section.settings.cta_note | escape }} <span aria-hidden="true">→</span></span>{%- endif -%}
+              {%- if section.settings.cta_note != blank -%}<span class="pdf__what">{{ section.settings.cta_note | escape }}</span>{%- endif -%}
+              {%- if section.settings.cta_button != blank -%}<span class="pdf__own-btn">{{ section.settings.cta_button | escape }} <span aria-hidden="true">→</span></span>{%- endif -%}
             </a>
           {%- endif -%}
         </div>
@@ -271,6 +273,10 @@
     {%- endif -%}
     {%- endif -%}
 
+    {%- if section.settings.show_size_guide -%}
+      {%- render 'perfume-vial-size', id: section.id, class: 'pdc__size-guide', picker_url: picker_url -%}
+    {%- endif -%}
+
     {%- if section.settings.partner_text != blank and section.settings.partner_link != blank -%}
       <p class="pdc__partner">
         <span>{{ section.settings.partner_text | escape }} <a href="{{ section.settings.partner_link }}" rel="sponsored noopener" target="_blank">{{ section.settings.partner_label | escape }} <span aria-hidden="true">→</span></a></span>
@@ -298,6 +304,7 @@
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>" },
     { "type": "checkbox", "id": "hero_sample", "label": "Show the built-in vials photo", "default": true },
     { "type": "image_picker", "id": "hero_image", "label": "Own photo next to the heading", "info": "A transparent cut-out works best. Replaces the built-in one." },
+    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Samyó vial sizes.", "default": true },
     {
       "type": "select",
       "id": "layout",
@@ -310,11 +317,13 @@
       "default": "featured"
     },
     { "type": "text", "id": "featured_label", "label": "Label on the featured set", "info": "Featured layout. Choose the set in its block (Feature this set).", "default": "Our pick" },
+    { "type": "text", "id": "featured_bg_text", "label": "Word behind the featured set", "info": "Large and faint, behind the vials. Leave empty to use the set's italic word (e.g. six)." },
     { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Set cards open it with that set chosen. Empty: the page with the handle build-your-set." },
     { "type": "text", "id": "set_from_label", "label": "Set cards: lowest price", "info": "[price] = the bundle's first price.", "default": "from [price]" },
     { "type": "text", "id": "set_to_label", "label": "Set cards: highest price", "info": "[price] = the bundle's second price (after the –).", "default": "up to [price]" },
     { "type": "text", "id": "cta_label", "label": "Link under the set cards", "default": "Build your own set" },
     { "type": "text", "id": "cta_note", "label": "Line next to that link", "default": "Mix any scents. Each perfume once per set." },
+    { "type": "text", "id": "cta_button", "label": "Build-your-own button", "default": "Start building" },
     { "type": "text", "id": "sizes_label", "label": "Size picker label (screen readers)", "default": "Choose a size" },
     { "type": "text", "id": "from_label", "label": "Price prefix on sizes", "default": "from" },
     { "type": "text", "id": "pick_label", "label": "Bundle line", "default": "pick any [n] of our scents", "info": "[n] becomes the number of vials." },

@@ -70,6 +70,14 @@
         { signal }
       );
       document.addEventListener('perfume:cart-open', (e) => this.show(null, e.detail), { signal });
+      const warm = (e) => {
+        if (e.target.closest?.('[data-cart-drawer-open]')) this.prefetch();
+      };
+      document.addEventListener('pointerover', warm, { signal, passive: true });
+      document.addEventListener('focusin', warm, { signal });
+      document.addEventListener('touchstart', warm, { signal, passive: true });
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
+      idle(() => this.prefetch());
       this.querySelectorAll('[data-pcd-close]').forEach((b) => b.addEventListener('click', () => this.hide(), { signal }));
       this.addEventListener('keydown', (e) => this.onKeydown(e), { signal });
       this.list.addEventListener('click', (e) => this.onListClick(e), { signal });
@@ -107,11 +115,21 @@
       this.classList.add('is-entering');
       clearTimeout(this.enterTimer);
       this.enterTimer = setTimeout(() => this.classList.remove('is-entering'), 1400);
-      await this.load();
+      // Open at once with the bag as last read (prefetched on load and on hover),
+      // then refresh it in the background; never wait on the network to slide in.
+      const fresh = this.load();
+      if (!this.cart) await Promise.race([fresh, new Promise((r) => setTimeout(r, 250))]);
       this.inert = false;
       this.classList.add('is-open');
       document.documentElement.style.overflow = 'hidden';
       requestAnimationFrame(() => this.querySelector('.pcd__close')?.focus({ preventScroll: true }));
+    }
+
+    // Read the bag ahead of time so the first open already has the items.
+    prefetch() {
+      if (this.prefetched && Date.now() - this.prefetched < 15000) return;
+      this.prefetched = Date.now();
+      this.load();
     }
 
     hide() {
@@ -145,9 +163,11 @@
     }
 
     async load() {
+      const ticket = (this.loadTicket = (this.loadTicket || 0) + 1);
       try {
         const res = await fetch(`${this.dataset.cartUrl}.js`, { headers: { Accept: 'application/json' } });
-        this.render(await res.json());
+        const cart = await res.json();
+        if (ticket === this.loadTicket) this.render(cart); // a newer read wins
       } catch (e) {
         // Keep whatever is shown; the Bag link still goes to the cart page.
       }
@@ -155,6 +175,10 @@
 
     render(cart) {
       const items = cart.items || [];
+      // Same bag as shown: keep the rows (no flicker or replayed entrance).
+      const sig = JSON.stringify([cart.total_price, cart.note, items.map((it) => [it.key, it.quantity, it.final_line_price])]);
+      if (sig === this.sig && !this.newVariant) return;
+      this.sig = sig;
       this.cart = cart;
       if (this.count) this.count.textContent = cart.item_count;
       this.empty.hidden = items.length > 0;

@@ -1,0 +1,36 @@
+{%- comment -%}
+  The four decant vials for the vial size guide (snippets/perfume-vial-size.liquid),
+  each image the whole vial, cap included, sized by its real height (--h, mm).
+  Only the chosen one is shown (the script toggles [hidden]).
+{%- endcomment -%}
+{%- for ml in (1..10) -%}
+  {%- unless ml == 1 or ml == 2 or ml == 5 or ml == 10 -%}{%- continue -%}{%- endunless -%}
+  {%- liquid
+    case ml
+      when 1
+        assign h = settings.pf_vial_h_1 | default: 40
+        assign img = 'sample-decant-square.webp'
+        assign iw = 168
+        assign ih = 700
+      when 2
+        assign h = settings.pf_vial_h_2 | default: 55
+        assign img = 'sample-decant-clear.webp'
+        assign iw = 90
+        assign ih = 533
+      when 5
+        assign h = settings.pf_vial_h_5 | default: 70
+        assign img = 'sample-decant-amber.webp'
+        assign iw = 97
+        assign ih = 700
+      else
+        assign h = settings.pf_vial_h_10 | default: 85
+        assign img = 'sample-decant-amber.webp'
+        assign iw = 97
+        assign ih = 700
+    endcase
+  -%}
+  <figure class="pvs__vial" style="--h: {{ h }};" data-pvs-vial="{{ ml }}"{% unless ml == 1 %} hidden{% endunless %}>
+    <figcaption><b>{{ ml }} ml</b><span>{{ h }} mm</span></figcaption>
+    <img src="{{ img | asset_url }}" alt="" width="{{ iw }}" height="{{ ih }}" loading="lazy">
+  </figure>
+{%- endfor -%}

@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vial popup previews</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Samyó vial popup: 10 working previews (dev only). Real size = mm × --pxmm. */
+  :root {
+    --ink: #26221f; --paper: #f7f5f0; --gold: #d9b46a; --gold-deep: #a8843f;
+    --soft: rgba(38, 34, 31, .64); --line: rgba(38, 34, 31, .14); --line-strong: rgba(38, 34, 31, .28);
+    --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Instrument Sans', system-ui, sans-serif;
+    --pxmm: 5;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  html.pv-lock { overflow: hidden; }
+  body { margin: 0; background: #ece8e1; color: var(--ink); font: 400 15px/1.5 var(--sans); overflow-x: hidden; }
+  button, input { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+  kbd { font: 600 11px/1 var(--sans); border: 1px solid var(--line-strong); border-radius: 4px; padding: 2px 5px; }
+
+  /* ---------- Page list ---------- */
+  .page-head { max-width: 1200px; margin: 0 auto; padding: 40px 16px 8px; }
+  .page-head h1 { font: 400 clamp(34px, 6vw, 50px)/1.05 var(--serif); margin: 0 0 10px; }
+  .page-head p { margin: 0 0 6px; color: var(--soft); max-width: 760px; }
+  .page-head .scale-line { color: var(--ink); font-size: 13px; }
+  .list { list-style: none; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); max-width: 1200px; margin: 20px auto 64px; padding: 0 16px; }
+  .item { background: var(--paper); border-top: 2px solid var(--gold); display: flex; flex-direction: column; gap: 8px; padding: 20px 20px 18px; }
+  .item .num { font: 500 34px/1 var(--serif); color: var(--gold-deep); }
+  .item h2 { font: 500 25px/1.1 var(--serif); margin: 0; }
+  .item p { margin: 0; color: var(--soft); flex: 1; }
+  .item .btn { align-self: flex-start; margin-top: 6px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 20px; border-radius: 999px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer; transition: opacity .2s; }
+  .btn:hover { opacity: .86; }
+  .btn.ghost { background: none; color: inherit; border-color: currentColor; }
+
+  /* ---------- Dialog shell (fixed size: nothing in it resizes while you calibrate) ---------- */
+  .pv { padding: 0; border: 0; background: var(--paper); color: var(--ink); width: min(1100px, calc(100vw - 32px)); height: min(780px, calc(100vh - 32px)); height: min(780px, calc(100dvh - 32px)); max-width: none; max-height: none; overflow: hidden; box-shadow: 0 30px 80px rgba(20, 16, 12, .35); }
+  .pv[open] { display: block; animation: pv-in .32s cubic-bezier(.22, 1, .36, 1); }
+  .pv::backdrop { background: rgba(38, 34, 31, .5); }
+  @keyframes pv-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .pv-shell { display: flex; flex-direction: column; height: 100%; }
+  .pv-head { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 10px 6px 24px; border-bottom: 1px solid var(--line); }
+  .pv-head h2 { font: 400 24px/1.1 var(--serif); margin: 0; }
+  .pv-head h2 span { font: 600 11px/1 var(--sans); letter-spacing: .14em; color: var(--soft); margin-right: 10px; vertical-align: middle; }
+  .pv-close { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .pv-close:hover { background: rgba(127, 127, 127, .14); }
+  .pv-wrap { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; }
+  .pv-body { height: 100%; overflow: auto; overscroll-behavior: contain; }
+  .pv-foot { flex: none; border-top: 1px solid var(--line); padding: 0 24px; }
+
+  /* Calibration (shared) */
+  .cal summary { display: flex; align-items: center; gap: 10px; min-height: 48px; cursor: pointer; font-size: 13px; font-weight: 600; list-style: none; }
+  .cal summary::-webkit-details-marker { display: none; }
+  .cal summary::before { content: ''; flex: none; width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .2s; }
+  .cal[open] summary::before { transform: rotate(45deg); }
+  .cal-title { flex: none; white-space: nowrap; }
+  .cal-state { margin-left: auto; min-width: 0; font-weight: 400; color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cal-body { padding: 0 0 10px; }
+  .cal-body label { display: block; font-size: 13px; color: var(--soft); }
+  .cal-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+  .cal-row input { flex: 1 1 auto; min-width: 0; min-height: 44px; margin: 0; accent-color: var(--ink); cursor: grab; touch-action: pan-y; }
+  .step { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line-strong); background: none; cursor: pointer; font-size: 18px; line-height: 1; }
+  .cal-val { flex: none; min-width: 8ch; font-size: 12px; font-variant-numeric: tabular-nums; color: var(--soft); text-align: right; }
+  .cal-reset { flex: none; min-height: 44px; min-width: 44px; border: 0; background: none; cursor: pointer; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; padding: 0 4px; }
+  .cal-overlay { position: absolute; top: 12px; left: 12px; z-index: 20; pointer-events: none; opacity: 0; transition: opacity .25s; display: flex; align-items: flex-end; padding: 8px 10px; font-size: 11px; font-weight: 600; border: 2px dashed currentColor; border-radius: calc(3.18 * var(--pxmm) * 1px); background: rgba(217, 180, 106, .18); width: calc(85.6 * var(--pxmm) * 1px); height: calc(53.98 * var(--pxmm) * 1px); }
+  .cal-overlay.is-upright { width: calc(53.98 * var(--pxmm) * 1px); height: calc(85.6 * var(--pxmm) * 1px); }
+  .pv.is-cal .cal-overlay { opacity: 1; }
+
+  /* ---------- Shared parts ---------- */
+  .vimg { display: block; height: calc(var(--h) * var(--pxmm) * 1px); width: auto; max-width: none; }
+  .vial { display: flex; flex-direction: column-reverse; align-items: center; flex: none; margin: 0; padding: 0; border: 0; background: none; }
+  button.vial { cursor: pointer; min-width: 44px; border-radius: 6px; }
+  .vcap { display: grid; text-align: center; font-size: 12px; line-height: 1.3; margin-bottom: 8px; white-space: nowrap; }
+  .vcap > span { opacity: .66; }
+  .row { position: relative; isolation: isolate; display: flex; align-items: flex-end; gap: calc(9 * var(--pxmm) * 1px); border-bottom: 1px solid currentColor; flex: none; }
+  .ruler { position: relative; flex: none; width: 28px; height: calc(var(--rmm) * var(--pxmm) * 1px); border-right: 1px solid currentColor; }
+  .tick { position: absolute; right: 0; bottom: calc(var(--mm) * var(--pxmm) * 1px); width: 6px; height: 0; border-top: 1px solid currentColor; }
+  .tick.cm { width: 11px; }
+  .tick.mm1 { width: 3px; opacity: .7; }
+  .tick i { position: absolute; right: 14px; top: -7px; font: normal 10px/1 var(--sans); }
+  .ruler-unit { position: absolute; left: 0; top: -18px; font-size: 10px; opacity: .6; }
+  .cardout { flex: none; display: flex; align-items: flex-end; padding: 8px 10px; font-size: 11px; line-height: 1.3; border: 1.5px dashed currentColor; opacity: .75; border-radius: calc(3.18 * var(--pxmm) * 1px); width: calc(85.6 * var(--pxmm) * 1px); height: calc(53.98 * var(--pxmm) * 1px); }
+  .cardout.is-upright { width: calc(53.98 * var(--pxmm) * 1px); height: calc(85.6 * var(--pxmm) * 1px); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line-strong); background: transparent; cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .lbl { display: block; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); margin-bottom: 6px; }
+  .big { font: 400 40px/1 var(--serif); margin: 0; }
+  .fine { font-size: 12px; color: var(--soft); }
+  .lnk { display: inline-flex; align-items: center; min-height: 44px; color: inherit; font-size: 14px; font-weight: 600; text-underline-offset: 3px; }
+  .spec { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; margin: 14px 0; padding-top: 14px; border-top: 1px solid var(--line); }
+  .spec dt { font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--soft); padding-top: 2px; }
+  .spec dd { margin: 0; }
+
+  /* Layouts */
+  .lay-col { display: flex; flex-direction: column; height: 100%; }
+  .lay-grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: auto minmax(0, 1fr); height: 100%; }
+  .lay-grid > .ctl { grid-column: 1 / -1; }
+  .ctl { flex: none; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 32px; padding: 16px 24px 0; }
+  .stage { overflow: auto; display: flex; flex-wrap: wrap; align-items: flex-end; align-items: safe flex-end; align-content: flex-end; align-content: safe flex-end; gap: 24px 48px; padding: 40px 24px 22px 44px; }
+  .lay-col > .stage { flex: 1 1 auto; min-height: 0; }
+  .side { overflow: auto; padding: 20px 24px; border-left: 1px solid var(--line); }
+  .side p { margin: 8px 0 0; }
+
+  /* 01 Studio refined */
+  .s1-hint { margin: 0 0 12px; font-size: 12px; color: var(--soft); }
+  .s1-main { flex: 1 1 auto; min-height: 0; position: relative; }
+  .s1-main .stage { height: 100%; }
+  .s1 .vial { opacity: .35; transition: opacity .25s; }
+  .s1 .vial[aria-pressed="true"] { opacity: 1; }
+  .s1-info { position: absolute; top: 16px; right: 24px; z-index: 2; width: 260px; background: #fff; padding: 18px 20px 10px; box-shadow: 0 12px 32px rgba(38, 34, 31, .12); }
+  .s1-info .big { font-size: 34px; }
+  .s1-info p { margin: 6px 0 0; }
+
+  /* 02 Jewellery case */
+  .pv.is-dark { background: #15110f; color: #f3ede2; --soft: rgba(243, 237, 226, .64); --line: rgba(243, 237, 226, .14); --line-strong: rgba(243, 237, 226, .3); }
+  .pv.is-dark :focus-visible { outline-color: var(--gold); }
+  .pv.is-dark .chip { border-color: rgba(217, 180, 106, .45); }
+  .pv.is-dark .chip[aria-pressed="true"] { background: var(--gold); color: #15110f; border-color: var(--gold); }
+  .pv.is-dark .cal-row input { accent-color: var(--gold); }
+  .pv.is-dark .cal-overlay { color: var(--gold); }
+  .s2 .stage { background: radial-gradient(70% 85% at 35% 100%, #3d332c 0%, #1e1916 58%, #15110f 100%); gap: 24px 64px; }
+  .s2 .row { border-bottom-color: rgba(217, 180, 106, .55); }
+  .s2 .ruler { color: rgba(217, 180, 106, .9); }
+  .s2-spot { position: absolute; left: 0; bottom: 0; z-index: -1; width: 200px; height: calc(110 * var(--pxmm) * 1px); pointer-events: none; background: radial-gradient(50% 100% at 50% 100%, rgba(255, 226, 178, .30), rgba(255, 226, 178, 0) 100%); transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+  .s2 .vial { opacity: .28; transition: opacity .35s; }
+  .s2 .vial[aria-pressed="true"] { opacity: 1; }
+  .s2 .cardout { color: var(--gold); opacity: .55; }
+  .s2-info { flex: none; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 22px; padding: 10px 24px; border-top: 1px solid var(--line); }
+  .s2-info .big { font-size: 32px; color: var(--gold); }
+  .s2-info .lnk { color: var(--gold); }
+
+  /* 03 Size scrubber */
+  .s3 .ctl { display: block; max-width: 640px; }
+  .scrub { width: 100%; min-height: 44px; margin: 0; accent-color: var(--ink); }
+  .scrub-ticks { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; padding: 0 2px; }
+  .s3 .row { padding-right: calc(28 * var(--pxmm) * 1px); }
+  .s3-vial { margin-left: calc(12 * var(--pxmm) * 1px); }
+  .s3-vial img { transform-origin: 50% 100%; }
+  .ghosts { position: absolute; inset: 0; pointer-events: none; }
+  .ghost { position: absolute; left: 28px; right: 0; bottom: calc(var(--h) * var(--pxmm) * 1px); border-top: 1px dashed var(--line-strong); }
+  .ghost em { position: absolute; right: 0; bottom: 2px; font-style: normal; font-size: 11px; color: var(--soft); }
+  .ghost.on { border-top: 1px solid var(--ink); }
+  .ghost.on em { color: var(--ink); font-weight: 600; }
+  .s3 .side .big { font-size: 64px; }
+
+  /* 04 Everyday objects */
+  .obj { display: flex; flex-direction: column-reverse; align-items: center; flex: none; margin: 0; }
+  .obj[hidden] { display: none; }
+  .obj figcaption { font-size: 12px; line-height: 1.3; text-align: center; margin-bottom: 8px; max-width: 18ch; }
+  .obj .cardout { opacity: 1; }
+  .coin { width: calc(23 * var(--pxmm) * 1px); height: calc(23 * var(--pxmm) * 1px); border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fbfbfa, #c9cbcd 55%, #8f9296); box-shadow: inset 0 0 0 calc(1.2 * var(--pxmm) * 1px) rgba(0, 0, 0, .08); }
+  .lip { display: flex; flex-direction: column; width: calc(20 * var(--pxmm) * 1px); height: calc(75 * var(--pxmm) * 1px); }
+  .lip-bullet { height: calc(22 * var(--pxmm) * 1px); width: 70%; margin: 0 auto; background: linear-gradient(90deg, #8e1f2b, #c23a47 45%, #8e1f2b); clip-path: polygon(0 32%, 100% 0, 100% 100%, 0 100%); }
+  .lip-sleeve { height: calc(8 * var(--pxmm) * 1px); width: 84%; margin: 0 auto; background: linear-gradient(90deg, #a8843f, #e8cf95 45%, #a8843f); }
+  .lip-case { flex: 1; border-radius: 2px; background: linear-gradient(90deg, #1f1b18, #4a423c 45%, #1f1b18); }
+  .pods { position: relative; width: calc(60 * var(--pxmm) * 1px); height: calc(48 * var(--pxmm) * 1px); border-radius: calc(18 * var(--pxmm) * 1px) calc(18 * var(--pxmm) * 1px) calc(13 * var(--pxmm) * 1px) calc(13 * var(--pxmm) * 1px); background: linear-gradient(180deg, #fff, #ebe8e3); box-shadow: inset 0 0 0 1px rgba(38, 34, 31, .22); }
+  .pods::after { content: ''; position: absolute; left: 0; right: 0; top: 34%; border-top: 1px solid rgba(38, 34, 31, .2); }
+  .s4-note { flex: none; margin: 0; padding: 8px 24px 12px; }
+
+  /* 05 Versus the full bottle */
+  .s5 .row { gap: calc(12 * var(--pxmm) * 1px); }
+  .bottle-fig { display: flex; flex-direction: column-reverse; align-items: center; flex: none; margin: 0; }
+  .bottle-fig figcaption { font-size: 12px; text-align: center; margin-bottom: 8px; line-height: 1.3; }
+  .bottle { display: block; width: calc(70 * var(--pxmm) * 1px); height: calc(110 * var(--pxmm) * 1px); overflow: visible; }
+  .bottle .fill { transform-box: fill-box; transform-origin: 50% 100%; transition: transform .45s cubic-bezier(.22, 1, .36, 1); }
+  .bars { display: grid; gap: 12px; margin: 12px 0; }
+  .bar { display: grid; gap: 4px; font-size: 13px; }
+  .bar i { display: block; height: 10px; background: var(--ink); transform-origin: 0 50%; border-radius: 5px; }
+  .bar.b i { background: var(--gold); }
+  .s5 h3 { font: 500 22px/1.1 var(--serif); margin: 22px 0 0; padding-top: 16px; border-top: 1px solid var(--line); }
+
+  /* 06 How long will it last */
+  .s6-ass { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+  .s6-ass .lbl { width: 100%; }
+  .s6-ass input { width: 84px; min-height: 44px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; }
+  .s6-sum { flex: none; margin: 12px 24px 0; font-size: 15px; }
+  .s6 .row { gap: calc(12 * var(--pxmm) * 1px); }
+  .s6 .vcap b { font: 600 19px/1.1 var(--serif); }
+  .s6-note { flex: none; margin: 0; padding: 10px 24px 12px; font-size: 13px; border-top: 1px solid var(--line); background: rgba(217, 180, 106, .16); }
+
+  /* 07 Where it fits */
+  .s7-verdict { flex: none; margin: 12px 24px 0; font-size: 15px; }
+  .s7 .row { gap: calc(8 * var(--pxmm) * 1px); }
+  .place { position: relative; flex: none; width: calc(var(--w) * var(--pxmm) * 1px); height: calc(var(--d) * var(--pxmm) * 1px); }
+  .place .vial { position: absolute; bottom: 0; left: calc(var(--vx) * var(--pxmm) * 1px); transform: translateX(-50%); z-index: 1; }
+  .place-shape { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+  .place.pocket .place-shape { background: rgba(95, 124, 168, .30); border: 2px dashed #4d6a96; border-top: 3px solid #4d6a96; border-radius: 0 0 calc(14 * var(--pxmm) * 1px) calc(14 * var(--pxmm) * 1px); }
+  .place.clutch .place-shape { background: rgba(160, 112, 84, .26); border: 2px solid #8b5e45; border-radius: calc(6 * var(--pxmm) * 1px); }
+  .place.clutch .place-shape::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 32%; background: rgba(139, 94, 69, .22); clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  .place.cup .place-shape { background: rgba(60, 60, 66, .28); border: 3px solid #4a4a50; border-top: 0; border-radius: 0 0 calc(6 * var(--pxmm) * 1px) calc(6 * var(--pxmm) * 1px); }
+  .s7-note { flex: none; margin: 0; padding: 8px 24px 12px; }
+
+  /* 08 Phone full screen */
+  .s8 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: 100%; }
+  .s8-intro { overflow: auto; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .s8-intro p { margin: 0; }
+  .s8-spec { width: 100%; border-top: 1px solid var(--line, rgba(38,34,31,.14)); padding-top: 12px; }
+  .s8-size { font: 400 30px/1.1 var(--serif); }
+  .s8-size span { display: block; font: 400 12px/1.4 var(--sans, sans-serif); color: var(--soft); margin-top: 2px; }
+  .s8-spec dl { margin: 10px 0 0; display: grid; gap: 6px; }
+  .s8-spec dl div { display: grid; grid-template-columns: 96px 1fr; gap: 10px; font-size: 13px; }
+  .s8-spec dt { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); padding-top: 3px; }
+  .s8-spec dd { margin: 0; }
+  .s8-spec dd a { color: inherit; font-weight: 600; text-underline-offset: 3px; }
+  .s8-spec dd em { font-style: normal; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: var(--gold); padding: 1px 6px; border-radius: 99px; margin-left: 4px; }
+  .s8-quiet { opacity: .6; }
+  .s8-compare { display: flex; align-items: flex-end; gap: 14px; height: 70px; }
+  .s8-compare span { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: var(--soft); }
+  .s8-compare i { width: 10px; height: calc(var(--h) * .6px); border-radius: 2px 2px 3px 3px; background: rgba(38,34,31,.22); }
+  .s8-compare span.on { color: var(--ink); font-weight: 600; }
+  .s8-compare span.on i { background: var(--ink); }
+  .s8-steps { margin: 0; padding-left: 18px; font-size: 13px; display: grid; gap: 6px; color: var(--soft); }
+  .s8-steps b { color: var(--ink); font-weight: 600; }
+  .s8 .stage.mini { background: #fff; border-left: 1px solid var(--line); justify-content: center; }
+  .hold { position: absolute; inset: 0; z-index: 30; display: flex; flex-direction: column; background: var(--paper); }
+  .hold[hidden] { display: none; }
+  .hold-top { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top)); }
+  .hold-stage { flex: 1 1 auto; min-height: 0; position: relative; overflow: hidden; --base: calc(28px + env(safe-area-inset-bottom)); }
+  .hold-base { position: absolute; left: 0; right: 0; bottom: var(--base); border-top: 1px solid currentColor; }
+  .hold-ruler { position: absolute; left: max(6px, env(safe-area-inset-left)); bottom: var(--base); }
+  .hold-card { position: absolute; left: 50%; bottom: var(--base); transform: translateX(-50%); opacity: .5; }
+  .hold-slot { position: absolute; left: 50%; bottom: var(--base); transform: translateX(-50%); z-index: 1; }
+  .hold-tip { position: absolute; right: 16px; top: 8px; max-width: 220px; margin: 0; text-align: right; }
+  .pv.is-holding { width: 100vw; height: 100vh; height: 100dvh; margin: 0; inset: 0; max-width: none; max-height: none; box-shadow: none; animation: none; }
+  .pv.is-holding .pv-head, .pv.is-holding .pv-foot { display: none; }
+
+  /* 09 The set, unboxed */
+  .s9 .stage { align-items: center; align-items: safe center; align-content: center; align-content: safe center; justify-content: center; justify-content: safe center; background: #efebe4; padding: 28px 24px; }
+  .box { display: grid; grid-template-columns: repeat(var(--cols), auto); gap: calc(2 * var(--pxmm) * 1px); padding: calc(5 * var(--pxmm) * 1px); background: linear-gradient(#2f2824, #221d1a); border-radius: calc(3 * var(--pxmm) * 1px); box-shadow: 0 18px 40px rgba(20, 16, 12, .35), inset 0 0 0 1px rgba(217, 180, 106, .35); }
+  .slot { display: flex; align-items: flex-end; justify-content: center; padding: calc(1.5 * var(--pxmm) * 1px); background: radial-gradient(120% 80% at 50% 100%, #4a3e35, #2a231f); border-radius: calc(1.5 * var(--pxmm) * 1px); }
+  .tag { display: inline-block; background: var(--gold); color: var(--ink); border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+  .tag[hidden] { display: none; }
+  .s9 .side .big { font-size: 44px; }
+  .s9-price { font: 500 26px/1.15 var(--serif); }
+  .s9 .side .btn { margin-top: 16px; }
+
+  /* 10 Product sheet */
+  .s10 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); height: 100%; }
+  .s10 .stage { background: #fff; border-right: 1px solid var(--line); justify-content: center; }
+  .s10-sheet { overflow: auto; padding: 24px 28px; }
+  .s10-sheet .big { font-size: 64px; margin-top: 18px; }
+
+  /* ---------- Phones / narrow ---------- */
+  @media (max-width: 760px) {
+    .lay-col, .lay-grid, .s8, .s10 { display: block; height: auto; }
+    .s1-main { position: static; }
+    .s1-main .stage { height: auto; }
+    .s1-info { position: static; width: auto; margin: 12px 12px 0; box-shadow: none; border: 1px solid var(--line); }
+    .s1-hint { display: none; }
+    .ctl { padding: 12px 12px 0; gap: 10px 20px; }
+    .stage { padding: 34px 12px 16px 30px; gap: 20px 28px; }
+    .side { border-left: 0; border-top: 1px solid var(--line); padding: 14px 12px; }
+    .s2-info, .s4-note, .s6-note, .s7-note { padding-left: 12px; padding-right: 12px; }
+    .s6-sum, .s7-verdict { margin-left: 12px; margin-right: 12px; }
+    .s3 .side .big, .s10-sheet .big { font-size: 46px; }
+    .s8-intro { padding: 16px 12px; }
+    .s8 .stage.mini { border-left: 0; border-top: 1px solid var(--line); }
+    .s10 .stage { border-right: 0; border-bottom: 1px solid var(--line); }
+    .s10-sheet { padding: 16px 12px; }
+  }
+  @media (max-width: 640px) {
+    .pv { width: calc(100vw - 16px); height: calc(100vh - 16px); height: calc(100dvh - 16px); }
+    .pv-head { padding: 4px 4px 4px 14px; }
+    .pv-head h2 { font-size: 21px; }
+    .pv-foot { padding: 0 12px; }
+    .cal-val { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pv[open] { animation: none; }
+    .cal-overlay, .s1 .vial, .s2 .vial, .s2-spot, .bottle .fill, .btn, .cal summary::before { transition: none; }
+  }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <h1>Vial popup: 10 working previews</h1>
+  <p>Each card opens a real popup with the vials at actual size. All ten share one scale: calibrate in any of them (match a bank card) and the others follow. Demo data only; vial heights are placeholders.</p>
+  <p class="scale-line">This screen: <span data-cal-val></span> · <span data-cal-state></span></p>
+</header>
+
+<ul class="list">
+  <li class="item"><span class="num">01</span><h2>Studio refined</h2><p>Today's popup, tightened: size chips over the vials, a floating details card, ← → keys switch size.</p><button type="button" class="btn" data-open="d01" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">02</span><h2>Jewellery case</h2><p>A dark velvet stage. The chosen vial sits in a spotlight; the others wait in shadow.</p><button type="button" class="btn" data-open="d02" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">03</span><h2>Size scrubber</h2><p>One vial that changes 1 → 2 → 5 → 10 ml as you drag a snapping slider, with height, price-from and how it's sold.</p><button type="button" class="btn" data-open="d03" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">04</span><h2>Everyday objects</h2><p>Stand the vial next to a bank card, a ₱1 coin, a lipstick or an earbuds case, all at real size.</p><button type="button" class="btn" data-open="d04" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">05</span><h2>Versus the full bottle</h2><p>A typical 100 ml bottle outline at scale, the vial's share filled in, and a price-per-ml example.</p><button type="button" class="btn" data-open="d05" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">06</span><h2>How long will it last</h2><p>Pick sprays a day and see roughly how many days of liquid each vial holds. Quantity only, not wear time.</p><button type="button" class="btn" data-open="d06" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">07</span><h2>Where it fits</h2><p>The chosen vial drawn inside a jeans coin pocket, a small clutch or a car cup holder, at real scale.</p><button type="button" class="btn" data-open="d07" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">08</span><h2>Phone full screen</h2><p>"Hold it up": one vial fills the screen at real size with a ruler on the edge and a card outline behind.</p><button type="button" class="btn" data-open="d08" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">09</span><h2>The set, unboxed</h2><p>Choose a set and see its vials in a dark box at real size, with the price range and a "Choose scents" button.</p><button type="button" class="btn" data-open="d09" aria-haspopup="dialog">Open preview</button></li>
+  <li class="item"><span class="num">10</span><h2>Product sheet</h2><p>Half vial at real size, half spec card: height, approx sprays, how it's sold, price-from and "Build this set".</p><button type="button" class="btn" data-open="d10" aria-haspopup="dialog">Open preview</button></li>
+</ul>
+
+<dialog class="pv" id="d01"></dialog>
+<dialog class="pv" id="d02"></dialog>
+<dialog class="pv" id="d03"></dialog>
+<dialog class="pv" id="d04"></dialog>
+<dialog class="pv" id="d05"></dialog>
+<dialog class="pv" id="d06"></dialog>
+<dialog class="pv" id="d07"></dialog>
+<dialog class="pv" id="d08"></dialog>
+<dialog class="pv" id="d09"></dialog>
+<dialog class="pv" id="d10"></dialog>
+
+<script>
+(() => {
+  'use strict';
+  const CARD_W = 85.6;
+  const CARD_H = 53.98;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* ---------- Shared scale + calibration (same logic as assets/perfume-vial-size.js) ---------- */
+  const Scale = (() => {
+    const KEY = 'samyo-px-per-mm';
+    const MIN = 2.4;
+    const MAX = 8;
+    function estimate() {
+      const shortSide = Math.min(screen.width, screen.height);
+      const coarse = matchMedia('(pointer: coarse)').matches;
+      const ua = navigator.userAgent;
+      const mac = /Macintosh|Mac OS X/.test(ua) && !coarse;
+      if (coarse && shortSide < 520) return 6.1; // phone
+      if (coarse || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 5.2; // tablet / iPad
+      if (mac) return screen.width <= 1800 ? 5.0 : 4.3;
+      return screen.width <= 1600 ? 4.3 : 3.8;
+    }
+    const read = () => {
+      try {
+        const v = parseFloat(localStorage.getItem(KEY));
+        return v > 1 && v < 12 ? v : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    const write = (v) => {
+      try {
+        if (v == null) localStorage.removeItem(KEY);
+        else localStorage.setItem(KEY, String(v));
+      } catch (e) {
+        /* private mode: this visit only */
+      }
+    };
+    const guess = estimate();
+    let px = read() || guess;
+    const subs = [];
+    function apply() {
+      document.documentElement.style.setProperty('--pxmm', px.toFixed(3));
+      const matched = read() != null;
+      document.querySelectorAll('[data-cal-range]').forEach((r) => {
+        r.value = px.toFixed(2);
+        r.setAttribute('aria-valuetext', `${px.toFixed(2)} pixels per millimetre`);
+      });
+      document.querySelectorAll('[data-cal-val]').forEach((o) => { o.textContent = `${px.toFixed(2)} px/mm`; });
+      document.querySelectorAll('[data-cal-state]').forEach((s) => { s.textContent = matched ? 'Matched to your card ✓' : 'Estimated for this device'; });
+      subs.forEach((f) => f(px));
+    }
+    return {
+      get px() { return px; },
+      set(v) { px = Math.min(MAX, Math.max(MIN, Math.round(v * 100) / 100)); write(px); apply(); },
+      reset() { write(null); px = guess; apply(); },
+      on(f) { subs.push(f); },
+      apply
+    };
+  })();
+
+  /* ---------- Data (placeholders from the brief; do not add numbers) ---------- */
+  const ORDER = [1, 2, 5, 10];
+  const IMG = { sq: '../assets/sample-decant-square.webp', cl: '../assets/sample-decant-clear.webp', am: '../assets/sample-decant-amber.webp' };
+  const V = {
+    1: { h: 40, src: IMG.sq, w: 168, ih: 700, how: 'In sets of 3 or 6 different scents.', from: 185, set: '3x1', setName: 'Try trio', setFrom: 560 },
+    2: { h: 55, src: IMG.cl, w: 90, ih: 533, how: 'In sets of 3 or 6 different scents.', from: 320, set: '3x2', setName: 'Wear trio', setFrom: 975 },
+    5: { h: 70, src: IMG.am, w: 97, ih: 700, how: 'In a set of 2 scents.', from: 705, set: '2x5', setName: 'Signature duo', setFrom: 1415 },
+    10: { h: 85, src: IMG.am, w: 97, ih: 700, how: 'On its own, or as a set of 1.', from: 1365, set: '1x10', setName: 'Travel ten', setFrom: 1365 }
+  };
+  const SETS = [
+    { v: 'try', t: 'Try trio', n: 3, ml: 1, q: '3x1', lo: 560, hi: 1340 },
+    { v: 'disc', t: 'Discovery six', n: 6, ml: 1, q: '6x1', lo: 1309.5, hi: 2061, off: true },
+    { v: 'wear', t: 'Wear trio', n: 3, ml: 2, q: '3x2', lo: 975, hi: 2530 },
+    { v: 'ward', t: 'Wardrobe six', n: 6, ml: 2, q: '6x2', lo: 2358, hi: 3852, off: true },
+    { v: 'sig', t: 'Signature duo', n: 2, ml: 5, q: '2x5', lo: 1415, hi: 4375 },
+    { v: 'travel', t: 'Travel ten', n: 1, ml: 10, q: '1x10', lo: 1365, hi: 5560 }
+  ];
+  const SIZES = ORDER.map((ml) => ({ v: ml, t: `${ml} ml` }));
+  const picker = (q) => `vial-picker.html?set=${q}`;
+
+  /* ---------- Helpers ---------- */
+  const peso = (n) => `₱${n.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })}`;
+  const img = (ml) => { const v = V[ml]; return `<img class="vimg" src="${v.src}" width="${v.w}" height="${v.ih}" alt="" style="--h:${v.h}" decoding="async">`; };
+  function fig(ml, o = {}) {
+    const v = V[ml];
+    const tag = o.btn ? 'button' : 'div';
+    const attrs = o.btn ? ` type="button" aria-pressed="false" aria-label="${ml} ml vial, ${v.h} mm tall"` : '';
+    const cap = o.cap === false ? '' : `<span class="vcap"${o.btn ? ' aria-hidden="true"' : ''}>${o.capHTML || `<b>${ml} ml</b><span>${v.h} mm</span>`}</span>`;
+    return `<${tag} class="vial ${o.cls || ''}" data-ml="${ml}"${attrs}>${img(ml)}${cap}</${tag}>`;
+  }
+  function ticks(mm, minor = 5) {
+    let t = '';
+    for (let m = 0; m <= mm; m += minor) {
+      const cm = m % 10 === 0;
+      const half = m % 5 === 0;
+      t += `<span class="tick${cm ? ' cm' : half ? '' : ' mm1'}" style="--mm:${m}">${cm && m ? `<i>${m / 10}</i>` : ''}</span>`;
+    }
+    return `${t}<span class="ruler-unit">cm</span>`;
+  }
+  const ruler = (mm, cls = '') => `<div class="ruler ${cls}" style="--rmm:${mm}" aria-hidden="true">${ticks(mm)}</div>`;
+  const card = () => '<div class="cardout" data-card aria-hidden="true"><span>Bank card<br>85.6 × 53.98 mm</span></div>';
+  const chips = (g, label, items) => `<div class="chips" role="group" aria-label="${label}" data-g="${g}">${items.map((i) => `<button type="button" class="chip" aria-pressed="false" data-v="${i.v}">${i.t}</button>`).join('')}</div>`;
+  const setF = (root, k, t) => root.querySelectorAll(`[data-f="${k}"]`).forEach((el) => { el.textContent = t; });
+  function group(root, g, cb) {
+    const btns = [...root.querySelectorAll(`[data-g="${g}"] [data-v]`)];
+    let value = null;
+    const select = (v, focus) => {
+      value = String(v);
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === value)));
+      if (focus) btns.find((b) => b.dataset.v === value)?.focus();
+      cb(value);
+    };
+    btns.forEach((b) => b.addEventListener('click', () => select(b.dataset.v)));
+    return { select, value: () => value };
+  }
+  // Never shrink a card to fit: stand it upright when it is wider than the room.
+  // Runs on open, resize and when a calibration drag ends, never mid-drag.
+  function fitCards(root) {
+    const px = Scale.px;
+    root.querySelectorAll('[data-card]').forEach((c) => {
+      const p = c.closest('[data-room]') || c.parentElement;
+      if (!p || !p.clientWidth) return;
+      const cs = getComputedStyle(p);
+      const pad = parseFloat(c.dataset.cardPad || '0');
+      const room = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - pad;
+      c.classList.toggle('is-upright', CARD_W * px > room && CARD_H * px <= room + 1);
+    });
+  }
+  const X = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>';
+  const calHTML = (id) => `<details class="cal">
+      <summary><span class="cal-title">Make it exact on this screen</span><span class="cal-state" data-cal-state></span></summary>
+      <div class="cal-body">
+        <label for="${id}-cal">Hold a bank card against the dashed outline and drag until the edges match.</label>
+        <div class="cal-row">
+          <button type="button" class="step" data-cal-step="-0.02" aria-label="Smaller">−</button>
+          <input type="range" id="${id}-cal" min="2.4" max="8" step="0.01" data-cal-range>
+          <button type="button" class="step" data-cal-step="0.02" aria-label="Bigger">+</button>
+          <span class="cal-val" data-cal-val></span>
+          <button type="button" class="cal-reset" data-cal-reset>Reset</button>
+        </div>
+      </div>
+    </details>`;
+
+  /* ---------- The 10 previews: build(id) → body HTML; bind(dlg) → hooks ---------- */
+  const MODS = {};
+
+  // 01 Studio refined
+  MODS.d01 = {
+    num: '01', title: 'Studio refined',
+    build: () => `<div class="s1 lay-col">
+        <div class="ctl">${chips('size', 'Vial size', SIZES)}<p class="s1-hint"><kbd>←</kbd> <kbd>→</kbd> switch size</p></div>
+        <div class="s1-main">
+          <div class="stage" data-room><div class="row">${ruler(100)}${ORDER.map((ml) => fig(ml, { btn: true })).join('')}</div>${card()}</div>
+          <aside class="s1-info" aria-live="polite">
+            <p class="big" data-f="ml"></p><p class="fine" data-f="h"></p><p data-f="how"></p><p data-f="from"></p>
+            <a class="lnk" data-f-link href="#">Build a set in this size&nbsp;<span aria-hidden="true">→</span></a>
+          </aside>
+        </div>
+      </div>`,
+    bind(dlg) {
+      const vials = [...dlg.querySelectorAll('.vial')];
+      const g = group(dlg, 'size', (ml) => {
+        const v = V[ml];
+        vials.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.ml === ml)));
+        setF(dlg, 'ml', `${ml} ml`);
+        setF(dlg, 'h', `${v.h} mm tall, cap included`);
+        setF(dlg, 'how', v.how);
+        setF(dlg, 'from', `From ${peso(v.from)} a vial`);
+        dlg.querySelector('[data-f-link]').href = picker(v.set);
+      });
+      vials.forEach((b) => b.addEventListener('click', () => g.select(b.dataset.ml)));
+      dlg.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        if (e.target.closest('input, textarea, select')) return;
+        e.preventDefault();
+        const i = ORDER.indexOf(Number(g.value()));
+        const next = ORDER[(i + (e.key === 'ArrowRight' ? 1 : -1) + ORDER.length) % ORDER.length];
+        g.select(next, !!e.target.closest('.chip, .vial'));
+      });
+      g.select(1);
+      return {};
+    }
+  };
+
+  // 02 Jewellery case
+  MODS.d02 = {
+    num: '02', title: 'Jewellery case', dark: true,
+    build: () => `<div class="s2 lay-col">
+        <div class="ctl">${chips('size', 'Vial size', SIZES)}</div>
+        <div class="stage" data-room>
+          <div class="row"><span class="s2-spot" aria-hidden="true"></span>${ruler(100)}${ORDER.map((ml) => fig(ml, { btn: true })).join('')}</div>
+          ${card()}
+        </div>
+        <div class="s2-info" aria-live="polite">
+          <p class="big" data-f="ml"></p><span data-f="h"></span><span data-f="how"></span><span data-f="from"></span>
+          <a class="lnk" data-f-link href="#">Build a set in this size&nbsp;<span aria-hidden="true">→</span></a>
+        </div>
+      </div>`,
+    bind(dlg) {
+      const vials = [...dlg.querySelectorAll('.vial')];
+      const spot = dlg.querySelector('.s2-spot');
+      const place = () => {
+        const on = dlg.querySelector('.vial[aria-pressed="true"]');
+        if (!on || !dlg.open) return;
+        spot.style.transform = `translateX(${(on.offsetLeft + on.offsetWidth / 2 - spot.offsetWidth / 2).toFixed(1)}px)`;
+      };
+      const g = group(dlg, 'size', (ml) => {
+        const v = V[ml];
+        vials.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.ml === ml)));
+        setF(dlg, 'ml', `${ml} ml`);
+        setF(dlg, 'h', `${v.h} mm tall, cap included`);
+        setF(dlg, 'how', v.how);
+        setF(dlg, 'from', `From ${peso(v.from)} a vial`);
+        dlg.querySelector('[data-f-link]').href = picker(v.set);
+        place();
+      });
+      vials.forEach((b) => b.addEventListener('click', () => g.select(b.dataset.ml)));
+      g.select(5);
+      return { open: place, refit: place, onScale: place };
+    }
+  };
+
+  // 03 Size scrubber
+  MODS.d03 = {
+    num: '03', title: 'Size scrubber',
+    build: (id) => `<div class="s3 lay-grid">
+        <div class="ctl">
+          <label class="lbl" for="${id}-size">Drag to change the size</label>
+          <input class="scrub" type="range" id="${id}-size" min="0" max="3" step="1" value="0">
+          <div class="scrub-ticks" aria-hidden="true">${SIZES.map((s) => `<span>${s.t}</span>`).join('')}</div>
+        </div>
+        <div class="stage">
+          <div class="row">${ruler(100)}<div class="ghosts" aria-hidden="true">${ORDER.map((ml) => `<span class="ghost" data-ghost="${ml}" style="--h:${V[ml].h}"><em>${ml} ml</em></span>`).join('')}</div>${fig(1, { cap: false, cls: 's3-vial' })}</div>
+        </div>
+        <div class="side" aria-live="polite">
+          <p class="big" data-f="ml"></p>
+          <dl class="spec"><dt>Height</dt><dd data-f="h"></dd><dt>Price from</dt><dd data-f="from"></dd><dt>How it's sold</dt><dd data-f="how"></dd></dl>
+          <a class="btn" data-f-link href="#">Build a set in this size&nbsp;<span aria-hidden="true">→</span></a>
+        </div>
+      </div>`,
+    bind(dlg) {
+      const range = dlg.querySelector('.scrub');
+      const im = dlg.querySelector('.s3-vial img');
+      const show = (ml, animate) => {
+        const v = V[ml];
+        const old = parseFloat(im.style.getPropertyValue('--h')) || v.h;
+        im.src = v.src; im.width = v.w; im.height = v.ih;
+        im.style.setProperty('--h', v.h);
+        if (animate && !reduce.matches && old !== v.h) {
+          // FLIP: start at the old size with a transform, then settle at real size.
+          im.style.transition = 'none';
+          im.style.transform = `scale(${(old / v.h).toFixed(4)})`;
+          im.getBoundingClientRect();
+          im.style.transition = 'transform .35s cubic-bezier(.22,1,.36,1)';
+          im.style.transform = 'none';
+        }
+        dlg.querySelectorAll('[data-ghost]').forEach((gh) => gh.classList.toggle('on', gh.dataset.ghost === String(ml)));
+        range.setAttribute('aria-valuetext', `${ml} ml`);
+        setF(dlg, 'ml', `${ml} ml`);
+        setF(dlg, 'h', `${v.h} mm, cap included`);
+        setF(dlg, 'from', `${peso(v.from)} a vial`);
+        setF(dlg, 'how', v.how);
+        dlg.querySelector('[data-f-link]').href = picker(v.set);
+      };
+      range.addEventListener('input', () => show(ORDER[Number(range.value)], true));
+      show(1, false);
+      return {};
+    }
+  };
+
+  // 04 Everyday objects
+  MODS.d04 = {
+    num: '04', title: 'Everyday objects',
+    build: () => `<div class="s4 lay-col">
+        <div class="ctl">
+          <div><span class="lbl">Compare with</span>${chips('obj', 'Comparison object', [{ v: 'card', t: 'Bank card' }, { v: 'coin', t: '₱1 coin' }, { v: 'lip', t: 'Lipstick' }, { v: 'pods', t: 'Earbuds case' }, { v: 'all', t: 'All four' }])}</div>
+          <div><span class="lbl">Vial</span>${chips('size', 'Vial size', SIZES)}</div>
+        </div>
+        <div class="stage" data-room>
+          <div class="row">${ruler(100)}<div data-slot></div></div>
+          <figure class="obj" data-obj="card"><div class="cardout" data-card aria-hidden="true"></div><figcaption><b>Bank card</b><br>85.6 × 53.98 mm</figcaption></figure>
+          <figure class="obj" data-obj="coin"><div class="coin" aria-hidden="true"></div><figcaption><b>₱1 coin</b> (new series)<br>23 mm across</figcaption></figure>
+          <figure class="obj" data-obj="lip"><div class="lip" aria-hidden="true"><span class="lip-bullet"></span><span class="lip-sleeve"></span><span class="lip-case"></span></div><figcaption><b>Lipstick</b><br>about 75 × 20 mm (typical)</figcaption></figure>
+          <figure class="obj" data-obj="pods"><div class="pods" aria-hidden="true"></div><figcaption><b>Earbuds case</b><br>about 60 × 48 mm (typical)</figcaption></figure>
+        </div>
+        <p class="fine s4-note">Card and coin sizes are standard. Lipsticks and earbuds cases vary, so those are typical sizes.</p>
+      </div>`,
+    bind(dlg) {
+      const slot = dlg.querySelector('[data-slot]');
+      const objs = [...dlg.querySelectorAll('[data-obj]')];
+      group(dlg, 'size', (ml) => { slot.innerHTML = fig(ml); }).select(2);
+      group(dlg, 'obj', (o) => { objs.forEach((f) => { f.hidden = o !== 'all' && f.dataset.obj !== o; }); fitCards(dlg); }).select('card');
+      return {};
+    }
+  };
+
+  // 05 Versus the full bottle
+  MODS.d05 = {
+    num: '05', title: 'Versus the full bottle',
+    build: (id) => `<div class="s5 lay-grid">
+        <div class="ctl">${chips('size', 'Vial size', SIZES)}</div>
+        <div class="stage">
+          <div class="row">${ruler(120)}
+            <figure class="bottle-fig">
+              <svg class="bottle" viewBox="0 0 70 110" aria-hidden="true" focusable="false">
+                <defs><clipPath id="${id}-clip"><rect x="1" y="30" width="68" height="79" rx="8"/></clipPath></defs>
+                <rect x="21" y="0.5" width="28" height="21.5" rx="2" fill="#2b2522"/>
+                <rect x="27" y="22" width="16" height="8" fill="rgba(217,180,106,.18)" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke"/>
+                <rect x="1" y="30" width="68" height="79" rx="8" fill="rgba(217,180,106,.12)"/>
+                <g clip-path="url(#${id}-clip)"><rect class="fill" x="0" y="30" width="70" height="80" fill="#d9b46a"/></g>
+                <rect x="1" y="30" width="68" height="79" rx="8" fill="none" stroke="currentColor" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+              </svg>
+              <figcaption><b>Typical 100 ml bottle</b><br>about 110 × 70 mm</figcaption>
+            </figure>
+            <div data-slot></div>
+          </div>
+        </div>
+        <aside class="side">
+          <div aria-live="polite"><p class="big" data-f="share"></p><p data-f="share-text"></p></div>
+          <h3>Price per ml, an example</h3>
+          <p><b>Sauvage</b></p>
+          <div class="bars">
+            <div class="bar"><span>In a vial: <b>₱360 a ml</b></span><i style="transform:scaleX(1)"></i></div>
+            <div class="bar b"><span>Full 100 ml bottle: <b>₱102 a ml</b></span><i style="transform:scaleX(.2834)"></i></div>
+          </div>
+          <p class="fine">Bottle: FragranceX, 100 ml for ₱10,203.51. A vial costs more per ml; you pay for trying the scent before buying the whole bottle. Prices change.</p>
+        </aside>
+      </div>`,
+    bind(dlg) {
+      const slot = dlg.querySelector('[data-slot]');
+      const fill = dlg.querySelector('.fill');
+      group(dlg, 'size', (ml) => {
+        slot.innerHTML = fig(ml);
+        fill.style.transform = `scaleY(${Number(ml) / 100})`;
+        setF(dlg, 'share', `${ml}% of the bottle`);
+        setF(dlg, 'share-text', `A ${ml} ml vial holds ${ml}% of a 100 ml bottle: the gold band at the bottom of the outline.`);
+      }).select(1);
+      return {};
+    }
+  };
+
+  // 06 How long will it last
+  MODS.d06 = {
+    num: '06', title: 'How long will it last',
+    build: (id) => `<div class="s6 lay-col">
+        <div class="ctl">
+          <div><span class="lbl">Sprays a day</span>${chips('spd', 'Sprays a day', [1, 2, 3, 4].map((n) => ({ v: n, t: String(n) })))}</div>
+          <div class="s6-ass">
+            <label class="lbl" for="${id}-spm">Assumption: sprays per ml</label>
+            <input type="number" id="${id}-spm" min="1" max="40" step="1" value="10" inputmode="numeric" aria-describedby="${id}-spm-d">
+            <span class="fine" id="${id}-spm-d">about 10 from a typical atomiser; change it to match yours</span>
+          </div>
+        </div>
+        <p class="s6-sum" aria-live="polite" data-f="sum"></p>
+        <div class="stage"><div class="row">${ruler(100)}${ORDER.map((ml) => fig(ml, { capHTML: `<b data-days="${ml}"></b><span>${ml} ml · <span data-sprays="${ml}"></span> sprays</span>` })).join('')}</div></div>
+        <p class="s6-note">This counts how long the liquid in the vial lasts at your spray rate. It says nothing about how long the scent lasts on your skin.</p>
+      </div>`,
+    bind(dlg) {
+      const input = dlg.querySelector('input[type="number"]');
+      let spd = 2;
+      let spm = 10;
+      const days = (n) => (n < 1 ? 'under a day' : `≈ ${Math.round(n)} day${Math.round(n) === 1 ? '' : 's'}`);
+      const calc = () => {
+        const parts = [];
+        ORDER.forEach((ml) => {
+          const d = days((ml * spm) / spd);
+          dlg.querySelector(`[data-days="${ml}"]`).textContent = d;
+          dlg.querySelector(`[data-sprays="${ml}"]`).textContent = `≈ ${ml * spm}`;
+          parts.push(`${ml} ml ${d}`);
+        });
+        setF(dlg, 'sum', `At ${spd} spray${spd > 1 ? 's' : ''} a day and ${spm} sprays per ml: ${parts.join(' · ')}.`);
+      };
+      group(dlg, 'spd', (v) => { spd = Number(v); calc(); }).select(2);
+      input.addEventListener('input', () => {
+        const n = parseInt(input.value, 10);
+        if (n >= 1 && n <= 40) { spm = n; calc(); }
+      });
+      input.addEventListener('change', () => { input.value = spm; });
+      return {};
+    }
+  };
+
+  // 07 Where it fits
+  const PLACES = {
+    pocket: { t: 'Jeans coin pocket', w: 70, d: 60, vx: 35, note: 'about 70 mm wide and 60 mm deep (typical)' },
+    clutch: { t: 'Small clutch', w: 180, d: 100, vx: 32, note: 'about 180 × 100 mm (typical)' },
+    cup: { t: 'Car cup holder', w: 75, d: 60, vx: 37.5, note: 'about 75 mm across; depth varies, drawn 60 mm deep' }
+  };
+  MODS.d07 = {
+    num: '07', title: 'Where it fits',
+    build: () => `<div class="s7 lay-col">
+        <div class="ctl">
+          <div><span class="lbl">Place</span>${chips('place', 'Place', Object.entries(PLACES).map(([v, p]) => ({ v, t: p.t })))}</div>
+          <div><span class="lbl">Vial</span>${chips('size', 'Vial size', SIZES)}</div>
+        </div>
+        <p class="s7-verdict" aria-live="polite" data-f="verdict"></p>
+        <div class="stage"><div class="row">${ruler(120)}<div class="place" data-place></div></div></div>
+        <p class="fine s7-note">Outlines are typical sizes drawn at real scale; pockets, clutches and cup holders vary. Scroll sideways if the clutch is wider than your screen.</p>
+      </div>`,
+    bind(dlg) {
+      const el = dlg.querySelector('[data-place]');
+      let place = 'pocket';
+      let ml = '2';
+      const render = () => {
+        const p = PLACES[place];
+        const v = V[ml];
+        el.className = `place ${place}`;
+        el.style.cssText = `--w:${p.w};--d:${p.d};--vx:${p.vx}`;
+        el.setAttribute('role', 'img');
+        el.setAttribute('aria-label', `${ml} ml vial inside a ${p.t.toLowerCase()} outline`);
+        el.innerHTML = `${fig(ml, { cap: false })}<span class="place-shape"></span>`;
+        const over = v.h - p.d;
+        const fit = over <= 0 ? `fits inside, with about ${-over} mm to spare` : `sticks out about ${over} mm above the top`;
+        el.closest('.s7').querySelector('[data-f="verdict"]').innerHTML = `<b>${p.t}</b> (${p.note}): the ${ml} ml vial (${v.h} mm) ${fit}.`;
+      };
+      group(dlg, 'place', (v) => { place = v; render(); }).select('pocket');
+      group(dlg, 'size', (v) => { ml = v; render(); }).select(2);
+      return {};
+    }
+  };
+
+  // 08 Phone full screen ("Hold it up")
+  MODS.d08 = {
+    num: '08', title: 'Phone full screen',
+    build: () => `<div class="s8">
+        <div class="s8-intro">
+          <p class="big">Hold it up</p>
+          <p>Fill the screen with one vial at real size, a ruler on the edge and a bank-card outline behind it. Lay a real vial or card on the screen to compare.</p>
+          <div><span class="lbl">Vial</span>${chips('size', 'Vial size', SIZES)}</div>
+          <div class="s8-spec" data-spec aria-live="polite"></div>
+          <div class="s8-compare" aria-hidden="true">${ORDER.map((ml) => `<span data-cmp="${ml}"><i style="--h:${V[ml].h}"></i>${ml} ml</span>`).join('')}</div>
+          <button type="button" class="btn" data-hold-go>Hold it up</button>
+          <ol class="s8-steps">
+            <li><b>Make it exact once</b> (bottom of this window): hold a bank card to the screen and drag until it matches.</li>
+            <li><b>Tap Hold it up.</b> The vial fills the screen at its real height, with a ruler on the edge.</li>
+            <li><b>Compare:</b> stand a pen, lipstick or your own vial against the screen.</li>
+          </ol>
+          <p class="fine">Uses full screen where the browser allows it; otherwise the popup fills the window. Heights include the cap.</p>
+        </div>
+        <div class="stage mini"><div class="row">${ruler(100)}<div data-mini></div></div></div>
+        <div class="hold" data-hold hidden role="region" aria-label="Vial at real size, full screen">
+          <div class="hold-top">${chips('hsize', 'Vial size', SIZES)}<span class="fine" data-hold-spec></span><button type="button" class="btn" data-hold-done>Done</button></div>
+          <div class="hold-stage" data-hold-stage>
+            <p class="fine hold-tip">Lay your vial or a bank card on the screen.</p>
+            <span class="hold-base" aria-hidden="true"></span>
+            <div class="ruler hold-ruler" aria-hidden="true" data-hold-ruler></div>
+            <div class="cardout hold-card" aria-hidden="true"><span>Bank card<br>85.6 × 53.98 mm</span></div>
+            <div class="hold-slot" data-hold-slot></div>
+          </div>
+        </div>
+      </div>`,
+    bind(dlg) {
+      const hold = dlg.querySelector('[data-hold]');
+      const stage = dlg.querySelector('[data-hold-stage]');
+      const rul = dlg.querySelector('[data-hold-ruler]');
+      const base = dlg.querySelector('.hold-base');
+      const hcard = dlg.querySelector('.hold-card');
+      const go = dlg.querySelector('[data-hold-go]');
+      const done = dlg.querySelector('[data-hold-done]');
+      let holding = false;
+      let usedFs = false;
+      let gA = null;
+      let gB = null;
+      const pick = (ml) => {
+        const v = V[ml];
+        const sets = SETS.filter((x) => x.ml === Number(ml));
+        dlg.querySelector('[data-spec]').innerHTML = `
+          <p class="s8-size">${ml} ml <span>${v.h} mm tall · cap included</span></p>
+          <dl>
+            <div><dt>How it's sold</dt><dd>${v.how}</dd></div>
+            <div><dt>Price</dt><dd>from ${peso(v.from)} a vial</dd></div>
+            <div><dt>Sets</dt><dd>${sets.map((x) => `<a href="${picker(x.q)}">${x.t}</a> ${peso(x.lo)}–${peso(x.hi)}${x.off ? ' <em>10% off</em>' : ''}`).join('<br>')}</dd></div>
+            <div class="s8-quiet"><dt>Lasts</dt><dd>≈ ${Number(ml) * 10} sprays · about ${Number(ml) * 5} days at 2 a day</dd></div>
+            <div class="s8-quiet"><dt>Of a bottle</dt><dd>${ml}% of a 100 ml bottle</dd></div>
+          </dl>`;
+        const hs = dlg.querySelector('[data-hold-spec]'); if (hs) hs.textContent = `${ml} ml · ${v.h} mm tall · from ${peso(v.from)} a vial`;
+        dlg.querySelectorAll('[data-cmp]').forEach((c) => c.classList.toggle('on', c.dataset.cmp === String(ml)));
+        dlg.querySelector('[data-mini]').innerHTML = fig(ml);
+        dlg.querySelector('[data-hold-slot]').innerHTML = fig(ml, { capHTML: `<b>${ml} ml</b><span>${V[ml].h} mm, cap included</span>` });
+      };
+      gA = group(dlg, 'size', (ml) => { pick(ml); if (gB && gB.value() !== ml) gB.select(ml); });
+      gB = group(dlg, 'hsize', (ml) => { pick(ml); if (gA.value() !== ml) gA.select(ml); });
+      gA.select(10);
+      // Ruler along the edge, as tall as the screen allows: a tick every mm.
+      const draw = () => {
+        if (!holding) return;
+        const px = Scale.px;
+        const mm = Math.max(10, Math.floor((base.offsetTop - 24) / px));
+        rul.style.setProperty('--rmm', mm);
+        rul.innerHTML = ticks(mm, 1);
+        hcard.classList.toggle('is-upright', CARD_W * px > stage.clientWidth - 80);
+      };
+      const fsEl = () => document.fullscreenElement || document.webkitFullscreenElement;
+      const enter = () => {
+        holding = true;
+        dlg.classList.add('is-holding');
+        hold.hidden = false;
+        const req = dlg.requestFullscreen || dlg.webkitRequestFullscreen;
+        usedFs = false;
+        if (req) {
+          try {
+            const p = req.call(dlg);
+            usedFs = true;
+            if (p && p.catch) p.catch(() => { usedFs = false; });
+          } catch (e) {
+            usedFs = false;
+          }
+        }
+        requestAnimationFrame(draw);
+        done.focus();
+      };
+      const exit = () => {
+        if (!holding) return;
+        holding = false;
+        usedFs = false;
+        if (fsEl() === dlg) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+        dlg.classList.remove('is-holding');
+        hold.hidden = true;
+        if (dlg.open) go.focus();
+      };
+      go.addEventListener('click', enter);
+      done.addEventListener('click', exit);
+      const onFs = () => {
+        if (fsEl() === dlg) requestAnimationFrame(draw);
+        else if (holding && usedFs) exit();
+      };
+      document.addEventListener('fullscreenchange', onFs);
+      document.addEventListener('webkitfullscreenchange', onFs);
+      dlg.addEventListener('cancel', (e) => { if (holding) { e.preventDefault(); exit(); } });
+      return { refit: draw, onScale: draw, close: exit };
+    }
+  };
+
+  // 09 The set, unboxed
+  MODS.d09 = {
+    num: '09', title: 'The set, unboxed',
+    build: () => `<div class="s9 lay-grid">
+        <div class="ctl">${chips('set', 'Set', SETS.map((s) => ({ v: s.v, t: s.t })))}</div>
+        <div class="stage"><div class="box" data-box role="img"></div></div>
+        <aside class="side" aria-live="polite">
+          <span class="tag" data-off hidden>10% off</span>
+          <p class="big" data-f="name"></p>
+          <p data-f="contents"></p>
+          <p class="s9-price" data-f="price"></p>
+          <p class="fine">Depending on the scents you choose.</p>
+          <a class="btn" data-f-link href="#">Choose scents&nbsp;<span aria-hidden="true">→</span></a>
+          <p class="fine">Vials at real size; the box is drawn to fit them.</p>
+        </aside>
+      </div>`,
+    bind(dlg) {
+      const box = dlg.querySelector('[data-box]');
+      group(dlg, 'set', (k) => {
+        const s = SETS.find((x) => x.v === k);
+        box.style.setProperty('--cols', s.n <= 3 ? s.n : 3);
+        box.innerHTML = Array.from({ length: s.n }, () => `<span class="slot">${img(s.ml)}</span>`).join('');
+        box.setAttribute('aria-label', `${s.n} vial${s.n > 1 ? 's' : ''} of ${s.ml} ml in a box, at real size`);
+        dlg.querySelector('[data-off]').hidden = !s.off;
+        setF(dlg, 'name', s.t);
+        setF(dlg, 'contents', `${s.n} × ${s.ml} ml vial${s.n > 1 ? 's' : ''}${s.n > 1 ? ', different scents' : ''} · ${V[s.ml].h} mm tall each`);
+        setF(dlg, 'price', `${peso(s.lo)} – ${peso(s.hi)}`);
+        dlg.querySelector('[data-f-link]').href = picker(s.q);
+      }).select('try');
+      return {};
+    }
+  };
+
+  // 10 Product sheet
+  MODS.d10 = {
+    num: '10', title: 'Product sheet',
+    build: () => `<div class="s10">
+        <div class="stage"><div class="row">${ruler(100)}<div data-slot></div></div></div>
+        <div class="s10-sheet">
+          ${chips('size', 'Vial size', SIZES)}
+          <div aria-live="polite">
+            <p class="big" data-f="ml"></p>
+            <dl class="spec">
+              <dt>Height</dt><dd data-f="h"></dd>
+              <dt>Sprays</dt><dd><span data-f="sprays"></span><br><span class="fine">approx.: ml × 10, a typical atomiser</span></dd>
+              <dt>How it's sold</dt><dd data-f="how"></dd>
+              <dt>Price from</dt><dd data-f="from"></dd>
+              <dt>Set</dt><dd data-f="set"></dd>
+            </dl>
+          </div>
+          <a class="btn" data-f-link href="#">Build this set&nbsp;<span aria-hidden="true">→</span></a>
+        </div>
+      </div>`,
+    bind(dlg) {
+      const slot = dlg.querySelector('[data-slot]');
+      group(dlg, 'size', (ml) => {
+        const v = V[ml];
+        slot.innerHTML = fig(ml);
+        setF(dlg, 'ml', `${ml} ml`);
+        setF(dlg, 'h', `${v.h} mm, cap included`);
+        setF(dlg, 'sprays', `≈ ${Number(ml) * 10}`);
+        setF(dlg, 'how', v.how);
+        setF(dlg, 'from', `${peso(v.from)} a vial`);
+        setF(dlg, 'set', `${v.setName}, from ${peso(v.setFrom)}`);
+        dlg.querySelector('[data-f-link]').href = picker(v.set);
+      }).select(5);
+      return {};
+    }
+  };
+
+  /* ---------- Dialog wiring ---------- */
+  let current = null;
+  const hooks = {};
+  const refit = (dlg) => { fitCards(dlg); hooks[dlg.id].refit?.(dlg); };
+  const closeDlg = (dlg) => {
+    if (typeof dlg.close === 'function') dlg.close();
+    else { dlg.removeAttribute('open'); dlg.dispatchEvent(new Event('close')); }
+  };
+
+  Object.entries(MODS).forEach(([id, mod]) => {
+    const dlg = document.getElementById(id);
+    if (mod.dark) dlg.classList.add('is-dark');
+    dlg.setAttribute('aria-labelledby', `${id}-t`);
+    dlg.innerHTML = `<div class="pv-shell">
+        <div class="pv-head"><h2 id="${id}-t"><span>${mod.num}</span>${mod.title}</h2><button type="button" class="pv-close" aria-label="Close preview" data-close>${X}</button></div>
+        <div class="pv-wrap" data-room><div class="pv-body">${mod.build(id)}</div><div class="cal-overlay" data-card data-card-pad="24" aria-hidden="true"><span>Hold a bank card here<br>85.6 × 53.98 mm</span></div></div>
+        <div class="pv-foot">${calHTML(id)}</div>
+      </div>`;
+    hooks[id] = mod.bind(dlg) || {};
+
+    const range = dlg.querySelector('[data-cal-range]');
+    range.addEventListener('input', () => Scale.set(parseFloat(range.value)));
+    range.addEventListener('change', () => refit(dlg));
+    dlg.querySelectorAll('[data-cal-step]').forEach((b) => b.addEventListener('click', () => { Scale.set(Scale.px + parseFloat(b.dataset.calStep)); refit(dlg); }));
+    dlg.querySelector('[data-cal-reset]').addEventListener('click', () => { Scale.reset(); refit(dlg); });
+    const det = dlg.querySelector('.cal');
+    det.addEventListener('toggle', () => { dlg.classList.toggle('is-cal', det.open); refit(dlg); });
+
+    dlg.querySelector('[data-close]').addEventListener('click', () => closeDlg(dlg));
+    // Backdrop click closes, but only when the press also started on the backdrop
+    // (a calibration drag released outside the box must not close it).
+    let downOnBackdrop = false;
+    dlg.addEventListener('pointerdown', (e) => { downOnBackdrop = e.target === dlg; });
+    dlg.addEventListener('click', (e) => { if (e.target === dlg && downOnBackdrop) closeDlg(dlg); });
+    dlg.addEventListener('close', () => {
+      hooks[id].close?.(dlg);
+      if (!document.querySelector('dialog.pv[open]')) document.documentElement.classList.remove('pv-lock');
+      if (current === dlg) current = null;
+      dlg._opener?.focus({ preventScroll: true });
+    });
+  });
+
+  document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => {
+    const dlg = document.getElementById(b.dataset.open);
+    dlg._opener = b;
+    Scale.apply();
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    else dlg.setAttribute('open', '');
+    current = dlg;
+    document.documentElement.classList.add('pv-lock');
+    refit(dlg);
+    hooks[dlg.id].open?.(dlg);
+  }));
+
+  Scale.on(() => { if (current) hooks[current.id].onScale?.(current); });
+  window.addEventListener('resize', () => { if (current) refit(current); }, { passive: true });
+  Scale.apply();
+})();
+</script>
+</body>
+</html>

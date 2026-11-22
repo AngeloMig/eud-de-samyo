@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decants section: 10 ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Local preview only: 10 ideas for the homepage Decants section (round 2).
+   Real set data; demo links (#). Vials: ../assets/sample-decant-*.webp */
+:root {
+  --ink: #26221f;
+  --paper: #f7f5f0;
+  --bg: #f3f0eb;
+  --gold: #d9b46a;
+  --white: #fff;
+  --muted: rgba(38, 34, 31, 0.64);
+  --line: rgba(38, 34, 31, 0.14);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 var(--sans); overflow-x: hidden; }
+img { display: block; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.dark :focus-visible { outline-color: var(--gold); }
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -0.015em; }
+p { margin: 0; }
+em { font-style: italic; }
+.kicker { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; margin: 0 0 14px; color: var(--muted); }
+.dark .kicker { color: rgba(247, 245, 240, 0.6); }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 26px; border-radius: 999px;
+  background: var(--ink); color: var(--paper); border: 1px solid var(--ink);
+  text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  cursor: pointer; transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn--ghost { background: transparent; color: var(--ink); }
+.btn--gold { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.btn--light { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.link { font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-underline-offset: 5px; display: inline-flex; align-items: center; min-height: 44px; }
+.pill { display: inline-block; background: var(--gold); color: var(--ink); font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+.badge { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.vials { display: flex; align-items: flex-end; gap: 6px; }
+.vials img { width: auto; filter: drop-shadow(0 8px 8px rgba(38, 34, 31, 0.16)); }
+.dark .vials img { filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.5)); }
+.rule { font-size: 12.5px; color: var(--muted); }
+.dark .rule { color: rgba(247, 245, 240, 0.6); }
+.nm em { font-style: italic; }
+.wrap { max-width: 1240px; margin: 0 auto; }
+
+/* Page frame */
+.page-head { max-width: 1240px; margin: 0 auto; padding: 64px 32px 44px; }
+.page-head h1 { font-size: clamp(40px, 6vw, 76px); line-height: 1; }
+.page-head h1 em { color: #a9843e; }
+.page-head p { max-width: 70ch; color: var(--muted); margin-top: 18px; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; padding: 0; list-style: none; }
+.toc a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-size: 13px; background: var(--paper); }
+.toc a:hover { border-color: var(--ink); }
+.idea { border-top: 1px solid var(--line); }
+.idea-label { max-width: 1240px; margin: 0 auto; padding: 30px 32px 22px; display: flex; gap: 10px 22px; align-items: baseline; flex-wrap: wrap; }
+.idea-num { font-family: var(--serif); font-size: 48px; line-height: 1; color: #a9843e; }
+.idea-name { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.idea-why { flex: 1 1 340px; color: var(--muted); }
+.mock { padding: 92px 32px; background: var(--paper); position: relative; overflow-x: clip; }
+.sh { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 40ch); gap: 18px 48px; align-items: end; margin-bottom: 48px; }
+.sh h2 { font-size: clamp(40px, 5vw, 62px); line-height: 1; }
+.sh > p { color: var(--muted); }
+.dark .sh > p { color: rgba(247, 245, 240, 0.7); }
+@media (max-width: 820px) { .sh { grid-template-columns: 1fr; margin-bottom: 36px; } }
+@media (max-width: 700px) {
+  .page-head, .idea-label { padding-left: 16px; padding-right: 16px; }
+  .mock { padding: 60px 16px; }
+}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ============ 1. Editorial index ============ */
+.i1-list { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--ink); }
+.i1-row { border-top: 1px solid var(--ink); }
+.i1-row h3 { font-size: inherit; letter-spacing: 0; }
+.i1-btn {
+  width: 100%; display: grid; grid-template-columns: 56px minmax(0, 1fr) 140px 200px 44px; align-items: center; gap: 16px;
+  min-height: 92px; padding: 14px 0; background: none; border: 0; cursor: pointer; text-align: left;
+}
+.i1-n { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--muted); }
+.i1-name { font-family: var(--serif); font-size: clamp(32px, 4.4vw, 56px); line-height: 1; transition: transform 0.35s ease; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.i1-btn:hover .i1-name, .i1-btn[aria-expanded="true"] .i1-name { transform: translateX(10px); }
+.i1-spec { font-size: 13px; letter-spacing: 0.06em; color: var(--muted); }
+.i1-price { font-family: var(--serif); font-size: 22px; text-align: right; }
+.i1-plus { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; position: relative; transition: transform 0.35s ease; justify-self: end; }
+.i1-plus::before, .i1-plus::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.5px; background: var(--ink); transform: translate(-50%, -50%); }
+.i1-plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+.i1-btn[aria-expanded="true"] .i1-plus { transform: rotate(45deg); background: var(--ink); }
+.i1-btn[aria-expanded="true"] .i1-plus::before, .i1-btn[aria-expanded="true"] .i1-plus::after { background: var(--paper); }
+.i1-panel { display: grid; grid-template-columns: 56px 260px minmax(0, 1fr) auto; gap: 16px 24px; align-items: end; padding: 6px 0 34px; animation: fadeUp 0.45s ease both; }
+.i1-panel .vials { grid-column: 2; min-height: 150px; }
+.i1-panel p { max-width: 46ch; color: var(--muted); align-self: center; }
+.i1-panel .act { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.i1-row--build .i1-name { color: var(--muted); }
+.i1-foot { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 22px; }
+@media (max-width: 820px) {
+  .i1-btn { grid-template-columns: 34px minmax(0, 1fr) 44px; grid-template-areas: "n name plus" ". meta plus"; row-gap: 6px; min-height: 84px; }
+  .i1-n { grid-area: n; align-self: start; padding-top: 10px; }
+  .i1-name { grid-area: name; }
+  .i1-spec, .i1-price { grid-area: meta; }
+  .i1-price { justify-self: end; font-size: 18px; }
+  .i1-plus { grid-area: plus; }
+  .i1-panel { grid-template-columns: 34px minmax(0, 1fr); }
+  .i1-panel .vials, .i1-panel p, .i1-panel .act { grid-column: 2; }
+  .i1-panel .vials { min-height: 110px; }
+  .i1-panel .act { justify-content: flex-start; }
+}
+
+/* ============ 2. Fanned deck ============ */
+.i2 { background: var(--bg); }
+.i2-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.i2-stage { position: relative; height: 480px; }
+.i2-card {
+  position: absolute; left: 50%; top: 30px; width: 230px; height: 340px; margin-left: -115px;
+  background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+  display: flex; flex-direction: column; justify-content: space-between; text-align: left; cursor: pointer;
+  box-shadow: 0 18px 40px rgba(38, 34, 31, 0.12);
+  transform-origin: 50% 120%; transition: transform 0.55s cubic-bezier(.2, .8, .2, 1), opacity 0.4s ease;
+}
+.i2-card .nm { font-family: var(--serif); font-size: 30px; line-height: 1; }
+.i2-card .sp { font-size: 12px; letter-spacing: 0.08em; color: var(--muted); margin-top: 6px; }
+.i2-card .vials { justify-content: center; min-height: 150px; }
+.i2-card .pr { font-size: 13px; }
+.i2-card--feature { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.i2-card--feature .sp { color: rgba(247, 245, 240, 0.65); }
+.i2-card--build { background: transparent; border: 1.5px dashed rgba(38, 34, 31, 0.4); box-shadow: none; }
+.i2-card--build .plus { font-family: var(--serif); font-size: 90px; line-height: 1; text-align: center; color: var(--muted); }
+.i2-card[aria-pressed="true"] { box-shadow: 0 28px 60px rgba(38, 34, 31, 0.22); }
+.i2-ctrl { display: flex; justify-content: center; gap: 10px; position: absolute; left: 0; right: 0; bottom: 0; }
+.i2-arrow { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--ink); background: transparent; cursor: pointer; font-size: 18px; }
+.i2-arrow:hover { background: var(--ink); color: var(--paper); }
+.i2-detail { animation: fadeUp 0.4s ease both; }
+.i2-detail h3 { font-size: clamp(44px, 5vw, 68px); line-height: 0.95; margin: 10px 0 10px; }
+.i2-detail .sp { font-size: 13px; letter-spacing: 0.08em; color: var(--muted); }
+.i2-detail .pr { font-family: var(--serif); font-size: 30px; margin: 22px 0 6px; }
+.i2-detail .pr small { font-family: var(--sans); font-size: 13px; color: var(--muted); }
+.i2-detail p.why { color: var(--muted); max-width: 40ch; margin-bottom: 26px; }
+.i2-count { font-size: 12px; letter-spacing: 0.14em; color: var(--muted); }
+@media (max-width: 900px) {
+  .i2-grid { grid-template-columns: 1fr; gap: 24px; }
+  .i2-stage { height: 430px; }
+  .i2-card { width: 196px; height: 300px; margin-left: -98px; }
+  .i2-card .vials { min-height: 120px; }
+}
+
+/* ============ 3. Budget ladder ============ */
+.i3-panel { background: var(--white); border-radius: 22px; padding: 36px; border: 1px solid var(--line); }
+.i3-top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px 40px; align-items: center; margin-bottom: 30px; }
+.i3-budget label { display: block; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+.i3-budget output { font-family: var(--serif); font-size: 64px; line-height: 1; display: block; margin-top: 6px; }
+.i3-range { width: 100%; height: 44px; accent-color: var(--ink); cursor: pointer; }
+.i3-summary { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.i3-summary strong { color: var(--ink); }
+.i3-chart { position: relative; }
+.i3-row { display: grid; grid-template-columns: 220px minmax(0, 1fr) 140px; gap: 20px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); transition: opacity 0.3s ease; }
+.i3-row.is-out { opacity: 0.42; }
+.i3-name { display: flex; align-items: center; gap: 14px; }
+.i3-name .vials { width: 54px; justify-content: center; gap: 2px; }
+.i3-name b { font-family: var(--serif); font-weight: 500; font-size: 24px; line-height: 1; display: block; }
+.i3-name small { font-size: 12px; color: var(--muted); letter-spacing: 0.05em; }
+.i3-track { position: relative; height: 34px; }
+.i3-track::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line); }
+.i3-bar { position: absolute; top: 9px; height: 16px; border-radius: 999px; background: var(--ink); }
+.i3-bar.is-feature { background: linear-gradient(90deg, var(--ink), #5a4a33); }
+.i3-bar::before, .i3-bar::after { content: ''; position: absolute; top: -4px; width: 2px; height: 24px; background: inherit; }
+.i3-row.is-out .i3-bar { background: rgba(38, 34, 31, 0.35); }
+.i3-status { font-size: 12.5px; text-align: right; }
+.i3-status b { display: block; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+.i3-marker { position: absolute; top: -10px; bottom: -6px; width: 0; border-left: 1.5px dashed var(--gold); pointer-events: none; }
+.i3-marker span { position: absolute; top: -22px; left: 0; transform: translateX(-50%); background: var(--gold); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.i3-axis { display: grid; grid-template-columns: 220px minmax(0, 1fr) 140px; gap: 20px; border-top: 1px solid var(--line); padding-top: 10px; font-size: 11px; color: var(--muted); }
+.i3-axis div { display: flex; justify-content: space-between; }
+.i3-tracks-col { position: absolute; top: 0; bottom: 0; left: 240px; right: 160px; }
+.i3-foot { display: flex; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; align-items: center; margin-top: 28px; }
+@media (max-width: 820px) {
+  .i3-panel { padding: 22px 16px; }
+  .i3-top { grid-template-columns: 1fr; }
+  .i3-budget output { font-size: 52px; }
+  .i3-row { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name status" "track track"; gap: 8px 12px; }
+  .i3-name { grid-area: name; } .i3-status { grid-area: status; } .i3-track { grid-area: track; }
+  .i3-axis { grid-template-columns: 1fr; } .i3-axis > span { display: none; }
+  .i3-tracks-col { display: none; }
+}
+
+/* ============ 4. Quiz-lite chooser ============ */
+.i4 { background: var(--bg); }
+.i4-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border-radius: 26px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); }
+.i4-q { padding: 52px; }
+.i4-q h2 { font-size: clamp(38px, 4.4vw, 56px); line-height: 1; margin-bottom: 14px; }
+.i4-q > p { color: var(--muted); margin-bottom: 34px; max-width: 42ch; }
+.i4-step { margin-bottom: 28px; }
+.i4-step legend { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; margin-bottom: 12px; padding: 0; }
+.i4-step legend span { color: #a9843e; margin-right: 8px; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.i4-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.i4-opt { min-height: 64px; padding: 12px 16px; text-align: left; border: 1px solid var(--line); background: var(--white); border-radius: 14px; cursor: pointer; transition: transform 0.2s ease; }
+.i4-opt b { display: block; font-weight: 600; font-size: 14px; }
+.i4-opt small { color: var(--muted); font-size: 12px; }
+.i4-opt:hover { transform: translateY(-2px); border-color: var(--ink); }
+.i4-opt[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.i4-opt[aria-pressed="true"] small { color: rgba(247, 245, 240, 0.7); }
+.i4-note { font-size: 13px; color: var(--muted); padding: 14px 16px; border: 1px dashed var(--line); border-radius: 14px; }
+.i4-res { background: var(--ink); color: var(--paper); padding: 52px; display: flex; flex-direction: column; justify-content: space-between; gap: 30px; position: relative; overflow: hidden; }
+.i4-res::before { content: ''; position: absolute; width: 520px; height: 520px; right: -160px; top: -160px; border-radius: 50%; background: radial-gradient(circle, rgba(217, 180, 106, 0.28), transparent 65%); }
+.i4-res > * { position: relative; }
+.i4-res-body { animation: fadeUp 0.45s ease both; }
+.i4-res .tag { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.i4-res h3 { font-size: clamp(48px, 5.4vw, 76px); line-height: 0.95; margin: 12px 0 8px; }
+.i4-res .sp { color: rgba(247, 245, 240, 0.7); letter-spacing: 0.06em; font-size: 13px; }
+.i4-res .vials { min-height: 190px; margin: 26px 0; }
+.i4-res .pr { font-family: var(--serif); font-size: 32px; }
+.i4-res .pr small { font-family: var(--sans); font-size: 13px; color: rgba(247, 245, 240, 0.65); }
+.i4-res .why { color: rgba(247, 245, 240, 0.75); max-width: 40ch; margin-top: 10px; }
+.i4-res .act { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.i4-res .link { color: var(--paper); }
+@media (max-width: 900px) {
+  .i4-grid { grid-template-columns: 1fr; }
+  .i4-q, .i4-res { padding: 30px 20px; }
+  .i4-opts { grid-template-columns: 1fr; }
+  .i4-res .vials { min-height: 140px; }
+}
+
+/* ============ 5. Tasting menu ============ */
+.i5 { background: #ebe5db; }
+.i5-card { max-width: 820px; margin: 0 auto; background: var(--paper); padding: 70px 72px 60px; position: relative; box-shadow: 0 30px 60px rgba(38, 34, 31, 0.1); }
+.i5-card::before { content: ''; position: absolute; inset: 14px; border: 1px solid rgba(169, 132, 62, 0.55); pointer-events: none; }
+.i5-card::after { content: ''; position: absolute; inset: 19px; border: 1px solid rgba(169, 132, 62, 0.25); pointer-events: none; }
+.i5-head { text-align: center; margin-bottom: 44px; }
+.i5-head h2 { font-size: clamp(40px, 5vw, 64px); line-height: 1; }
+.i5-head p { color: var(--muted); max-width: 44ch; margin: 14px auto 0; }
+.i5-orn { color: #a9843e; letter-spacing: 0.5em; font-size: 12px; margin: 18px 0 0; }
+.i5-course { margin-bottom: 34px; }
+.i5-course h3 { font-family: var(--sans); text-align: center; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; font-weight: 700; color: #a9843e; margin-bottom: 16px; }
+.i5-item { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 16px; align-items: center; text-decoration: none; padding: 10px 12px; margin: 0 -12px; border-radius: 10px; transition: transform 0.25s ease; }
+.i5-item:hover { transform: translateX(6px); background: rgba(217, 180, 106, 0.1); }
+.i5-item .vials { justify-content: center; }
+.i5-line { display: flex; align-items: baseline; gap: 10px; }
+.i5-line .nm { font-family: var(--serif); font-size: 28px; line-height: 1.1; white-space: nowrap; }
+.i5-dots { flex: 1; border-bottom: 1.5px dotted rgba(38, 34, 31, 0.35); transform: translateY(-6px); min-width: 20px; }
+.i5-line .pr { font-family: var(--serif); font-size: 22px; white-space: nowrap; }
+.i5-sub { font-size: 12.5px; color: var(--muted); letter-spacing: 0.03em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+.i5-carte { text-align: center; border-top: 1px solid rgba(169, 132, 62, 0.4); padding-top: 30px; margin-top: 8px; }
+.i5-carte h4 { font-size: 30px; font-style: italic; }
+.i5-carte p { color: var(--muted); margin: 8px auto 22px; max-width: 46ch; }
+@media (max-width: 700px) {
+  .i5-card { padding: 48px 26px 40px; }
+  .i5-line .nm { font-size: 23px; white-space: normal; }
+  .i5-line .pr { font-size: 18px; }
+  .i5-item { grid-template-columns: 22px minmax(0, 1fr); gap: 12px; }
+}
+
+/* ============ 6. Staircase ============ */
+.i6 { background: var(--paper); overflow: hidden; }
+.i6-stairs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; align-items: end; border-bottom: 1px solid var(--ink); }
+.i6-step { display: flex; flex-direction: column; align-items: stretch; text-decoration: none; }
+.i6-step .vials { justify-content: center; gap: 3px; min-height: 112px; padding-bottom: 0; transition: transform 0.35s ease; position: relative; z-index: 1; margin-bottom: -2px; }
+.i6-step:hover .vials, .i6-step:focus-visible .vials { transform: translateY(-8px); }
+.i6-block { height: var(--h); background: var(--white); border: 1px solid var(--line); border-bottom: 0; padding: 16px 14px; display: flex; flex-direction: column; gap: 4px; }
+.i6-step + .i6-step .i6-block { border-left: 0; }
+.i6-step .lv { font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: #a9843e; }
+.i6-step .nm { font-family: var(--serif); font-size: 26px; line-height: 1; }
+.i6-step .sp { font-size: 12px; color: var(--muted); }
+.i6-step .pr { font-size: 13px; margin-top: auto; }
+.i6-step .pr span { display: block; color: var(--muted); font-size: 11.5px; }
+.i6-step--feature .i6-block { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.i6-step--feature .sp, .i6-step--feature .pr span { color: rgba(247, 245, 240, 0.65); }
+.i6-step--bottle .i6-block { background: transparent; border: 1.5px dashed rgba(38, 34, 31, 0.35); border-bottom: 0; justify-content: center; text-align: center; }
+.i6-step--bottle .nm { font-style: italic; }
+.i6-foot { display: flex; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; align-items: center; margin-top: 28px; }
+.i6-foot p { max-width: 60ch; }
+@media (max-width: 900px) {
+  .i6-stairs { grid-template-columns: 1fr; border-bottom: 0; gap: 8px; }
+  .i6-step { display: grid; grid-template-columns: 76px minmax(0, 1fr); align-items: end; }
+  .i6-step .vials { min-height: 0; margin: 0; padding: 0 0 12px; justify-content: center; }
+  .i6-block { height: auto; width: var(--w); min-width: 210px; max-width: 100%; border: 1px solid var(--line); border-radius: 0 12px 12px 0; padding: 12px 14px; }
+  .i6-step + .i6-step .i6-block { border-left: 1px solid var(--line); }
+  .i6-step--bottle .i6-block { border-bottom: 1.5px dashed rgba(38, 34, 31, 0.35); }
+  .i6-step .pr { margin-top: 4px; }
+}
+
+/* ============ 7. Sticky showcase ============ */
+.i7-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+.i7-stage { position: sticky; top: 24px; height: 560px; border-radius: 26px; background: radial-gradient(circle at 50% 30%, #fff 0%, #ece6dc 70%); display: flex; flex-direction: column; justify-content: space-between; padding: 34px; overflow: hidden; }
+.i7-stage .big { font-family: var(--serif); font-size: 150px; line-height: 0.8; color: rgba(38, 34, 31, 0.08); position: absolute; right: 24px; top: 26px; }
+.i7-stage .vials { justify-content: center; min-height: 330px; gap: 10px; transition: opacity 0.35s ease, transform 0.35s ease; }
+.i7-stage.is-swap .vials, .i7-stage.is-swap .cap { opacity: 0; transform: translateY(12px); }
+.i7-stage .cap { transition: opacity 0.35s ease, transform 0.35s ease; }
+.i7-stage .cap b { font-family: var(--serif); font-weight: 400; font-size: 40px; display: block; line-height: 1; }
+.i7-stage .cap span { color: var(--muted); font-size: 13px; }
+.i7-list { list-style: none; margin: 0; padding: 0; }
+.i7-item { min-height: 230px; border-top: 1px solid var(--line); padding: 30px 0; display: flex; flex-direction: column; gap: 10px; transition: opacity 0.3s ease; opacity: 0.45; }
+.i7-item.is-active { opacity: 1; }
+.i7-item .n { font-size: 12px; letter-spacing: 0.14em; color: #a9843e; font-weight: 700; }
+.i7-item h3 { font-size: clamp(40px, 4.6vw, 58px); line-height: 1; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+.i7-item .sp { color: var(--muted); font-size: 13px; letter-spacing: 0.05em; }
+.i7-item .pr { font-family: var(--serif); font-size: 24px; }
+.i7-item .vials { display: none; }
+.i7-item p.why { color: var(--muted); max-width: 44ch; }
+@media (max-width: 900px) {
+  .i7-grid { grid-template-columns: 1fr; gap: 0; }
+  .i7-stage { display: none; }
+  .i7-item { opacity: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; }
+  .i7-item > * { grid-column: 1; }
+  .i7-item .vials { display: flex; grid-column: 2; grid-row: 1 / span 4; align-self: end; }
+}
+
+/* ============ 8. Live mini builder ============ */
+.i8 { background: var(--bg); }
+.i8-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.i8-chips { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.i8-chip { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 56px; padding: 10px 16px; border-radius: 14px; border: 1px solid var(--line); background: var(--white); cursor: pointer; text-align: left; transition: transform 0.2s ease; }
+.i8-chip:hover { transform: translateY(-2px); border-color: var(--ink); }
+.i8-chip .nm { font-weight: 600; font-size: 14px; }
+.i8-chip .pr { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.i8-chip .tick { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); flex: none; display: grid; place-items: center; font-size: 12px; }
+.i8-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.i8-chip[aria-pressed="true"] .pr { color: rgba(247, 245, 240, 0.7); }
+.i8-chip[aria-pressed="true"] .tick { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.i8-chip[aria-pressed="true"] .tick::before { content: '✓'; }
+.i8-chip[disabled] { opacity: 0.4; cursor: not-allowed; transform: none; }
+.i8-left .rule { margin-top: 16px; }
+.i8-tray { background: var(--ink); color: var(--paper); border-radius: 24px; padding: 30px; position: sticky; top: 24px; }
+.i8-tray .kicker { color: rgba(247, 245, 240, 0.6); }
+.i8-slots { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin: 6px 0 24px; padding: 18px 12px 12px; border-radius: 16px; background: linear-gradient(#1b1815, #2f2a25); box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5); }
+.i8-slot { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; min-height: 140px; }
+.i8-slot .ph { width: 18px; height: 76px; border-radius: 6px 6px 4px 4px; border: 1px dashed rgba(247, 245, 240, 0.25); }
+.i8-slot img { height: 96px; width: auto; animation: fadeUp 0.35s ease both; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5)); }
+.i8-slot small { font-size: 10px; line-height: 1.2; text-align: center; color: rgba(247, 245, 240, 0.7); min-height: 24px; overflow-wrap: anywhere; }
+.i8-sum { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; border-top: 1px solid rgba(247, 245, 240, 0.15); padding-top: 18px; }
+.i8-sum .set { font-family: var(--serif); font-size: 32px; line-height: 1; }
+.i8-sum .msg { font-size: 13px; color: rgba(247, 245, 240, 0.7); margin-top: 6px; }
+.i8-sum .tot { font-family: var(--serif); font-size: 36px; text-align: right; line-height: 1; }
+.i8-sum .tot s { font-size: 18px; color: rgba(247, 245, 240, 0.5); display: block; }
+.i8-tray .btn { width: 100%; margin-top: 20px; }
+.i8-more { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px; }
+.i8-more a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; font-size: 12.5px; background: var(--paper); }
+.i8-more a span { color: var(--muted); }
+.i8-more a:hover { border-color: var(--ink); }
+@media (max-width: 900px) {
+  .i8-grid { grid-template-columns: 1fr; }
+  .i8-tray { position: static; padding: 22px 16px; }
+  .i8-slots { gap: 4px; padding: 14px 6px 10px; }
+  .i8-slot { min-height: 116px; }
+  .i8-slot img { height: 78px; }
+}
+@media (max-width: 480px) { .i8-chips { grid-template-columns: 1fr; } }
+
+/* ============ 9. Numbers poster (dark) ============ */
+.i9 { background: var(--ink); color: var(--paper); }
+.i9 .sh h2 em { color: var(--gold); }
+.i9-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-flow: dense; gap: 1px; background: rgba(217, 180, 106, 0.28); border: 1px solid rgba(217, 180, 106, 0.28); }
+.i9-tile { background: var(--ink); padding: 26px; min-height: 260px; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; text-decoration: none; position: relative; overflow: hidden; }
+.i9-tile .num { font-family: var(--serif); font-size: 108px; line-height: 0.85; letter-spacing: -0.04em; color: var(--gold); transition: transform 0.45s cubic-bezier(.2, .8, .2, 1); }
+.i9-tile .num small { font-size: 0.32em; letter-spacing: 0; margin-left: 4px; color: rgba(247, 245, 240, 0.7); }
+.i9-tile .num i { font-style: normal; font-size: 0.55em; vertical-align: 0.35em; margin: 0 0.04em; color: rgba(217, 180, 106, 0.6); }
+.i9-tile .meta { display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+.i9-tile .nm { font-family: var(--serif); font-size: 28px; line-height: 1; }
+.i9-tile .pr { font-size: 12.5px; color: rgba(247, 245, 240, 0.7); text-align: right; }
+.i9-tile .pr b { display: block; color: var(--paper); font-weight: 500; font-size: 15px; }
+.i9-tile .vials { position: absolute; right: 22px; top: 24px; opacity: 0; transform: translateY(16px); transition: opacity 0.4s ease, transform 0.45s ease; gap: 3px; }
+.i9-tile:hover .num, .i9-tile:focus-visible .num { transform: translateY(-6px); }
+.i9-tile:hover .vials, .i9-tile:focus-visible .vials { opacity: 1; transform: none; }
+.i9-tile:hover { background: #2e2925; }
+.i9-tile--feature { justify-content: space-between; grid-column: span 2; grid-row: span 2; background: radial-gradient(circle at 80% 20%, #3a3129, var(--ink) 65%); }
+.i9-tile--feature .num { font-size: 230px; }
+.i9-tile--feature .nm { font-size: 44px; }
+.i9-tile--feature .vials { opacity: 1; transform: none; right: 34px; top: 40px; gap: 6px; }
+.i9-tile--feature .why { color: rgba(247, 245, 240, 0.75); max-width: 36ch; margin: 12px 0 0; }
+.i9-tile--feature .top { display: flex; gap: 10px; align-items: center; }
+.i9-tile--feature .top .badge { color: var(--gold); }
+.i9-tile--build { grid-column: span 3; min-height: 160px; flex-direction: row; align-items: center; gap: 24px; flex-wrap: wrap; }
+.i9-tile--build .num { font-size: 80px; }
+.i9-tile--build .txt { flex: 1 1 280px; }
+.i9-tile--build .rule { margin-top: 6px; }
+@media (hover: none) { .i9-tile .vials { opacity: 1; transform: none; } }
+@media (max-width: 900px) {
+  .i9-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .i9-tile { padding: 18px 16px; min-height: 210px; }
+  .i9-tile .num { font-size: 64px; }
+  .i9-tile .nm { font-size: 22px; }
+  .i9-tile .meta { flex-direction: column; align-items: flex-start; }
+  .i9-tile .pr { text-align: left; }
+  .i9-tile .vials { right: 14px; top: 16px; }
+  .i9-tile--feature { grid-row: span 1; min-height: 360px; }
+  .i9-tile--feature .num { font-size: 130px; }
+  .i9-tile--feature .vials { top: 58px; right: 16px; gap: 4px; }
+  .i9-tile--feature .nm { font-size: 34px; }
+  .i9-tile--travel, .i9-tile--build { grid-column: span 2; }
+}
+
+/* ============ 10. Apothecary shelf ============ */
+.i10 { background: linear-gradient(180deg, #efe9df 0%, #e6ddd0 100%); }
+.i10-shelves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 70px; }
+.i10-group { text-decoration: none; display: flex; flex-direction: column; align-items: stretch; }
+.i10-group .vials { justify-content: center; min-height: 190px; gap: 8px; padding: 0 10px; transition: transform 0.35s ease; }
+.i10-group:hover .vials, .i10-group:focus-visible .vials { transform: translateY(-6px); }
+.i10-board { height: 16px; background: linear-gradient(180deg, #4a3b2c 0%, #2f251c 100%); box-shadow: 0 14px 18px -8px rgba(38, 34, 31, 0.45); position: relative; z-index: 1; }
+.i10-tagwrap { display: flex; justify-content: center; }
+.i10-tag {
+  width: 210px; max-width: 92%; margin-top: 0; position: relative; padding: 36px 18px 18px; background: #fbf8f2;
+  border-radius: 6px 6px 14px 14px; box-shadow: 0 10px 22px rgba(38, 34, 31, 0.14); text-align: center;
+  transform: rotate(-2.5deg); transform-origin: 50% -26px; transition: transform 0.6s cubic-bezier(.3, 1.6, .5, 1);
+}
+.i10-group:nth-child(even) .i10-tag { transform: rotate(2deg); }
+.i10-group:hover .i10-tag, .i10-group:focus-visible .i10-tag { transform: rotate(0deg) translateY(4px); }
+.i10-tag::before { content: ''; position: absolute; left: 50%; top: -26px; width: 1px; height: 38px; background: #8a7a63; }
+.i10-tag::after { content: ''; position: absolute; left: 50%; top: 9px; width: 9px; height: 9px; margin-left: -4.5px; border-radius: 50%; border: 1.5px solid #8a7a63; background: var(--bg); }
+.i10-tag .nm { font-family: var(--serif); font-size: 28px; line-height: 1; }
+.i10-tag .sp { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+.i10-tag .pr { font-family: var(--serif); font-size: 19px; margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.i10-tag .pr small { display: block; font-family: var(--sans); font-size: 11.5px; color: var(--muted); }
+.i10-tag .flag { position: absolute; top: -12px; right: -10px; }
+.i10-group--feature .i10-tag { background: var(--ink); color: var(--paper); }
+.i10-group--feature .i10-tag .sp, .i10-group--feature .i10-tag .pr small { color: rgba(247, 245, 240, 0.65); }
+.i10-group--feature .i10-tag .pr { border-color: rgba(247, 245, 240, 0.2); }
+.i10-group--feature .badge { color: var(--gold); display: block; margin-bottom: 8px; }
+.i10-foot { margin-top: 64px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px 40px; align-items: center; padding: 26px 30px; border: 1.5px dashed rgba(38, 34, 31, 0.35); border-radius: 18px; }
+.i10-foot h3 { font-size: 34px; line-height: 1; }
+.i10-foot p { color: var(--muted); margin-top: 6px; }
+@media (max-width: 820px) {
+  .i10-shelves { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 54px; }
+  .i10-group .vials { min-height: 140px; gap: 4px; }
+  .i10-tag { padding: 32px 10px 14px; }
+  .i10-tag .nm { font-size: 22px; }
+  .i10-foot { grid-template-columns: 1fr; padding: 22px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="page-head">
+  <p class="kicker">Samyó · homepage · round 2</p>
+  <h1>Decants section: <em>10 ideas</em></h1>
+  <p>Ten new directions for the homepage Decants section, all different from the first round (dev/decant-home-ideas.html). Each mock uses the real sets and prices, the vial cut-outs drawn to scale (1 ml shortest, 10 ml tallest), and the rule that 1, 2 and 5 ml vials are sold only in sets while 10 ml can be bought alone. Links are placeholders.</p>
+  <ul class="toc">
+    <li><a href="#idea-1">1 Index</a></li><li><a href="#idea-2">2 Fanned deck</a></li><li><a href="#idea-3">3 Budget ladder</a></li><li><a href="#idea-4">4 Two questions</a></li><li><a href="#idea-5">5 Tasting menu</a></li><li><a href="#idea-6">6 Staircase</a></li><li><a href="#idea-7">7 Sticky showcase</a></li><li><a href="#idea-8">8 Mini builder</a></li><li><a href="#idea-9">9 Numbers poster</a></li><li><a href="#idea-10">10 Apothecary shelf</a></li>
+  </ul>
+</header>
+
+<!-- ======================= 1 ======================= -->
+<article class="idea" id="idea-1">
+  <div class="idea-label">
+    <span class="idea-num">01</span><span class="idea-name">Editorial index</span>
+    <p class="idea-why">A fashion-house list of big serif names; open a row to see its vials and price. Calm, confident and far more premium than cards, and it stays short until someone opens a row.</p>
+  </div>
+  <section class="mock i1" aria-labelledby="i1-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i1-h">Try it before <em>the full bottle</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>
+      </div>
+      <ol class="i1-list">
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p1"><span class="i1-n">01</span><span class="i1-name nm">Try <em>trio</em></span><span class="i1-spec">3 × 1 ml</span><span class="i1-price">₱560 – ₱1,340</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p1" hidden>
+            <div class="vials" data-vials="3x1" data-scale="2.4"></div>
+            <p>Three perfumes, 1 ml each: the smallest way in. 1 ml vials come only in sets.</p>
+            <div class="act"><a class="btn" href="#">Pick 3 scents</a></div>
+          </div>
+        </li>
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="true" aria-controls="i1-p2"><span class="i1-n">02</span><span class="i1-name nm">Discovery <em>six</em> <span class="pill">10% OFF</span></span><span class="i1-spec">6 × 1 ml</span><span class="i1-price">₱1,309.50 – ₱2,061</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p2">
+            <div class="vials" data-vials="6x1" data-scale="2.4"></div>
+            <p><span class="badge" style="color:#a9843e">Our pick</span><br>Six different perfumes, a few days each: the easiest way to find your signature scent.</p>
+            <div class="act"><a class="btn" href="#">Pick 6 scents</a></div>
+          </div>
+        </li>
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p3"><span class="i1-n">03</span><span class="i1-name nm">Wear <em>trio</em></span><span class="i1-spec">3 × 2 ml</span><span class="i1-price">₱975 – ₱2,530</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p3" hidden>
+            <div class="vials" data-vials="3x2" data-scale="2.4"></div>
+            <p>Three perfumes, 2 ml each: twice the vial of the Try trio.</p>
+            <div class="act"><a class="btn" href="#">Pick 3 scents</a></div>
+          </div>
+        </li>
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p4"><span class="i1-n">04</span><span class="i1-name nm">Wardrobe <em>six</em> <span class="pill">10% OFF</span></span><span class="i1-spec">6 × 2 ml</span><span class="i1-price">₱2,358 – ₱3,852</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p4" hidden>
+            <div class="vials" data-vials="6x2" data-scale="2.4"></div>
+            <p>Six perfumes, 2 ml each, with 10% off the set.</p>
+            <div class="act"><a class="btn" href="#">Pick 6 scents</a></div>
+          </div>
+        </li>
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p5"><span class="i1-n">05</span><span class="i1-name nm">Signature <em>duo</em></span><span class="i1-spec">2 × 5 ml</span><span class="i1-price">₱1,415 – ₱4,375</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p5" hidden>
+            <div class="vials" data-vials="2x5" data-scale="2.4"></div>
+            <p>Two perfumes, 5 ml each: for deciding between two favourites.</p>
+            <div class="act"><a class="btn" href="#">Pick 2 scents</a></div>
+          </div>
+        </li>
+        <li class="i1-row">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p6"><span class="i1-n">06</span><span class="i1-name nm">Travel <em>ten</em></span><span class="i1-spec">1 × 10 ml</span><span class="i1-price">₱1,365 – ₱5,560</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p6" hidden>
+            <div class="vials" data-vials="1x10" data-scale="2.4"></div>
+            <p>One perfume, 10 ml: the only size you can buy on its own.</p>
+            <div class="act"><a class="btn" href="#">Pick a scent</a></div>
+          </div>
+        </li>
+        <li class="i1-row i1-row--build">
+          <h3><button class="i1-btn" aria-expanded="false" aria-controls="i1-p7"><span class="i1-n">07</span><span class="i1-name nm">Build <em>your own</em></span><span class="i1-spec">any mix</span><span class="i1-price">your choice</span><span class="i1-plus" aria-hidden="true"></span></button></h3>
+          <div class="i1-panel" id="i1-p7" hidden>
+            <div class="vials" data-vials="1x1,1x2,1x5,1x10" data-scale="2.4"></div>
+            <p>Mix any scents, each perfume once per set. 1, 2 and 5 ml are sold only in sets; 10 ml can be bought alone.</p>
+            <div class="act"><a class="btn btn--ghost" href="#">Build your own set</a></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 2 ======================= -->
+<article class="idea" id="idea-2">
+  <div class="idea-label">
+    <span class="idea-num">02</span><span class="idea-name">Fanned deck</span>
+    <p class="idea-why">The seven options fanned like a hand of cards; tap one (or use the arrows) and it rises to the front while its details appear beside it. Playful and tactile, one decision at a time.</p>
+  </div>
+  <section class="mock i2" aria-labelledby="i2-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i2-h">Pick a card, <em>any scent</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>
+      </div>
+      <div class="i2-grid">
+        <div class="i2-stage" data-deck>
+          <button class="i2-card" type="button" aria-pressed="false" data-i="0"><span><span class="nm">Try <em>trio</em></span><span class="sp" style="display:block">3 × 1 ml</span></span><span class="vials" data-vials="3x1" data-scale="2"></span><span class="pr">from ₱560</span></button>
+          <button class="i2-card i2-card--feature" type="button" aria-pressed="true" data-i="1"><span><span class="pill">10% OFF</span><span class="nm" style="display:block;margin-top:10px">Discovery <em>six</em></span><span class="sp" style="display:block">6 × 1 ml</span></span><span class="vials" data-vials="6x1" data-scale="2"></span><span class="pr">from ₱1,309.50</span></button>
+          <button class="i2-card" type="button" aria-pressed="false" data-i="2"><span><span class="nm">Wear <em>trio</em></span><span class="sp" style="display:block">3 × 2 ml</span></span><span class="vials" data-vials="3x2" data-scale="1.9"></span><span class="pr">from ₱975</span></button>
+          <button class="i2-card" type="button" aria-pressed="false" data-i="3"><span><span class="pill">10% OFF</span><span class="nm" style="display:block;margin-top:10px">Wardrobe <em>six</em></span><span class="sp" style="display:block">6 × 2 ml</span></span><span class="vials" data-vials="6x2" data-scale="1.9"></span><span class="pr">from ₱2,358</span></button>
+          <button class="i2-card" type="button" aria-pressed="false" data-i="4"><span><span class="nm">Signature <em>duo</em></span><span class="sp" style="display:block">2 × 5 ml</span></span><span class="vials" data-vials="2x5" data-scale="1.6"></span><span class="pr">from ₱1,415</span></button>
+          <button class="i2-card" type="button" aria-pressed="false" data-i="5"><span><span class="nm">Travel <em>ten</em></span><span class="sp" style="display:block">1 × 10 ml</span></span><span class="vials" data-vials="1x10" data-scale="1.4"></span><span class="pr">from ₱1,365</span></button>
+          <button class="i2-card i2-card--build" type="button" aria-pressed="false" data-i="6"><span><span class="nm">Build <em>your own</em></span><span class="sp" style="display:block">any scents</span></span><span class="plus" aria-hidden="true">+</span><span class="pr">mix &amp; match</span></button>
+          <div class="i2-ctrl">
+            <button class="i2-arrow" type="button" data-step="-1" aria-label="Previous set">←</button>
+            <button class="i2-arrow" type="button" data-step="1" aria-label="Next set">→</button>
+          </div>
+        </div>
+        <div class="i2-detail-wrap" aria-live="polite"><div class="i2-detail" id="i2-detail"></div></div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 3 ======================= -->
+<article class="idea" id="idea-3">
+  <div class="idea-label">
+    <span class="idea-num">03</span><span class="idea-name">Budget ladder</span>
+    <p class="idea-why">Every set drawn as a price range on one peso scale, with a budget slider that lights up the sets you can start with. Turns “which one?” into “what fits?” using only the real from–to prices.</p>
+  </div>
+  <section class="mock i3" aria-labelledby="i3-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i3-h">Try it before <em>the full bottle</em></h2></div>
+        <p>Each set's price depends on the scents you pick. Slide to your budget and see which sets start within it.</p>
+      </div>
+      <div class="i3-panel">
+        <div class="i3-top">
+          <div class="i3-budget"><label for="i3-range">Your budget</label><output id="i3-out" for="i3-range">₱1,500</output></div>
+          <div>
+            <input class="i3-range" id="i3-range" type="range" min="560" max="5560" step="10" value="1500" aria-describedby="i3-sum">
+            <p class="i3-summary" id="i3-sum" aria-live="polite"></p>
+          </div>
+        </div>
+        <div class="i3-chart" id="i3-chart">
+          <div class="i3-tracks-col" aria-hidden="true"><div class="i3-marker" id="i3-marker"><span>your budget</span></div></div>
+        </div>
+        <div class="i3-axis" aria-hidden="true"><span></span><div><span>₱0</span><span>₱2,000</span><span>₱4,000</span><span>₱6,000</span></div><span></span></div>
+        <div class="i3-foot">
+          <p class="rule">Building your own? Mix any scents, each perfume once per set. 1, 2 and 5 ml come only in sets; 10 ml can be bought alone.</p>
+          <a class="btn" href="#">Build your own set</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 4 ======================= -->
+<article class="idea" id="idea-4">
+  <div class="idea-label">
+    <span class="idea-num">04</span><span class="idea-name">Two questions</span>
+    <p class="idea-why">A quiz-lite chooser: answer “what are you after?” and “which vial size?”, and one set is recommended with its vials, price and a single button. Removes choice paralysis for first-time decant buyers.</p>
+  </div>
+  <section class="mock i4" aria-labelledby="i4-h">
+    <div class="wrap">
+      <div class="i4-grid">
+        <div class="i4-q">
+          <p class="kicker">Decants</p>
+          <h2 id="i4-h">Which set <em>suits you?</em></h2>
+          <p>Two quick questions. Every set is poured from authentic full bottles and labelled by hand.</p>
+          <fieldset class="i4-step">
+            <legend><span>01</span>What are you after?</legend>
+            <div class="i4-opts" data-q="goal">
+              <button class="i4-opt" type="button" aria-pressed="true" data-v="six"><b>Explore lots of scents</b><small>six perfumes</small></button>
+              <button class="i4-opt" type="button" aria-pressed="false" data-v="trio"><b>Compare a shortlist</b><small>three perfumes</small></button>
+              <button class="i4-opt" type="button" aria-pressed="false" data-v="duo"><b>Decide between two</b><small>two perfumes</small></button>
+              <button class="i4-opt" type="button" aria-pressed="false" data-v="ten"><b>Carry one with me</b><small>one perfume</small></button>
+            </div>
+          </fieldset>
+          <fieldset class="i4-step" id="i4-size">
+            <legend><span>02</span>Which vial size?</legend>
+            <div class="i4-opts" data-q="size">
+              <button class="i4-opt" type="button" aria-pressed="true" data-v="1"><b>1 ml</b><small>smallest vial</small></button>
+              <button class="i4-opt" type="button" aria-pressed="false" data-v="2"><b>2 ml</b><small>twice as much</small></button>
+            </div>
+          </fieldset>
+          <p class="i4-note" id="i4-sizenote" hidden></p>
+        </div>
+        <div class="i4-res" aria-live="polite">
+          <div class="i4-res-body" id="i4-res"></div>
+          <div class="act"><a class="btn btn--gold" href="#" id="i4-cta">Pick 6 scents</a><a class="link" href="#">or build your own set</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 5 ======================= -->
+<article class="idea" id="idea-5">
+  <div class="idea-label">
+    <span class="idea-num">05</span><span class="idea-name">Tasting menu</span>
+    <p class="idea-why">The sets presented as a printed degustation menu: courses, dotted leaders, a double gold frame, “à la carte” for build-your-own. Pure typography, unmistakably premium, and it reads in seconds.</p>
+  </div>
+  <section class="mock i5" aria-labelledby="i5-h">
+    <div class="i5-card">
+      <div class="i5-head">
+        <p class="kicker">Decants</p>
+        <h2 id="i5-h">The <em>tasting menu</em></h2>
+        <p>Try it before the full bottle. Poured from authentic full bottles, labelled by hand.</p>
+        <p class="i5-orn" aria-hidden="true">◆ ◆ ◆</p>
+      </div>
+      <div class="i5-course">
+        <h3>To begin · 1 ml</h3>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x1" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Try <em>trio</em></span><span class="i5-dots"></span><span class="pr">from ₱560</span></span><span class="i5-sub">3 × 1 ml · up to ₱1,340</span></span></a>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x1" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Discovery <em>six</em></span><span class="i5-dots"></span><span class="pr">from ₱1,309.50</span></span><span class="i5-sub">6 × 1 ml · up to ₱2,061 <span class="pill">10% OFF</span> <span class="badge" style="color:#a9843e">Our pick</span></span></span></a>
+      </div>
+      <div class="i5-course">
+        <h3>To wear · 2 ml</h3>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x2" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Wear <em>trio</em></span><span class="i5-dots"></span><span class="pr">from ₱975</span></span><span class="i5-sub">3 × 2 ml · up to ₱2,530</span></span></a>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x2" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Wardrobe <em>six</em></span><span class="i5-dots"></span><span class="pr">from ₱2,358</span></span><span class="i5-sub">6 × 2 ml · up to ₱3,852 <span class="pill">10% OFF</span></span></span></a>
+      </div>
+      <div class="i5-course">
+        <h3>To keep · 5 &amp; 10 ml</h3>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x5" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Signature <em>duo</em></span><span class="i5-dots"></span><span class="pr">from ₱1,415</span></span><span class="i5-sub">2 × 5 ml · up to ₱4,375</span></span></a>
+        <a class="i5-item" href="#"><span class="vials" data-vials="1x10" data-scale="0.8"></span><span><span class="i5-line"><span class="nm">Travel <em>ten</em></span><span class="i5-dots"></span><span class="pr">from ₱1,365</span></span><span class="i5-sub">1 × 10 ml · up to ₱5,560 · also sold alone</span></span></a>
+      </div>
+      <div class="i5-carte">
+        <h4>À la carte</h4>
+        <p>Build your own set: mix any scents, each perfume once per set. 1, 2 and 5 ml are served only in sets; 10 ml can be ordered alone.</p>
+        <a class="btn" href="#">Build your own set</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 6 ======================= -->
+<article class="idea" id="idea-6">
+  <div class="idea-label">
+    <span class="idea-num">06</span><span class="idea-name">Staircase</span>
+    <p class="idea-why">The sets climb like steps from a first sniff to the full bottle, the vials growing as they go. Explains the whole range as a journey and ends by pointing to the full bottle.</p>
+  </div>
+  <section class="mock i6" aria-labelledby="i6-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i6-h">From a first sniff <em>to your bottle</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Start small, climb when you find a favourite.</p>
+      </div>
+      <div class="i6-stairs">
+        <a class="i6-step" href="#" style="--h:150px;--w:56%"><span class="vials" data-vials="3x1" data-scale="1.4"></span><span class="i6-block"><span class="lv">Step 1 · Sniff</span><span class="nm">Try <em>trio</em></span><span class="sp">3 × 1 ml</span><span class="pr">from ₱560<span>up to ₱1,340</span></span></span></a>
+        <a class="i6-step i6-step--feature" href="#" style="--h:190px;--w:64%"><span class="vials" data-vials="6x1" data-scale="1.4"></span><span class="i6-block"><span class="lv">Step 2 · Explore</span><span class="nm">Discovery <em>six</em></span><span class="sp">6 × 1 ml · <span style="color:var(--gold)">10% off</span></span><span class="pr">from ₱1,309.50<span>Our pick · up to ₱2,061</span></span></span></a>
+        <a class="i6-step" href="#" style="--h:230px;--w:72%"><span class="vials" data-vials="3x2" data-scale="1.4"></span><span class="i6-block"><span class="lv">Step 3 · Wear</span><span class="nm">Wear <em>trio</em></span><span class="sp">3 × 2 ml</span><span class="pr">from ₱975<span>up to ₱2,530</span></span></span></a>
+        <a class="i6-step" href="#" style="--h:270px;--w:80%"><span class="vials" data-vials="6x2" data-scale="1.3"></span><span class="i6-block"><span class="lv">Step 4 · Wardrobe</span><span class="nm">Wardrobe <em>six</em></span><span class="sp">6 × 2 ml · 10% off</span><span class="pr">from ₱2,358<span>up to ₱3,852</span></span></span></a>
+        <a class="i6-step" href="#" style="--h:310px;--w:88%"><span class="vials" data-vials="2x5" data-scale="1.3"></span><span class="i6-block"><span class="lv">Step 5 · Decide</span><span class="nm">Signature <em>duo</em></span><span class="sp">2 × 5 ml</span><span class="pr">from ₱1,415<span>up to ₱4,375</span></span></span></a>
+        <a class="i6-step" href="#" style="--h:350px;--w:96%"><span class="vials" data-vials="1x10" data-scale="1.3"></span><span class="i6-block"><span class="lv">Step 6 · Carry</span><span class="nm">Travel <em>ten</em></span><span class="sp">1 × 10 ml · sold alone too</span><span class="pr">from ₱1,365<span>up to ₱5,560</span></span></span></a>
+        <a class="i6-step i6-step--bottle" href="#" style="--h:390px;--w:100%"><span class="vials" aria-hidden="true"></span><span class="i6-block"><span class="lv">Then</span><span class="nm">the full bottle</span><span class="sp">once you've found it</span></span></a>
+      </div>
+      <div class="i6-foot">
+        <p class="rule">Or build your own set: mix any scents, each perfume once per set. 1, 2 and 5 ml are sold only in sets; 10 ml can be bought alone.</p>
+        <a class="btn btn--ghost" href="#">Build your own set</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 7 ======================= -->
+<article class="idea" id="idea-7">
+  <div class="idea-label">
+    <span class="idea-num">07</span><span class="idea-name">Sticky showcase</span>
+    <p class="idea-why">A big still life of vials stays put on the left while the sets scroll by on the right; the vials change to match the set you're reading. Feels like a scroll-told product story (on phones each set shows its own vials).</p>
+  </div>
+  <section class="mock i7" aria-labelledby="i7-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i7-h">Try it before <em>the full bottle</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>
+      </div>
+      <div class="i7-grid">
+        <div class="i7-stage" id="i7-stage" aria-hidden="true">
+          <span class="big" id="i7-big">6×1</span>
+          <div class="vials" id="i7-vials"></div>
+          <div class="cap"><b id="i7-cap">Discovery six</b><span id="i7-capsp">6 × 1 ml · from ₱1,309.50</span></div>
+        </div>
+        <ol class="i7-list" id="i7-list">
+          <li class="i7-item" data-v="3x1" data-name="Try trio" data-sp="3 × 1 ml · from ₱560"><span class="n">01</span><h3 class="nm">Try <em>trio</em></h3><span class="sp">3 × 1 ml</span><span class="pr">₱560 – ₱1,340</span><span class="vials" data-vials="3x1" data-scale="1.3"></span><p class="why">Three perfumes, 1 ml each: the smallest way in.</p><a class="link" href="#">Pick 3 scents →</a></li>
+          <li class="i7-item is-active" data-v="6x1" data-name="Discovery six" data-sp="6 × 1 ml · from ₱1,309.50"><span class="n">02 · OUR PICK</span><h3 class="nm">Discovery <em>six</em> <span class="pill">10% OFF</span></h3><span class="sp">6 × 1 ml</span><span class="pr">₱1,309.50 – ₱2,061</span><span class="vials" data-vials="6x1" data-scale="1.3"></span><p class="why">Six different perfumes, a few days each: the easiest way to find your signature scent.</p><a class="link" href="#">Pick 6 scents →</a></li>
+          <li class="i7-item" data-v="3x2" data-name="Wear trio" data-sp="3 × 2 ml · from ₱975"><span class="n">03</span><h3 class="nm">Wear <em>trio</em></h3><span class="sp">3 × 2 ml</span><span class="pr">₱975 – ₱2,530</span><span class="vials" data-vials="3x2" data-scale="1.3"></span><p class="why">Three perfumes, 2 ml each: twice the vial of the Try trio.</p><a class="link" href="#">Pick 3 scents →</a></li>
+          <li class="i7-item" data-v="6x2" data-name="Wardrobe six" data-sp="6 × 2 ml · from ₱2,358"><span class="n">04</span><h3 class="nm">Wardrobe <em>six</em> <span class="pill">10% OFF</span></h3><span class="sp">6 × 2 ml</span><span class="pr">₱2,358 – ₱3,852</span><span class="vials" data-vials="6x2" data-scale="1.1"></span><p class="why">Six perfumes, 2 ml each, with 10% off the set.</p><a class="link" href="#">Pick 6 scents →</a></li>
+          <li class="i7-item" data-v="2x5" data-name="Signature duo" data-sp="2 × 5 ml · from ₱1,415"><span class="n">05</span><h3 class="nm">Signature <em>duo</em></h3><span class="sp">2 × 5 ml</span><span class="pr">₱1,415 – ₱4,375</span><span class="vials" data-vials="2x5" data-scale="1.1"></span><p class="why">Two perfumes, 5 ml each: for deciding between two favourites.</p><a class="link" href="#">Pick 2 scents →</a></li>
+          <li class="i7-item" data-v="1x10" data-name="Travel ten" data-sp="1 × 10 ml · from ₱1,365"><span class="n">06</span><h3 class="nm">Travel <em>ten</em></h3><span class="sp">1 × 10 ml</span><span class="pr">₱1,365 – ₱5,560</span><span class="vials" data-vials="1x10" data-scale="1.1"></span><p class="why">One perfume, 10 ml: the only size you can buy on its own.</p><a class="link" href="#">Pick a scent →</a></li>
+          <li class="i7-item" data-v="1x1,1x2,1x5,1x10" data-name="Build your own" data-sp="any scents, each once per set"><span class="n">07</span><h3 class="nm">Build <em>your own</em></h3><span class="sp">any mix</span><span class="vials" data-vials="1x1,1x2,1x5,1x10" data-scale="1.1"></span><p class="why">Mix any scents, each perfume once per set. 1, 2 and 5 ml are sold only in sets; 10 ml can be bought alone.</p><a class="btn btn--ghost" href="#" style="align-self:flex-start">Build your own set</a></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 8 ======================= -->
+<article class="idea" id="idea-8">
+  <div class="idea-label">
+    <span class="idea-num">08</span><span class="idea-name">Mini builder</span>
+    <p class="idea-why">The section itself is a small 1 ml set builder: tap scents and the tray fills, the set name and live total update (3 = Try trio, 6 = Discovery six with 10% off). Shows real per-scent prices and gets people choosing straight from the homepage.</p>
+  </div>
+  <section class="mock i8" aria-labelledby="i8-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i8-h">Fill a tray <em>right here</em></h2></div>
+        <p>Pick 3 or 6 scents in 1 ml vials. Poured from authentic full bottles, labelled by hand.</p>
+      </div>
+      <div class="i8-grid">
+        <div class="i8-left">
+          <div class="i8-chips" id="i8-chips" role="group" aria-label="Scents, 1 ml"></div>
+          <p class="rule">Each perfume once per set. 1 ml vials are sold only in sets of 3 or 6.</p>
+          <div class="i8-more" aria-label="Other sets">
+            <a href="#">Wear trio <span>3 × 2 ml · ₱975 – ₱2,530</span></a>
+            <a href="#">Wardrobe six <span>6 × 2 ml · ₱2,358 – ₱3,852</span></a>
+            <a href="#">Signature duo <span>2 × 5 ml · ₱1,415 – ₱4,375</span></a>
+            <a href="#">Travel ten <span>1 × 10 ml · ₱1,365 – ₱5,560</span></a>
+          </div>
+        </div>
+        <div class="i8-tray dark">
+          <p class="kicker">Your tray · 1 ml</p>
+          <div class="i8-slots" id="i8-slots" aria-hidden="true"></div>
+          <div class="i8-sum" aria-live="polite">
+            <div><div class="set" id="i8-set">Try trio</div><div class="msg" id="i8-msg"></div></div>
+            <div class="tot" id="i8-tot"></div>
+          </div>
+          <button class="btn btn--gold" type="button" id="i8-add">Add set to cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 9 ======================= -->
+<article class="idea" id="idea-9">
+  <div class="idea-label">
+    <span class="idea-num">09</span><span class="idea-name">Numbers poster</span>
+    <p class="idea-why">A dark, gold-ruled typographic poster where each set is its own big numeral (6×1, 3×2…); vials slide in on hover. Makes the vial count and size the headline, the way a luxury print ad would.</p>
+  </div>
+  <section class="mock i9 dark" aria-labelledby="i9-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i9-h">Try it before <em>the full bottle</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>
+      </div>
+      <div class="i9-grid">
+        <a class="i9-tile i9-tile--feature" href="#">
+          <div>
+            <div class="top"><span class="badge">Our pick</span><span class="pill">10% OFF</span></div>
+            <span class="vials" data-vials="6x1" data-scale="2.6"></span>
+          </div>
+          <div>
+            <div class="num">6<i>×</i>1<small>ml</small></div>
+            <div class="meta">
+              <div><div class="nm">Discovery <em>six</em></div><p class="why">Six different perfumes, a few days each: the easiest way to find your signature scent.</p></div>
+              <div class="pr"><b>from ₱1,309.50</b>up to ₱2,061</div>
+            </div>
+          </div>
+        </a>
+        <a class="i9-tile" href="#"><span class="vials" data-vials="3x1" data-scale="1.1"></span><div class="num">3<i>×</i>1<small>ml</small></div><div class="meta"><div class="nm">Try <em>trio</em></div><div class="pr"><b>from ₱560</b>up to ₱1,340</div></div></a>
+        <a class="i9-tile" href="#"><span class="vials" data-vials="3x2" data-scale="1"></span><div class="num">3<i>×</i>2<small>ml</small></div><div class="meta"><div class="nm">Wear <em>trio</em></div><div class="pr"><b>from ₱975</b>up to ₱2,530</div></div></a>
+        <a class="i9-tile" href="#"><span class="vials" data-vials="6x2" data-scale="0.9"></span><div class="num">6<i>×</i>2<small>ml</small></div><div class="meta"><div class="nm">Wardrobe <em>six</em></div><div class="pr"><b>from ₱2,358</b>up to ₱3,852 · 10% off</div></div></a>
+        <a class="i9-tile" href="#"><span class="vials" data-vials="2x5" data-scale="0.9"></span><div class="num">2<i>×</i>5<small>ml</small></div><div class="meta"><div class="nm">Signature <em>duo</em></div><div class="pr"><b>from ₱1,415</b>up to ₱4,375</div></div></a>
+        <a class="i9-tile i9-tile--travel" href="#"><span class="vials" data-vials="1x10" data-scale="0.9"></span><div class="num">1<i>×</i>10<small>ml</small></div><div class="meta"><div class="nm">Travel <em>ten</em></div><div class="pr"><b>from ₱1,365</b>up to ₱5,560</div></div></a>
+        <a class="i9-tile i9-tile--build" href="#"><div class="num">∞</div><div class="txt"><div class="nm">Build <em>your own</em></div><p class="rule">Mix any scents, each perfume once per set. 1, 2 and 5 ml only in sets; 10 ml also alone.</p></div><span class="btn btn--light" aria-hidden="true">Build your own set</span></a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ======================= 10 ======================= -->
+<article class="idea" id="idea-10">
+  <div class="idea-label">
+    <span class="idea-num">10</span><span class="idea-name">Apothecary shelf</span>
+    <p class="idea-why">The vials stand on dark wooden shelves with paper price tags hanging on strings beneath, which swing gently on hover. A warm, crafted, shop-window feel that matches “labelled by hand”.</p>
+  </div>
+  <section class="mock i10" aria-labelledby="i10-h">
+    <div class="wrap">
+      <div class="sh">
+        <div><p class="kicker">Decants</p><h2 id="i10-h">Try it before <em>the full bottle</em></h2></div>
+        <p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>
+      </div>
+      <div class="i10-shelves">
+        <a class="i10-group" href="#"><span class="vials" data-vials="3x1" data-scale="1.7"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="nm" style="display:block">Try <em>trio</em></span><span class="sp" style="display:block">3 × 1 ml</span><span class="pr" style="display:block">from ₱560<small>up to ₱1,340</small></span></span></span></a>
+        <a class="i10-group i10-group--feature" href="#"><span class="vials" data-vials="6x1" data-scale="1.7"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="pill flag">10% OFF</span><span class="badge">Our pick</span><span class="nm" style="display:block">Discovery <em>six</em></span><span class="sp" style="display:block">6 × 1 ml</span><span class="pr" style="display:block">from ₱1,309.50<small>up to ₱2,061</small></span></span></span></a>
+        <a class="i10-group" href="#"><span class="vials" data-vials="3x2" data-scale="1.7"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="nm" style="display:block">Wear <em>trio</em></span><span class="sp" style="display:block">3 × 2 ml</span><span class="pr" style="display:block">from ₱975<small>up to ₱2,530</small></span></span></span></a>
+        <a class="i10-group" href="#"><span class="vials" data-vials="6x2" data-scale="1.5"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="pill flag">10% OFF</span><span class="nm" style="display:block">Wardrobe <em>six</em></span><span class="sp" style="display:block">6 × 2 ml</span><span class="pr" style="display:block">from ₱2,358<small>up to ₱3,852</small></span></span></span></a>
+        <a class="i10-group" href="#"><span class="vials" data-vials="2x5" data-scale="1.5"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="nm" style="display:block">Signature <em>duo</em></span><span class="sp" style="display:block">2 × 5 ml</span><span class="pr" style="display:block">from ₱1,415<small>up to ₱4,375</small></span></span></span></a>
+        <a class="i10-group" href="#"><span class="vials" data-vials="1x10" data-scale="1.5"></span><span class="i10-board"></span><span class="i10-tagwrap"><span class="i10-tag"><span class="nm" style="display:block">Travel <em>ten</em></span><span class="sp" style="display:block">1 × 10 ml · also alone</span><span class="pr" style="display:block">from ₱1,365<small>up to ₱5,560</small></span></span></span></a>
+      </div>
+      <div class="i10-foot">
+        <div><h3>Build <em>your own</em> set</h3><p>Mix any scents, each perfume once per set. 1, 2 and 5 ml are sold only in sets; 10 ml can be bought alone.</p></div>
+        <a class="btn" href="#">Build your own set</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<script>
+(function () {
+  'use strict';
+  var IMG = { '1': '../assets/sample-decant-square.webp', '2': '../assets/sample-decant-clear.webp', '5': '../assets/sample-decant-amber.webp', '10': '../assets/sample-decant-amber.webp' };
+  var H = { '1': 44, '2': 62, '5': 82, '10': 100 }; // relative heights, same as the theme
+  var SETS = [
+    { id: 'try', name: 'Try <em>trio</em>', plain: 'Try trio', n: 3, ml: '1', lo: 560, hi: 1340, why: 'Three perfumes, 1 ml each: the smallest way in.', cta: 'Pick 3 scents' },
+    { id: 'disc', name: 'Discovery <em>six</em>', plain: 'Discovery six', n: 6, ml: '1', lo: 1309.5, hi: 2061, off: true, pick: true, why: 'Six different perfumes, a few days each: the easiest way to find your signature scent.', cta: 'Pick 6 scents' },
+    { id: 'wear', name: 'Wear <em>trio</em>', plain: 'Wear trio', n: 3, ml: '2', lo: 975, hi: 2530, why: 'Three perfumes, 2 ml each: twice the vial of the Try trio.', cta: 'Pick 3 scents' },
+    { id: 'ward', name: 'Wardrobe <em>six</em>', plain: 'Wardrobe six', n: 6, ml: '2', lo: 2358, hi: 3852, off: true, why: 'Six perfumes, 2 ml each, with 10% off the set.', cta: 'Pick 6 scents' },
+    { id: 'duo', name: 'Signature <em>duo</em>', plain: 'Signature duo', n: 2, ml: '5', lo: 1415, hi: 4375, why: 'Two perfumes, 5 ml each: for deciding between two favourites.', cta: 'Pick 2 scents' },
+    { id: 'ten', name: 'Travel <em>ten</em>', plain: 'Travel ten', n: 1, ml: '10', lo: 1365, hi: 5560, why: 'One perfume, 10 ml: the only size you can buy on its own.', cta: 'Pick a scent' }
+  ];
+  var BUILD = { name: 'Build <em>your own</em>', plain: 'Build your own', why: 'Mix any scents, each perfume once per set. 1, 2 and 5 ml are sold only in sets; 10 ml can be bought alone.', cta: 'Build your own set' };
+  function peso(v) {
+    var s = v % 1 ? v.toFixed(2) : String(Math.round(v));
+    var p = s.split('.');
+    p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return '₱' + p.join('.');
+  }
+  function spec(s) { return s.n + ' × ' + s.ml + ' ml'; }
+
+  // Vials drawn to scale: data-vials="6x1" or "1x1,1x2,1x5,1x10"; data-scale multiplies the heights.
+  function drawVials(el, spec, scale) {
+    el.textContent = '';
+    el.setAttribute('aria-hidden', 'true');
+    spec.split(',').forEach(function (part) {
+      var m = part.split('x'), count = Math.min(+m[0], 6), ml = m[1];
+      for (var i = 0; i < count; i++) {
+        var img = new Image();
+        img.src = IMG[ml]; img.alt = ''; img.decoding = 'async';
+        img.style.height = Math.round(H[ml] * scale) + 'px';
+        el.appendChild(img);
+      }
+    });
+  }
+  document.querySelectorAll('[data-vials]').forEach(function (el) {
+    drawVials(el, el.getAttribute('data-vials'), parseFloat(el.getAttribute('data-scale') || '1'));
+  });
+
+  // 1. Index accordion
+  document.querySelectorAll('.i1-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      document.getElementById(btn.getAttribute('aria-controls')).hidden = open;
+    });
+  });
+
+  // 2. Fanned deck
+  (function () {
+    var stage = document.querySelector('[data-deck]');
+    var cards = [].slice.call(stage.querySelectorAll('.i2-card'));
+    var detail = document.getElementById('i2-detail');
+    var active = 1;
+    function render() {
+      var narrow = stage.clientWidth < 600;
+      cards.forEach(function (c, i) {
+        var d = i - active, a = Math.abs(d);
+        var x = d * (narrow ? 22 : 52), r = d * (narrow ? 5 : 7), y = a * (narrow ? 8 : 14);
+        c.style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px) rotate(' + r + 'deg)' + (d === 0 ? ' scale(1.04)' : '');
+        c.style.zIndex = String(20 - a);
+        c.style.opacity = a > 3 ? '0' : '1';
+        c.setAttribute('aria-pressed', String(d === 0));
+        c.tabIndex = a > 3 ? -1 : 0;
+      });
+      var s = SETS[active] || null, b = s || BUILD;
+      detail.style.animation = 'none'; void detail.offsetWidth; detail.style.animation = '';
+      detail.innerHTML =
+        '<span class="i2-count">' + (active + 1) + ' / 7</span>' +
+        (s && s.pick ? ' <span class="badge" style="color:#a9843e;margin-left:10px">Our pick</span>' : '') +
+        '<h3 class="nm">' + b.name + '</h3>' +
+        (s ? '<span class="sp">' + spec(s) + (s.off ? ' · <span class="pill">10% OFF</span>' : '') + '</span>' +
+             '<p class="pr">' + peso(s.lo) + ' <small>to</small> ' + peso(s.hi) + '</p>' : '<span class="sp">any scents · any size</span><p class="pr">Your mix</p>') +
+        '<p class="why">' + b.why + '</p>' +
+        '<a class="btn' + (s ? '' : ' btn--ghost') + '" href="#">' + b.cta + '</a>';
+    }
+    cards.forEach(function (c, i) { c.addEventListener('click', function () { active = i; render(); }); });
+    stage.querySelectorAll('.i2-arrow').forEach(function (b) {
+      b.addEventListener('click', function () { active = (active + (+b.getAttribute('data-step')) + cards.length) % cards.length; render(); });
+    });
+    window.addEventListener('resize', render);
+    render();
+  })();
+
+  // 3. Budget ladder
+  (function () {
+    var chart = document.getElementById('i3-chart'), range = document.getElementById('i3-range');
+    var out = document.getElementById('i3-out'), sum = document.getElementById('i3-sum'), marker = document.getElementById('i3-marker');
+    var MAX = 6000, rows = [];
+    SETS.forEach(function (s) {
+      var row = document.createElement('div');
+      row.className = 'i3-row';
+      row.innerHTML =
+        '<div class="i3-name"><span class="vials" data-vials="1x' + s.ml + '" data-scale="0.75"></span><span><b class="nm">' + s.name + '</b><small>' + spec(s) + (s.off ? ' · 10% off' : '') + (s.pick ? ' · Our pick' : '') + '</small></span></div>' +
+        '<div class="i3-track"><span class="i3-bar' + (s.pick ? ' is-feature' : '') + '" style="left:' + (s.lo / MAX * 100) + '%;width:' + ((s.hi - s.lo) / MAX * 100) + '%"></span></div>' +
+        '<div class="i3-status"><b>' + peso(s.lo) + ' – ' + peso(s.hi) + '</b><span class="st"></span></div>';
+      chart.appendChild(row);
+      drawVials(row.querySelector('.vials'), '1x' + s.ml, 0.75);
+      rows.push({ el: row, s: s, st: row.querySelector('.st') });
+    });
+    function update() {
+      var v = +range.value, n = 0;
+      out.textContent = peso(v);
+      rows.forEach(function (r) {
+        var ok = r.s.lo <= v;
+        if (ok) n++;
+        r.el.classList.toggle('is-out', !ok);
+        r.st.textContent = ok ? (r.s.hi <= v ? 'any scents fit' : 'starts within budget') : 'from ' + peso(r.s.lo);
+      });
+      marker.style.left = (v / MAX * 100) + '%';
+      sum.innerHTML = '<strong>' + n + ' of 6 sets</strong> start at ' + peso(v) + ' or less. Prices depend on the scents you pick.';
+    }
+    range.addEventListener('input', update);
+    update();
+  })();
+
+  // 4. Two questions
+  (function () {
+    var state = { goal: 'six', size: '1' };
+    var sizeSet = document.getElementById('i4-size'), note = document.getElementById('i4-sizenote');
+    var res = document.getElementById('i4-res'), cta = document.getElementById('i4-cta');
+    function pickSet() {
+      if (state.goal === 'duo') return SETS[4];
+      if (state.goal === 'ten') return SETS[5];
+      if (state.goal === 'six') return state.size === '1' ? SETS[1] : SETS[3];
+      return state.size === '1' ? SETS[0] : SETS[2];
+    }
+    function render() {
+      var fixed = state.goal === 'duo' || state.goal === 'ten';
+      sizeSet.hidden = fixed; note.hidden = !fixed;
+      if (fixed) note.textContent = state.goal === 'duo' ? 'Two perfumes come in 5 ml vials.' : 'One perfume comes in a 10 ml vial, the only size sold on its own.';
+      var s = pickSet();
+      res.style.animation = 'none'; void res.offsetWidth; res.style.animation = '';
+      res.innerHTML = '<span class="tag">' + (s.pick ? 'Our pick · your match' : 'Your match') + '</span>' +
+        '<h3 class="nm">' + s.name + '</h3><span class="sp">' + spec(s) + (s.off ? ' · <span class="pill">10% OFF</span>' : '') + '</span>' +
+        '<div class="vials" data-x></div><p class="pr">' + peso(s.lo) + ' <small>to</small> ' + peso(s.hi) + '</p><p class="why">' + s.why + '</p>';
+      drawVials(res.querySelector('[data-x]'), s.n + 'x' + s.ml, window.innerWidth < 900 ? 1.5 : 2);
+      cta.textContent = s.cta;
+    }
+    document.querySelectorAll('.i4-opts').forEach(function (g) {
+      var q = g.getAttribute('data-q');
+      g.querySelectorAll('.i4-opt').forEach(function (b) {
+        b.addEventListener('click', function () {
+          g.querySelectorAll('.i4-opt').forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+          state[q] = b.getAttribute('data-v');
+          render();
+        });
+      });
+    });
+    render();
+  })();
+
+  // 7. Sticky showcase
+  (function () {
+    var items = [].slice.call(document.querySelectorAll('.i7-item'));
+    var stage = document.getElementById('i7-stage'), vials = document.getElementById('i7-vials');
+    var big = document.getElementById('i7-big'), cap = document.getElementById('i7-cap'), capsp = document.getElementById('i7-capsp');
+    var current = null, timer;
+    function show(it) {
+      if (it === current) return;
+      current = it;
+      items.forEach(function (o) { o.classList.toggle('is-active', o === it); });
+      stage.classList.add('is-swap');
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        var v = it.getAttribute('data-v');
+        drawVials(vials, v, v.indexOf(',') > -1 ? 2.6 : (v.split('x')[1] === '1' ? 4.4 : 3.2));
+        big.textContent = v.indexOf(',') > -1 ? '+' : v.replace('x', '×');
+        cap.textContent = it.getAttribute('data-name');
+        capsp.textContent = it.getAttribute('data-sp');
+        stage.classList.remove('is-swap');
+      }, 200);
+    }
+    show(items[1]);
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) show(e.target); });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      items.forEach(function (it) { io.observe(it); });
+    }
+    items.forEach(function (it) {
+      it.addEventListener('mouseenter', function () { show(it); });
+      it.addEventListener('focusin', function () { show(it); });
+    });
+  })();
+
+  // 8. Mini builder (1 ml prices are real; 3 = Try trio, 6 = Discovery six with 10% off)
+  (function () {
+    var SCENTS = [
+      ['Eros', 185], ['The One', 185], ["Terre d'Hermès", 190], ['Uomo Born in Roma', 285], ['Wood Sage & Sea Salt', 305],
+      ['Stronger With You Intensely', 305], ['Y', 340], ['Sauvage', 360], ['Dior Homme Intense', 365], ['Oud Wood', 615]
+    ];
+    var picked = ["Terre d'Hermès", 'Sauvage', 'Oud Wood'];
+    var chips = document.getElementById('i8-chips'), slots = document.getElementById('i8-slots');
+    var setEl = document.getElementById('i8-set'), msg = document.getElementById('i8-msg'), tot = document.getElementById('i8-tot'), add = document.getElementById('i8-add');
+    var btns = SCENTS.map(function (sc) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'i8-chip';
+      b.innerHTML = '<span><span class="nm" style="display:block"></span><span class="pr">' + peso(sc[1]) + ' · 1 ml</span></span><span class="tick" aria-hidden="true"></span>';
+      b.querySelector('.nm').textContent = sc[0];
+      b.addEventListener('click', function () {
+        var i = picked.indexOf(sc[0]);
+        if (i > -1) picked.splice(i, 1); else if (picked.length < 6) picked.push(sc[0]);
+        render();
+      });
+      chips.appendChild(b);
+      return b;
+    });
+    function price(name) { for (var i = 0; i < SCENTS.length; i++) if (SCENTS[i][0] === name) return SCENTS[i][1]; return 0; }
+    function render() {
+      btns.forEach(function (b, i) {
+        var on = picked.indexOf(SCENTS[i][0]) > -1;
+        b.setAttribute('aria-pressed', String(on));
+        b.disabled = !on && picked.length >= 6;
+      });
+      slots.textContent = '';
+      for (var i = 0; i < 6; i++) {
+        var d = document.createElement('div'); d.className = 'i8-slot';
+        if (picked[i]) { var img = new Image(); img.src = IMG['1']; img.alt = ''; d.appendChild(img); var s = document.createElement('small'); s.textContent = picked[i]; d.appendChild(s); }
+        else { d.innerHTML = '<span class="ph"></span><small></small>'; }
+        slots.appendChild(d);
+      }
+      var n = picked.length, sum = picked.reduce(function (a, p) { return a + price(p); }, 0);
+      if (n === 3) {
+        setEl.innerHTML = 'Try <em>trio</em>'; msg.textContent = '3 × 1 ml · add 3 more for Discovery six, 10% off';
+        tot.innerHTML = peso(sum); add.disabled = false; add.textContent = 'Add Try trio · ' + peso(sum);
+      } else if (n === 6) {
+        setEl.innerHTML = 'Discovery <em>six</em>'; msg.textContent = '6 × 1 ml · 10% off the set';
+        tot.innerHTML = '<s>' + peso(sum) + '</s>' + peso(sum * 0.9); add.disabled = false; add.textContent = 'Add Discovery six · ' + peso(sum * 0.9);
+      } else {
+        setEl.textContent = n + ' of ' + (n < 3 ? 3 : 6) + ' picked';
+        msg.textContent = n < 3 ? 'Pick ' + (3 - n) + ' more for a Try trio' : 'Pick ' + (6 - n) + ' more for Discovery six, or go back to 3';
+        tot.innerHTML = n ? peso(sum) : ''; add.disabled = true; add.textContent = '1 ml comes in sets of 3 or 6';
+      }
+    }
+    add.addEventListener('click', function () { if (!add.disabled) add.textContent = 'Added (preview only)'; });
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

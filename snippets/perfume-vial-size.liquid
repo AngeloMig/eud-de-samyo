@@ -1,0 +1,213 @@
+{%- comment -%}
+  Vial size guide ("Hold it up"): a button that opens a popup with one vial at a time
+  at real size beside a cm ruler, its details (height, how it's sold, price from, how
+  much it holds), a strip comparing the four sizes, and a "Hold it up" mode that fills
+  the screen with the vial, a mm ruler along the edge and a bank-card outline
+  (85.6 × 54 mm, the same on every card) so a real vial or card can be laid on it.
+
+  Browsers don't report a screen's physical size, so the starting scale is estimated
+  for the kind of device; the shopper makes it exact by matching a real bank card
+  (remembered in this browser only).
+
+  Heights (cap included), how each size is sold and the spray estimate come from
+  Theme settings → Samyó vial sizes. "From" prices are the lowest variant price of
+  that size in the shop. Script: assets/perfume-vial-size.js. Styles:
+  assets/perfume-vial-size.css.
+
+  Accepts:
+  - id: a unique id for this guide (e.g. the section id).
+  - class: extra class on the wrapper (optional).
+  - picker_url: the vial picker page (optional; defaults to build-your-set).
+{%- endcomment -%}
+{%- liquid
+  assign gid = 'PfVialSize-' | append: id
+  assign label = settings.pf_vial_size_label | default: 'See the vials at actual size'
+  assign pvs_picker = picker_url
+  if pvs_picker == blank
+    assign pvs_picker = pages['build-your-set'].url
+  endif
+  assign spm = settings.pf_vial_sprays_per_ml | default: 10
+  assign spd = settings.pf_vial_sprays_per_day | default: 2
+
+  comment
+    Lowest price per size across the shop's products (variant named e.g. "1 ml").
+  endcomment
+  assign from_1 = 0
+  assign from_2 = 0
+  assign from_5 = 0
+  assign from_10 = 0
+  for p in collections.all.products
+    for v in p.variants
+      assign vk = v.title | downcase | remove: ' '
+      case vk
+        when '1ml'
+          if from_1 == 0 or v.price < from_1
+            assign from_1 = v.price
+          endif
+        when '2ml'
+          if from_2 == 0 or v.price < from_2
+            assign from_2 = v.price
+          endif
+        when '5ml'
+          if from_5 == 0 or v.price < from_5
+            assign from_5 = v.price
+          endif
+        when '10ml'
+          if from_10 == 0 or v.price < from_10
+            assign from_10 = v.price
+          endif
+      endcase
+    endfor
+  endfor
+
+  assign pvs_max = settings.pf_vial_h_10 | default: 85
+-%}
+{{ 'perfume-vial-size.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-vial-size.js' | asset_url }}" defer="defer"></script>
+<perfume-vial-size class="pvs {{ class }}" data-max-mm="{{ pvs_max }}">
+  <button type="button" class="pvs__toggle" aria-haspopup="dialog" aria-controls="{{ gid }}" data-pvs-toggle>
+    <svg class="pvs__ruler-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><rect x="2.5" y="7.5" width="19" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M6.5 7.5v3M10 7.5v4.5M13.5 7.5v3M17 7.5v4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <span>{{ label | escape }}</span>
+  </button>
+
+  <dialog class="pvs__dialog" id="{{ gid }}" aria-labelledby="{{ gid }}-t" data-pvs-dialog>
+    <div class="pvs__head">
+      <h2 class="pvs__title" id="{{ gid }}-t">{{ settings.pf_vial_size_title | default: 'Vials at actual size' | escape }}</h2>
+      <button type="button" class="pvs__close" aria-label="Close" data-pvs-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="pvs__main">
+      <div class="pvs__side">
+        <p class="pvs__big">{{ settings.pf_vial_hold_title | default: 'Hold it up' | escape }}</p>
+        <p class="pvs__intro">{{ settings.pf_vial_hold_text | default: 'Each vial is shown at its real height. Tap Hold it up to fill the screen with it, then lay a real vial or card on the screen to compare.' | escape }}</p>
+
+        <div>
+          <span class="pvs__lbl" id="{{ gid }}-sizes">Vial</span>
+          <div class="pvs__chips" role="group" aria-labelledby="{{ gid }}-sizes">
+            {%- for ml in (1..10) -%}
+              {%- unless ml == 1 or ml == 2 or ml == 5 or ml == 10 -%}{%- continue -%}{%- endunless -%}
+              <button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="{{ ml }}">{{ ml }} ml</button>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        {%- for ml in (1..10) -%}
+          {%- unless ml == 1 or ml == 2 or ml == 5 or ml == 10 -%}{%- continue -%}{%- endunless -%}
+          {%- liquid
+            case ml
+              when 1
+                assign h = settings.pf_vial_h_1 | default: 40
+                assign how = settings.pf_vial_sold_1 | default: 'Try trio (3 vials) or Discovery six (6 vials, 10% off).'
+                assign from = from_1
+                assign set_q = '3x1'
+              when 2
+                assign h = settings.pf_vial_h_2 | default: 55
+                assign how = settings.pf_vial_sold_2 | default: 'Wear trio (3 vials) or Wardrobe six (6 vials, 10% off).'
+                assign from = from_2
+                assign set_q = '3x2'
+              when 5
+                assign h = settings.pf_vial_h_5 | default: 70
+                assign how = settings.pf_vial_sold_5 | default: 'Signature duo (2 vials).'
+                assign from = from_5
+                assign set_q = '2x5'
+              else
+                assign h = settings.pf_vial_h_10 | default: 85
+                assign how = settings.pf_vial_sold_10 | default: 'Travel ten: on its own.'
+                assign from = from_10
+                assign set_q = '1x10'
+            endcase
+            assign sprays = ml | times: spm
+            assign days = sprays | divided_by: spd
+          -%}
+          <div class="pvs__spec" data-pvs-info="{{ ml }}"{% unless ml == 1 %} hidden{% endunless %}>
+            <p class="pvs__size">{{ ml }} ml <span>{{ h }} mm tall · cap included</span></p>
+            <dl>
+              <div><dt>How it's sold</dt><dd>{{ how | escape }}</dd></div>
+              {%- if from > 0 -%}<div><dt>Price</dt><dd>from {{ from | money }} a vial</dd></div>{%- endif -%}
+              {%- if settings.pf_vial_show_last != false -%}
+                <div class="pvs__quiet"><dt>Lasts</dt><dd>≈ {{ sprays }} sprays · about {{ days }} days at {{ spd }} a day</dd></div>
+              {%- endif -%}
+              <div class="pvs__quiet"><dt>Of a bottle</dt><dd>{{ ml }}% of a 100 ml bottle</dd></div>
+            </dl>
+            {%- if pvs_picker != blank -%}
+              <a class="pvs__link" href="{{ pvs_picker }}?set={{ set_q }}">{{ settings.pf_vial_set_link | default: 'Build a set in this size' | escape }} <span aria-hidden="true">→</span></a>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+
+        <div class="pvs__compare" aria-hidden="true">
+          {%- for ml in (1..10) -%}
+            {%- unless ml == 1 or ml == 2 or ml == 5 or ml == 10 -%}{%- continue -%}{%- endunless -%}
+            {%- liquid
+              case ml
+                when 1
+                  assign h = settings.pf_vial_h_1 | default: 40
+                when 2
+                  assign h = settings.pf_vial_h_2 | default: 55
+                when 5
+                  assign h = settings.pf_vial_h_5 | default: 70
+                else
+                  assign h = settings.pf_vial_h_10 | default: 85
+              endcase
+            -%}
+            <span data-pvs-cmp="{{ ml }}"><i style="--h: {{ h }};"></i>{{ ml }} ml</span>
+          {%- endfor -%}
+        </div>
+
+        <button type="button" class="pvs__go" data-pvs-hold>{{ settings.pf_vial_hold_title | default: 'Hold it up' | escape }}</button>
+
+        <ol class="pvs__steps">
+          <li><b>Make it exact once</b> (bottom of this window): hold a bank card to the screen and drag until it matches.</li>
+          <li><b>Tap Hold it up.</b> The vial fills the screen at its real height, with a ruler on the edge.</li>
+          <li><b>Compare:</b> stand a pen, a lipstick or your own vial against the screen.</li>
+        </ol>
+        {%- if settings.pf_vial_size_note != blank -%}<p class="pvs__note">{{ settings.pf_vial_size_note | escape }}</p>{%- endif -%}
+      </div>
+
+      <div class="pvs__stage" data-pvs-stage>
+        <div class="pvs__row">
+          <div class="pvs__ruler" aria-hidden="true" data-pvs-ruler></div>
+          {%- render 'perfume-vial-size-vials' -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="pvs__hold" data-pvs-holdview hidden role="region" aria-label="Vial at real size, full screen">
+      <div class="pvs__hold-top">
+        <div class="pvs__chips" role="group" aria-label="Vial size">
+          {%- for ml in (1..10) -%}
+            {%- unless ml == 1 or ml == 2 or ml == 5 or ml == 10 -%}{%- continue -%}{%- endunless -%}
+            <button type="button" class="pvs__chip" aria-pressed="false" data-pvs-pick="{{ ml }}">{{ ml }} ml</button>
+          {%- endfor -%}
+        </div>
+        <button type="button" class="pvs__go" data-pvs-done>Done</button>
+      </div>
+      <div class="pvs__hold-stage" data-pvs-holdstage>
+        <p class="pvs__hold-tip">Lay your vial or a bank card on the screen.</p>
+        <span class="pvs__hold-base" aria-hidden="true"></span>
+        <div class="pvs__hold-ruler" aria-hidden="true" data-pvs-holdruler></div>
+        <div class="pvs__card" aria-hidden="true" data-pvs-card><span>Bank card<br>85.6 × 54 mm</span></div>
+        <div class="pvs__hold-slot">
+          {%- render 'perfume-vial-size-vials' -%}
+        </div>
+      </div>
+    </div>
+
+    <details class="pvs__foot">
+      <summary><span>{{ settings.pf_vial_calibrate_title | default: 'Make it exact on this screen' | escape }}</span><span class="pvs__state" data-pvs-state></span></summary>
+      <div class="pvs__cal">
+        <label for="{{ gid }}-scale">{{ settings.pf_vial_calibrate_label | default: 'Hold a bank card against the outline and drag until the edges match.' | escape }}</label>
+        <div class="pvs__cal-card" aria-hidden="true"><span>Bank card · 85.6 × 54 mm</span></div>
+        {%- comment -%} Last, so it stays put at the bottom while the card above grows or shrinks. {%- endcomment -%}
+        <div class="pvs__cal-row">
+          <button type="button" class="pvs__step" aria-label="Smaller" data-pvs-step="-0.02">−</button>
+          <input type="range" id="{{ gid }}-scale" min="2.4" max="8" step="0.01" value="3.78" data-pvs-scale>
+          <button type="button" class="pvs__step" aria-label="Bigger" data-pvs-step="0.02">+</button>
+          <button type="button" class="pvs__reset" data-pvs-reset>Reset</button>
+        </div>
+      </div>
+    </details>
+  </dialog>
+</perfume-vial-size>

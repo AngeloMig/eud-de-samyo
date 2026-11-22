@@ -40,7 +40,7 @@
   inset: 0;
   opacity: 0;
   position: absolute;
-  transition: opacity 0.5s linear;
+  transition: opacity 0.3s linear;
 }
 
 .pcd.is-open .pcd__scrim {
@@ -58,7 +58,8 @@
   position: absolute;
   right: var(--pcd-gap);
   top: var(--pcd-gap);
-  transition: transform 0.6s var(--pcd-ease);
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
   width: 440px;
 }
 
@@ -158,7 +159,7 @@
 
 .pcd.is-entering .pcd__item {
   animation: pcd-in 0.6s var(--pcd-ease) both;
-  animation-delay: calc(0.25s + var(--i, 0) * 0.06s);
+  animation-delay: calc(0.12s + var(--i, 0) * 0.05s);
 }
 
 @keyframes pcd-in {

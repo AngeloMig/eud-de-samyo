@@ -53,7 +53,7 @@
 .psb__tile {
   align-content: end;
   aspect-ratio: 1 / 1.08;
-  background: var(--tile, #e8e3db);
+  background: transparent;
   color: inherit;
   display: grid;
   gap: 4px;
@@ -72,6 +72,23 @@
   position: absolute;
   transition: opacity 0.5s ease;
   z-index: -1;
+}
+
+/* The tint, with its top dissolving into the page in a soft dome: solid along the
+   bottom and lower corners, fading out toward the top edge and top corners, so the
+   bottles seem to rise out of the colour. */
+.psb__tile::after {
+  background: var(--tile, #e8e3db);
+  content: '';
+  inset: 0;
+  position: absolute;
+  z-index: -3; /* under the name watermark (-2) and the hover tint (-1) */
+}
+
+.psb__tile::before,
+.psb__tile::after {
+  -webkit-mask-image: radial-gradient(100% 100% at 50% 100%, #000 65%, transparent 100%);
+  mask-image: radial-gradient(100% 100% at 50% 100%, #000 65%, transparent 100%);
 }
 
 .psb__name {

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vial popup ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#26221f; --paper:#f7f5f0; --soft:rgba(38,34,31,.6); --line:rgba(38,34,31,.14); --gold:#d9b46a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#ece8e1; color:var(--ink); font:400 14px/1.5 'Instrument Sans',sans-serif; }
+  header { padding:40px 24px 8px; max-width:1240px; margin:auto; }
+  h1 { font:400 44px/1.05 'Cormorant Garamond',serif; margin:0 0 8px; }
+  header p { color:var(--soft); margin:0; max-width:720px; }
+  .grid { display:grid; gap:24px; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); max-width:1240px; margin:24px auto 64px; padding:0 24px; }
+  .idea { background:var(--paper); display:flex; flex-direction:column; }
+  .mock { aspect-ratio:16/10; position:relative; overflow:hidden; display:flex; align-items:flex-end; justify-content:center; gap:12px; padding:20px; }
+  .txt { padding:16px 18px 20px; border-top:1px solid var(--line); }
+  .txt b { font:500 22px/1.1 'Cormorant Garamond',serif; display:block; }
+  .txt .n { color:var(--soft); font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
+  .txt p { margin:6px 0 0; color:var(--soft); }
+  .txt .fx { margin-top:8px; font-size:12px; color:var(--ink); }
+  .v { display:block; width:auto; }
+  .v1 { height:44px } .v2 { height:60px } .v5 { height:76px } .v10 { height:92px }
+  .cap { font-size:10px; text-align:center; color:var(--soft); }
+  .col { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .chip { border:1px solid var(--line); border-radius:99px; padding:4px 10px; font-size:11px; font-weight:600; background:#fff; }
+  .chip.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .row { display:flex; gap:6px; }
+  .abs { position:absolute; }
+  /* 2 */ .dark { background:radial-gradient(60% 70% at 50% 85%, #3a332d, #141110); color:#f7f5f0; }
+  .dark .cap { color:rgba(247,245,240,.6); }
+  .spot { position:absolute; bottom:18px; left:50%; width:70%; height:24px; translate:-50% 0; background:radial-gradient(closest-side, rgba(255,230,190,.35), transparent); }
+  /* 3 */ .meter { width:46%; height:8px; background:var(--line); border-radius:9px; position:absolute; top:24px; left:50%; translate:-50% 0; }
+  .meter i { position:absolute; inset:0 60% 0 0; background:var(--ink); border-radius:9px; }
+  .meter b { position:absolute; left:40%; top:-6px; width:20px; height:20px; translate:-50% 0; border-radius:50%; background:#fff; border:2px solid var(--ink); }
+  /* 4 */ .objs { position:absolute; top:16px; left:16px; }
+  .coin { width:30px; height:30px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #f1e2b4, #b9974d); }
+  .lip { width:14px; height:56px; border-radius:3px; background:linear-gradient(#b5323c 30%, #2b2522 30%); }
+  .card { width:90px; height:57px; border:1.5px dashed rgba(38,34,31,.4); border-radius:6px; }
+  .pods { width:40px; height:30px; border-radius:12px; background:#fff; box-shadow:inset 0 0 0 1px var(--line); }
+  /* 5 */ .bottle { width:74px; height:110px; border-radius:10px 10px 6px 6px; background:linear-gradient(180deg,rgba(214,170,90,.35),rgba(214,170,90,.65)); position:relative; box-shadow:inset 0 0 0 1px rgba(38,34,31,.25); }
+  .bottle::before { content:''; position:absolute; top:-18px; left:50%; translate:-50% 0; width:30px; height:18px; background:#2b2522; border-radius:3px; }
+  .fill1 { position:absolute; bottom:0; left:0; right:0; height:1.5%; background:var(--ink); }
+  /* 6 */ .days { position:absolute; top:16px; right:16px; text-align:right; }
+  .days b { font:500 34px/1 'Cormorant Garamond',serif; display:block; }
+  /* 7 */ .pocket { width:150px; height:120px; border:2px solid #6f8bb3; border-top:0; border-radius:0 0 60px 60px; position:relative; background:linear-gradient(#e9eef6,#d7e0ee); }
+  .pocket .v { position:absolute; bottom:22px; left:50%; translate:-50% 0; }
+  /* 8 */ .phone { width:120px; height:100%; border:3px solid var(--ink); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding:10px; background:#fff; }
+  /* 9 */ .box { display:grid; grid-template-columns:repeat(3,26px); gap:6px; padding:12px; background:#2b2522; border-radius:6px; }
+  .slot { height:64px; background:#3c342e; border-radius:3px; display:flex; align-items:center; justify-content:center; }
+  .slot img { height:56px; }
+  /* 10 */ .split { display:grid; grid-template-columns:1fr 1fr; width:100%; height:100%; gap:12px; align-items:end; }
+  .panel { background:#fff; border:1px solid var(--line); padding:10px; height:100%; display:flex; flex-direction:column; gap:6px; justify-content:center; }
+  .panel b { font:500 26px/1 'Cormorant Garamond',serif; }
+  .ruler { position:absolute; left:16px; bottom:20px; width:14px; height:80%; border-right:1px solid var(--ink); background:repeating-linear-gradient(to top, var(--ink) 0 1px, transparent 1px 9px) right/6px 100% no-repeat; }
+  .tag { position:absolute; top:12px; left:12px; background:var(--gold); border-radius:99px; padding:3px 8px; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  @media (max-width:420px){ .grid{ grid-template-columns:1fr; padding:0 16px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vial popup: 10 ideas</h1>
+  <p>Each one keeps real-size vials and the bank-card calibration. They differ in layout, look and the extra tools around the vials. Tell me a number (or mix a few) and I'll build it into the popup.</p>
+</header>
+<main class="grid">
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <span class="ruler"></span>
+      <div class="col"><img class="v v1" src="../assets/sample-decant-square.webp" alt=""><span class="cap">1 ml</span></div>
+      <div class="col" style="opacity:.35"><img class="v v2" src="../assets/sample-decant-clear.webp" alt=""><span class="cap">2 ml</span></div>
+      <div class="col" style="opacity:.35"><img class="v v5" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">5 ml</span></div>
+      <div class="col" style="opacity:.35"><img class="v v10" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">10 ml</span></div>
+      <div class="row abs" style="top:14px;right:14px"><span class="chip on">1 ml</span><span class="chip">2</span><span class="chip">5</span><span class="chip">10</span></div>
+    </div>
+    <div class="txt"><span class="n">01 · Studio (current, refined)</span><b>Clean studio with size chips</b><p>Today's popup, tightened: chips sit on top of the vials and the details float in a corner card, so there's no side column.</p><p class="fx">+ Keyboard arrows switch size · swipe on phones</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock dark">
+      <span class="spot"></span>
+      <div class="col"><img class="v v1" src="../assets/sample-decant-square.webp" alt=""><span class="cap">1 ml</span></div>
+      <div class="col"><img class="v v2" src="../assets/sample-decant-clear.webp" alt=""><span class="cap">2 ml</span></div>
+      <div class="col"><img class="v v5" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">5 ml</span></div>
+      <div class="col"><img class="v v10" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">10 ml</span></div>
+    </div>
+    <div class="txt"><span class="n">02 · Jewellery case</span><b>Dark velvet, spotlight on the chosen vial</b><p>A full-bleed dark stage like a jeweller's tray: the chosen vial is lit and steps forward, and the others sit in shadow.</p><p class="fx">+ Luxury feel, matches the dark "Our pick" card</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <span class="meter"><i></i><b></b></span>
+      <div class="col"><img class="v" style="height:84px" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">5 ml · 70 mm</span></div>
+      <span class="abs" style="left:20px;bottom:24px;font:500 30px/1 'Cormorant Garamond',serif">5 ml</span>
+      <span class="abs cap" style="right:20px;bottom:24px;text-align:right">from ₱705<br>a set of 2</span>
+    </div>
+    <div class="txt"><span class="n">03 · Size scrubber</span><b>Drag one slider from 1 ml to 10 ml</b><p>A single vial grows as you drag, snapping to each real size, with its height, price-from and how it's sold updating live.</p><p class="fx">+ Very simple on phones · one big vial, never cramped</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="row objs"><span class="chip on">Card</span><span class="chip">₱1 coin</span><span class="chip">Lipstick</span><span class="chip">Earbuds</span></div>
+      <span class="card"></span>
+      <div class="col"><img class="v v2" src="../assets/sample-decant-clear.webp" alt=""><span class="cap">2 ml</span></div>
+      <span class="coin"></span><span class="lip"></span><span class="pods"></span>
+    </div>
+    <div class="txt"><span class="n">04 · Everyday objects</span><b>Compare with things in your bag</b><p>Pick what to stand the vial next to: bank card, ₱1 coin, lipstick or earbuds case. All are drawn at their real size, so anyone can picture it.</p><p class="fx">+ Easier to picture than millimetres</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="col"><div class="bottle"><span class="fill1"></span></div><span class="cap">Full bottle 100 ml</span></div>
+      <div class="col"><img class="v v1" src="../assets/sample-decant-square.webp" alt=""><span class="cap">1 ml = 1%</span></div>
+      <span class="abs cap" style="top:16px;left:16px;text-align:left">Price per ml<br><b style="color:var(--ink)">Sauvage: ₱360 vs ₱102 a ml</b></span>
+    </div>
+    <div class="txt"><span class="n">05 · Versus the full bottle</span><b>Your vial next to the 100 ml bottle</b><p>The full bottle outline at true scale, with the vial's share filled in, plus price per ml for the vial and the bottle. Links to "Buy the bottle" (the affiliate link, disclosed).</p><p class="fx">+ Explains "try before the full bottle"</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="days"><span class="cap">At 2 sprays a day</span><b>≈ 5 days</b><span class="cap">from a 1 ml vial</span></div>
+      <div class="col"><img class="v v1" src="../assets/sample-decant-square.webp" alt=""><span class="cap">1 ml</span></div>
+      <div class="col"><img class="v v2" src="../assets/sample-decant-clear.webp" alt=""><span class="cap">2 ml</span></div>
+      <div class="row abs" style="left:16px;top:16px"><span class="chip">1</span><span class="chip on">2</span><span class="chip">3</span><span class="cap" style="align-self:center">sprays/day</span></div>
+    </div>
+    <div class="txt"><span class="n">06 · How long will it last?</span><b>A spray counter</b><p>Choose sprays per day and see roughly how many days each vial gives. It's simple arithmetic using a sprays-per-ml number you set (a typical atomiser gives about 10). It says nothing about how long the scent lasts on skin.</p><p class="fx">+ Helps people choose 2 ml vs 5 ml</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="pocket"><img class="v v2" src="../assets/sample-decant-clear.webp" alt=""></div>
+      <div class="row abs" style="top:14px;left:14px"><span class="chip on">Jeans pocket</span><span class="chip">Clutch</span><span class="chip">Car</span></div>
+    </div>
+    <div class="txt"><span class="n">07 · Where it fits</span><b>In your pocket, clutch or car</b><p>Simple outlines at real scale show the vial inside a jeans coin pocket, a small clutch or a car cup holder, so it's easy to tell what's travel-friendly.</p><p class="fx">+ Sells the 2 ml and 5 ml as "carry" sizes</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#f0ece6">
+      <div class="phone"><img class="v" style="height:110px" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">10 ml · lay your vial here</span></div>
+    </div>
+    <div class="txt"><span class="n">08 · Phone full screen</span><b>"Hold it up" mode on phones</b><p>One tap fills the phone screen with a single vial at real size, a ruler on the edge and the card outline behind, so a customer can lay a real vial or card on the screen and compare.</p><p class="fx">+ The most accurate view on phones</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="box">
+        <span class="slot"><img src="../assets/sample-decant-square.webp" alt=""></span>
+        <span class="slot"><img src="../assets/sample-decant-square.webp" alt=""></span>
+        <span class="slot"><img src="../assets/sample-decant-square.webp" alt=""></span>
+      </div>
+      <div class="row abs" style="top:14px;left:14px"><span class="chip on">Try trio</span><span class="chip">Discovery six</span><span class="chip">Duo</span></div>
+      <span class="tag" style="left:auto;right:14px">10% off on sixes</span>
+    </div>
+    <div class="txt"><span class="n">09 · The set, unboxed</span><b>See the whole set at real size</b><p>Choose a set and see its vials in their box at real size, with the price range and a "Choose scents" button that opens the picker on that set.</p><p class="fx">+ Shows the size and moves people toward buying a set</p></div>
+  </article>
+
+  <article class="idea">
+    <div class="mock" style="background:#fff">
+      <div class="split">
+        <div class="col" style="height:100%;justify-content:flex-end"><img class="v v5" src="../assets/sample-decant-amber.webp" alt=""><span class="cap">5 ml</span></div>
+        <div class="panel"><span class="cap">70 mm tall · ≈ 50 sprays</span><b>5 ml</b><span class="cap">In a set of 2 · from ₱1,415</span><span class="chip on" style="align-self:flex-start">Build this set →</span></div>
+      </div>
+    </div>
+    <div class="txt"><span class="n">10 · Product sheet</span><b>Spec card plus one big vial</b><p>A calm half-and-half layout: the vial at real size on one side, and on the other a spec card with height, approximate sprays, how it's sold, price and a buy button.</p><p class="fx">+ Reads like a product page, with the least empty space</p></div>
+  </article>
+
+</main>
+</body>
+</html>
