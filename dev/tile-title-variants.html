@@ -1,0 +1,114 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tile titles: 10 variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Caveat:wght@500&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--line:rgba(41,37,33,.14);--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:90ch;margin:0}
+ main{max-width:1320px;margin:0 auto;padding:22px 32px 70px;display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+ .v{background:#fff;min-width:0} .cap{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 20px;border-bottom:1px solid var(--line)}
+ .cap h2{font:400 24px/1.1 'Cormorant Garamond',serif;margin:0} .cap h2 b{font-weight:400;font-size:30px;margin-right:8px} .cap p{margin:0;color:var(--soft);font-size:13px;max-width:72ch;text-align:right}
+ .tag{display:inline-block;font:600 10px/1 'Instrument Sans';letter-spacing:.14em;text-transform:uppercase;padding:5px 8px;border-radius:99px;background:#e9e4da;margin-left:8px;vertical-align:middle}
+ .stage{background:var(--page);padding:30px 26px 34px}
+ .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:180px;grid-auto-flow:dense;gap:10px}
+ .t{position:relative;padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate;color:inherit;text-decoration:none}
+ .t.big{grid-column:span 2;grid-row:span 2} .t.wide{grid-column:span 2} .t.tall{grid-row:span 2}
+ .t.brand{background:var(--t)}
+ .art{position:absolute;inset:12px 12px 44px;display:flex;justify-content:center;align-items:flex-end;z-index:-1;transition:transform .8s var(--ease)}
+ .t:hover .art{transform:translateY(-6px)}
+ .art img{height:78%;max-width:40%;object-fit:contain;object-position:bottom;margin:0 -4%;filter:drop-shadow(0 10px 10px rgba(41,37,33,.14))} .art img:nth-child(2){height:100%;max-width:46%;z-index:1}
+ .note .art{inset:-14px -10px 34px} .note .art img{height:112%;max-width:112%;margin:0}
+ .nm{font:400 25px/1 'Cormorant Garamond';position:relative} .big .nm{font-size:44px} .note .nm{font-style:italic}
+ .sh{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-top:4px;position:relative}
+ .note .nm,.note .sh{text-shadow:0 0 6px var(--page),0 0 14px var(--page)}
+
+ /* 2 names only */
+ .v2 .sh{display:none}
+ /* 3 notes silent, brands named; note name on hover */
+ .v3 .note .nm,.v3 .note .sh{opacity:0;transform:translateY(6px);transition:opacity .4s,transform .5s var(--ease)}
+ .v3 .note:hover .nm,.v3 .note:hover .sh,.v3 .note:focus-visible .nm{opacity:1;transform:none}
+ .v3 .note .art{inset:-14px -10px 10px}
+ /* 4 handwritten labels on notes */
+ .v4 .note .nm{font:500 28px/1 Caveat,cursive;transform:rotate(-4deg);transform-origin:left bottom;width:max-content}
+ .v4 .note .nm::before{content:'';position:absolute;left:30%;bottom:100%;width:1px;height:28px;background:var(--ink);opacity:.45;transform:rotate(18deg);transform-origin:bottom}
+ .v4 .note .sh{display:none}
+ /* 5 pills */
+ .v5 .nm,.v5 .sh{display:none}
+ .v5 .pill{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);padding:8px 12px 8px 14px;border-radius:99px;font:500 13px/1 'Instrument Sans';box-shadow:0 2px 10px rgba(41,37,33,.08);transition:transform .4s var(--ease)}
+ .v5 .note .pill{background:transparent;box-shadow:inset 0 0 0 1px var(--line);font-style:italic;font-family:'Cormorant Garamond';font-size:18px;padding:6px 12px}
+ .v5 .t:hover .pill{transform:translateY(-3px)}
+ .v5 .pill i{font-style:normal;opacity:.6}
+ /* 6 spine labels */
+ .v6 .nm,.v6 .sh{display:none}
+ .v6 .spine{position:absolute;top:14px;right:12px;writing-mode:vertical-rl;font:600 10px/1 'Instrument Sans';letter-spacing:.2em;text-transform:uppercase;color:var(--ink)}
+ .v6 .note .spine{color:var(--soft)}
+ .v6 .art{inset:12px 30px 12px 12px} .v6 .note .art{inset:-10px 26px 0 -10px}
+ /* 7 action labels */
+ .v7 .sh{display:none}
+ .v7 .nm{font-size:22px} .v7 .big .nm{font-size:36px}
+ .v7 .act{font:600 11px/1 'Instrument Sans';letter-spacing:.14em;text-transform:uppercase;margin-top:8px;display:inline-flex;gap:6px;position:relative}
+ .v7 .act span{transition:transform .4s var(--ease)} .v7 .t:hover .act span{transform:translateX(4px)}
+ /* 8 museum captions */
+ .v8 .sh{display:none}
+ .v8 .no{position:absolute;top:12px;left:14px;font:500 11px/1 'Instrument Sans';letter-spacing:.12em;color:var(--soft)}
+ .v8 .nm{font-size:20px;display:flex;gap:8px;align-items:baseline} .v8 .big .nm{font-size:30px}
+ .v8 .nm small{font:500 11px/1 'Instrument Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--soft);font-style:normal}
+ /* 9 watermark names */
+ .v9 .nm,.v9 .sh{display:none}
+ .v9 .wm{position:absolute;left:10px;bottom:4px;z-index:-2;font:400 60px/.8 'Cormorant Garamond';color:var(--ink);opacity:.12;white-space:nowrap;max-width:calc(100% - 12px);overflow:hidden}
+ .v9 .big .wm{font-size:120px} .v9 .note .wm{font-style:italic;opacity:.1}
+ .v9 .art{inset:12px} .v9 .note .art{inset:-14px -10px 6px}
+ /* 10 quiet until hover (phones: always) */
+ .v10 .nm,.v10 .sh{opacity:0;transform:translateY(8px);transition:opacity .45s,transform .6s var(--ease)}
+ .v10 .t:hover .nm,.v10 .t:hover .sh,.v10 .t:focus-visible .nm,.v10 .t:focus-visible .sh{opacity:1;transform:none}
+ .v10 .t:hover{}
+ @media (hover:none){.v10 .nm,.v10 .sh,.v3 .note .nm,.v3 .note .sh{opacity:1;transform:none}}
+
+ @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+ @media (max-width:900px){main,header.top{padding-left:14px;padding-right:14px}.cap{flex-direction:column}.cap p{text-align:left}.stage{padding:14px}
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:150px}
+  .t{grid-column:span 3} .t.big,.t.wide{grid-column:span 6} .t.big{grid-row:span 2}
+  .t.note,.t.note.tall,.t.note.wide{grid-column:span 2;grid-row:span 1;padding:8px}
+  .t{order:2} .t.big{order:0} .t.note{order:1}
+  .note .art{inset:-6px -6px 32px} .note .nm{font-size:18px} .note .sh{font-size:8.5px;letter-spacing:.1em}
+  .big .nm{font-size:32px} .v9 .big .wm{font-size:80px} .v9 .wm{font-size:40px}}
+</style></head><body>
+<header class="top"><h1>Tile titles: 10 variants</h1><p class="lede">How should the tiles in "Shop by brand &amp; note" be labelled? Today every tile has a name plus a small kicker ("SHOP" on brands, "SCENT NOTE" on notes). Here are ten options, from adding more to removing them. Same layout and photos as the live section; hover the tiles (several react). On phones, any hover-only label always shows.</p></header>
+<main id="m"></main>
+<script>
+const BR = { Dior: ['dior', '#D6DDE5'], Chanel: ['chanel', '#EDE6DE'], Armani: ['armani', '#E9D3C9'], 'Hermès': ['hermes', '#F1E3CC'], 'Tom Ford': ['tom-ford', '#DCD6E4'], YSL: ['ysl', '#E4E0D8'], 'Jo Malone': ['jo-malone', '#E3E8E6'] };
+const NOTE = { Lavender: 'lavender', Rose: 'rose', Orange: 'orange', Iris: 'iris', Vanilla: 'vanilla', Cardamom: 'cardamom' };
+const L = [['b', 'Dior', 'big'], ['n', 'Lavender', 'tall'], ['b', 'Chanel', ''], ['b', 'Armani', ''], ['n', 'Rose', ''], ['b', 'Hermès', 'wide'], ['n', 'Orange', ''], ['b', 'Tom Ford', ''], ['n', 'Iris', 'tall'], ['b', 'YSL', ''], ['n', 'Vanilla', ''], ['b', 'Jo Malone', 'wide'], ['n', 'Cardamom', '']];
+const V = [
+  ['Current: name + kicker', 'Every tile: the name, then a small "SHOP" or "SCENT NOTE". Clear, a little repetitive: the kicker says the same thing 13 times.', 'today'],
+  ['Names only', 'Drop the kickers. Brands stay upright serif, notes italic, so the style itself tells brand from ingredient. Calmer and more editorial.', 'recommended'],
+  ['Notes silent, brands named', 'Notes are pure pictures (no text at rest); the name appears on hover. Brands keep their names. The notes become the "art" between the shops.', ''],
+  ['Handwritten note labels', 'Brand names stay as they are; notes get a handwritten label with a tiny pointer line, like a botanical sketch. Warm and personal.', ''],
+  ['Pills', 'Names move into small rounded labels with an arrow: solid on brands, outlined italic on notes. Reads clearly as "tap me", more app-like.', ''],
+  ['Spine labels', 'Small vertical text along the tile\'s right edge, matching the hero tiles ("DIOR · SHOP", "LAVENDER · NOTE"). The picture gets the whole tile.', ''],
+  ['Action labels', 'The kicker becomes the action: "Shop Dior →" on brands and "Lavender scents →" on notes. Says exactly what happens on tap.', ''],
+  ['Museum captions', 'A small number in the corner (N° 01, 02…) and a caption line "Lavender  NOTE". Feels like a curated exhibition of houses and ingredients.', ''],
+  ['Watermark names', 'No text bar at all: a big, very pale name sits behind the picture. Very graphic; names are still there for people who look.', ''],
+  ['Quiet until hover', 'Everything is pictures at rest; hover a tile and its name and kicker slide up. Most minimal on desktop; on phones the names always show.', ''],
+];
+const kicker = (k) => (k === 'n' ? 'Scent note' : 'Shop');
+const main = document.getElementById('m');
+V.forEach(([title, desc, tag], n) => {
+  const v = n + 1;
+  const tiles = L.map(([k, name, size], i) => {
+    const isNote = k === 'n';
+    const art = isNote ? `<img src="../assets/sample-scent-${NOTE[name]}.webp" alt="">` : [1, 2, 3].map((x) => `<img src="shop-images/samyo-brand-${BR[name][0]}-${x}.webp" alt="">`).join('');
+    let label = `<span class="nm">${name}</span><span class="sh">${kicker(k)}</span>`;
+    if (v === 5) label += `<span class="pill">${name} <i>${isNote ? '↗' : '→'}</i></span>`;
+    if (v === 6) label += `<span class="spine">${name} · ${isNote ? 'Note' : 'Shop'}</span>`;
+    if (v === 7) label = `<span class="nm">${name}</span><span class="act">${isNote ? name + ' scents' : 'Shop ' + name} <span>→</span></span>`;
+    if (v === 8) label = `<span class="no">N° ${String(i + 1).padStart(2, '0')}</span><span class="nm">${name} <small>${isNote ? 'Note' : 'House'}</small></span>`;
+    if (v === 9) label += `<span class="wm">${name}</span>`;
+    return `<a href="#" class="t ${size} ${isNote ? 'note' : 'brand'}" style="--t:${isNote ? 'transparent' : BR[name][1]}"><span class="art">${art}</span>${label}</a>`;
+  }).join('');
+  const badge = tag ? `<span class="tag">${tag === 'today' ? 'live now' : 'my pick'}</span>` : '';
+  main.insertAdjacentHTML('beforeend', `<section class="v v${v}"><div class="cap"><h2><b>${v}</b>${title}${badge}</h2><p>${desc}</p></div><div class="stage"><div class="grid">${tiles}</div></div></section>`);
+});
+</script>
+</body></html>
