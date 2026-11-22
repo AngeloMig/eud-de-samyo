@@ -12,9 +12,12 @@
     assign j_blog = blogs.journal
   endif
   assign j_count = section.settings.count
+  # A missing blog comes back as an empty string, and comparing its (missing) count
+  # with 0 is a Liquid error on Shopify, so default the count to 0 first.
+  assign j_total = j_blog.articles_count | default: 0
 -%}
 
-{%- if j_blog.articles_count > 0 or request.design_mode -%}
+{%- if j_total > 0 or request.design_mode -%}
   {{ 'perfume-journal.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
 
@@ -38,7 +41,7 @@
       {%- endif -%}
     </div>
 
-    {%- if j_blog.articles_count > 0 -%}
+    {%- if j_total > 0 -%}
       <div class="pj__home-grid">
         {%- for a in j_blog.articles limit: j_count -%}
           <div class="pj__home-cell{% if forloop.first %} pj__home-cell--lead{% endif %}" style="--i: {{ forloop.index0 }};" data-pf-reveal="rise">
