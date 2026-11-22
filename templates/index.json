@@ -136,6 +136,7 @@
         "perfume_1": {
           "type": "perfume",
           "settings": {
+            "product": "dior-sauvage-eau-de-parfum",
             "brand": "Dior",
             "title": "Sauvage",
             "concentration": "Eau de Parfum",
@@ -163,6 +164,7 @@
         "perfume_2": {
           "type": "perfume",
           "settings": {
+            "product": "dior-homme-intense",
             "brand": "Dior",
             "title": "Dior Homme Intense",
             "concentration": "Eau de Parfum",
@@ -189,6 +191,7 @@
         "perfume_3": {
           "type": "perfume",
           "settings": {
+            "product": "dolce-gabbana-the-one",
             "brand": "Dolce & Gabbana",
             "title": "The One",
             "concentration": "",
@@ -215,6 +218,7 @@
         "perfume_4": {
           "type": "perfume",
           "settings": {
+            "product": "emporio-armani-stronger-with-you-intensely",
             "brand": "Emporio Armani",
             "title": "Stronger With You Intensely",
             "concentration": "Eau de Parfum",
