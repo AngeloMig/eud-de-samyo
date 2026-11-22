@@ -1,6 +1,7 @@
 /* Vial picker (sections/perfume-vial-picker.liquid): choose a set, fill its vials
    with scents, add it to the bag. Each perfume has its own price per vial size (its
-   size variants); the set costs the vials picked, added up. */
+   size variants); the set costs the vials picked, added up. After Add set to bag the cart drawer opens
+   (perfume:cart-open), as everywhere else in the theme. */
 (() => {
   const SET_ID = () => Math.random().toString(36).slice(2, 6);
 
@@ -252,13 +253,16 @@
       const size = set.dataset.size;
       if (picks.length < count) return;
       // One line per perfume (same perfume twice = quantity 2), all marked with this set.
-      const label = `${set.dataset.title} · ${count} × ${size} ml (${SET_ID()})`;
+      // Visible on the order: "Set: Try trio · 3 × 1 ml". Hidden (_set): which set,
+      // so two trios in one cart stay apart.
+      const label = `${set.dataset.title} · ${count} × ${size} ml`;
+      const setId = SET_ID();
       const byId = new Map();
       picks.forEach((p) => {
         const v = vialOf(p.li, size);
         byId.set(v.id, (byId.get(v.id) || 0) + 1);
       });
-      const items = [...byId].map(([id, quantity]) => ({ id, quantity, properties: { Set: label } }));
+      const items = [...byId].map(([id, quantity]) => ({ id, quantity, properties: { Set: label, _set: setId } }));
 
       submit.disabled = true;
       try {
@@ -267,11 +271,22 @@
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({ items }),
         });
-        if (!res.ok) {
-          const err = await res.json().catch(() => ({}));
-          throw new Error(err.description || err.message || '');
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.description || data.message || '');
+        // Same as every other Add to bag in the theme: tell the header, then open the
+        // cart drawer. Without the drawer (turned off in the header), go to the cart page.
+        if (typeof window.publish === 'function' && window.PUB_SUB_EVENTS?.cartUpdate) {
+          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'perfume-vial-picker', cartData: data });
         }
-        location.href = root.dataset.cart || '/cart';
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: data }));
+        if (document.querySelector('perfume-cart-drawer')) {
+          const first = (data.items || [])[0] || {};
+          document.dispatchEvent(new CustomEvent('perfume:cart-open', { detail: { variant_id: first.variant_id || first.id } }));
+          statusEl.textContent = t('Added') || 'Added to your bag.';
+          submit.disabled = false;
+        } else {
+          location.href = root.dataset.cart || '/cart';
+        }
       } catch (err) {
         statusEl.textContent = err.message || t('Error');
         statusEl.focus();

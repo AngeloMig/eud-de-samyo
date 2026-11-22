@@ -7,8 +7,9 @@
      removes them. Scents come from a collection (setting
      "collection", else all products); a perfume is offered in a size when it has a
      variant for it: any option value "1 ml", "2 ml", "5 ml" or "10 ml".
-  3. Add to bag: one line per picked vial (that perfume's size variant, at its own
-     price), all marked with the set, e.g. "Set: Try trio · 3 × 1 ml (k3f9)".
+  3. Add to bag (then the cart drawer opens): one line per picked vial (that perfume's size variant, at its own
+     price), all marked with the set, e.g. "Set: Try trio · 3 × 1 ml", plus a hidden
+     "_set" id so two identical sets stay apart.
 
   The set's price is the sum of the vials picked: three different perfumes give
   their three prices added up, less the set's discount (block setting; the matching
@@ -67,6 +68,7 @@
   data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
   data-t-error="{{ section.settings.error_label | escape }}"
+  data-t-added="{{ section.settings.added_label | escape }}"
   data-t-discount="{{ section.settings.discount_label | escape }}"
   data-t-from="{{ section.settings.range_from_label | escape }}"
   data-t-to="{{ section.settings.range_to_label | escape }}"
@@ -239,6 +241,7 @@
     { "type": "text", "id": "discount_label", "label": "Discount line", "info": "[n] = the set's discount %.", "default": "Set discount ([n]%)" },
     { "type": "text", "id": "total_label", "label": "Total", "default": "Total" },
     { "type": "text", "id": "add_label", "label": "Add to bag button", "default": "Add set to bag" },
+    { "type": "text", "id": "added_label", "label": "After adding to the bag", "default": "Added to your bag." },
     { "type": "text", "id": "error_label", "label": "Add to bag error", "default": "Couldn't add the set. Please try again." },
     { "type": "text", "id": "trust", "label": "Note under the tray", "default": "Decanted from authentic bottles. Not affiliated with the brands." },
     { "type": "text", "id": "nojs_label", "label": "Message without JavaScript", "default": "Turn on JavaScript to pick your scents." },

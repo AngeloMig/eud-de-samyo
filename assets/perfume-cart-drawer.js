@@ -7,7 +7,7 @@
   Closed: inert. Open: focus moves in, Tab stays inside, Escape and the scrim close it,
   and focus returns to whatever opened it.
   Decant sets (sections/perfume-vial-picker.liquid): vials added together carry the
-  same "Set" line property. They show as one card, with each vial's price, the set's
+  same "Set" line property (and hidden "_set" id). They show as one card, with each vial's price, the set's
   savings when a discount applies, and one Remove that takes out the whole set (no
   per-vial quantities, so a set can't be broken up).
   Free-delivery bar: what is left to the goal (data-ship-threshold, store currency,
@@ -166,8 +166,9 @@
       const groups = [];
       const bySet = new Map();
       items.forEach((item) => {
-        const set = item.properties && item.properties.Set;
-        if (!set) return groups.push({ item });
+        const props = item.properties || {};
+        if (!props.Set) return groups.push({ item });
+        const set = `${props.Set}|${props._set || ''}`;
         if (!bySet.has(set)) {
           const g = { set, lines: [] };
           bySet.set(set, g);
@@ -205,7 +206,7 @@
 
     // One decant set: its vials, the set price (and savings), one Remove.
     setCard(g, i, cart) {
-      const name = g.set.replace(/\s*\([a-z0-9]+\)\s*$/i, '');
+      const name = g.set.split('|')[0].replace(/\s*\([a-z0-9]+\)\s*$/i, '');
       const total = g.lines.reduce((a, l) => a + l.final_line_price, 0);
       const before = g.lines.reduce((a, l) => a + l.original_line_price, 0);
       const isNew = this.newVariant && g.lines.some((l) => Number(l.variant_id) === Number(this.newVariant));

@@ -64,42 +64,51 @@
  .tline .s{color:var(--soft)}
  .high{color:#9a6a12}
  @media (max-width:989px){.pick{grid-template-columns:1fr}}
+
+ .inp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 16px}
+ .inp .f{position:relative}
+ .inp .st{display:flex;align-items:center;gap:6px;font-size:11px;margin-top:2px;cursor:pointer;min-height:28px}
+ .inp .st input{width:16px;height:16px;min-height:0;accent-color:var(--good)}
+ .est{color:#9a6a12;font-weight:600} .conf{color:var(--good);font-weight:600}
+ .banner{padding:12px 16px;margin:0 0 16px;font-size:13.5px;border-left:3px solid #9a6a12;background:#fbf3e2}
+ .banner.okb{border-color:var(--good);background:#e6f0e8}
+ .label-contrib{display:inline-block;background:var(--paper);padding:3px 8px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+ .chg{font-size:11.5px;display:block} .up{color:var(--bad)} .down{color:var(--good)}
+ .alt{background:var(--paper);padding:14px 16px;margin-top:10px} .alt b{display:block;margin-bottom:4px}
+ h3{font:400 24px/1.1 'Cormorant Garamond';margin:18px 0 8px}
+ @media (max-width:989px){.inp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head><body><div class="wrap">
 
 <header>
- <h1>Decant pricing, perfume by perfume</h1>
- <p class="lede">Each perfume has its own price per vial. A set costs the vials the customer picks, added up, the same as the vial picker on the site. Bottle prices come from FragranceX’s product pages in pesos (22 November 2026), using the 100 ml tester where one is listed. Click a source line to re-check it. Type your real price in a yellow box if you pay less or more: everything updates and is saved in this browser.</p>
+ <h1>Decant pricing: contribution before ads and fixed overhead</h1>
+ <p class="lede">Target: a <b>45–50% fully costed contribution margin</b> on every in-house decant set, after the set discount, for every possible mix of scents. Margin = (selling price − all variable order costs) ÷ selling price. Advertising (a monthly budget spread over your orders), the Shopify plan, apps and other fixed costs are kept separate. Full-bottle affiliate earnings are calculated on their own (section 8). Bottle prices: FragranceX in pesos, 22 Nov 2026 (100 ml tester where listed). Nothing here changes the live store.</p>
 </header>
 
-<h2>1 · Your costs and targets</h2>
-<p class="sub">Replace the vial, label and packaging costs with your supplier’s. FragranceX prices don’t include shipping to the Philippines or import duties: add them as a %.</p>
-<div class="card"><div class="inputs">
- <label class="f">Shipping & duties on bottle %<input id="ship" type="number" step="1" value="0"></label>
- <label class="f">Loss when pouring %<input id="loss" type="number" step="0.5" value="5"></label>
- <label class="f">1 ml vial ₱<input id="v1" type="number" step="0.5" value="8"></label>
- <label class="f">2 ml spray ₱<input id="v2" type="number" step="0.5" value="15"></label>
- <label class="f">5 ml atomizer ₱<input id="v5" type="number" step="0.5" value="35"></label>
- <label class="f">10 ml atomizer ₱<input id="v10" type="number" step="0.5" value="55"></label>
- <label class="f">Label per vial ₱<input id="lab" type="number" step="0.5" value="4"></label>
- <label class="f">Box & packing per set ₱<input id="pack" type="number" step="1" value="40"></label>
- <label class="f">Payment fee %<input id="fee" type="number" step="0.1" value="3.5"></label>
- <label class="f">Vial prices built for margin %<input id="vm" type="number" step="1" value="36"></label>
- <label class="f">Six-vial set discount %<input id="d6" type="number" step="1" value="10"></label>
- <label class="f">Margin must stay between %<span style="display:flex;gap:6px"><input id="tm" type="number" step="1" value="30" aria-label="Lowest margin %"><input id="tmax" type="number" step="1" value="40" aria-label="Highest margin %"></span></label>
-</div>
-<label class="tester"><input type="checkbox" id="usetester"> Use the 100 ml tester price where FragranceX lists one (Terre d’Hermès ₱4,336.30, Eros ₱4,027.84, The One ₱4,071.21).</label>
-</div>
+<div id="banner" class="banner"></div>
 
-<h2>2 · The price of each vial</h2>
-<p class="sub">These are the prices to enter in Shopify as each perfume’s size variants (1 ml, 2 ml, 5 ml, 10 ml). Each covers the perfume, the vial, the label and a share of the set’s box (a third for 1 and 2 ml, half for 5 ml, all of it for 10 ml), plus the payment fee and the margin you chose, rounded up to ₱5. Grey line = your cost for that vial without the box.</p>
-<div class="card tablewrap"><table id="t-vial"><thead><tr><th>Perfume</th><th>Bottle ₱</th><th>ml</th><th>Cost per ml</th><th>1 ml vial</th><th>2 ml vial</th><th>5 ml vial</th><th>10 ml vial</th></tr></thead><tbody></tbody></table></div>
+<h2>1 · Variable costs per order</h2>
+<p class="sub">Every cost that grows with each order. Tick “Confirmed” once a number comes from your supplier, courier, payment provider or Shopify plan; until then it is an estimate and the results say so.</p>
+<div class="card"><div class="inp" id="inputs"></div>
+<label class="tester" style="margin-top:14px"><input type="checkbox" id="usetester"> Use the 100 ml tester price where FragranceX lists one (Terre d’Hermès ₱4,336.30, Eros ₱4,027.84, The One ₱4,071.21).</label></div>
 
-<h2>3 · Every set: lowest and highest price, and your margin</h2>
-<p class="sub">Customers pick different scents, so the lowest price is the cheapest different scents added up and the highest is the dearest. The margin column checks every possible mix of different scents.</p>
-<div class="card tablewrap"><table id="t-set"><thead><tr><th>Set</th><th>Lowest price</th><th>Highest price</th><th>Margin, every mix</th></tr></thead><tbody></tbody></table></div>
+<h2>2 · Targets</h2>
+<div class="card"><div class="inp" id="targets"></div></div>
 
-<h2>4 · Try a set, exactly like the vial picker</h2>
-<p class="sub">Choose a set, then tap scents to fill the vials. You see what the customer pays and, under it, every line of your cost and profit.</p>
+<h2>3 · Price of each vial: current and recommended</h2>
+<p class="sub">One price per perfume and size, used everywhere (picker, sets, Shopify). Recommended prices are searched so that every set and every scent combination lands inside the target band after the set discount, then rounded up to ₱5 and checked again. Grey line: variable cost of that vial (perfume, vial, label, filling labour), before the order’s box, packing, fees and allowance.</p>
+<div class="card tablewrap"><table id="t-vial"></table></div>
+
+<h2>3b · Profit per bottle</h2>
+<p class="sub">What one full bottle earns if you pour all of it into one size and sell it in that size’s set (1 and 2 ml as trios, 5 ml as duos, 10 ml on its own), at the recommended prices. Usable ml = bottle ml × (1 − transfer loss); leftover ml that doesn’t fill a whole vial is not counted. <span class="label-contrib">Contribution before ads and fixed overhead</span>, then after your ad spend per order. “Return” = profit ÷ what the bottle cost you (incl. shipping & import).</p>
+<div class="card tablewrap"><table id="t-bottle"></table></div>
+
+<h2>4 · Every set, every combination: before and after</h2>
+<p class="sub"><span class="label-contrib">Contribution before ads and fixed overhead</span> Each set is checked as one order on its own (one box), with every combination of different scents, after its discount. “After ads” subtracts your ad spend per order (monthly ad budget ÷ orders per month, section 2).</p>
+<div class="card tablewrap"><table id="t-sets"></table></div>
+<div id="conflicts"></div>
+
+<h2>5 · Try a set</h2>
+<p class="sub">Choose a set and tap scents. Uses the recommended prices; every cost line is shown.</p>
 <div class="card pick">
  <div>
   <span class="k">Set</span>
@@ -111,8 +120,19 @@
 </div>
 <div class="card" id="sheet" style="font-variant-numeric:tabular-nums"></div>
 
+<h2>6 · Fixed overhead (kept separate)</h2>
+<p class="sub">Monthly costs that don’t grow with each order. Spread over your expected orders per month to see operating profit per order. Empty = not set yet (not treated as zero).</p>
+<div class="card"><div class="inp" id="fixed"></div><div id="opprofit" style="margin-top:14px"></div></div>
+
+<h2>7 · Operating profit per order (example)</h2>
+<div class="card tablewrap"><table id="t-op"></table></div>
+
+<h2>8 · Full-bottle affiliate earnings (separate)</h2>
+<p class="sub">Full bottles are sold by FragranceX through your CJ link; Samyó never holds the stock. Earnings = FragranceX price × your commission rate. Enter the rate from your CJ account; until then nothing is assumed.</p>
+<div class="card"><div class="inp" id="aff-in"></div><div class="tablewrap" style="margin-top:12px"><table id="t-aff"></table></div></div>
+
 <footer>
- How every number is made. Cost per ml = bottle price ÷ bottle ml × (1 + shipping &amp; duties) × (1 + pouring loss). Vial price = (ml × cost per ml + vial + label + box share) ÷ (1 − payment fee − margin), rounded up to ₱5. Set price = the vials picked, added up, minus the six-vial discount. Your cost for a set = perfume + vials + labels + one box. Profit = price − cost − payment fee; margin = profit ÷ price. Shipping to the customer is left out (they pay it). Not financial or tax advice; VAT and income tax are not included.
+ How every number is made. Usable ml = bottle ml × (1 − transfer loss). Perfume cost per ml = (bottle price × (1 + inbound shipping & import)) ÷ usable ml. Variable cost of an order = Σ per vial (ml × perfume cost per ml + vial + label + filling labour) + box & packing materials + packing labour + payment fixed fee + seller-funded delivery + price × (payment % + Shopify transaction fee % + leakage/refund allowance %). Price = vials added up, minus the set discount. Contribution = price − variable cost; margin = contribution ÷ price. Recommended vial price = (variable vial cost + order-cost share) ÷ (1 − percentage costs − target), rounded up to ₱5; the share and target are searched per size so that every combination fits. Not tax advice: VAT and income tax are not included.
 </footer>
 </div>
 
@@ -131,112 +151,221 @@ const PERFUMES=[ // [id, brand, name, bottle ₱, bottle ml, source note, source
  ['wss','Jo Malone London','Wood Sage & Sea Salt Cologne',8290.42,100,'FragranceX · 100 ml Cologne',FX+'jo-malone/jo-malone-wood-sage-and-sea-salt-perfume'],
  ['one','Dolce & Gabbana','The One for Men EDP',4903.34,100,'FragranceX · 100 ml EDP',FX+'dolce-and-gabbana/the-one-cologne',4071.21],
  ['swy','Emporio Armani','Stronger With You Intensely',8318.61,100,'FragranceX · 100 ml EDP',FX+'giorgio-armani/stronger-with-you-intensely-cologne']];
-const SETS=[ // [id, name, count, ml]
- ['t1','Try trio',3,1],['s1','Discovery six',6,1],['t2','Wear trio',3,2],
- ['s2','Wardrobe six',6,2],['d5','Signature duo',2,5],['x10','Travel ten',1,10]];
-const SIZES=[1,2,5,10], SHARE={1:3,2:3,5:2,10:1};
-const KEY='samyo-decant-pricing-v2';
+// Live store prices before this review (per vial: 1 / 2 / 5 / 10 ml), set 22 Nov 2026.
+const CURRENT={sauvage:[220,410,985,1935],homme:[225,415,1000,1965],terre:[120,205,475,920],oud:[380,725,1770,3510],roma:[175,320,765,1495],eros:[115,195,450,865],y:[210,385,925,1815],wss:[190,345,820,1605],one:[115,195,455,875],swy:[190,345,820,1610]};
+const SETS=[ // [id, name, count, ml, discount key]
+ ['t1','Try trio',3,1,null],['s1','Discovery six',6,1,'d6'],['t2','Wear trio',3,2,null],
+ ['s2','Wardrobe six',6,2,'d6'],['d5','Signature duo',2,5,null],['x10','Travel ten',1,10,null]];
+const SIZES=[1,2,5,10], SI={1:0,2:1,5:2,10:3};
+const KEY='samyo-decant-contribution-v1';
 const $=id=>document.getElementById(id);
 const peso=(n,dec)=>'₱'+n.toLocaleString('en-PH',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0});
 const p2=n=>peso(n,true);
 const pct=m=>(m*100).toFixed(1)+'%';
 
+// [id, label, default, step, group, unit]  — every cost starts as an estimate.
+const COSTS=[
+ ['ship','Inbound shipping & import, % of bottle',15,1,'%'],
+ ['loss','Transfer loss, %',5,0.5,'%'],
+ ['v1','1 ml vial ₱',8,0.5,'₱'],['v2','2 ml spray vial ₱',15,0.5,'₱'],['v5','5 ml atomizer ₱',35,0.5,'₱'],['v10','10 ml atomizer ₱',55,0.5,'₱'],
+ ['lab','Label per vial ₱',4,0.5,'₱'],
+ ['box','Box & packing materials per order ₱',40,1,'₱'],
+ ['fill','Filling labour per vial ₱',10,1,'₱'],
+ ['packl','Packing labour per order ₱',20,1,'₱'],
+ ['fee','Payment processing %',3.5,0.1,'%'],
+ ['ffee','Payment fixed fee per order ₱',15,1,'₱'],
+ ['shop','Shopify transaction fee %',2,0.1,'%'],
+ ['allow','Leakage, replacements & refunds, % of price',2,0.5,'%'],
+ ['deliv','Seller-funded delivery per order ₱',0,1,'₱']];
+const TARGETS=[['tlo','Lowest margin %',45,1],['thi','Highest margin %',50,1],['d6','Six-vial set discount %',10,1],['ads','Ad spend per month ₱',6000,500],['orders','Expected orders per month',40,1]];
+const FIXED=[['plan','Shopify plan per month ₱'],['apps','Apps per month ₱'],['other','Other fixed costs per month ₱ (not ads)']];
+const AFF=[['rate','CJ commission rate % (from your CJ account)']];
+
 let saved={};
 try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
-document.querySelectorAll('.inputs input').forEach(el=>{
-  if(saved['in:'+el.id]!=null) el.value=saved['in:'+el.id];
-  el.addEventListener('input',()=>{saved['in:'+el.id]=el.value;save();render()});
-});
+function field(id,label,def,step,withConfirm){
+  const v=saved['in:'+id]!=null?saved['in:'+id]:(def==null?'':def);
+  const conf=!!saved['ok:'+id];
+  return `<label class="f">${label}<input id="${id}" type="number" step="${step||1}" value="${v}" ${def==null?'placeholder="not set"':''}>${withConfirm?`<span class="st"><input type="checkbox" data-ok="${id}" ${conf?'checked':''}> <span class="${conf?'conf':'est'}">${conf?'Confirmed':'Estimate, not confirmed'}</span></span>`:''}</label>`;
+}
+$('inputs').innerHTML=COSTS.map(c=>field(c[0],c[1],c[2],c[3],true)).join('');
+$('targets').innerHTML=TARGETS.map(c=>field(c[0],c[1],c[2],c[3],c[0]==='ads'||c[0]==='orders')).join('')+`<p class="sub" id="cacline" style="grid-column:1/-1;margin:4px 0 0"></p>`;
+$('fixed').innerHTML=FIXED.map(c=>field(c[0],c[1],null,1,false)).join('');
+$('aff-in').innerHTML=AFF.map(c=>field(c[0],c[1],null,0.1,false)).join('');
+document.querySelectorAll('input[type=number]').forEach(el=>{if(el.closest('#t-vial'))return;el.addEventListener('input',()=>{saved['in:'+el.id]=el.value;save();render()})});
+document.querySelectorAll('[data-ok]').forEach(el=>el.addEventListener('change',()=>{saved['ok:'+el.dataset.ok]=el.checked;save();const t=el.nextElementSibling;t.textContent=el.checked?'Confirmed':'Estimate, not confirmed';t.className=el.checked?'conf':'est';render()}));
 let useTester=saved.useTester!=null?!!saved.useTester:true;
 const ut=$('usetester');ut.checked=useTester;ut.addEventListener('change',()=>{useTester=ut.checked;saved.useTester=useTester;save();render()});
-const own=p=>saved['bp:'+p[0]]!=null&&saved['bp:'+p[0]]!=='';
-const bottle=p=>own(p)?saved['bp:'+p[0]]:(useTester&&p[7]?p[7]:p[3]);
-const bml=p=>{const v=saved['ml:'+p[0]];return v!=null&&v!==''?v:p[4]};
+const bottle=p=>(useTester&&p[7]?p[7]:p[3]);
 const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0};
-function S(){return{ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),pack:num('pack'),fee:num('fee')/100,vm:num('vm')/100,d6:num('d6')/100,tm:num('tm')/100,tmax:num('tmax')/100}}
-function perMl(p,s){const b=parseFloat(bottle(p)),m=parseFloat(bml(p));if(!(b>0&&m>0))return null;return b/m*(1+s.ship)*(1+s.loss)}
-const vialPrice=(pm,ml,s)=>Math.ceil(((ml*pm+s.vial[ml]+s.lab+s.pack/SHARE[ml])/(1-s.fee-s.vm))/5-1e-9)*5;
-const priced=s=>PERFUMES.map(p=>({p,pm:perMl(p,s)})).filter(x=>x.pm!=null).sort((a,b)=>a.pm-b.pm);
-const discOf=(set,s)=>set[2]===6?s.d6:0;
-// What a set of picks costs the customer and you.
-function sale(set,picks,s){
-  const ml=set[3], prices=picks.map(x=>vialPrice(x.pm,ml,s)), sub=prices.reduce((a,b)=>a+b,0), d=discOf(set,s), off=Math.round(sub*d*100)/100, price=sub-off;
-  const juice=picks.reduce((a,x)=>a+ml*x.pm,0), vials=picks.length*s.vial[ml], labels=picks.length*s.lab, cost=juice+vials+labels+s.pack, fee=price*s.fee, profit=price-cost-fee;
-  return{prices,sub,d,off,price,juice,vials,labels,cost,fee,profit,m:price>0?profit/price:0};
-}
-const band=(m,s)=>m<s.tm-1e-9?'low':m>s.tmax+1e-9?'high':'ok';
-function combos(arr,k){const out=[];const rec=(st,a)=>{if(a.length===k){out.push(a.slice());return}for(let i=st;i<arr.length;i++){a.push(arr[i]);rec(i+1,a);a.pop()}};rec(0,[]);return out}
+const opt=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:null};
 
-// ---- 2 ----
-function renderVials(s){
-  const tb=$('t-vial').tBodies[0];
-  if(!tb.dataset.built){
-    tb.innerHTML=PERFUMES.map(p=>`<tr data-id="${p[0]}"><td><span class="brand">${p[1]}</span>${p[2]}<a class="src" href="${p[6]}" target="_blank" rel="noopener">${p[5]}</a><span class="src tst"></span></td><td><input aria-label="${p[2]} bottle price in pesos" data-k="bp" type="number" step="0.01" placeholder="enter"></td><td><input class="ml" aria-label="${p[2]} bottle size in ml" data-k="ml" type="number" step="1"></td><td class="pm"></td>${SIZES.map(z=>`<td class="z${z}"></td>`).join('')}</tr>`).join('');
-    tb.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{saved[i.dataset.k+':'+i.closest('tr').dataset.id]=i.value;save();render()}));
-    tb.dataset.built=1;
+function S(){return{ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),box:num('box'),fill:num('fill'),packl:num('packl'),
+  fee:num('fee')/100,ffee:num('ffee'),shop:num('shop')/100,allow:num('allow')/100,deliv:num('deliv'),tlo:num('tlo')/100,thi:num('thi')/100,d6:num('d6')/100,ads:num('ads'),orders:num('orders'),cac:num('orders')>0?num('ads')/num('orders'):0}}
+const pctCosts=s=>s.fee+s.shop+s.allow;                       // charged on the selling price
+const orderCost=s=>s.box+s.packl+s.ffee+s.deliv;               // once per order
+function perMl(p,s){const b=parseFloat(bottle(p));if(!(b>0))return null;return b*(1+s.ship)/(p[4]*(1-s.loss))}
+const vialCost=(pm,ml,s)=>ml*pm+s.vial[ml]+s.lab+s.fill;       // per vial, before order costs
+const priced=s=>PERFUMES.map(p=>({p,pm:perMl(p,s)})).filter(x=>x.pm!=null&&CURRENT[x.p[0]]).sort((a,b)=>a.pm-b.pm);
+const discOf=(set,s)=>set[4]==='d6'?s.d6:0;
+const ceil5=x=>Math.ceil(x/5-1e-9)*5;
+// One order: the vials' prices, less the set discount; every variable cost.
+function order(set,vials,prices,s){
+  const sub=prices.reduce((a,b)=>a+b,0), off=Math.round(sub*discOf(set,s)*100)/100, price=sub-off;
+  const perVial=vials.reduce((a,x)=>a+vialCost(x.pm,set[3],s),0), pc=price*pctCosts(s), oc=orderCost(s);
+  const cost=perVial+oc+pc, contrib=price-cost;
+  return{sub,off,price,perVial,oc,pc,cost,contrib,m:price>0?contrib/price:0};
+}
+function combos(n,k){const out=[];const rec=(st,a)=>{if(a.length===k){out.push(a.slice());return}for(let i=st;i<n;i++){a.push(i);rec(i+1,a);a.pop()}};rec(0,[]);return out}
+
+// For one size: search the order-cost share per vial (k) and target t so every set of that
+// size, every combination, after discount and ₱5 rounding, sits inside the band.
+function solveSize(ml,L,s){
+  const sets=SETS.filter(x=>x[3]===ml && L.length>=x[2]), f=pctCosts(s), O=orderCost(s);
+  const cache=sets.map(x=>combos(L.length,x[2]));
+  let best=null;
+  for(let t=s.tlo;t<=s.thi+1e-9;t+=0.0025){
+    for(let j=0;j<=60;j++){
+      const k=O*j/30; // 0 … 2 × order costs per vial
+      const prices=L.map(x=>ceil5((vialCost(x.pm,ml,s)+k)/(1-f-t)));
+      let lo=1,hi=-1;
+      sets.forEach((set,si)=>cache[si].forEach(c=>{const r=order(set,c.map(i=>L[i]),c.map(i=>prices[i]),s);if(r.m<lo)lo=r.m;if(r.m>hi)hi=r.m}));
+      const fits=lo>=s.tlo-1e-9&&hi<=s.thi+1e-9;
+      const mid=(s.tlo+s.thi)/2, score=fits?Math.max(Math.abs(lo-mid),Math.abs(hi-mid)):10+Math.max(s.tlo-lo,0)+Math.max(hi-s.thi,0);
+      if(!best||score<best.score) best={t,k,prices,lo,hi,fits,score};
+    }
   }
-  PERFUMES.forEach(p=>{
-    const tr=tb.querySelector(`[data-id="${p[0]}"]`), pm=perMl(p,s), bi=tr.querySelector('[data-k=bp]'), mi=tr.querySelector('[data-k=ml]');
-    if(document.activeElement!==bi)bi.value=bottle(p);
-    if(document.activeElement!==mi)mi.value=bml(p);
-    tr.querySelector('.tst').textContent=own(p)?'your own price':useTester&&p[7]?`using the tester (boxed ${p2(p[3])})`:p[7]?`tester ${p2(p[7])} available`:'';
-    tr.querySelector('.pm').innerHTML=pm==null?'<span class="na">—</span>':`<b>${p2(pm)}</b>`;
-    SIZES.forEach(z=>{const c=tr.querySelector('.z'+z);c.innerHTML=pm==null?'<span class="na">—</span>':`<b>${peso(vialPrice(pm,z,s))}</b><span class="c">cost ${p2(z*pm+s.vial[z]+s.lab)}</span>`});
-  });
+  return best;
+}
+// Largest six-vial discount (whole %) that keeps every six-vial combination in the band, with given prices.
+function maxSixDiscount(ml,L,prices,s){
+  const set=SETS.find(x=>x[3]===ml&&x[2]===6); if(!set||L.length<6) return null;
+  const cs=combos(L.length,6); let ok=null;
+  for(let d=0;d<=30;d++){const s2={...s,d6:d/100};let fit=true;for(const c of cs){const r=order(set,c.map(i=>L[i]),c.map(i=>prices[i]),s2);if(r.m<s.tlo-1e-9||r.m>s.thi+1e-9){fit=false;break}} if(fit) ok=d;}
+  return ok;
 }
 
-// ---- 3 ----
-function renderSets(s){
-  const L=priced(s);
-  $('t-set').tBodies[0].innerHTML=SETS.map(set=>{
-    if(L.length<set[2])return `<tr><td>${set[1]}</td><td colspan="3" class="na">Needs ${set[2]} priced perfumes.</td></tr>`;
-    const lo=sale(set,L.slice(0,set[2]),s), hi=sale(set,L.slice(-set[2]),s);
-    let mlo=1,mhi=-1;combos(L,set[2]).forEach(c=>{const r=sale(set,c,s);mlo=Math.min(mlo,r.m);mhi=Math.max(mhi,r.m)});
-    const cls=band(mlo,s)==='ok'&&band(mhi,s)==='ok'?'ok':band(mlo,s)==='low'?'low':'high';
-    const show=r=>r.off?`<b>${p2(r.price)}</b><span class="c"><s>${peso(r.sub)}</s> − ${Math.round(r.d*100)}%</span>`:`<b>${peso(r.price)}</b>`;
-    return `<tr><td>${set[1]}<span class="c">${set[2]} × ${set[3]} ml${set[2]===6?` · ${Math.round(s.d6*100)}% off`:''}</span></td><td>${show(lo)}<span class="c">${L.slice(0,set[2]).map(x=>x.p[2]).join(' + ')}</span></td><td>${show(hi)}<span class="c">${L.slice(-set[2]).map(x=>x.p[2]).join(' + ')}</span></td><td class="${cls}">${pct(mlo)} – ${pct(mhi)}</td></tr>`;
+let REC={}, SOLVE={};
+function renderBanner(){
+  const un=COSTS.filter(c=>!saved['ok:'+c[0]]).map(c=>c[1].split(/,| ₱| %/)[0]);
+  const cacUn=!saved['ok:ads']||!saved['ok:orders'];
+  const b=$('banner');
+  if(un.length||cacUn){b.className='banner';b.innerHTML=`<b>${un.length+(cacUn?1:0)} cost inputs are estimates, not confirmed:</b> ${un.concat(cacUn?['Ad spend / orders per month']:[]).join(', ')}. Recommended prices below are only as good as these numbers.`}
+  else{b.className='banner okb';b.textContent='All variable cost inputs are confirmed.'}
+}
+function renderVials(s,L){
+  REC={};SOLVE={};
+  SIZES.forEach(ml=>{const r=solveSize(ml,L,s);SOLVE[ml]=r;L.forEach((x,i)=>{(REC[x.p[0]]=REC[x.p[0]]||[])[SI[ml]]=r.prices[i]})});
+  $('t-vial').innerHTML=`<thead><tr><th>Perfume</th><th>Bottle ₱</th><th>Perfume cost / usable ml</th>${SIZES.map(z=>`<th>${z} ml<br>current → recommended</th>`).join('')}</tr></thead><tbody>${PERFUMES.map(p=>{
+    const pm=perMl(p,s), cur=CURRENT[p[0]];
+    if(pm==null||!cur) return `<tr><td><span class="brand">${p[1]}</span>${p[2]}<span class="src">${p[5]}</span></td><td class="na">—</td><td class="na">—</td>${SIZES.map(()=>'<td class="na">no decants</td>').join('')}</tr>`;
+    return `<tr><td><span class="brand">${p[1]}</span>${p[2]}<a class="src" href="${p[6]}" target="_blank" rel="noopener">${p[5]}${useTester&&p[7]?' · tester':''}</a></td><td>${p2(+bottle(p))}</td><td>${p2(pm)}</td>${SIZES.map(z=>{const c=cur[SI[z]], r=REC[p[0]][SI[z]], d=r-c;return `<td>${peso(c)} → <b>${peso(r)}</b><span class="chg ${d>0?'up':d<0?'down':''}">${d>0?'+':''}${peso(d)}</span><span class="c">vial cost ${p2(vialCost(pm,z,s))}</span></td>`}).join('')}</tr>`}).join('')}</tbody>`;
+}
+// One whole bottle poured into one size and sold in that size's set.
+const BOTTLE_SET={1:['t1','Try trio',3,1,null],2:['t2','Wear trio',3,2,null],5:['d5','Signature duo',2,5,null],10:['x10','Travel ten',1,10,null]};
+function renderBottle(s,L){
+  const rows=L.map(x=>{
+    const usable=x.p[4]*(1-s.loss), cost=parseFloat(bottle(x.p))*(1+s.ship);
+    const cells=SIZES.map(ml=>{
+      const set=BOTTLE_SET[ml], n=set[2], vials=Math.floor(usable/ml+1e-9), orders=vials/n;
+      const price=REC[x.p[0]][SI[ml]], cur=CURRENT[x.p[0]][SI[ml]];
+      const r=order(set,Array(n).fill(x),Array(n).fill(price),s), rc=order(set,Array(n).fill(x),Array(n).fill(cur),s);
+      const profit=r.contrib*orders, after=profit-s.cac*orders, revenue=r.price*orders, curProfit=rc.contrib*orders;
+      return `<td><b>${peso(Math.round(profit))}</b><span class="c">${vials} vials · sales ${peso(Math.round(revenue))}</span><span class="c">after ads ${peso(Math.round(after))} · return ${(profit/cost*100).toFixed(0)}%</span><span class="c">now: ${peso(Math.round(curProfit))}</span></td>`;
+    }).join('');
+    return `<tr><td><span class="brand">${x.p[1]}</span>${x.p[2]}<span class="c">${x.p[4]} ml · ${usable.toFixed(1)} ml usable</span></td><td>${p2(cost)}<span class="c">bottle + shipping & import</span></td>${cells}</tr>`;
   }).join('');
+  $('t-bottle').innerHTML=`<thead><tr><th>Perfume</th><th>Bottle cost</th>${SIZES.map(z=>`<th>All as ${z} ml<br>profit per bottle</th>`).join('')}</tr></thead><tbody>${rows}</tbody>`;
+}
+function rangeFor(set,L,priceOf,s){
+  let lo=null,hi=null,mlo=null,mhi=null;
+  combos(L.length,set[2]).forEach(c=>{const v=c.map(i=>L[i]);const r=order(set,v,v.map(x=>priceOf(x.p[0],set[3])),s);
+    if(!lo||r.price<lo.r.price) lo={r,v}; if(!hi||r.price>hi.r.price) hi={r,v};
+    if(!mlo||r.m<mlo.m) mlo=r; if(!mhi||r.m>mhi.m) mhi=r;});
+  return{lo,hi,mlo,mhi};
+}
+const band=(m,s)=>m<s.tlo-1e-9?'low':m>s.thi+1e-9?'high':'ok';
+function renderAds(s,L){
+  $('cacline').innerHTML=s.orders>0?`Ads per order: <b>${p2(s.ads)} ÷ ${s.orders} orders = ${p2(s.cac)}</b>. Set orders to what your ads actually bring in a month.`:'<span class="est">Set expected orders per month to spread the ad budget.</span>';
+}
+function renderSets(s,L){
+  const cur=(id,ml)=>CURRENT[id][SI[ml]], rec=(id,ml)=>REC[id][SI[ml]];
+  const cell=(R,label)=>{const cls=band(R.mlo.m,s)==='ok'&&band(R.mhi.m,s)==='ok'?'ok':band(R.mlo.m,s)==='low'?'low':'high';
+    return `<td>${p2(R.lo.r.price)} – ${p2(R.hi.r.price)}<span class="c">price range</span></td><td class="${cls}"><b>${pct(R.mlo.m)} – ${pct(R.mhi.m)}</b><span class="c">${p2(R.lo.r.contrib)} – ${p2(R.hi.r.contrib)}</span></td><td>${p2(R.lo.r.contrib-s.cac)} – ${p2(R.hi.r.contrib-s.cac)}<span class="c">after ${p2(s.cac)} ads per order</span></td>`};
+  let rows=SETS.filter(x=>L.length>=x[2]).map(set=>{const C=rangeFor(set,L,cur,s),R=rangeFor(set,L,rec,s);
+    return `<tr><td>${set[1]}<span class="c">${set[2]} × ${set[3]} ml${discOf(set,s)?` · ${Math.round(discOf(set,s)*100)}% off`:''} · ${combos(L.length,set[2]).length} combinations</span></td>${cell(C)}${cell(R)}</tr>`}).join('');
+  // Standalone single vials, each a whole order with a whole box.
+  rows+=[1,2,5].map(ml=>{const one=['sv','Single '+ml+' ml vial',1,ml,null];const C=rangeFor(one,L,cur,s),R=rangeFor(one,L,rec,s);
+    return `<tr><td>${one[1]} on its own<span class="c">not sold: product pages hide 1, 2 and 5 ml; the picker sells sets only</span></td>${cell(C)}${cell(R)}</tr>`}).join('');
+  $('t-sets').innerHTML=`<thead><tr><th rowspan="2">Order</th><th colspan="3">Current prices</th><th colspan="3">Recommended prices</th></tr><tr><th>Price</th><th>Contribution % · ₱</th><th>After ads</th><th>Price</th><th>Contribution % · ₱</th><th>After ads</th></tr></thead><tbody>${rows}</tbody>`;
+  // Conflicts and alternatives
+  let h='';
+  SIZES.forEach(ml=>{const r=SOLVE[ml]; if(!r||r.fits) return;
+    const md=maxSixDiscount(ml,L,r.prices,s);
+    h+=`<div class="card"><h3>${ml} ml: the band can’t hold every combination at one price per vial</h3><p class="sub" style="margin:0">Best found: margins ${pct(r.lo)} – ${pct(r.hi)}. With one consistent price per vial, the three-vial set carries a third of the box and the six-vial set a sixth, and the six also loses ${Math.round(s.d6*100)}%. Perfume is most of the cost at this size, so a cheap mix and a dear mix also land far apart.</p>
+    <div class="alt"><b>Practical alternatives</b>${md!=null?`• Lower the six-vial discount to <b>${md}%</b> (the most that keeps every six-vial combination in the band at these prices).<br>`:''}• Keep 10% but accept the six landing below ${pct(s.tlo)} (it still beats the trio on profit per order in pesos).<br>• Narrow the scents offered at this size (the spread between the cheapest and dearest perfume drives the range).</div></div>`});
+  if(SETS.some(x=>x[4]==='d6')){
+    const fitsAll=SIZES.every(ml=>!SOLVE[ml]||SOLVE[ml].fits);
+    if(fitsAll) h+=`<div class="card"><p class="sub" style="margin:0"><b class="ok">Every set, every combination fits ${pct(s.tlo)} – ${pct(s.thi)}</b> with one price per vial and the ${Math.round(s.d6*100)}% six-vial discount.</p></div>`;
+  }
+  // How many orders pay back the monthly ad budget (cheapest and dearest mix, recommended prices).
+  const be=SETS.filter(x=>L.length>=x[2]).map(set=>{const R=rangeFor(set,L,rec,s);const a=Math.ceil(s.ads/R.lo.r.contrib), b=Math.ceil(s.ads/R.hi.r.contrib);
+    return `<tr><td>${set[1]}<span class="c">${set[2]} × ${set[3]} ml</span></td><td>${p2(R.lo.r.contrib)} – ${p2(R.hi.r.contrib)}</td><td><b>${b} – ${a}</b> orders</td></tr>`}).join('');
+  h+=`<div class="card tablewrap"><h3 style="margin-top:0">Orders a month to pay back ${p2(s.ads)} of ads</h3><table><thead><tr><th>Set (recommended prices)</th><th>Contribution per order</th><th>Orders needed (dearest – cheapest mix)</th></tr></thead><tbody>${be}</tbody></table><p class="sub" style="margin:10px 0 0">Every order past these numbers is profit before the Shopify plan, apps and other fixed costs (section 6).</p></div>`;
+  $('conflicts').innerHTML=h;
 }
 
-// ---- 4: the picker ----
+// Try a set (recommended prices)
 let cur='t1', picks=[];
-function renderPicker(s){
-  const L=priced(s), set=SETS.find(x=>x[0]===cur), ml=set[3];
+function renderPicker(s,L){
+  const set=SETS.find(x=>x[0]===cur), ml=set[3];
   picks=picks.map(x=>L.find(y=>y.p===x.p)).filter(Boolean).slice(0,set[2]);
   $('set-btns').innerHTML=SETS.map(x=>`<button type="button" data-set="${x[0]}" class="${x[0]===cur?'on':''}" aria-pressed="${x[0]===cur}">${x[1]}<small>${x[2]} × ${x[3]} ml</small></button>`).join('');
   const full=picks.length>=set[2];
-  $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${peso(vialPrice(x.pm,ml,s))} per ${ml} ml</small></button>`}).join('');
-  const r=sale(set,picks,s);
+  $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${peso(REC[x.p[0]][SI[ml]])} per ${ml} ml</small></button>`}).join('');
+  const prices=picks.map(x=>REC[x.p[0]][SI[ml]]), r=order(set,picks,prices,s);
   let h=`<span class="k">${set[1]} · ${set[2]} × ${ml} ml</span><div style="margin-top:10px">`;
-  for(let i=0;i<set[2];i++){const x=picks[i];h+=x?`<div class="slot full"><span class="n">${i+1}</span><span>${x.p[2]}</span><span>${peso(r.prices[i])}</span><button type="button" data-rm="${i}" aria-label="Remove ${x.p[2]}">×</button></div>`:`<div class="slot"><span class="n">${i+1}</span><span class="e">Empty</span><span></span><span></span></div>`}
+  for(let i=0;i<set[2];i++){const x=picks[i];h+=x?`<div class="slot full"><span class="n">${i+1}</span><span>${x.p[2]}</span><span>${peso(prices[i])}</span><button type="button" data-rm="${i}" aria-label="Remove ${x.p[2]}">×</button></div>`:`<div class="slot"><span class="n">${i+1}</span><span class="e">Empty</span><span></span><span></span></div>`}
   h+=`</div><div class="tline"><span class="s">Vials added up</span><span>${p2(r.sub)}</span></div>`;
-  if(set[2]===6&&s.d6)h+=`<div class="tline"><span class="s">Six-vial discount (${Math.round(s.d6*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
-  h+=`<div class="tline tot"><span>Customer pays</span><span>${p2(r.price)}</span></div><p class="k" style="margin:8px 0 0">${full?'Set complete':`${picks.length} of ${set[2]} picked`}</p>`;
+  if(r.off)h+=`<div class="tline"><span class="s">Set discount (${Math.round(discOf(set,s)*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
+  h+=`<div class="tline tot"><span>Customer pays</span><span>${p2(r.price)}</span></div>`;
   $('tray').innerHTML=h;
-  // the sum
-  const g=`<span class="k">Your cost and profit for this set</span>`;
-  if(!picks.length){$('sheet').innerHTML=g+'<p class="sub" style="margin:8px 0 0">Pick scents to see the sum.</p>';return}
-  let t=g+'<div class="sheet" style="margin-top:10px">';
-  picks.forEach(x=>{t+=`<div class="ln"><span>${x.p[2]}: ${ml} ml × ${p2(x.pm)}/ml<small>${p2(x.pm)}/ml = ${p2(+bottle(x.p))} ÷ ${bml(x.p)} ml${s.ship?` × ${(1+s.ship).toFixed(2)} (shipping & duties)`:''} × ${(1+s.loss).toFixed(2)} (pouring loss)</small></span><span>${p2(ml*x.pm)}</span></div>`});
-  t+=`<div class="ln"><span>Vials: ${picks.length} × ${p2(s.vial[ml])}</span><span>${p2(r.vials)}</span></div>`;
-  t+=`<div class="ln"><span>Labels: ${picks.length} × ${p2(s.lab)}</span><span>${p2(r.labels)}</span></div>`;
-  t+=`<div class="ln"><span>Box & packing (once per set)</span><span>${p2(s.pack)}</span></div>`;
-  t+=`<div class="ln tot"><span>Your cost</span><span>${p2(r.cost)}</span></div>`;
-  t+=`<div class="ln"><span>Customer pays</span><span>${p2(r.price)}</span></div>`;
-  t+=`<div class="ln"><span>Payment fee: ${p2(r.price)} × ${(s.fee*100).toFixed(1)}%</span><span>− ${p2(r.fee)}</span></div>`;
-  t+=`<div class="ln"><span>Your cost</span><span>− ${p2(r.cost)}</span></div>`;
-  const b=band(r.m,s);
-  t+=`<p class="big">${p2(r.profit)}</p><span class="k">profit · margin ${pct(r.m)}</span>`;
-  if(full)t+=`<p class="verdict ${b==='ok'?'ok':'low'}">${b==='ok'?`Inside your ${Math.round(s.tm*100)}–${Math.round(s.tmax*100)}% range.`:b==='low'?`Below ${Math.round(s.tm*100)}%: raise the vial margin or lower the discount.`:`Above ${Math.round(s.tmax*100)}%: you could lower the vial margin.`}</p>`;
+  if(!picks.length){$('sheet').innerHTML='<p class="sub" style="margin:0">Pick scents to see the sum.</p>';return}
+  let t=`<span class="label-contrib">Contribution before ads and fixed overhead</span><div class="sheet" style="margin-top:10px">`;
+  picks.forEach(x=>{t+=`<div class="ln"><span>${x.p[2]}: ${ml} ml × ${p2(x.pm)}/usable ml<small>${p2(+bottle(x.p))} × ${(1+s.ship).toFixed(2)} (shipping & import) ÷ (${x.p[4]} ml × ${(1-s.loss).toFixed(3)} usable)</small></span><span>${p2(ml*x.pm)}</span></div>`});
+  t+=`<div class="ln"><span>Vials, labels, filling: ${picks.length} × (${p2(s.vial[ml])} + ${p2(s.lab)} + ${p2(s.fill)})</span><span>${p2(picks.length*(s.vial[ml]+s.lab+s.fill))}</span></div>`;
+  t+=`<div class="ln"><span>Box & packing materials + packing labour (one order)</span><span>${p2(s.box+s.packl)}</span></div>`;
+  t+=`<div class="ln"><span>Payment fixed fee + seller-funded delivery</span><span>${p2(s.ffee+s.deliv)}</span></div>`;
+  t+=`<div class="ln"><span>Percentage costs on ${p2(r.price)}<small>payment ${(s.fee*100).toFixed(1)}% · Shopify ${(s.shop*100).toFixed(1)}% · leakage/refunds ${(s.allow*100).toFixed(1)}%</small></span><span>${p2(r.pc)}</span></div>`;
+  t+=`<div class="ln tot"><span>All variable costs</span><span>${p2(r.cost)}</span></div>`;
+  t+=`<p class="big">${p2(r.contrib)}</p><span class="k">contribution · ${pct(r.m)} of the price</span>`;
+  t+=`<div class="ln" style="margin-top:12px"><span>After ads (${p2(s.ads)} a month ÷ ${s.orders} orders = ${p2(s.cac)} per order)</span><span>${p2(r.contrib-s.cac)}</span></div>`;
+  if(full){const b=band(r.m,s);t+=`<p class="verdict ${b==='ok'?'ok':'low'}">${b==='ok'?`Inside ${pct(s.tlo)} – ${pct(s.thi)}.`:b==='low'?`Below ${pct(s.tlo)}.`:`Above ${pct(s.thi)}.`}</p>`}
   $('sheet').innerHTML=t+'</div>';
 }
 document.addEventListener('click',e=>{
-  const sb=e.target.closest('[data-set]');if(sb){cur=sb.dataset.set;render();return}
-  const sc=e.target.closest('#scent-btns [data-i]');if(sc){const L=priced(S());picks.push(L[+sc.dataset.i]);render();return}
+  const sb=e.target.closest('[data-set]');if(sb){cur=sb.dataset.set;picks=[];render();return}
+  const sc=e.target.closest('#scent-btns [data-i]');if(sc){const s=S();picks.push(priced(s)[+sc.dataset.i]);render();return}
   const rm=e.target.closest('[data-rm]');if(rm){picks.splice(+rm.dataset.rm,1);render()}
 });
-function render(){const s=S();renderVials(s);renderSets(s);renderPicker(s)}
+
+function renderOverhead(s,L){
+  const plan=opt('plan'),apps=opt('apps'),other=opt('other'),orders=opt('orders');
+  const missing=[['Shopify plan',plan],['Apps',apps],['Other fixed costs',other],['Expected orders',orders]].filter(x=>x[1]==null).map(x=>x[0]);
+  const perOrder=missing.length?null:(plan+apps+other)/Math.max(1,orders);
+  $('opprofit').innerHTML=missing.length?`<p class="sub" style="margin:0"><span class="est">Not set:</span> ${missing.join(', ')}. Operating profit is shown once these are filled in.</p>`:`<p class="sub" style="margin:0">Fixed overhead per order: <b>${p2(perOrder)}</b> (${p2(plan+apps+other)} a month ÷ ${orders} orders).</p>`;
+  const rec=(id,ml)=>REC[id][SI[ml]];
+  $('t-op').innerHTML=`<thead><tr><th>Example order (recommended prices)</th><th>Price</th><th>Contribution</th><th>− Ads</th><th>− Fixed overhead</th><th>Operating profit</th></tr></thead><tbody>${SETS.filter(x=>L.length>=x[2]).map(set=>{
+    const v=L.slice(0,set[2]), r=order(set,v,v.map(x=>rec(x.p[0],set[3])),s), op=perOrder==null?null:r.contrib-s.cac-perOrder;
+    return `<tr><td>${set[1]}<span class="c">cheapest mix: ${v.map(x=>x.p[2]).join(', ')}</span></td><td>${p2(r.price)}</td><td>${p2(r.contrib)} <span class="c">${pct(r.m)}</span></td><td>− ${p2(s.cac)}</td><td>${perOrder==null?'<span class="na">not set</span>':'− '+p2(perOrder)}</td><td>${op==null?'<span class="na">—</span>':`<b class="${op>=0?'ok':'low'}">${p2(op)}</b>`}</td></tr>`}).join('')}</tbody>`;
+}
+function renderAffiliate(){
+  const rate=opt('rate');
+  $('t-aff').innerHTML=`<thead><tr><th>Full bottle at FragranceX</th><th>FragranceX price</th><th>Your earnings per sale</th></tr></thead><tbody>${PERFUMES.map(p=>{const pr=parseFloat(p[3]);
+    return `<tr><td><span class="brand">${p[1]}</span>${p[2]}<span class="c">${p[5]}</span></td><td>${pr>0?p2(pr):'<span class="na">sold out</span>'}</td><td>${rate==null?'<span class="est">enter your CJ rate</span>':pr>0?p2(pr*rate/100):'—'}</td></tr>`}).join('')}</tbody>`;
+}
+function render(){const s=S(), L=priced(s); renderBanner(); renderAds(s,L); renderVials(s,L); renderBottle(s,L); renderSets(s,L); renderPicker(s,L); renderOverhead(s,L); renderAffiliate();}
 render();
 </script>
 </body></html>

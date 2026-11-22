@@ -1,7 +1,10 @@
 {%- comment -%}
   Where to buy: every honest way to get the perfume, Samyó first.
   1. Samyó (when sold here): sizes with ₱ prices and stock, Add to bag (adds in place
-     and opens the cart drawer; assets/perfume-card.js).
+     and opens the cart drawer; assets/perfume-card.js). Decant sizes sold only in sets
+     (setting, default 1, 2 and 5 ml) are left out and linked to the vial picker
+     instead, the same as the product page. A decant perfume keeps this row even when
+     it also has full-bottle CJ offers.
   2. The brand's own website: a plain link, or an affiliate link when one is set
      (labelled "Affiliate link").
   3. Partner retailers: retailer_offer metaobjects (merchant, verified price and date,
@@ -27,6 +30,35 @@
   assign cj_retailer = sold.metafields.samyo.retailer.value | default: 'Partner'
   assign cj_checked = sold.metafields.samyo.price_checked.value
   assign any_aff = false
+
+  # Decant sizes sold only in sets: not offered one by one here.
+  assign hide_raw = section.settings.set_sizes | downcase | remove: ' '
+  assign hide_key = ',' | append: hide_raw | append: ','
+  assign hidden_count = 0
+  assign hidden_min = 0
+  assign shown_count = 0
+  for v in sold.variants
+    assign vk = v.title | downcase | remove: ' '
+    assign vkey = ',' | append: vk | append: ','
+    if hide_raw != blank and hide_key contains vkey
+      assign hidden_count = hidden_count | plus: 1
+      if hidden_min == 0 or v.price < hidden_min
+        assign hidden_min = v.price
+      endif
+    else
+      assign shown_count = shown_count | plus: 1
+    endif
+  endfor
+  assign picker_url = section.settings.picker_page.url
+  if picker_url == blank
+    assign picker_url = pages['build-your-set'].url
+  endif
+  assign show_samyo = false
+  if sold != blank and shown_count > 0
+    if cj == blank or hidden_count > 0
+      assign show_samyo = true
+    endif
+  endif
 -%}
 
 {{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
@@ -41,8 +73,23 @@
   </div>
 
   <div class="pwb__list">
-    {%- if sold != blank and cj == blank -%}
-      {%- assign v0 = sold.selected_or_first_available_variant -%}
+    {%- if show_samyo -%}
+      {%- liquid
+        assign v0 = blank
+        for v in sold.variants
+          assign vk = v.title | downcase | remove: ' '
+          assign vkey = ',' | append: vk | append: ','
+          if hide_raw != blank and hide_key contains vkey
+            continue
+          endif
+          if v0 == blank or v.available
+            assign v0 = v
+            if v.available
+              break
+            endif
+          endif
+        endfor
+      -%}
       {%- assign form_id = 'PerfumeBuyForm-' | append: section.id -%}
       <article class="pwb__row pwb__row--samyo">
         <div class="pwb__who">
@@ -52,6 +99,9 @@
         {%- form 'product', sold, id: form_id, class: 'pwb__form', data-pcard-add: 'true' -%}
           <div class="pwb__sizes" role="radiogroup" aria-label="Size">
             {%- for v in sold.variants -%}
+              {%- assign vk = v.title | downcase | remove: ' ' -%}
+              {%- assign vkey = ',' | append: vk | append: ',' -%}
+              {%- if hide_raw != blank and hide_key contains vkey -%}{%- continue -%}{%- endif -%}
               <label class="pwb__size{% unless v.available %} is-out{% endunless %}">
                 <input type="radio" name="id" value="{{ v.id }}" {% if v.id == v0.id %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
                 <span>
@@ -62,10 +112,14 @@
             {%- endfor -%}
           </div>
           <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="pf-button pwb__btn"{% unless sold.available %} disabled{% endunless %}>
-            <span data-pcard-label>{% if sold.available %}Add to bag{% else %}Sold out{% endif %}</span>
+          <button type="submit" class="pf-button pwb__btn"{% unless v0.available %} disabled{% endunless %}>
+            <span data-pcard-label>{% if v0.available %}Add to bag{% else %}Sold out{% endif %}</span>
           </button>
         {%- endform -%}
+        {%- if hidden_count > 0 and picker_url != blank -%}
+          {%- assign hidden_price = hidden_min | money -%}
+          <p class="pwb__meta pwb__sets">{{ section.settings.sets_text | replace: '[price]', hidden_price | escape }} <a href="{{ picker_url }}?scent={{ sold.handle | url_encode }}">{{ section.settings.sets_link | escape }} <span aria-hidden="true">→</span></a></p>
+        {%- endif -%}
       </article>
     {%- endif -%}
 
@@ -158,6 +212,10 @@
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Where to buy" },
     { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "Get [name]" },
     { "type": "text", "id": "samyo_note", "label": "Samyó line", "default": "Authentic, shipped from the Philippines" },
+    { "type": "text", "id": "set_sizes", "label": "Decant sizes sold only in sets", "info": "Variant names, separated by commas. Left out of the Samyó row and linked to the vial picker. Empty: show every size.", "default": "1 ml, 2 ml, 5 ml" },
+    { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Empty: the page with the handle build-your-set." },
+    { "type": "text", "id": "sets_text", "label": "Decant sets line", "info": "[price] = the cheapest set-only size.", "default": "Smaller sizes, from [price] a vial, come in decant sets." },
+    { "type": "text", "id": "sets_link", "label": "Decant sets link", "default": "Build a set" },
     { "type": "text", "id": "brand_note", "label": "Brand line", "default": "The brand's own website" },
     { "type": "text", "id": "none_text", "label": "Nothing to show", "default": "No verified place to buy yet." },
     { "type": "textarea", "id": "disclosure", "label": "Affiliate disclosure", "default": "Some links are affiliate links: if you buy through them we may earn a commission, at no extra cost to you. Prices and stock on other sites can change." },

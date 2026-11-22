@@ -814,7 +814,10 @@ async function renderGroupScoped(file, scope) {
     const dHeader = await renderGroupScoped('header-group.json', dScope);
     const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
     const main = await renderSection('main-product-perfume', 'main', {}, productTpl.sections.main, {}, dScope);
-    writeFileSync(join(root, 'dev/product-decant.html'), page('Samyo decant product preview', `${dHeader}\n<main id="MainContent">${main}</main>\n${footer}`, false));
+    // PREVIEW ONLY: an example FragranceX offer (example.com link, not a real CJ link).
+    decant.metafields.samyo = { affiliate_offers: { value: [{ size: '100 ml', url: 'https://example.com/cj-link', price: '₱10,376.98', in_stock: true }] }, retailer: { value: 'FragranceX' }, price_checked: { value: '2026-11-22' } };
+    const where = await renderSection('perfume-where-to-buy', 'where', {}, { blocks: {}, block_order: [], ...productTpl.sections.where }, {}, dScope);
+    writeFileSync(join(root, 'dev/product-decant.html'), page('Samyo decant product preview', `${dHeader}\n<main id="MainContent">${main}${where}</main>\n${footer}`, false));
     console.log('wrote dev/product-decant.html');
   }
 }
