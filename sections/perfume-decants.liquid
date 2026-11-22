@@ -1,0 +1,282 @@
+{%- comment -%}
+  Decants: small decants (1, 2, 5, 10 ml) poured from full bottles, sold in bundles.
+  Row 1: size cards (blocks "size"), each with a vial picture; choosing one shows that
+  size's bundles. Row 2: bundle cards (blocks "bundle"). Under it: an optional,
+  clearly labelled partner (affiliate) link for the full bottle.
+
+  Bundle price: from the chosen product if any, otherwise the block's own price text
+  (e.g. "₱590"). Size cards show "from ₱x" = the lowest price per vial among that
+  size's bundles. Without JavaScript every bundle is shown.
+
+  Styles: assets/perfume-decants.css. Script: assets/perfume-decants.js.
+{%- endcomment -%}
+{%- liquid
+  assign did = 'PerfumeDecants-' | append: section.id
+  assign sizes = section.blocks | where: 'type', 'size'
+  assign bundles = section.blocks | where: 'type', 'bundle'
+  assign first_size = sizes.first.settings.size | default: '1'
+-%}
+
+{{ 'perfume-decants.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-decants.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ did }} {
+    --pdc-bg: {{ section.settings.background_color }};
+    --pdc-ink: {{ section.settings.text_color }};
+    --pdc-card: {{ section.settings.card_color }};
+    --pdc-pt: {{ section.settings.padding_top }}px;
+    --pdc-pb: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="{{ did }}" class="pdc" aria-labelledby="{{ did }}-h" data-pdc data-first="{{ first_size }}">
+  <div class="pdc__wrap">
+    <div class="pdc__head" data-pf-reveal="rise">
+      <div>
+        {%- if section.settings.kicker != blank -%}<p class="pf-kicker pdc__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="pdc__h" id="{{ did }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</h2>
+      </div>
+      {%- if section.settings.text != blank -%}<div class="pdc__text">{{ section.settings.text }}</div>{%- endif -%}
+      {%- liquid
+        assign hero_src = blank
+        if section.settings.hero_image != blank
+          assign hero_src = section.settings.hero_image
+        endif
+      -%}
+      {%- if hero_src != blank -%}
+        {{ hero_src | image_url: width: 600 | image_tag: widths: '300, 600', sizes: '240px', class: 'pdc__hero', loading: 'lazy', alt: '' }}
+      {%- elsif section.settings.hero_sample -%}
+        <img class="pdc__hero" src="{{ 'sample-decant-set.webp' | asset_url }}" width="631" height="700" alt="" loading="lazy">
+      {%- endif -%}
+    </div>
+
+    {%- if sizes.size > 0 -%}
+      <div class="pdc__sizes" role="group" aria-label="{{ section.settings.sizes_label | escape }}">
+        {%- for block in sizes -%}
+          {%- liquid
+            assign s = block.settings.size
+            assign best = 0
+            for b in bundles
+              if b.settings.size == s
+                if b.settings.product != blank
+                  assign p_num = b.settings.product.price | divided_by: 100.0
+                else
+                  assign p_num = b.settings.price | remove: '₱' | remove: 'PHP' | remove: ',' | strip | plus: 0
+                endif
+                assign per = p_num | times: 1.0 | divided_by: b.settings.count
+                if p_num > 0
+                  if best == 0 or per < best
+                    assign best = per
+                  endif
+                endif
+              endif
+            endfor
+          -%}
+          <button type="button" class="pdc__size" data-pdc-size="{{ s }}" aria-pressed="{% if s == first_size %}true{% else %}false{% endif %}" style="--i: {{ forloop.index0 }}; --vh: {{ block.settings.height }}%;" {{ block.shopify_attributes }}>
+            {%- if best > 0 -%}
+              {%- liquid
+                assign whole = best | round | floor
+                assign th = whole | divided_by: 1000 | floor
+                assign rest = whole | modulo: 1000
+                if th > 0
+                  assign rest_s = rest | prepend: '00' | slice: -3, 3
+                  assign shown = th | append: ',' | append: rest_s
+                else
+                  assign shown = whole
+                endif
+              -%}
+              <span class="pdc__from">{{ section.settings.from_label | escape }} ₱{{ shown }}</span>
+            {%- endif -%}
+            <span class="pdc__vial" aria-hidden="true">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 300 | image_tag: widths: '150, 300', sizes: '120px', loading: 'lazy', alt: '' }}
+              {%- elsif block.settings.sample != 'none' -%}
+                {%- liquid
+                  case block.settings.sample
+                    when 'square'
+                      assign v_w = 168
+                      assign v_h = 700
+                    when 'clear'
+                      assign v_w = 90
+                      assign v_h = 533
+                    else
+                      assign v_w = 97
+                      assign v_h = 700
+                  endcase
+                  assign v_src = 'sample-decant-' | append: block.settings.sample | append: '.webp'
+                -%}
+                <img src="{{ v_src | asset_url }}" width="{{ v_w }}" height="{{ v_h }}" alt="" loading="lazy">
+              {%- endif -%}
+            </span>
+            <span class="pdc__ml">{{ s }} ml</span>
+            {%- if block.settings.note != blank -%}<span class="pdc__note">{{ block.settings.note | escape }}</span>{%- endif -%}
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if bundles.size > 0 -%}
+      <ul class="pdc__bundles" role="list" aria-live="polite">
+        {%- for block in bundles -%}
+          {%- liquid
+            assign bp = block.settings.product
+            assign b_url = block.settings.link
+            if bp != blank
+              assign b_url = bp.url
+            endif
+            assign b_count = block.settings.count
+          -%}
+          <li class="pdc__bundle pdc__bundle--{{ block.settings.style }}" data-pdc-bundle="{{ block.settings.size }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.badge != blank -%}<span class="pdc__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+            <span class="pdc__name">{{ block.settings.title | escape }}{% if block.settings.title_italic != blank %} <em>{{ block.settings.title_italic | escape }}</em>{% endif %}</span>
+            <span class="pdc__what">{{ b_count }} × {{ block.settings.size }} ml · {{ section.settings.pick_label | replace: '[n]', b_count }}</span>
+            <span class="pdc__price">
+              {%- if bp != blank -%}
+                {{ bp.price | money }}{% if bp.compare_at_price > bp.price %}<s>{{ bp.compare_at_price | money }}</s>{% endif %}
+              {%- else -%}
+                {{ block.settings.price | escape }}{% if block.settings.compare_price != blank %}<s>{{ block.settings.compare_price | escape }}</s>{% endif %}
+              {%- endif -%}
+            </span>
+            {%- if block.settings.button_label != blank -%}
+              {%- if b_url != blank -%}
+                <a class="pdc__btn" href="{{ b_url }}">{{ block.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+              {%- else -%}
+                <span class="pdc__btn is-soon">{{ section.settings.soon_label | escape }}</span>
+              {%- endif -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- if section.settings.partner_text != blank and section.settings.partner_link != blank -%}
+      <p class="pdc__partner">
+        <span>{{ section.settings.partner_text | escape }} <a href="{{ section.settings.partner_link }}" rel="sponsored noopener" target="_blank">{{ section.settings.partner_label | escape }} <span aria-hidden="true">→</span></a></span>
+        {%- if section.settings.partner_disclosure != blank -%}<span class="pdc__disclose">{{ section.settings.partner_disclosure | escape }}</span>{%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- if request.design_mode and bundles.size == 0 -%}
+      <p class="pdc__hint">Add bundle blocks (for example 3 × 1 ml) to show deals under the sizes.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Decants",
+  "tag": "div",
+  "class": "section-perfume-decants",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "max_blocks": 16,
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Decants" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Try it before" },
+    { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "the full bottle" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>" },
+    { "type": "checkbox", "id": "hero_sample", "label": "Show the built-in vials photo", "default": true },
+    { "type": "image_picker", "id": "hero_image", "label": "Own photo next to the heading", "info": "A transparent cut-out works best. Replaces the built-in one." },
+    { "type": "text", "id": "sizes_label", "label": "Size picker label (screen readers)", "default": "Choose a size" },
+    { "type": "text", "id": "from_label", "label": "Price prefix on sizes", "default": "from" },
+    { "type": "text", "id": "pick_label", "label": "Bundle line", "default": "pick any [n] of our scents", "info": "[n] becomes the number of vials." },
+    { "type": "text", "id": "soon_label", "label": "Button text when a bundle has no link", "default": "Coming soon" },
+    { "type": "header", "content": "Partner link (full bottle)" },
+    { "type": "text", "id": "partner_text", "label": "Text", "default": "Fell in love? Get the full bottle from our partner." },
+    { "type": "text", "id": "partner_label", "label": "Link label", "default": "See the full bottle" },
+    { "type": "url", "id": "partner_link", "label": "Partner link", "info": "Opens in a new tab and is marked as a sponsored link." },
+    { "type": "text", "id": "partner_disclosure", "label": "Disclosure", "default": "Partner link · we may earn a commission" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F7F5F0" },
+    { "type": "color", "id": "card_color", "label": "Cards", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" },
+    { "type": "range", "id": "padding_top", "label": "Space above", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Space below", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "size",
+      "name": "Size",
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            { "value": "1", "label": "1 ml" },
+            { "value": "2", "label": "2 ml" },
+            { "value": "5", "label": "5 ml" },
+            { "value": "10", "label": "10 ml" }
+          ],
+          "default": "1"
+        },
+        { "type": "text", "id": "note", "label": "Note", "default": "≈ 10–15 sprays · to try" },
+        {
+          "type": "select",
+          "id": "sample",
+          "label": "Built-in vial photo",
+          "options": [
+            { "value": "square", "label": "Small square vial" },
+            { "value": "clear", "label": "Clear spray vial" },
+            { "value": "amber", "label": "Amber spray vial" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "square"
+        },
+        { "type": "image_picker", "id": "image", "label": "Own vial photo", "info": "A transparent cut-out. Replaces the built-in one." },
+        { "type": "range", "id": "height", "label": "Vial height", "info": "Show sizes in proportion: smaller for 1 ml, full for 10 ml.", "min": 30, "max": 100, "step": 5, "unit": "%", "default": 45 }
+      ]
+    },
+    {
+      "type": "bundle",
+      "name": "Bundle",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Name", "default": "Try" },
+        { "type": "text", "id": "title_italic", "label": "Name, italic part", "default": "trio" },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Vial size",
+          "options": [
+            { "value": "1", "label": "1 ml" },
+            { "value": "2", "label": "2 ml" },
+            { "value": "5", "label": "5 ml" },
+            { "value": "10", "label": "10 ml" }
+          ],
+          "default": "1"
+        },
+        { "type": "range", "id": "count", "label": "Number of vials", "min": 1, "max": 10, "step": 1, "default": 3 },
+        { "type": "product", "id": "product", "label": "Product", "info": "Its price and page are used. Without a product, the price text and link below are shown." },
+        { "type": "text", "id": "price", "label": "Price", "default": "₱590" },
+        { "type": "text", "id": "compare_price", "label": "Struck-out price", "info": "Optional, e.g. the price of the vials bought one by one." },
+        { "type": "text", "id": "badge", "label": "Badge", "info": "Optional, e.g. Save 15%." },
+        { "type": "url", "id": "link", "label": "Link", "info": "Used when no product is chosen." },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Pick your scents" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card",
+          "options": [
+            { "value": "dark", "label": "Dark" },
+            { "value": "light", "label": "Light" }
+          ],
+          "default": "dark"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Decants",
+      "blocks": [
+        { "type": "size", "settings": { "size": "1", "note": "≈ 10–15 sprays · to try", "sample": "square", "height": 45 } },
+        { "type": "size", "settings": { "size": "2", "note": "≈ 25–30 sprays · a week", "sample": "clear", "height": 60 } },
+        { "type": "size", "settings": { "size": "5", "note": "≈ 70 sprays · a month", "sample": "amber", "height": 80 } },
+        { "type": "size", "settings": { "size": "10", "note": "≈ 150 sprays · travel size", "sample": "amber", "height": 100 } },
+        { "type": "bundle", "settings": { "title": "Try", "title_italic": "trio", "size": "1", "count": 3, "price": "₱590" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
