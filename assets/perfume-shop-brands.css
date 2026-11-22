@@ -350,9 +350,27 @@
   mask-image: linear-gradient(to top, transparent 0, #000 9%);
 }
 
+/* Centred: the whole picture stays inside its tile and its head sits in the middle
+   (the flower is in the top part of the photo, so it is nudged down; `translate`
+   leaves the reveal's `transform` free). */
+.psb__note--center .psb__note-art {
+  align-items: center;
+  inset: 12px 12px 36px;
+}
+
+.psb__note--center .psb__note-art img {
+  height: 100%;
+  max-width: 100%;
+  translate: 0 10%;
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 16%);
+  mask-image: linear-gradient(to top, transparent 0, #000 16%);
+}
+
 /* The flowers now sit behind the name: a soft halo in the section colour keeps it legible. */
 .psb__note--stem .psb__name,
-.psb__note--stem .psb__count {
+.psb__note--stem .psb__count,
+.psb__note--center .psb__name,
+.psb__note--center .psb__count {
   text-shadow: 0 0 6px var(--psb-bg, #f3f0eb), 0 0 14px var(--psb-bg, #f3f0eb), 0 0 24px var(--psb-bg, #f3f0eb);
 }
 
@@ -544,6 +562,10 @@
   .psb--masonry .psb__note--stem .psb__note-art {
     bottom: 0;
     top: 4px;
+  }
+
+  .psb--masonry .psb__note--center .psb__note-art {
+    inset: 6px 6px 30px;
   }
 
   /* Small tiles: no upscale, so a tall flower doesn't climb into the tile above. */

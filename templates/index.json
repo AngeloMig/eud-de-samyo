@@ -510,6 +510,7 @@
           "settings": {
             "name": "Rose",
             "sample": "rose",
+            "position": "center",
             "size": "normal"
           }
         },

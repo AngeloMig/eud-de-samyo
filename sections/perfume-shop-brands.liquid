@@ -98,7 +98,7 @@
           endif
         -%}
         <li class="psb__item psb__item--note psb__item--{{ block.settings.size }}" style="--i: {{ forloop.index0 }};"{% if forloop.index > first_count %} data-later{% endif %} {{ block.shopify_attributes }}>
-          <{{ n_tag }} class="psb__note{% if block.settings.stem %} psb__note--stem{% endif %}"{% if block.settings.link != blank %} href="{{ block.settings.link }}"{% endif %}>
+          <{{ n_tag }} class="psb__note{% if block.settings.stem %} psb__note--stem{% endif %}{% if block.settings.position == 'center' %} psb__note--center{% endif %}"{% if block.settings.link != blank %} href="{{ block.settings.link }}"{% endif %}>
             <span class="psb__note-art" aria-hidden="true">
               {%- if block.settings.image != blank -%}
                 {{ block.settings.image | image_url: width: 700 | image_tag: widths: '350, 700', sizes: '(min-width: 990px) 22vw, 33vw', loading: 'lazy', alt: '' }}
@@ -273,6 +273,17 @@
             { "value": "wide", "label": "Wide (2 × 1)" }
           ],
           "default": "normal"
+        },
+        {
+          "type": "select",
+          "id": "position",
+          "label": "Picture position",
+          "options": [
+            { "value": "spill", "label": "Bottom, spilling over the tile" },
+            { "value": "center", "label": "Centred in the tile" }
+          ],
+          "default": "spill",
+          "info": "Centred keeps the whole picture inside its tile, with the flower head in the middle (good for a rose)."
         },
         {
           "type": "checkbox",
