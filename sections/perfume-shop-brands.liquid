@@ -50,7 +50,7 @@
   }
 {%- endstyle -%}
 
-<section id="{{ sid }}" class="psb{% if masonry %} psb--masonry{% endif %}" aria-labelledby="{{ sid }}-h"{% if masonry %} data-psb data-step="{{ section.settings.load_step }}"{% endif %}>
+<section id="{{ sid }}" class="psb{% if masonry %} psb--masonry{% endif %}{% if section.settings.label_style == 'pill' %} psb--pills{% endif %}" aria-labelledby="{{ sid }}-h"{% if masonry %} data-psb data-step="{{ section.settings.load_step }}"{% endif %}>
   <div class="psb__head" data-pf-reveal="rise">
     <div>
       {%- if section.settings.kicker != blank -%}<p class="pf-kicker psb__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
@@ -109,6 +109,7 @@
             </span>
             <span class="psb__name psb__name--note">{{ block.settings.name | escape }}</span>
             {%- if section.settings.note_label != blank -%}<span class="psb__count">{{ section.settings.note_label | escape }}</span>{%- endif -%}
+            {%- if section.settings.label_style == 'pill' -%}<span class="psb__spine">{{ block.settings.name | escape }}</span>{%- endif -%}
           </{{ n_tag }}>
         </li>
         {%- continue -%}
@@ -165,6 +166,10 @@
           {%- else -%}
             <span class="psb__count">{{ section.settings.shop_label | escape }}</span>
           {%- endif -%}
+          {%- if section.settings.label_style == 'pill' -%}
+            <span class="psb__pill">{{ b_name | escape }} <span class="psb__pill-arrow" aria-hidden="true">→</span></span>
+            <span class="psb__wm" aria-hidden="true" style="--len: {{ b_name.size }};">{{ b_name | escape }}</span>
+          {%- endif -%}
         </a>
       </li>
     {%- endfor -%}
@@ -203,6 +208,17 @@
     },
     { "type": "range", "id": "columns", "label": "Tiles per row (even grid, desktop)", "min": 3, "max": 6, "step": 1, "default": 5 },
     { "type": "text", "id": "note_label", "label": "Label under scent notes (masonry)", "default": "Scent note" },
+    {
+      "type": "select",
+      "id": "label_style",
+      "label": "Tile labels",
+      "options": [
+        { "value": "classic", "label": "Name and small line under it" },
+        { "value": "pill", "label": "Pill button + watermark; spine on notes" }
+      ],
+      "default": "classic",
+      "info": "Pill: brands get a rounded button with their name and a large pale name behind the bottles; scent notes only a small vertical name on the right edge."
+    },
     { "type": "range", "id": "initial_count", "label": "Tiles shown before Load more (masonry)", "info": "0 shows all.", "min": 0, "max": 30, "step": 1, "default": 13 },
     { "type": "range", "id": "load_step", "label": "Tiles added per Load more", "min": 2, "max": 12, "step": 1, "default": 6 },
     { "type": "text", "id": "load_more_label", "label": "Load more label", "default": "Load more" },

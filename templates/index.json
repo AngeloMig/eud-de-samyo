@@ -587,6 +587,7 @@
       "settings": {
         "link": "/collections",
         "layout": "masonry",
+        "label_style": "pill",
         "initial_count": 13,
         "load_step": 6,
         "heading": "The houses we carry",
