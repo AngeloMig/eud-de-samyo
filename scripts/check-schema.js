@@ -51,6 +51,14 @@ function checkSettings(file, settings = [], where) {
       if (!values.includes(setting.default)) fail(file, `${label}: default "${setting.default}" is not one of its options`);
     }
 
+    // Shopify rejects the whole section file when an option label is over 50 characters
+    // (translation keys like "t:sections…" are resolved first, so only check plain text).
+    for (const option of setting.options || []) {
+      if (typeof option.label === 'string' && !option.label.startsWith('t:') && option.label.length > 50) {
+        fail(file, `${label}: option label "${option.label}" is ${option.label.length} characters (Shopify allows at most 50)`);
+      }
+    }
+
     if (typeof setting.unit === 'string' && setting.unit.length > 3) {
       fail(file, `${label}: unit is too long (Shopify allows at most 3 characters)`);
     }

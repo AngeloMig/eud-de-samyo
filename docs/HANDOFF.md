@@ -828,3 +828,15 @@ folder (and into git) before relying on it; deleting that session deletes the fo
 - Validation: static preview rendered; all 20 design layouts checked at desktop
   and 390px, with no horizontal overflow or broken images. Whole-theme lint
   remains the documented 14 baseline findings; schemas pass.
+
+## Fix 2026-11-22: first sync to the live store (eau-de-s-a-m-y-o.myshopify.com)
+
+The store is connected to GitHub (AngeloMig/eud-de-samyo, branch `main`) through
+Online Store → Themes → Connect from GitHub. The first sync rejected 9 files: Shopify
+allows **at most 50 characters in a select option's label**, and perfume-header
+(`logo_style`), perfume-hero (`label_style`), perfume-showcase (`notes_style`) and
+perfume-footer (`wordmark_style`) had longer ones. Those four sections failed, and with
+them `header-group.json`, `footer-group.json` and `templates/index.json`, which refer to
+them, so the homepage showed a 404. The labels are shortened, and
+`scripts/check-schema.js` now fails on any plain option label over 50 characters.
+Sync errors are under the theme's GitHub chip → View logs.
