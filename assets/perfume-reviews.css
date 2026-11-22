@@ -1,0 +1,179 @@
+/*
+  Testimonials (sections/perfume-testimonials.liquid). The row is the product rail's
+  (assets/perfume-card.css .prail__*); this file styles the head and the cards.
+*/
+.prv {
+  --prail-gutter: var(--pf-gutter, clamp(16px, 4vw, 56px));
+  background: var(--prv-bg);
+  color: var(--prv-ink);
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  padding: var(--prv-pt) 0 var(--prv-pb);
+  position: relative;
+}
+
+.prv *,
+.prv *::before,
+.prv *::after {
+  box-sizing: border-box;
+}
+
+.prv__anchor {
+  position: absolute;
+  top: -80px;
+}
+
+.prv__head {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  justify-content: space-between;
+  margin: 0 auto 32px;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--prail-gutter);
+}
+
+.prv__kicker {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin: 0 0 10px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.prv__heading {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: clamp(36px, 24px + 2.4vw, 60px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.prv__summary {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin: 0;
+}
+
+.prv__score {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 56px;
+  line-height: 1;
+}
+
+.prv__summary > span:nth-child(2) {
+  display: grid;
+  gap: 2px;
+}
+
+.prv__stars {
+  background: linear-gradient(90deg, currentColor var(--pct), color-mix(in srgb, currentColor 25%, transparent) var(--pct));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.prv__count {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.prv .prail__list {
+  grid-auto-columns: calc((100% - 18px * 2 - var(--prail-gutter) * 2) / 3);
+}
+
+.prv-card {
+  background: color-mix(in srgb, #fff 62%, transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  margin: 0;
+  padding: 26px 26px 24px;
+}
+
+.prv-card__stars {
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.prv-card__stars .is-off {
+  opacity: 0.25;
+}
+
+.prv-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.prv-card__quote {
+  flex: 1;
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.prv-card__quote::before {
+  content: '“';
+}
+
+.prv-card__quote::after {
+  content: '”';
+}
+
+.prv-card__who {
+  border-top: 1px solid color-mix(in srgb, var(--prv-ink) 14%, transparent);
+  display: grid;
+  font-size: 12px;
+  gap: 2px;
+  padding-top: 12px;
+}
+
+.prv-card__name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.prv-card__verified {
+  color: #3f7a4c;
+}
+
+.prv-card__product {
+  opacity: 0.7;
+}
+
+.prv__app,
+.prv__hint {
+  margin: 24px auto 0;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--prail-gutter);
+}
+
+.prv__hint {
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+@media screen and (max-width: 989px) {
+  .prv .prail__list {
+    grid-auto-columns: calc((100% - 14px - var(--prail-gutter) * 2) / 1.6);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .prv .prail__list {
+    grid-auto-columns: 84%;
+  }
+
+  .prv-card__quote {
+    font-size: 20px;
+  }
+}

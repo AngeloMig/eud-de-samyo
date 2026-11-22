@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buttons: 20 ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--ivory:#f7f5f0;--soft:#6e665e;--line:rgba(41,37,33,.14);--ease:cubic-bezier(.16,1,.3,1);--mist:#8fbdb6}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:84ch;margin:0}
+ main{max-width:1320px;margin:0 auto;padding:24px 32px 70px;display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+ .card{background:#fff;display:grid;align-content:start}
+ .demo{height:150px;background:var(--ivory);display:grid;place-items:center;position:relative;overflow:hidden}
+ .card:nth-child(4n+2) .demo{background:#d6dde5}.card:nth-child(4n+3) .demo{background:#ead8c2}.card:nth-child(4n) .demo{background:#e8e4dc}
+ .info{padding:12px 16px 16px;display:grid;gap:4px} h2{font:400 21px/1.1 'Cormorant Garamond',serif;margin:0} h2 b{font-weight:400;font-size:26px;margin-right:6px}
+ .info p{margin:0;color:var(--soft);font-size:13px} .tag{justify-self:start;font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--soft);margin-top:4px} .tag.pick{border-color:var(--ink);color:var(--ink)}
+ .hint{position:absolute;left:12px;bottom:8px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+
+ /* base */
+ .b{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:42px;padding:0 24px;border:1px solid var(--ink);background:var(--ink);color:#fff;font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;cursor:pointer;overflow:hidden;isolation:isolate;transition:transform .2s,box-shadow .4s var(--ease)}
+ .b:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+ .b svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linejoin:round}
+ .bag{width:16px;height:16px}
+
+ /* 1 fill sweep */
+ .b1{background:transparent;color:var(--ink)} .b1::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .55s var(--ease);z-index:-1} .b1:hover{color:#fff} .b1:hover::before{transform:scaleX(1);transform-origin:left} .b1{transition:color .4s}
+ /* 2 text roll */
+ .roll{display:inline-block;height:1.3em;overflow:hidden;line-height:1.3em} .roll span{display:block;transition:transform .5s var(--ease)} .b2:hover .roll span{transform:translateY(-100%)}
+ /* 3 arrow slide */
+ .b3 .arr{width:0;opacity:0;transition:width .5s var(--ease),opacity .3s;overflow:hidden;display:inline-flex} .b3:hover .arr{width:16px;opacity:1}
+ /* 4 spray on click */
+ .b4 .puff{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:var(--mist);opacity:0;pointer-events:none;z-index:-1}
+ .b4.go .puff{animation:puff .9s ease-out}
+ @keyframes puff{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(28)}}
+ .b4 .dots i{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff;opacity:0;left:70%;top:30%}
+ .b4.go .dots i{animation:drop .9s ease-out var(--d) both}
+ @keyframes drop{0%{opacity:.9;transform:translate(0,0)}100%{opacity:0;transform:translate(var(--x),var(--y))}}
+ /* 5 bottle drops into bag */
+ .b5 .ic{position:relative;width:18px;height:18px} .b5 .bot{position:absolute;left:5px;top:-22px;width:8px;height:12px;border-radius:2px 2px 3px 3px;background:#fff;opacity:0}
+ .b5.go .bot{animation:bot .8s var(--ease)} @keyframes bot{0%{opacity:0;transform:translateY(-6px)}25%{opacity:1}70%{opacity:1;transform:translateY(20px) scale(.6)}100%{opacity:0;transform:translateY(22px) scale(.4)}}
+ .b5.go .ic svg{animation:jig .4s .5s} @keyframes jig{40%{transform:rotate(-12deg)}80%{transform:rotate(8deg)}}
+ /* 6 pill */
+ .b6{border-radius:999px;padding:0 28px}
+ /* 7 split with qty */
+ .split{display:inline-flex;align-items:stretch;height:42px;border:1px solid var(--ink)} .split .q{display:flex;align-items:center;background:#fff;color:var(--ink);font-size:13px} .split .q button{width:30px;height:100%;border:0;background:none;cursor:pointer;font-size:15px} .split .q span{width:20px;text-align:center} .split .b{border:0;height:auto}
+ /* 8 magnetic */
+ .b8{transition:transform .35s var(--ease)}
+ /* 9 underline secondary */
+ .b9{background:none;border:0;color:var(--ink);padding:0 2px;height:auto;padding-bottom:4px} .b9::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:currentColor;transform-origin:right;transition:transform .5s var(--ease)} .b9:hover::after{animation:ul .7s var(--ease)} @keyframes ul{0%{transform:scaleX(1);transform-origin:right}45%{transform:scaleX(0);transform-origin:right}46%{transform-origin:left}100%{transform:scaleX(1);transform-origin:left}}
+ /* 10 corner brackets */
+ .b10{background:transparent;color:var(--ink);border-color:transparent} .b10 .c{position:absolute;width:10px;height:10px;border:1px solid var(--ink);transition:all .5s var(--ease)} .b10 .c1{left:0;top:0;border-right:0;border-bottom:0}.b10 .c2{right:0;top:0;border-left:0;border-bottom:0}.b10 .c3{left:0;bottom:0;border-right:0;border-top:0}.b10 .c4{right:0;bottom:0;border-left:0;border-top:0}
+ .b10:hover .c{width:50%;height:50%}
+ /* 11 progress ring */
+ .b11 .ring{width:16px;height:16px;border:1.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;display:none;animation:spin .7s linear infinite} .b11.loading .ring{display:inline-block} .b11.loading .lab{opacity:.6} @keyframes spin{to{transform:rotate(360deg)}}
+ /* 12 morph to check */
+ .b12{width:180px;transition:width .5s var(--ease),border-radius .5s var(--ease),background .3s} .b12.done{width:42px;border-radius:50%;padding:0} .b12 .lab,.b12 .ok{transition:opacity .25s} .b12 .ok{position:absolute;opacity:0} .b12.done .lab{opacity:0} .b12.done .ok{opacity:1}
+ /* 13 price reveal */
+ .b13{min-width:200px} .b13 .t{display:grid} .b13 .t span{grid-area:1/1;transition:transform .5s var(--ease),opacity .3s} .b13 .t span+span{transform:translateY(100%);opacity:0} .b13:hover .t span:first-child{transform:translateY(-100%);opacity:0} .b13:hover .t span+span{transform:none;opacity:1}
+ /* 14 sheen */
+ .b14::after{content:'';position:absolute;top:-20%;bottom:-20%;width:40%;left:-60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-20deg);transition:left .8s var(--ease)} .b14:hover::after{left:120%}
+ /* 15 ripple */
+ .b15 .rp{position:absolute;width:12px;height:12px;margin:-6px;border-radius:50%;background:rgba(255,255,255,.35);pointer-events:none;animation:rip .7s ease-out forwards} @keyframes rip{to{transform:scale(30);opacity:0}}
+ /* 16 inset frame */
+ .b16{box-shadow:inset 0 0 0 3px var(--ink),inset 0 0 0 4px rgba(255,255,255,.55);height:46px;padding:0 28px;transition:box-shadow .4s var(--ease)} .b16:hover{box-shadow:inset 0 0 0 5px var(--ink),inset 0 0 0 6px rgba(255,255,255,.8)}
+ /* 17 serif italic */
+ .b17{font:italic 400 19px 'Cormorant Garamond';letter-spacing:0;text-transform:none;height:44px;padding:0 26px}
+ /* 18 round icon */
+ .b18{width:46px;height:46px;padding:0;border-radius:50%} .b18 .plus{position:absolute;right:8px;top:8px;width:12px;height:12px;border-radius:50%;background:#fff;color:var(--ink);font-size:10px;line-height:12px;text-align:center;font-weight:700}
+ .b18:hover{transform:scale(1.06)}
+ /* 19 press + lift */
+ .b19:hover{box-shadow:0 14px 24px -14px rgba(41,37,33,.6);transform:translateY(-2px)} .b19:active{transform:translateY(0) scale(.97);box-shadow:0 4px 8px -6px rgba(41,37,33,.5)}
+ /* 20 phone sticky bar */
+ .phone{width:200px;height:130px;background:#fff;border-radius:16px 16px 0 0;position:relative;border:1px solid var(--line);border-bottom:0;margin-top:20px}
+ .phone .bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:8px;padding:8px;border-top:1px solid var(--line);background:#fff}
+ .phone .bar small{font:italic 14px 'Cormorant Garamond';line-height:1.1} .phone .bar .b{flex:1;height:38px;padding:0 10px;font-size:10px}
+ .after{position:absolute;bottom:22px;font-size:11px;color:var(--ink);opacity:0;transition:opacity .3s} .after a{text-decoration:underline}
+ .shown{opacity:1}
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+ @media (max-width:640px){main,header.top{padding-left:14px;padding-right:14px} main{grid-template-columns:minmax(0,1fr)}}
+</style></head><body>
+<header class="top"><h1>Buttons: 20 ideas</h1><p class="lede">Ideas for Samyó's buttons, mainly Add to bag, all in the site's type and colours. Every one works: hover them, and click the ones marked "click". Mix and match: for example a pill shape (6) with the bottle drop (5) and a calm hover (1 or 14).</p></header>
+<main>
+<section class="card"><div class="demo"><button class="b b1" type="button">Add to bag</button><span class="hint">hover</span></div><div class="info"><h2><b>1</b>Ink fills on hover</h2><p>An outline button that fills with ink from the left on hover. Light and editorial at rest, decisive on hover.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b2" type="button"><span class="roll"><span>Add to bag</span><span>Add to bag</span></span></button><span class="hint">hover</span></div><div class="info"><h2><b>2</b>Label rolls up</h2><p>The label rolls up and a copy rolls in, like the header links. Consistent with the menu.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b3" type="button">Add to bag<span class="arr"><svg viewBox="0 0 16 16"><path d="M2 8h11M9 4l4 4-4 4"/></svg></span></button><span class="hint">hover</span></div><div class="info"><h2><b>3</b>An arrow slides in</h2><p>An arrow slides in after the label on hover, saying "go". Good for Discover / Shop links too.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b4" type="button" data-click="spray"><span class="puff"></span><span class="dots"><i style="--x:30px;--y:-22px;--d:0s"></i><i style="--x:44px;--y:-6px;--d:.05s"></i><i style="--x:26px;--y:10px;--d:.1s"></i><i style="--x:52px;--y:-16px;--d:.08s"></i></span><span class="lab">Add to bag</span></button><span class="hint">click</span></div><div class="info"><h2><b>4</b>A spray when you add</h2><p>Clicking releases a soft mist puff and droplets from the button, the same spray as the logo, then "Added ✓". The brand's signature on the most important click.</p><span class="tag pick">My pick</span></div></section>
+<section class="card"><div class="demo"><button class="b b5" type="button" data-click="drop"><span class="lab">Add to bag</span><span class="ic"><span class="bot"></span><svg class="bag" viewBox="0 0 20 20"><path d="M4.5 7h11l-.9 9.5H5.4L4.5 7Z"/><path d="M7.5 7V5.8a2.5 2.5 0 0 1 5 0V7"/></svg></span></button><span class="hint">click</span></div><div class="info"><h2><b>5</b>A bottle drops in the bag</h2><p>On click a tiny bottle falls into the bag icon, which wobbles. Builds on the bag icon the button has now.</p><span class="tag pick">My pick</span></div></section>
+<section class="card"><div class="demo"><button class="b b6" type="button">Add to bag</button></div><div class="info"><h2><b>6</b>Rounded pill</h2><p>Fully rounded ends, matching the size pills and note chips. Softer and friendlier than the square button.</p><span class="tag">shape</span></div></section>
+<section class="card"><div class="demo"><div class="split"><span class="q"><button type="button" data-q="-1">−</button><span>1</span><button type="button" data-q="1">+</button></span><button class="b" type="button">Add to bag</button></div></div><div class="info"><h2><b>7</b>Quantity joined to the button</h2><p>A − 1 + stepper fused to the left of Add to bag, one shape. Two bottles for gifts in one click.</p><span class="tag">click</span></div></section>
+<section class="card"><div class="demo"><button class="b b8" type="button" data-magnet>Add to bag</button><span class="hint">move the mouse near it</span></div><div class="info"><h2><b>8</b>Magnetic</h2><p>The button leans a few pixels toward the cursor when it's near, then settles back. A quiet, luxurious touch (desktop only, off with reduced motion).</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b9" type="button">Discover the scent</button><span class="hint">hover</span></div><div class="info"><h2><b>9</b>Secondary link redraws its line</h2><p>For "Discover the scent": the underline wipes away and redraws from the left on hover. Pairs with any primary button.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b10" type="button"><i class="c c1"></i><i class="c c2"></i><i class="c c3"></i><i class="c c4"></i>Add to bag</button><span class="hint">hover</span></div><div class="info"><h2><b>10</b>Corner frame</h2><p>Only four fine corners at rest, like a jewellery label; on hover they grow into a full frame.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b11" type="button" data-click="load"><span class="ring"></span><span class="lab">Add to bag</span></button><span class="hint">click</span></div><div class="info"><h2><b>11</b>A small spinner while adding</h2><p>A tiny ring turns while the bottle is added, so a slow connection never looks frozen, then "Added ✓".</p><span class="tag">click</span></div></section>
+<section class="card"><div class="demo"><button class="b b12" type="button" data-click="morph"><span class="lab">Add to bag</span><span class="ok">✓</span></button><span class="hint">click</span></div><div class="info"><h2><b>12</b>Shrinks to a check</h2><p>On click the button shrinks into a round check mark, then opens back into Add to bag. Very clear "done".</p><span class="tag">click</span></div></section>
+<section class="card"><div class="demo"><button class="b b13" type="button"><span class="t"><span>Add to bag</span><span>₱6,200 · 60 ml</span></span></button><span class="hint">hover</span></div><div class="info"><h2><b>13</b>Price on hover</h2><p>At rest "Add to bag"; on hover the label rolls to the price and size. Price stays near the name, and appears here only when you're about to click.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b14" type="button">Add to bag</button><span class="hint">hover</span></div><div class="info"><h2><b>14</b>Glass sheen</h2><p>A soft light sweeps across the button on hover, like light on a glass bottle. Subtle and premium.</p><span class="tag">hover</span></div></section>
+<section class="card"><div class="demo"><button class="b b15" type="button" data-click="ripple">Add to bag</button><span class="hint">click</span></div><div class="info"><h2><b>15</b>Ripple from your touch</h2><p>A soft circle spreads from exactly where you clicked or tapped. Feels responsive on phones.</p><span class="tag">click</span></div></section>
+<section class="card"><div class="demo"><button class="b b16" type="button">Add to bag</button><span class="hint">hover</span></div><div class="info"><h2><b>16</b>Inner frame</h2><p>A fine light line inside the dark button, like the border on a perfume label; it moves inward on hover.</p><span class="tag">style</span></div></section>
+<section class="card"><div class="demo"><button class="b b17" type="button">Add to bag</button></div><div class="info"><h2><b>17</b>Serif italic label</h2><p>"Add to bag" in the italic serif instead of small capitals. Editorial and calm, matches the headings.</p><span class="tag">type</span></div></section>
+<section class="card"><div class="demo"><button class="b b18" type="button" aria-label="Add to bag"><svg class="bag" viewBox="0 0 20 20"><path d="M4.5 7h11l-.9 9.5H5.4L4.5 7Z"/><path d="M7.5 7V5.8a2.5 2.5 0 0 1 5 0V7"/></svg><span class="plus">+</span></button></div><div class="info"><h2><b>18</b>Round bag button</h2><p>A round bag-with-plus button for product cards and the lineup, where space is tight. The big panel keeps the full button.</p><span class="tag">cards</span></div></section>
+<section class="card"><div class="demo"><button class="b b19" type="button">Add to bag</button><span class="hint">hover, then press</span></div><div class="info"><h2><b>19</b>Lifts, then presses</h2><p>Rises with a soft shadow on hover and presses in slightly when clicked. Feels physical.</p><span class="tag">hover + click</span></div></section>
+<section class="card"><div class="demo"><div class="phone"><div class="bar"><small>Sauvage<br>₱6,200</small><button class="b" type="button">Add to bag</button></div></div></div><div class="info"><h2><b>20</b>Sticky bar on phones</h2><p>On phones a slim bar with the name, price and a wide Add to bag stays at the bottom while you scroll the perfume. Always one thumb away.</p><span class="tag">phone</span></div></section>
+</main>
+<script>
+document.querySelectorAll('[data-click]').forEach((b) => b.addEventListener('click', (e) => {
+  const kind = b.dataset.click;
+  const lab = b.querySelector('.lab');
+  const say = (t, ms) => { if (!lab) return; const old = lab.dataset.old || lab.textContent; lab.dataset.old = old; lab.textContent = t; setTimeout(() => (lab.textContent = old), ms); };
+  if (kind === 'spray' || kind === 'drop') { b.classList.remove('go'); void b.offsetWidth; b.classList.add('go'); say('Added ✓', 1600); }
+  if (kind === 'load') { b.classList.add('loading'); setTimeout(() => { b.classList.remove('loading'); say('Added ✓', 1400); }, 1100); }
+  if (kind === 'morph') { b.classList.add('done'); setTimeout(() => b.classList.remove('done'), 1500); }
+  if (kind === 'ripple') { const r = b.getBoundingClientRect(); const s = document.createElement('span'); s.className = 'rp'; s.style.left = (e.clientX - r.left) + 'px'; s.style.top = (e.clientY - r.top) + 'px'; b.append(s); setTimeout(() => s.remove(), 700); }
+}));
+document.querySelectorAll('[data-q]').forEach((q) => q.addEventListener('click', () => { const n = q.parentElement.querySelector('span'); n.textContent = Math.max(1, +n.textContent + +q.dataset.q); }));
+const mag = document.querySelector('[data-magnet]');
+if (mag && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const area = mag.parentElement;
+  area.addEventListener('pointermove', (e) => { const r = mag.getBoundingClientRect(); const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2); mag.style.transform = `translate(${dx * 0.18}px, ${dy * 0.3}px)`; });
+  area.addEventListener('pointerleave', () => (mag.style.transform = ''));
+}
+</script>
+</body></html>

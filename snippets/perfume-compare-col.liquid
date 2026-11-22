@@ -1,0 +1,135 @@
+{%- comment -%}
+  One fragrance's column in the comparison (sections/perfume-compare.liquid).
+  Every row carries data-row + data-val so the script can mark rows where both
+  fragrances say the same thing. Missing data reads "Not yet evaluated".
+
+  Accepts:
+  - profile: the fragrance_profile (may be blank)
+  - item: the product (may be blank)
+  - side: 'a' or 'b'
+  - na: the "not yet evaluated" text
+{%- endcomment -%}
+{%- liquid
+  assign c_name = profile.name.value | default: item.title
+  assign c_brand = profile.brand.value | default: item.vendor
+  assign c_conc = profile.concentration.value | default: item.metafields.fragrance.concentration.value
+  assign c_family = profile.family.value | default: item.metafields.fragrance.fragrance_family.value
+  assign c_img = profile.hero_image.value
+  if c_img == blank and item != blank
+    assign c_img = item.featured_media.preview_image
+  endif
+  assign c_url = item.url | default: profile.system.url
+  assign c_notes = ''
+  for list in (1..3)
+    case list
+      when 1
+        assign group = profile.top_notes.value | default: item.metafields.fragrance.top_notes.value
+      when 2
+        assign group = profile.middle_notes.value | default: item.metafields.fragrance.middle_notes.value
+      else
+        assign group = profile.base_notes.value | default: item.metafields.fragrance.base_notes.value
+    endcase
+    for nn in group limit: 3
+      if c_notes != blank
+        assign c_notes = c_notes | append: ' · '
+      endif
+      assign c_notes = c_notes | append: nn.name.value
+    endfor
+  endfor
+  assign lmin = profile.longevity_min_h.value
+  assign lmax = profile.longevity_max_h.value | default: lmin
+-%}
+<div class="pcmp__col" data-side="{{ side }}" data-name="{{ c_name | escape }}">
+  <div class="pcmp__head">
+    <a class="pcmp__media" href="{{ c_url }}" tabindex="-1" aria-hidden="true">
+      {%- if c_img != blank -%}
+        {{ c_img | image_url: width: 600 | image_tag: widths: '300, 600', sizes: '(min-width: 990px) 22vw, 40vw', alt: '', loading: 'lazy' }}
+      {%- endif -%}
+    </a>
+    {%- if c_brand != blank -%}<p class="pcmp__brand">{{ c_brand | escape }}</p>{%- endif -%}
+    <p class="pcmp__name"><a href="{{ c_url }}">{{ c_name | escape }}</a></p>
+    {%- if c_conc != blank -%}<p class="pcmp__conc">{{ c_conc | escape }}</p>{%- endif -%}
+  </div>
+
+  <dl class="pcmp__rows">
+    <div class="pcmp__row" data-row="family" data-val="{{ c_family | downcase | escape }}"><dt>Family</dt><dd>{{ c_family | default: na | escape }}</dd></div>
+    <div class="pcmp__row" data-row="notes" data-val="{{ c_notes | downcase | escape }}"><dt>Main notes</dt><dd>{{ c_notes | default: na | escape }}</dd></div>
+    <div class="pcmp__row" data-row="character" data-val="{% for t in profile.characteristics.value limit: 3 %}{{ t.accord.value | downcase }},{% endfor %}">
+      <dt>Character</dt>
+      <dd>
+        {%- if profile.characteristics.value.size > 0 -%}
+          <ul class="pcmp__traits" role="list">
+            {%- for t in profile.characteristics.value limit: 3 -%}
+              {%- assign s = t.score.value | default: 1 -%}
+              <li>{{ t.accord.value | escape }} <span class="pcmp__dots" aria-label="{{ s }} of 5">{%- for d in (1..5) -%}<i{% if d <= s %} class="on"{% endif %}></i>{%- endfor -%}</span></li>
+            {%- endfor -%}
+          </ul>
+        {%- else -%}{{ na | escape }}{%- endif -%}
+      </dd>
+    </div>
+    <div class="pcmp__row" data-row="longevity" data-val="{{ lmin }}-{{ lmax }}">
+      <dt>Longevity</dt>
+      <dd>{%- if lmin != blank -%}{% if lmin == lmax %}About {{ lmin }} h{% else %}About {{ lmin }}–{{ lmax }} h{% endif %}{%- else -%}{{ na | escape }}{%- endif -%}</dd>
+    </div>
+    <div class="pcmp__row" data-row="projection" data-val="{{ profile.projection.value | downcase }}"><dt>Projection</dt><dd>{{ profile.projection.value | default: na | escape }}</dd></div>
+    <div class="pcmp__row" data-row="sillage" data-val="{{ profile.sillage.value | downcase }}"><dt>Sillage</dt><dd>{{ profile.sillage.value | default: na | escape }}</dd></div>
+    {%- capture climate -%}
+      {%- for c in (1..4) -%}
+        {%- liquid
+          case c
+            when 1
+              assign ck = 'Hot day'
+              assign cv = profile.climate_hot_day.value
+            when 2
+              assign ck = 'Office'
+              assign cv = profile.climate_office.value
+            when 3
+              assign ck = 'Rainy day'
+              assign cv = profile.climate_rainy.value
+            else
+              assign ck = 'Evening'
+              assign cv = profile.climate_evening.value
+          endcase
+          for f in profile.climate.value
+            if f.scenario.value == ck
+              assign cv = f.suitability.value
+            endif
+          endfor
+        -%}
+        {%- if cv != blank -%}<li class="is-{{ cv | downcase }}"><span>{{ ck }}</span> {{ cv }}</li>{%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    <div class="pcmp__row" data-row="climate" data-val="{{ climate | strip_html | strip | downcase | escape }}">
+      <dt>Philippine weather</dt>
+      <dd>{%- if climate != blank -%}<ul class="pcmp__climate" role="list">{{ climate }}</ul>{%- else -%}{{ na | escape }}{%- endif -%}</dd>
+    </div>
+    {%- capture occ -%}
+      {%- if profile.occasion_fits.value.size > 0 -%}
+        {%- for f in profile.occasion_fits.value -%}{%- if f.fit.value != 'Not ideal' -%}{{ f.occasion.value }}, {% endif -%}{%- endfor -%}
+      {%- else -%}
+        {{- profile.occasions.value | join: ', ' -}}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- assign occ = occ | strip | remove_last: ',' -%}
+    <div class="pcmp__row" data-row="occasions" data-val="{{ occ | downcase | escape }}"><dt>Best for</dt><dd>{{ occ | default: na | escape }}</dd></div>
+    <div class="pcmp__row pcmp__row--buy" data-row="buy" data-val="">
+      <dt>Where to buy</dt>
+      <dd>
+        {%- assign cj = item.metafields.samyo.affiliate_offers.value -%}
+        {%- if item != blank and cj == blank -%}
+          <span class="pcmp__price">{% if item.price_varies %}From {% endif %}{{ item.price_min | money }} at Samyó</span>
+          <a class="pcmp__link" href="{{ item.url }}">View</a>
+        {%- elsif cj != blank -%}
+          <span class="pcmp__price">From {{ cj.first.price | escape }} at {{ item.metafields.samyo.retailer.value | default: 'partner' | escape }}</span>
+          <a class="pcmp__link" href="{{ item.url }}">View</a>
+        {%- elsif profile.offers.value.size > 0 -%}
+          {%- assign o = profile.offers.value.first -%}
+          <span class="pcmp__price">{{ o.merchant.value | escape }}{% if o.price.value != blank %} · {{ o.price.value }}{% endif %}</span>
+          <a class="pcmp__link" href="{{ c_url }}">Options</a>
+        {%- else -%}
+          {{ na | escape }}
+        {%- endif -%}
+      </dd>
+    </div>
+  </dl>
+</div>

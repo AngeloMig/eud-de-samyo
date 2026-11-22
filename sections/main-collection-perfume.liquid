@@ -1,0 +1,235 @@
+{%- comment -%}
+  Samyo collection page (templates/collection.json), in the homepage's look:
+  a big serif title with the count, a toolbar (Filter, active filters as removable
+  chips, Sort), a grid of product cards (snippets/perfume-product-card) that wipe
+  in, and serif pagination.
+
+  Filters are Shopify's storefront filters (Search & Discovery app: brand, scent
+  family, size, price, availability…), in a drawer that unrolls from the right like
+  the cart drawer. Choosing filters and sorting reload the page with the
+  parameters (works without JS too).
+
+  Styles: assets/perfume-collection.css (+ perfume-card.css).
+  Script: assets/perfume-collection.js (drawer, auto-submit) + perfume-card.js (quick add).
+{%- endcomment -%}
+{%- liquid
+  assign cid = 'PerfumeCollection-' | append: section.id
+  assign tints = section.settings.tints | split: ','
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign active_count = 0
+  for filter in collection.filters
+    assign active_count = active_count | plus: filter.active_values.size
+    if filter.type == 'price_range'
+      if filter.min_value.value != blank or filter.max_value.value != blank
+        assign active_count = active_count | plus: 1
+      endif
+    endif
+  endfor
+-%}
+
+{{ 'perfume-card.css' | asset_url | stylesheet_tag }}
+{{ 'perfume-collection.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-collection.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ cid }} {
+    --pcol-bg: {{ section.settings.background_color }};
+    --pcol-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+{%- paginate collection.products by section.settings.per_page -%}
+  <perfume-collection id="{{ cid }}" class="pcol">
+    <header class="pcol__head" data-pf-reveal="rise">
+      <div>
+        <p class="pcol__kicker">
+          {%- if section.settings.kicker != blank -%}{{ section.settings.kicker | escape }} · {% endif -%}
+          {{ collection.products_count }} {% if collection.products_count == 1 %}perfume{% else %}perfumes{% endif %}
+        </p>
+        <h1 class="pcol__title">{{ collection.title | escape }}</h1>
+      </div>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="pcol__desc rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    <div class="pcol__toolbar">
+      {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+        <button type="button" class="pcol__filter-btn" data-pcol-open aria-haspopup="dialog" aria-controls="{{ cid }}-filters">
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 6h14M6 10h8M8.5 14h3"/></svg>
+          Filter
+          {%- if active_count > 0 -%}<span class="pcol__badge">{{ active_count }}</span>{%- endif -%}
+        </button>
+      {%- endif -%}
+
+      <ul class="pcol__active" role="list">
+        {%- for filter in collection.filters -%}
+          {%- for value in filter.active_values -%}
+            <li>
+              <a class="pcol__chip" href="{{ value.url_to_remove }}">
+                {{ value.label | escape }} <span aria-hidden="true">×</span><span class="pf-visually-hidden">Remove filter</span>
+              </a>
+            </li>
+          {%- endfor -%}
+          {%- if filter.type == 'price_range' -%}
+            {%- if filter.min_value.value != blank or filter.max_value.value != blank -%}
+              <li>
+                <a class="pcol__chip" href="{{ filter.url_to_remove }}">
+                  {{ filter.min_value.value | default: 0 | money }}–{{ filter.max_value.value | default: filter.range_max | money }} <span aria-hidden="true">×</span><span class="pf-visually-hidden">Remove filter</span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if active_count > 0 -%}
+          <li><a class="pcol__clear" href="{{ collection.url }}?sort_by={{ sort_by }}">Clear all</a></li>
+        {%- endif -%}
+      </ul>
+
+      {%- if section.settings.show_sort -%}
+        <form class="pcol__sort" method="get" data-pcol-autosubmit>
+          {%- for filter in collection.filters -%}
+            {%- for value in filter.active_values -%}
+              <input type="hidden" name="{{ value.param_name }}" value="{{ value.value | escape }}">
+            {%- endfor -%}
+            {%- if filter.type == 'price_range' -%}
+              {%- if filter.min_value.value != blank -%}<input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}">{%- endif -%}
+              {%- if filter.max_value.value != blank -%}<input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}">{%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <label for="{{ cid }}-sort">Sort</label>
+          <select id="{{ cid }}-sort" name="sort_by">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+            {%- endfor -%}
+          </select>
+          <noscript><button type="submit">Apply</button></noscript>
+        </form>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <ul class="pcol__grid" role="list" data-pf-reveal="wipe">
+        {%- for p in collection.products -%}
+          {%- liquid
+            assign t_index = forloop.index0 | modulo: tints.size
+            assign t = tints[t_index] | strip
+            assign card_key = section.id | append: '-' | append: forloop.index
+          -%}
+          <li class="pcol__item" style="--i: {{ forloop.index0 | modulo: 4 }};">
+            {%- render 'perfume-product-card', product: p, bg: t, quick_add: section.settings.quick_add, key: card_key, sizes: '(min-width: 990px) 25vw, 50vw' -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <div class="pcol__empty">
+        <p class="pcol__empty-title">Nothing matches yet</p>
+        <p>Try removing a filter{% if active_count > 0 %}, or <a href="{{ collection.url }}">see the whole collection</a>{% endif %}.</p>
+      </div>
+    {%- endif -%}
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pcol__pages" aria-label="Pages">
+        {%- if paginate.previous -%}
+          <a class="pcol__page pcol__page--step" href="{{ paginate.previous.url }}" aria-label="Previous page">←</a>
+        {%- endif -%}
+        {%- for part in paginate.parts -%}
+          {%- if part.is_link -%}
+            <a class="pcol__page" href="{{ part.url }}">{{ part.title }}</a>
+          {%- elsif part.title == paginate.current_page -%}
+            <span class="pcol__page is-current" aria-current="page">{{ part.title }}</span>
+          {%- else -%}
+            <span class="pcol__page is-gap">{{ part.title }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if paginate.next -%}
+          <a class="pcol__page pcol__page--step" href="{{ paginate.next.url }}" aria-label="Next page">→</a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+
+    {%- if section.settings.show_filters and collection.filters.size > 0 -%}
+      <div class="pcol-drawer" id="{{ cid }}-filters" data-pcol-drawer inert>
+        <div class="pcol-drawer__scrim" data-pcol-close></div>
+        <form class="pcol-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="{{ cid }}-filters-title" method="get" data-pcol-form>
+          <input type="hidden" name="sort_by" value="{{ sort_by }}">
+          <div class="pcol-drawer__head">
+            <h2 class="pcol-drawer__title" id="{{ cid }}-filters-title">Filter</h2>
+            <button type="button" class="pcol-drawer__close" data-pcol-close aria-label="Close filters"><span aria-hidden="true"><i></i><i></i></span></button>
+          </div>
+          <div class="pcol-drawer__body">
+            {%- for filter in collection.filters -%}
+              <details class="pcol-f"{% if forloop.index <= 2 or filter.active_values.size > 0 %} open{% endif %}>
+                <summary>{{ filter.label | escape }}{% if filter.active_values.size > 0 %} <span class="pcol__badge">{{ filter.active_values.size }}</span>{% endif %}</summary>
+                {%- case filter.type -%}
+                  {%- when 'price_range' -%}
+                    <div class="pcol-f__price">
+                      <label>
+                        <span>From</span>
+                        <input type="number" inputmode="numeric" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value | divided_by: 100 }}" placeholder="0" min="0">
+                      </label>
+                      <label>
+                        <span>To</span>
+                        <input type="number" inputmode="numeric" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value | divided_by: 100 }}" placeholder="{{ filter.range_max | divided_by: 100 }}" min="0">
+                      </label>
+                    </div>
+                  {%- else -%}
+                    <ul class="pcol-f__list" role="list">
+                      {%- for value in filter.values -%}
+                        <li>
+                          <label class="pcol-f__opt{% if value.count == 0 and value.active == false %} is-empty{% endif %}">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value | escape }}"
+                              {% if value.active %}checked{% endif %}
+                              {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                            >
+                            <span class="pcol-f__box" aria-hidden="true"></span>
+                            <span class="pcol-f__label">{{ value.label | escape }}</span>
+                            <span class="pcol-f__count">{{ value.count }}</span>
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                {%- endcase -%}
+              </details>
+            {%- endfor -%}
+          </div>
+          <div class="pcol-drawer__foot">
+            <a class="pf-link" href="{{ collection.url }}?sort_by={{ sort_by }}">Clear all</a>
+            <button type="submit" class="pf-button">Show results</button>
+          </div>
+        </form>
+      </div>
+    {%- endif -%}
+  </perfume-collection>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Perfume collection",
+  "tag": "section",
+  "class": "section-perfume-collection",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Collection" },
+    { "type": "checkbox", "id": "show_description", "label": "Show collection description", "default": true },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "show_filters", "label": "Show filters", "info": "Set filters up in the Shopify Search & Discovery app.", "default": true },
+    { "type": "checkbox", "id": "show_sort", "label": "Show sort", "default": true },
+    { "type": "checkbox", "id": "quick_add", "label": "Quick Add button on cards", "default": true },
+    {
+      "type": "text",
+      "id": "tints",
+      "label": "Tile colours",
+      "info": "Comma-separated, used in turn. A product's fragrance.tile_color metafield wins.",
+      "default": "#D6DDE5, #EAD8C2, #E9D3C9, #DFD9E6"
+    },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F7F5F0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" }
+  ]
+}
+{% endschema %}

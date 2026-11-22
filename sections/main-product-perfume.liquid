@@ -1,0 +1,622 @@
+{%- comment -%}
+  Samyo product page (templates/product.json), laid out like the High Spirits
+  product page and dressed like the homepage's "Samyó edit":
+  breadcrumbs, then an info column (brand, name, concentration, price, notes,
+  sizes, Add to bag) beside a carousel of bottles on the perfume's own tint: the
+  chosen one large, the others smaller and faded to its right, the name big and
+  blurred behind them, the handwritten tagline under the bottle.
+  Phones: breadcrumbs, the bottle stage, then the info.
+
+  Slides are the variants when at least two variants have their own image (choosing
+  a bottle chooses its variant); otherwise the product's images (choosing a size
+  shows that size's image if it has one). The carousel loops and only moves when
+  the shopper acts.
+
+  Data (docs/METAFIELDS.md): fragrance.concentration, fragrance.tagline,
+  fragrance.tile_color, fragrance.top_notes / middle_notes / base_notes,
+  reviews.rating / rating_count. Nothing shows for missing data.
+
+  Script: assets/perfume-product.js (<perfume-product>). Styles: assets/perfume-product.css.
+  Add to bag adds in place and opens the cart drawer (snippets/perfume-cart-drawer.liquid).
+
+  Affiliate products (from the CJ feed, scripts/cj-feed-to-shopify.mjs, docs/CJ-FEED.md):
+  when product.metafields.samyo.affiliate_offers has offers, the price, stock and
+  button come from the offer for the chosen size, and the button is "Buy at
+  FragranceX" (rel="sponsored", new tab) with the disclosure under it. No Add to bag,
+  quantity or structured data (Samyo doesn't sell it, so no ₱0 offer for Google).
+{%- endcomment -%}
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign form_id = 'PerfumeProductForm-' | append: section.id
+  assign pid = 'PerfumeProduct-' | append: section.id
+  assign tint = product.metafields.fragrance.tile_color.value | default: section.settings.background_color
+  assign conc = product.metafields.fragrance.profile.value.concentration.value | default: product.metafields.fragrance.concentration.value
+  assign tagline = product.metafields.fragrance.profile.value.tagline.value | default: product.metafields.fragrance.tagline.value
+
+  # Variants become the slides when at least two of them have their own image.
+  assign seen = ','
+  assign variant_media_count = 0
+  for v in product.variants
+    if v.featured_media
+      assign mid = v.featured_media.id | append: ''
+      assign key = ',' | append: mid | append: ','
+      unless seen contains key
+        assign seen = seen | append: mid | append: ','
+        assign variant_media_count = variant_media_count | plus: 1
+      endunless
+    endif
+  endfor
+  assign variant_slides = false
+  if variant_media_count > 1
+    assign variant_slides = true
+  endif
+
+  assign active_index = 0
+  if variant_slides
+    for v in product.variants
+      if v.id == current_variant.id
+        assign active_index = forloop.index0
+      endif
+    endfor
+    assign slide_count = product.variants.size
+  else
+    if current_variant.featured_media
+      for m in product.media
+        if m.id == current_variant.featured_media.id
+          assign active_index = forloop.index0
+        endif
+      endfor
+    endif
+    assign slide_count = product.media.size
+  endif
+
+  assign crumb_collection = collection
+  if crumb_collection == blank
+    assign crumb_collection = product.collections.first
+  endif
+
+  assign profile = product.metafields.fragrance.profile.value
+  assign top_notes = profile.top_notes.value | default: product.metafields.fragrance.top_notes.value
+  assign heart_notes = profile.middle_notes.value | default: product.metafields.fragrance.middle_notes.value
+  assign base_notes = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
+
+  # Affiliate listing: the offer for the chosen size (or the first one).
+  assign offers = product.metafields.samyo.affiliate_offers.value
+  assign is_aff = false
+  if offers != blank and offers.size > 0
+    assign is_aff = true
+    assign offer = offers.first
+    for o in offers
+      if o.size == current_variant.title
+        assign offer = o
+      endif
+    endfor
+    assign retailer = product.metafields.samyo.retailer.value | default: 'the retailer'
+    assign price_checked = product.metafields.samyo.price_checked.value
+  endif
+-%}
+
+{{ 'perfume-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-product.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ pid }} {
+    --pp-bg: {{ tint }};
+    --pp-ink: {{ section.settings.text_color }};
+    --pp-scale: {{ section.settings.image_scale | divided_by: 100.0 }};
+  }
+{%- endstyle -%}
+
+<perfume-product
+  id="{{ pid }}"
+  class="pp"
+  data-url="{{ product.url }}"
+  data-mode="{% if variant_slides %}variants{% else %}media{% endif %}"
+  data-active="{{ active_index }}"
+  data-cart-add="{{ routes.cart_add_url }}"
+  {% if is_aff %}data-affiliate{% endif %}
+>
+  <span class="pd-anchor" id="overview"></span>
+  {%- if section.settings.show_breadcrumbs -%}
+    <nav class="pp__crumbs" aria-label="Breadcrumb">
+      <ol role="list">
+        <li><a href="{{ routes.all_products_collection_url }}">{{ section.settings.shop_all_label | escape }}</a></li>
+        {%- if crumb_collection != blank and crumb_collection.handle != 'all' -%}
+          <li><a href="{{ crumb_collection.url }}">{{ crumb_collection.title | escape }}</a></li>
+        {%- endif -%}
+        <li><a href="{{ product.url }}" aria-current="page">{{ product.title | escape }}</a></li>
+      </ol>
+    </nav>
+  {%- endif -%}
+
+  <div class="pp__main">
+    <div class="pp__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+
+          {%- when 'title' -%}
+            <div class="pp__title pp__part" {{ block.shopify_attributes }}>
+              {%- if product.vendor != blank -%}
+                <p class="pp__brand">{{ product.vendor | escape }}</p>
+              {%- endif -%}
+              <h1 class="pp__name">{{ product.title | escape }}</h1>
+              <p class="pp__meta">
+                {%- if conc != blank -%}<span>{{ conc | escape }}</span>{%- endif -%}
+                {%- if block.settings.show_stock -%}
+                  {%- if is_aff -%}
+                    {%- assign in_text = 'In stock at ' | append: retailer -%}
+                    {%- assign out_text = 'Out of stock at ' | append: retailer -%}
+                    <span class="pp__stock{% if offer.in_stock %} is-in{% endif %}" data-pp-stock data-in="{{ in_text | escape }}" data-out="{{ out_text | escape }}"{% if offer.in_stock == nil %} hidden{% endif %}>
+                      {%- if offer.in_stock -%}{{ in_text | escape }}{%- else -%}{{ out_text | escape }}{%- endif -%}
+                    </span>
+                  {%- else -%}
+                    <span class="pp__stock{% if current_variant.available %} is-in{% endif %}" data-pp-stock data-in="In stock" data-out="Sold out">
+                      {%- if current_variant.available -%}In stock{%- else -%}Sold out{%- endif -%}
+                    </span>
+                  {%- endif -%}
+                {%- endif -%}
+              </p>
+            </div>
+
+          {%- when 'price' -%}
+            {%- if is_aff -%}
+              <div class="pp__price-block pp__part" {{ block.shopify_attributes }}>
+                <p class="pp__price" role="status"><span data-pp-price>{{ offer.price | escape }}</span></p>
+                <p class="pp__small">
+                  at {{ retailer | escape }}
+                  {%- if price_checked != blank %} · price checked {{ price_checked | date: '%-d %B %Y' }}{% endif -%}
+                  . Their price and currency may change.
+                </p>
+              </div>
+            {%- else -%}
+            <div class="pp__price-block pp__part" {{ block.shopify_attributes }}>
+              <p class="pp__price" role="status">
+                <span data-pp-price>{{ current_variant.price | money }}</span>
+                <s class="pp__compare" data-pp-compare{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}>
+                  {%- if current_variant.compare_at_price > current_variant.price -%}{{ current_variant.compare_at_price | money }}{%- endif -%}
+                </s>
+              </p>
+              {%- if block.settings.note != blank -%}
+                <p class="pp__small">{{ block.settings.note | escape }}</p>
+              {%- endif -%}
+              {%- assign installment_id = 'PerfumeInstallment-' | append: section.id -%}
+              {%- form 'product', product, id: installment_id, class: 'pp__installments' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}">
+                {{ form | payment_terms }}
+              {%- endform -%}
+            </div>
+            {%- endif -%}
+
+          {%- when 'rating' -%}
+            {%- assign rating = product.metafields.reviews.rating.value -%}
+            {%- if rating != blank -%}
+              {%- liquid
+                assign rating_value = rating.rating | times: 1.0
+                assign rating_max = rating.scale_max | default: 5
+                assign rating_count = product.metafields.reviews.rating_count.value | default: product.metafields.reviews.rating_count | default: 0
+                assign pct = rating_value | divided_by: rating_max | times: 100
+              -%}
+              <a class="pp__rating pp__part" href="#{{ block.settings.anchor | default: 'reviews' }}" {{ block.shopify_attributes }}>
+                <span class="pp__stars" style="--pct: {{ pct }}%;" aria-hidden="true"><span>★★★★★</span></span>
+                <span>{{ rating_value | round: 1 }} · {{ rating_count }} {% if rating_count == 1 %}review{% else %}reviews{% endif %}</span>
+              </a>
+            {%- endif -%}
+
+          {%- when 'description' -%}
+            {%- if product.description != blank -%}
+              <div class="pp__desc pp__part" {{ block.shopify_attributes }}>
+                {%- if block.settings.excerpt -%}
+                  <p>{{ product.description | strip_html | truncatewords: block.settings.words }}</p>
+                  {%- if block.settings.more_label != blank -%}
+                    <a class="pp__more" href="#{{ block.settings.more_anchor | default: 'details' }}">{{ block.settings.more_label | escape }}</a>
+                  {%- endif -%}
+                {%- else -%}
+                  <div class="rte">{{ product.description }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          {%- when 'notes' -%}
+            {%- liquid
+              assign chip_count = 0
+              assign max_chips = block.settings.limit
+            -%}
+            {%- capture chips -%}
+              {%- for list in (1..3) -%}
+                {%- liquid
+                  case list
+                    when 1
+                      assign group = top_notes
+                    when 2
+                      assign group = heart_notes
+                    else
+                      assign group = base_notes
+                  endcase
+                -%}
+                {%- for note in group -%}
+                  {%- if chip_count >= max_chips -%}{%- break -%}{%- endif -%}
+                  {%- assign chip_count = chip_count | plus: 1 -%}
+                  {%- assign note_name = note.name.value -%}
+                  {%- assign note_art = note.art.value -%}
+                  <li class="pp-chip" style="--n: {{ chip_count }};">
+                    <span class="pp-chip__art" aria-hidden="true">
+                      {%- if note.image.value != blank -%}
+                        {{ note.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
+                      {%- else -%}
+                        {%- render 'perfume-note-art', note: note_art -%}
+                      {%- endif -%}
+                    </span>
+                    <span class="pp-chip__label">{{ note_name | escape }}</span>
+                  </li>
+                {%- endfor -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- if chip_count > 0 -%}
+              <div class="pp__notes pp__part" {{ block.shopify_attributes }}>
+                <p class="pp__label">{{ block.settings.label | escape }}</p>
+                <ul class="pp-chips" role="list">{{ chips }}</ul>
+                {%- if block.settings.see_all_label != blank -%}
+                  {%- liquid
+                    assign total_notes = top_notes.size | plus: heart_notes.size | plus: base_notes.size
+                    assign see_all = block.settings.see_all_label | replace: '[count]', total_notes
+                  -%}
+                  <a class="pp__see-all" href="#notes">{{ see_all | escape }} <span aria-hidden="true">↓</span></a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              <div class="pp__picker pp__part" {{ block.shopify_attributes }} data-pp-picker>
+                {%- for option in product.options_with_values -%}
+                  {%- assign oi = forloop.index0 -%}
+                  <fieldset class="pp__option">
+                    <legend class="pp__label">{{ option.name | escape }}</legend>
+                    <div class="pp__pills">
+                      {%- for value in option.values -%}
+                        {%- assign value_name = value.name | default: value -%}
+                        <label class="pp-pill">
+                          <input
+                            type="radio"
+                            name="pp-option-{{ section.id }}-{{ oi }}"
+                            value="{{ value_name | escape }}"
+                            data-option-index="{{ oi }}"
+                            {% if current_variant.options[oi] == value_name %}checked{% endif %}
+                          >
+                          <span>{{ value_name | escape }}</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  </fieldset>
+                {%- endfor -%}
+              </div>
+            {%- endunless -%}
+
+          {%- when 'buy_buttons' -%}
+            {%- if is_aff -%}
+              {%- liquid
+                assign aff_label = block.settings.aff_label | default: 'Buy at [retailer]' | replace: '[retailer]', retailer
+                assign aff_note = block.settings.aff_disclosure | replace: '[retailer]', retailer
+              -%}
+              <div class="pp__buy pp__part" {{ block.shopify_attributes }}>
+                <a
+                  class="pf-button pp__add pp__aff"
+                  href="{{ offer.url }}"
+                  target="_blank"
+                  rel="sponsored nofollow noopener"
+                  data-pp-aff-link
+                >
+                  <span>{{ aff_label | escape }}</span>
+                  <span class="pp__add-price" data-pp-aff-price>{{ offer.price | escape }}</span>
+                  <span aria-hidden="true">↗</span>
+                  <span class="pf-visually-hidden">(opens {{ retailer | escape }} in a new tab)</span>
+                </a>
+                {%- if aff_note != blank -%}
+                  <p class="pp__aff-note">{{ aff_note | escape }}</p>
+                {%- endif -%}
+                <script type="application/json" data-pp-offers>{{ offers | json }}</script>
+              </div>
+            {%- else -%}
+            <div class="pp__buy pp__part" {{ block.shopify_attributes }}>
+              {%- form 'product', product, id: form_id, class: 'pp__form', novalidate: 'novalidate', data-pp-form: 'true' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" data-pp-variant-input>
+                <div class="pp__buy-row">
+                  {%- if block.settings.show_quantity -%}
+                    <div class="pp__qty" role="group" aria-label="Quantity">
+                      <button type="button" data-pp-qty="-1" aria-label="One fewer">−</button>
+                      <input type="number" name="quantity" value="1" min="1" inputmode="numeric" aria-label="Quantity" data-pp-qty-input>
+                      <button type="button" data-pp-qty="1" aria-label="One more">+</button>
+                    </div>
+                  {%- endif -%}
+                  <button
+                    type="submit"
+                    class="pf-button pp__add"
+                    data-pp-add
+                    data-label="{{ block.settings.add_label | escape }}"
+                    data-soldout="Sold out"
+                    data-adding="Adding…"
+                    data-added="Added ✓"
+                    {% unless current_variant.available %}disabled{% endunless %}
+                  >
+                    <span class="pp-roll" aria-hidden="true">
+                      <span class="pp-roll__track">
+                        <span data-pp-add-label>{% if current_variant.available %}{{ block.settings.add_label | escape }}{% else %}Sold out{% endif %}</span>
+                        <span>Adding…</span>
+                        <span>Added ✓</span>
+                      </span>
+                    </span>
+                    <span class="pf-visually-hidden" data-pp-add-sr>{% if current_variant.available %}{{ block.settings.add_label | escape }}{% else %}Sold out{% endif %}</span>
+                    <span class="pp__add-price" aria-hidden="true" data-pp-add-price>{{ current_variant.price | money }}</span>
+                  </button>
+                </div>
+                {%- if block.settings.show_dynamic_checkout -%}
+                  <div class="pp__dynamic">{{ form | payment_button }}</div>
+                {%- endif -%}
+                <p class="pp__status" role="status" data-pp-status></p>
+              {%- endform -%}
+            </div>
+            {%- endif -%}
+
+          {%- when 'text' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="pp__text pp__part rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- endif -%}
+
+          {%- when 'custom_liquid' -%}
+            <div class="pp__part" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="pp__stage" data-pp-stage role="region" aria-roledescription="carousel" aria-label="{{ product.title | escape }}">
+      {%- if section.settings.show_big_name -%}
+        <p class="pp__big" aria-hidden="true">{{ product.title | escape }}</p>
+      {%- endif -%}
+
+      <div class="pp__floor">
+        {%- if variant_slides -%}
+          {%- for v in product.variants -%}
+            {%- liquid
+              assign media = v.featured_media | default: product.featured_media
+              assign offset = forloop.index0 | minus: active_index
+              if offset < 0
+                assign offset = offset | plus: forloop.length
+              endif
+              if offset > 4
+                assign offset = 4
+              endif
+            -%}
+            <button
+              type="button"
+              class="pp-slide"
+              data-index="{{ forloop.index0 }}"
+              data-offset="{{ offset }}"
+              data-variant-id="{{ v.id }}"
+              aria-label="{{ v.title | escape }}{% unless v.available %}, sold out{% endunless %}"
+              {% if forloop.index0 == active_index %}aria-current="true"{% endif %}
+            >
+              <span class="pp-slide__pose">
+                {%- if media -%}
+                  {{ media.preview_image | image_url: width: 1400 | image_tag: widths: '500, 800, 1100, 1400', sizes: '(min-width: 990px) 45vw, 90vw', class: 'pp-slide__img', alt: '', loading: 'eager', draggable: 'false' }}
+                {%- endif -%}
+              </span>
+            </button>
+          {%- endfor -%}
+        {%- elsif product.media.size > 0 -%}
+          {%- for media in product.media -%}
+            {%- liquid
+              assign offset = forloop.index0 | minus: active_index
+              if offset < 0
+                assign offset = offset | plus: forloop.length
+              endif
+              if offset > 4
+                assign offset = 4
+              endif
+              assign media_alt = media.alt | default: product.title
+            -%}
+            <button
+              type="button"
+              class="pp-slide"
+              data-index="{{ forloop.index0 }}"
+              data-offset="{{ offset }}"
+              data-media-id="{{ media.id }}"
+              aria-label="{{ media_alt | escape }}"
+              {% if forloop.index0 == active_index %}aria-current="true"{% endif %}
+            >
+              <span class="pp-slide__pose">
+                {{ media.preview_image | image_url: width: 1400 | image_tag: widths: '500, 800, 1100, 1400', sizes: '(min-width: 990px) 45vw, 90vw', class: 'pp-slide__img', alt: media_alt, loading: 'eager', draggable: 'false' }}
+              </span>
+            </button>
+          {%- endfor -%}
+        {%- else -%}
+          <div class="pp-slide" data-index="0" data-offset="0">
+            <span class="pp-slide__pose">{%- render 'perfume-bottle-art', shape: 'square', uid: section.id -%}</span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- if tagline != blank -%}
+        <p class="pp__tagline" aria-hidden="true">{{ tagline | escape }}</p>
+      {%- endif -%}
+
+      {%- if slide_count > 1 -%}
+        <div class="pp__controls">
+          <button type="button" class="pp__arrow" data-pp-prev aria-label="Previous">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12 4l-6 6 6 6"/></svg>
+          </button>
+          <p class="pp__count" aria-live="polite"><span data-pp-index>{{ active_index | plus: 1 | prepend: '0' }}</span><i aria-hidden="true"></i><span>{{ slide_count | prepend: '0' }}</span></p>
+          <button type="button" class="pp__arrow" data-pp-next aria-label="Next">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M8 4l6 6-6 6"/></svg>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.sticky_buy -%}
+    {%- comment -%}
+      Once the real Add to bag scrolls away: the perfume and its button in the header's
+      row (desktop) or a bar at the bottom (phones). Hidden from screen readers; the
+      real form stays the one to use with a keyboard.
+    {%- endcomment -%}
+    <div class="pp-sticky" data-pp-sticky aria-hidden="true" inert>
+      <span class="pp-sticky__img">
+        {%- if product.featured_media -%}
+          {{ product.featured_media.preview_image | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
+        {%- endif -%}
+      </span>
+      <span class="pp-sticky__text">
+        <span class="pp-sticky__name">{{ product.title | escape }}</span>
+        <span class="pp-sticky__meta">
+          {%- unless product.has_only_default_variant -%}<span data-pp-sticky-variant>{{ current_variant.title | escape }}</span> · {% endunless -%}
+          <span data-pp-price-copy>{% if is_aff %}{{ offer.price | escape }}{% else %}{{ current_variant.price | money }}{% endif %}</span>
+        </span>
+      </span>
+      {%- if is_aff -%}
+        <a class="pf-button pp-sticky__btn" href="{{ offer.url }}" target="_blank" rel="sponsored nofollow noopener" data-pp-aff-link tabindex="-1">Buy at {{ retailer | escape }} ↗</a>
+      {%- else -%}
+        <button type="button" class="pf-button pp-sticky__btn" data-pp-sticky-add tabindex="-1" {% unless current_variant.available %}disabled{% endunless %}>
+          <span data-pp-sticky-label>{% if current_variant.available %}Add to bag{% else %}Sold out{% endif %}</span>
+        </button>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <script type="application/json" data-pp-variants>
+    [
+      {%- for v in product.variants -%}
+        {
+          "id": {{ v.id | json }},
+          "title": {{ v.title | json }},
+          "options": {{ v.options | json }},
+          "available": {{ v.available | json }},
+          "price": {{ v.price | money | json }},
+          "compare": {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},
+          "media": {% if v.featured_media %}{{ v.featured_media.id | json }}{% else %}null{% endif %}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  </script>
+</perfume-product>
+
+{%- unless is_aff -%}
+  <script type="application/ld+json">
+    {{ product | structured_data }}
+  </script>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Perfume product",
+  "tag": "section",
+  "class": "section-perfume-product",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "checkbox", "id": "show_breadcrumbs", "label": "Show breadcrumbs", "default": true },
+    { "type": "text", "id": "shop_all_label", "label": "First breadcrumb", "default": "Shop all" },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "info": "Used when the product has no fragrance.tile_color metafield.",
+      "default": "#DFD9E6"
+    },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "checkbox", "id": "show_big_name", "label": "Big blurred name behind the bottle", "default": true },
+    { "type": "checkbox", "id": "sticky_buy", "label": "Show the perfume and Add to bag in the header after scrolling", "info": "On phones it is a bar at the bottom.", "default": true },
+    {
+      "type": "range",
+      "id": "image_scale",
+      "label": "Bottle size",
+      "min": 70,
+      "max": 130,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "blocks": [
+    { "type": "@app" },
+    {
+      "type": "title",
+      "name": "Brand and name",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_stock", "label": "Show In stock / Sold out", "default": true }
+      ]
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "note", "label": "Note under the price", "default": "Shipping worked out at checkout." }
+      ]
+    },
+    {
+      "type": "rating",
+      "name": "Rating",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Only real reviews: reads the reviews.rating and reviews.rating_count metafields a reviews app fills. Hidden without them." },
+        { "type": "text", "id": "anchor", "label": "Link to (section anchor)", "default": "reviews" }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "excerpt", "label": "Short excerpt", "default": true },
+        { "type": "range", "id": "words", "label": "Excerpt length", "min": 10, "max": 80, "step": 5, "unit": "w", "default": 30 },
+        { "type": "text", "id": "more_label", "label": "Read more label", "default": "Read more" },
+        { "type": "text", "id": "more_anchor", "label": "Read more goes to (anchor)", "default": "details" }
+      ]
+    },
+    {
+      "type": "notes",
+      "name": "Smells like",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "From the fragrance.top_notes, middle_notes and base_notes metafields (docs/METAFIELDS.md)." },
+        { "type": "text", "id": "label", "label": "Label", "default": "Smells like" },
+        { "type": "range", "id": "limit", "label": "Notes shown", "min": 2, "max": 8, "step": 1, "default": 5 },
+        { "type": "text", "id": "see_all_label", "label": "See all link", "info": "Scrolls to the notes section (anchor #notes). [count] becomes the number of notes. Empty hides it.", "default": "See all [count] notes" }
+      ]
+    },
+    { "type": "variant_picker", "name": "Sizes", "limit": 1, "settings": [] },
+    {
+      "type": "buy_buttons",
+      "name": "Add to bag",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "add_label", "label": "Button label", "default": "Add to bag" },
+        { "type": "checkbox", "id": "show_quantity", "label": "Show quantity", "default": true },
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Buy it now (dynamic checkout)", "default": false },
+        { "type": "header", "content": "Affiliate products (CJ feed)" },
+        { "type": "text", "id": "aff_label", "label": "Button label", "info": "[retailer] becomes the shop's name, e.g. FragranceX.", "default": "Buy at [retailer]" },
+        {
+          "type": "textarea",
+          "id": "aff_disclosure",
+          "label": "Disclosure",
+          "default": "Sold and shipped by [retailer]. We may earn a commission when you buy through this link, at no extra cost to you."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>100% authentic designer fragrances · Secure checkout</p>" }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [{ "type": "liquid", "id": "custom_liquid", "label": "Custom Liquid" }]
+    }
+  ]
+}
+{% endschema %}

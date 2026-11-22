@@ -1,0 +1,554 @@
+[
+  {
+    "brand": "Armani",
+    "slot": 1,
+    "file": "samyo-brand-armani-1.webp",
+    "original": "samyo-brand-armani-1.png",
+    "title": "Armani Si Eau de Parfum Women's Perfume Spray (15ml, 30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/armani-si-eau-de-parfum-womens-perfume-spray-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/armani-women-s-perfume-armani-si-eau-de-parfum-women-s-perfume-spray-30ml-50ml-100ml-50ml-4475569406045.png?v=1631684178",
+    "collection_url": "https://www.perfumedirect.com/collections/armani",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "third-armani-1.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/armani-women-s-perfume-armani-si-eau-de-parfum-women-s-perfume-spray-10ml-30ml-50ml-100ml-36775214121119.png?v=1699022274"
+  },
+  {
+    "brand": "Armani",
+    "slot": 2,
+    "file": "samyo-brand-armani-2.webp",
+    "original": "samyo-brand-armani-2.png",
+    "title": "Armani Code Eau de Toilette Men's Aftershave Spray (15ml, 30ml, 50ml, 75ml, 125ml)",
+    "source_page": "https://www.perfumedirect.com/products/armani-code-eau-de-toilette-mens-aftershave-spray-15ml-30ml-50ml-75ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/armani-men-s-aftershave-armani-code-eau-de-toilette-men-s-aftershave-spray-15ml-30ml-50ml-75ml-125ml-35095108681887.png?v=1684331040",
+    "collection_url": "https://www.perfumedirect.com/collections/armani",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-armani-2.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Armani",
+    "slot": 3,
+    "file": "samyo-brand-armani-3.webp",
+    "original": "samyo-brand-armani-3.png",
+    "title": "Armani My Way Eau de Parfum Women's Perfume Spray (15ml, 30ml, 50ml, 90ml)",
+    "source_page": "https://www.perfumedirect.com/products/armani-my-way-eau-de-parfum-womens-perfume-spray-30ml-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/armani-women-s-perfume-armani-my-way-eau-de-parfum-women-s-perfume-spray-30ml-50ml-90ml-30ml-31294664736927.png?v=1634724353",
+    "collection_url": "https://www.perfumedirect.com/collections/armani",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "third-armani-3.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/armani-women-s-perfume-armani-my-way-eau-de-parfum-refillable-women-s-perfume-spray-30ml-50ml-90ml-35096983797919.png?v=1684335542"
+  },
+  {
+    "brand": "Dior",
+    "slot": 1,
+    "file": "samyo-brand-dior-1.webp",
+    "original": "samyo-brand-dior-1.png",
+    "title": "Dior Sauvage Eau de Parfum",
+    "source_page": "Owner-supplied bottle photo; see docs/CREDITS.md",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/christian-dior-men-s-aftershave-dior-sauvage-eau-de-parfum-men-s-aftershave-spray-60ml-100ml-200ml-7319853400157.png?v=1631674452",
+    "collection_url": "https://www.perfumedirect.com/collections/christian-dior",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-dior-1.png",
+    "crop": [
+      0.47,
+      0,
+      1,
+      1
+    ],
+    "existing_cutout": "dev/shop-images/samyo-dior-sauvage-edp.webp",
+    "selected_image_url": "Owner supplied"
+  },
+  {
+    "brand": "Dior",
+    "slot": 2,
+    "file": "samyo-brand-dior-2.webp",
+    "original": "samyo-brand-dior-2.png",
+    "title": "Dior J'Adore Eau de Parfum Women's Perfume Spray (30ml, 50ml, 75ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/dior-jadore-eau-de-parfum-womens-perfume-spray-30ml-75ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/christian-dior-women-s-perfume-dior-j-adore-eau-de-parfum-women-s-perfume-spray-30ml-50ml-75ml-100ml-6616375984221.png?v=1631675161",
+    "collection_url": "https://www.perfumedirect.com/collections/christian-dior",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-dior-2.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Dior",
+    "slot": 3,
+    "file": "samyo-brand-dior-3.webp",
+    "original": "samyo-brand-dior-3.png",
+    "title": "Dior Homme Intense",
+    "source_page": "Owner-supplied bottle photo; see docs/CREDITS.md",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/christian-dior-men-s-aftershave-dior-homme-sport-eau-de-toilette-men-s-aftershave-spray-75ml-3761981259869.png?v=1631685431",
+    "collection_url": "https://www.perfumedirect.com/collections/christian-dior",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-dior-3.png",
+    "crop": [
+      0.49,
+      0,
+      1,
+      1
+    ],
+    "existing_cutout": "dev/shop-images/samyo-dior-homme-intense.webp",
+    "selected_image_url": "Owner supplied"
+  },
+  {
+    "brand": "Dolce & Gabbana",
+    "slot": 1,
+    "file": "samyo-brand-dolce-gabbana-1.webp",
+    "original": "samyo-brand-dolce-gabbana-1.png",
+    "title": "Dolce & Gabbana Dolce Garden Women's Eau de Parfum Perfume Spray (30ml, 50ml, 75ml)",
+    "source_page": "https://www.perfumedirect.com/products/dolce-gabbana-garden-womens-eau-de-toilette-perfume-spray-75ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/dolce-gabbana-women-s-perfume-dolce-gabbana-light-blue-eau-de-toilette-women-s-perfume-spray-25ml-50ml-100ml-50ml-30763747672223.png?v=1633940274",
+    "collection_url": "https://www.perfumedirect.com/collections/dolce-gabbana",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "replacement-dolce-gabbana-1.png",
+    "crop": [
+      0,
+      0,
+      0.52,
+      0.93
+    ],
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/dolce-gabbana-women-s-perfume-dolce-gabbana-garden-women-s-eau-de-parfum-perfume-spray-75ml-75ml-33121484603551.png?v=1656066030"
+  },
+  {
+    "brand": "Dolce & Gabbana",
+    "slot": 2,
+    "file": "samyo-brand-dolce-gabbana-2.webp",
+    "original": "samyo-brand-dolce-gabbana-2.png",
+    "title": "Dolce & Gabbana The One Eau de Parfum Women's Perfume Spray (30ml, 50ml, 75ml)",
+    "source_page": "https://www.perfumedirect.com/products/dolce-gabbana-the-one-eau-de-parfum-womens-perfume-spray-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/dolce-gabbana-women-s-perfume-dolce-gabbana-the-one-eau-de-parfum-women-s-perfume-spray-30ml-50ml-75ml-30763632427167.png?v=1633940269",
+    "collection_url": "https://www.perfumedirect.com/collections/dolce-gabbana",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "last-dolce-gabbana-2.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/dolce-gabbana-women-s-perfume-dolce-gabbana-the-one-eau-de-parfum-women-s-perfume-spray-30ml-50ml-75ml-75ml-28934416400543.png?v=1718116520"
+  },
+  {
+    "brand": "Dolce & Gabbana",
+    "slot": 3,
+    "file": "samyo-brand-dolce-gabbana-3.webp",
+    "original": "samyo-brand-dolce-gabbana-3.png",
+    "title": "Dolce & Gabbana The One",
+    "source_page": "Owner-supplied bottle photo; see docs/CREDITS.md",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/dolce-gabbana-men-s-aftershave-dolce-gabbana-the-one-for-men-eau-de-toilette-men-s-aftershave-spray-30ml-50ml-100ml-30ml-30763472224415.png?v=1633940220",
+    "collection_url": "https://www.perfumedirect.com/collections/dolce-gabbana",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-dolce-gabbana-3.png",
+    "crop": [
+      0,
+      0,
+      0.52,
+      1
+    ],
+    "existing_cutout": "dev/shop-images/samyo-dg-the-one.webp",
+    "selected_image_url": "Owner supplied"
+  },
+  {
+    "brand": "Hermès",
+    "slot": 1,
+    "file": "samyo-brand-hermes-1.webp",
+    "original": "samyo-brand-hermes-1.png",
+    "title": "Hermes Terre D'Hermes Eau de Toilette Men's Aftershave Spray (15ml, 50ml, 100ml, 200ml)",
+    "source_page": "https://www.perfumedirect.com/products/hermes-terre-dhermes-eau-de-toilette-mens-aftershave-spray-50ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/hermes-men-s-aftershave-hermes-terre-d-hermes-eau-de-toilette-men-s-aftershave-spray-50ml-100ml-50ml-30762944856223.png?v=1633940039",
+    "collection_url": "https://www.perfumedirect.com/collections/hermes",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-hermes-1.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/hermes-men-s-aftershave-hermes-terre-d-hermes-eau-de-toilette-men-s-aftershave-spray-50ml-100ml-100ml-30175135006879.png?v=1631666699",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Hermès",
+    "slot": 2,
+    "file": "samyo-brand-hermes-2.webp",
+    "original": "samyo-brand-hermes-2.png",
+    "title": "Hermes Terre d'Hermes Eau Intense Vetiver Eau de Parfum Men's Aftershave Spray (15ml, 50ml, 100ml, 200ml)",
+    "source_page": "https://www.perfumedirect.com/products/hermes-terre-dhermes-eau-intense-vetiver-eau-de-parfum-mens-aftershave-spray-50ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/hermes-men-s-aftershave-hermes-terre-d-hermes-eau-intense-vetiver-eau-de-parfum-men-s-aftershave-spray-50ml-100ml-50ml-31461897666719.png?v=1635778791",
+    "collection_url": "https://www.perfumedirect.com/collections/hermes",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-hermes-2.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/hermes-men-s-aftershave-hermes-terre-d-hermes-eau-intense-vetiver-eau-de-parfum-men-s-aftershave-spray-50ml-100ml-100ml-31461904089247.png?v=1635778794",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Hermès",
+    "slot": 3,
+    "file": "samyo-brand-hermes-3.webp",
+    "original": "samyo-brand-hermes-3.png",
+    "title": "Hermes Eau Des Merveilles Eau de Toilette Women's Perfume Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/hermes-eau-des-merveilles-eau-de-toilette-womens-perfume-spray-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/hermes-women-s-perfume-hermes-eau-des-merveilles-eau-de-toilette-women-s-perfume-spray-30ml-50ml-100ml-36689992876191.png?v=1697726634",
+    "collection_url": "https://www.perfumedirect.com/collections/hermes",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-hermes-3.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/hermes-women-s-perfume-hermes-eau-des-merveilles-eau-de-toilette-women-s-perfume-spray-50ml-100ml-33926590431391.png?v=1697726481",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Jo Malone",
+    "slot": 1,
+    "file": "samyo-brand-jo-malone-1.webp",
+    "original": "samyo-brand-jo-malone-1.png",
+    "title": "Jo Malone Peony & Blush Suede Cologne Women's Fragrance Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/jo-malone-peony-blush-suede-cologne-spray-30ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/jo-malone-women-s-perfume-jo-malone-peony-blush-suede-cologne-spray-30ml-100ml-30ml-28143060517023.png?v=1631655185",
+    "collection_url": "https://www.perfumedirect.com/collections/jo-malone-fragrances",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-jo-malone-1.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/jo-malone-women-s-perfume-jo-malone-peony-blush-suede-cologne-women-s-fragrance-spray-30ml-50ml-100ml-36832077152415.png?v=1700126033",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Jo Malone",
+    "slot": 2,
+    "file": "samyo-brand-jo-malone-2.webp",
+    "original": "samyo-brand-jo-malone-2.png",
+    "title": "Jo Malone Lime Basil & Mandarin Cologne Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/jo-malone-lime-basil-mandarin-cologne-spray-30ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/jo-malone-women-s-perfume-jo-malone-lime-basil-mandarin-cologne-spray-30ml-100ml-30ml-28142961262751.png?v=1631655373",
+    "collection_url": "https://www.perfumedirect.com/collections/jo-malone-fragrances",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-jo-malone-2.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/jo-malone-women-s-perfume-jo-malone-lime-basil-mandarin-cologne-spray-30ml-50ml-100ml-36832067256479.png?v=1700125854",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Jo Malone",
+    "slot": 3,
+    "file": "samyo-brand-jo-malone-3.webp",
+    "original": "samyo-brand-jo-malone-3.png",
+    "title": "Jo Malone Pear & Freesia Cologne Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/jo-malone-pear-freesia-cologne-spray-30ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/jo-malone-women-s-perfume-jo-malone-pear-freesia-cologne-spray-30ml-100ml-30ml-30761011511455.png?v=1633939667",
+    "collection_url": "https://www.perfumedirect.com/collections/jo-malone-fragrances",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-jo-malone-3.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/jo-malone-women-s-perfume-jo-malone-pear-freesia-cologne-spray-30ml-50ml-100ml-36829437919391.png?v=1700064653",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Tom Ford",
+    "slot": 1,
+    "file": "samyo-brand-tom-ford-1.webp",
+    "original": "samyo-brand-tom-ford-1.png",
+    "title": "Tom Ford Black Orchid Unisex Eau de Parfum Spray (10ml, 30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/tom-ford-black-orchid-30ml-unisex-perfume",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/tom-ford-unisex-perfume-tom-ford-black-orchid-unisex-eau-de-parfum-spray-30ml-50ml-100ml-30ml-3752134180957.png?v=1631631251",
+    "collection_url": "https://www.perfumedirect.com/collections/tom-ford",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-tom-ford-1.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Tom Ford",
+    "slot": 2,
+    "file": "samyo-brand-tom-ford-2.webp",
+    "original": "samyo-brand-tom-ford-2.png",
+    "title": "Tom Ford Velvet Orchid Eau de Parfum Women's Perfume Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/tom-ford-velvet-orchid-eau-de-parfum-womens-perfume-spray-30ml-50ml-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/tom-ford-women-s-perfume-tom-ford-velvet-orchid-eau-de-parfum-women-s-perfume-spray-30ml-50ml-100ml-100ml-4134544212061.png?v=1631630348",
+    "collection_url": "https://www.perfumedirect.com/collections/tom-ford",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-tom-ford-2.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Tom Ford",
+    "slot": 3,
+    "file": "samyo-brand-tom-ford-3.webp",
+    "original": "samyo-brand-tom-ford-3.png",
+    "title": "Tom Ford Oud Wood Eau de Parfum Unisex Perfume Spray (10ml, 30ml, 50ml)",
+    "source_page": "https://www.perfumedirect.com/products/tom-ford-oud-wood-eau-de-parfum-unisex-perfume-spray-30ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/tom-ford-unisex-perfume-tom-ford-oud-wood-eau-de-parfum-unisex-perfume-spray-30ml-30688321175711.png?v=1633942200",
+    "collection_url": "https://www.perfumedirect.com/collections/tom-ford",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "candidate-tom-ford-3.png",
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/tom-ford-unisex-perfume-tom-ford-oud-wood-eau-de-parfum-unisex-perfume-spray-30ml-50ml-50ml-31738551533727.png?v=1638458446",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Valentino",
+    "slot": 1,
+    "file": "samyo-brand-valentino-1.webp",
+    "original": "samyo-brand-valentino-1.png",
+    "title": "Valentino Voce Viva Eau de Parfum Women's Perfume Spray (10ml, 30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/valentino-voce-viva-eau-de-parfum-womens-perfume-spray-30ml-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/valentino-women-s-perfume-valentino-voce-viva-eau-de-parfum-women-s-perfume-spray-30ml-50ml-50ml-21580933464223.png?v=1631628365",
+    "collection_url": "https://www.perfumedirect.com/collections/valentino",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-valentino-1.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Valentino",
+    "slot": 2,
+    "file": "samyo-brand-valentino-2.webp",
+    "original": "samyo-brand-valentino-2.png",
+    "title": "Valentino Uomo Born in Roma Eau de Toilette Men's Aftershave Spray (50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/valentino-uomo-born-in-roma-eau-de-toilette-mens-aftershave-spray-100ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/valentino-men-s-aftershave-valentino-uomo-eau-de-toilette-men-s-aftershave-spray-50ml-100ml-100ml-1258438265.png?v=1789123094",
+    "collection_url": "https://www.perfumedirect.com/collections/valentino",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "replacement-valentino-2.png",
+    "crop": [
+      0.502,
+      0,
+      1,
+      1
+    ],
+    "selected_image_url": "https://cdn.shopify.com/s/files/1/1442/8846/files/valentino-men-s-aftershave-valentino-uomo-born-in-roma-eau-de-toilette-men-s-aftershave-spray-100ml-1152474989.png?v=1743184272"
+  },
+  {
+    "brand": "Valentino",
+    "slot": 3,
+    "file": "samyo-brand-valentino-3.webp",
+    "original": "samyo-brand-valentino-3.png",
+    "title": "Valentino Donna Eau de Parfum Women's Perfume Spray (30ml, 50ml, 100ml)",
+    "source_page": "https://www.perfumedirect.com/products/valentino-donna-eau-de-parfum-womens-perfume-spray-50ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/valentino-women-s-perfume-valentino-donna-eau-de-parfum-women-s-perfume-spray-30ml-50ml-100ml-6744723521629.png?v=1631628721",
+    "collection_url": "https://www.perfumedirect.com/collections/valentino",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-valentino-3.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "YSL",
+    "slot": 1,
+    "file": "samyo-brand-ysl-1.webp",
+    "original": "samyo-brand-ysl-1.png",
+    "title": "YSL Black Opium Eau de Parfum Women's Perfume Spray (30ml, 50ml, 90ml)",
+    "source_page": "https://www.perfumedirect.com/products/ysl-black-opium-eau-de-parfum-womens-perfume-spray-30ml-50ml-90ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/yves-saint-laurent-women-s-perfume-ysl-black-opium-eau-de-parfum-women-s-perfume-spray-30ml-50ml-90ml-11578260357213.png?v=1631692799",
+    "collection_url": "https://www.perfumedirect.com/collections/yves-saint-laurent",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-ysl-1.png",
+    "crop": [
+      0,
+      0,
+      0.52,
+      1
+    ]
+  },
+  {
+    "brand": "YSL",
+    "slot": 2,
+    "file": "samyo-brand-ysl-2.webp",
+    "original": "samyo-brand-ysl-2.png",
+    "title": "YSL Libre Eau de Parfum Women's Perfume Spray (30ml, 50ml, 90ml)",
+    "source_page": "https://www.perfumedirect.com/products/ysl-libre-eau-de-parfum-womens-perfume-spray-30ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/yves-saint-laurent-women-s-perfume-ysl-libre-eau-de-parfum-women-s-perfume-spray-30ml-50ml-90ml-18521270845599.png?v=1631692987",
+    "collection_url": "https://www.perfumedirect.com/collections/yves-saint-laurent",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-ysl-2.png",
+    "crop": [
+      0,
+      0,
+      0.51,
+      1
+    ]
+  },
+  {
+    "brand": "YSL",
+    "slot": 3,
+    "file": "samyo-brand-ysl-3.webp",
+    "original": "samyo-brand-ysl-3.png",
+    "title": "YSL Mon Paris Eau de Parfum Women's Perfume Spray (30ml, 50ml, 90ml, 150ml)",
+    "source_page": "https://www.perfumedirect.com/products/ysl-mon-paris-eau-de-parfum-womens-perfume-spray-50ml-90ml",
+    "image_url": "https://cdn.shopify.com/s/files/1/1442/8846/products/yves-saint-laurent-women-s-perfume-ysl-mon-paris-eau-de-parfum-women-s-perfume-spray-50ml-90ml-14751588319325.png?v=1631693177",
+    "collection_url": "https://www.perfumedirect.com/collections/yves-saint-laurent",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-ysl-3.png",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ]
+  },
+  {
+    "brand": "Chanel",
+    "slot": 1,
+    "file": "samyo-brand-chanel-1.webp",
+    "original": "samyo-brand-chanel-1.png",
+    "title": "Chanel No. 5",
+    "source_page": "https://www.fragrancex.com/products/chanel/chanel-no-5-perfume",
+    "image_url": "https://img.fragrancex.com/images/products/parent/medium/61w.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-chanel-1.png",
+    "crop": [
+      0.55,
+      0,
+      1,
+      0.925
+    ]
+  },
+  {
+    "brand": "Chanel",
+    "slot": 2,
+    "file": "samyo-brand-chanel-2.webp",
+    "original": "samyo-brand-chanel-2.png",
+    "title": "Coco Mademoiselle",
+    "source_page": "https://www.fragrancex.com/products/chanel/coco-mademoiselle-perfume",
+    "image_url": "https://img.fragrancex.com/images/products/parent/medium/116w.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-chanel-2.png",
+    "crop": [
+      0.55,
+      0,
+      1,
+      0.883
+    ]
+  },
+  {
+    "brand": "Chanel",
+    "slot": 3,
+    "file": "samyo-brand-chanel-3.webp",
+    "original": "samyo-brand-chanel-3.png",
+    "title": "Bleu de Chanel",
+    "source_page": "https://www.fragrancex.com/products/chanel/bleu-de-chanel-cologne",
+    "image_url": "https://img.fragrancex.com/images/products/parent/medium/67530m.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-chanel-3.png",
+    "crop": [
+      0.545,
+      0,
+      1,
+      0.82
+    ]
+  },
+  {
+    "brand": "Versace",
+    "slot": 1,
+    "file": "samyo-brand-versace-1.webp",
+    "original": "samyo-brand-versace-1.png",
+    "title": "Versace Eros",
+    "source_page": "https://www.fragrancex.com/products/versace/versace-eros-cologne",
+    "image_url": "https://img.fragrancex.com/images/products/sku/large/69867m.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-versace-1.png",
+    "crop": [
+      0.54,
+      0,
+      1,
+      0.84
+    ]
+  },
+  {
+    "brand": "Versace",
+    "slot": 2,
+    "file": "samyo-brand-versace-2.webp",
+    "original": "samyo-brand-versace-2.png",
+    "title": "Versace Man Eau Fraiche",
+    "source_page": "https://www.fragrancex.com/products/versace/versace-man-cologne",
+    "image_url": "https://img.fragrancex.com/images/products/sku/large/1680m.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-versace-2.png",
+    "crop": [
+      0.566,
+      0,
+      1,
+      0.933
+    ]
+  },
+  {
+    "brand": "Versace",
+    "slot": 3,
+    "file": "samyo-brand-versace-3.webp",
+    "original": "samyo-brand-versace-3.png",
+    "title": "Versace Pour Homme Dylan Blue",
+    "source_page": "https://www.fragrancex.com/products/versace/versace-pour-homme-dylan-blue-cologne",
+    "image_url": "https://img.fragrancex.com/images/products/sku/large/73732m.jpg",
+    "permission": "Not verified; local design reference only.",
+    "selected_original": "samyo-brand-versace-3.png",
+    "crop": [
+      0.558,
+      0,
+      1,
+      0.885
+    ]
+  }
+]

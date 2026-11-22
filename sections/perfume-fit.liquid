@@ -1,0 +1,136 @@
+{%- comment -%}
+  "Is it for you?": a four-question personal fit check on a fragrance page.
+  1. Fresh or warm?          → the profile's characteristics (fresh family vs warm family)
+  2. Subtle or noticeable?   → projection
+  3. Everyday or occasions?  → occasions / occasion fits
+  4. Which do you love?      → the score of that characteristic
+  Each answer reads Yes / Partly / No / Can't tell (with the reason, from the data);
+  the verdict is qualitative ("Made for you", "A good match", "Could work, with one
+  difference", "Probably not your style", or "We can't tell yet" when data is
+  missing). No percentages. The method is written under the result.
+
+  The data sits on the element as attributes (from Liquid); the script only compares.
+  Script: assets/perfume-discovery.js (<perfume-fit>). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign fid = 'PerfumeFit-' | append: section.id
+  assign name = profile.name.value | default: product.title
+  assign fresh = 0
+  assign warm = 0
+  assign accords = ''
+  for t in profile.characteristics.value
+    assign a = t.accord.value | downcase
+    assign s = t.score.value | default: 0
+    assign accords = accords | append: a | append: ':' | append: s | append: ','
+    case a
+      when 'fresh', 'citrus', 'aquatic', 'green', 'aromatic'
+        assign fresh = fresh | plus: s
+      when 'spicy', 'amber', 'gourmand', 'sweet', 'woody', 'leather'
+        assign warm = warm | plus: s
+    endcase
+  endfor
+  capture occ
+    if profile.occasion_fits.value.size > 0
+      for f in profile.occasion_fits.value
+        if f.fit.value != 'Not ideal'
+          echo f.occasion.value | downcase | append: ','
+        endif
+      endfor
+    else
+      echo profile.occasions.value | join: ',' | downcase
+    endif
+  endcapture
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+
+<perfume-fit
+  id="{{ fid }}"
+  class="pfit"
+  style="--pfit-bg: {{ section.settings.background_color }}; --pfit-ink: {{ section.settings.text_color }};"
+  data-fresh="{{ fresh }}"
+  data-warm="{{ warm }}"
+  data-projection="{{ profile.projection.value | downcase }}"
+  data-occasions="{{ occ | strip | escape }}"
+  data-accords="{{ accords }}"
+>
+  <span class="pd-anchor" id="for-you"></span>
+  <div class="pfit__card">
+    <div class="pfit__ask">
+      <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+      <h2 class="pd-h pfit__h">{{ section.settings.heading | replace: '[name]', name | escape }}</h2>
+      <form class="pfit__form" data-pfit-form>
+        {%- for q in (1..4) -%}
+          {%- liquid
+            case q
+              when 1
+                assign q_text = section.settings.q1
+                assign opts = 'Fresh|fresh,Warm|warm,I like both|both' | split: ','
+              when 2
+                assign q_text = section.settings.q2
+                assign opts = 'Subtle|subtle,Noticeable|noticeable,Either|either' | split: ','
+              when 3
+                assign q_text = section.settings.q3
+                assign opts = 'Everyday & office|everyday,Special occasions|special,Both|both' | split: ','
+              else
+                assign q_text = section.settings.q4
+                assign opts = 'Sweet|sweet,Woody|woody,Floral|floral,Musky|musky,Fresh|fresh' | split: ','
+            endcase
+          -%}
+          <fieldset class="pfit__q">
+            <legend>{{ q_text | escape }}</legend>
+            <div class="pfit__opts">
+              {%- for o in opts -%}
+                {%- assign pair = o | split: '|' -%}
+                <label class="pfit__opt">
+                  <input type="radio" name="q{{ q }}" value="{{ pair[1] }}">
+                  <span>{{ pair[0] }}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </fieldset>
+        {%- endfor -%}
+      </form>
+    </div>
+
+    <div class="pfit__result" aria-live="polite" data-pfit-result>
+      <p class="pfit__wait" data-pfit-wait>{{ section.settings.wait_text | escape }}</p>
+      <div data-pfit-out hidden>
+        <p class="pfit__label">{{ section.settings.result_label | escape }}</p>
+        <p class="pfit__verdict" data-pfit-verdict></p>
+        <ul class="pfit__reasons" role="list" data-pfit-reasons></ul>
+        <a class="pf-link pfit__link" href="#similar" data-pfit-similar hidden>{{ section.settings.similar_label | escape }}</a>
+      </div>
+      <p class="pd-basis">{{ section.settings.method_note | escape }}</p>
+    </div>
+  </div>
+</perfume-fit>
+
+{% schema %}
+{
+  "name": "Is it for you?",
+  "tag": "div",
+  "class": "section-perfume-fit",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Personal fit" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "Is [name] for you?" },
+    { "type": "text", "id": "q1", "label": "Question 1", "default": "Do you prefer fresh or warm scents?" },
+    { "type": "text", "id": "q2", "label": "Question 2", "default": "Subtle, or noticed by others?" },
+    { "type": "text", "id": "q3", "label": "Question 3", "default": "Mostly for everyday, or special occasions?" },
+    { "type": "text", "id": "q4", "label": "Question 4", "default": "Which do you love most?" },
+    { "type": "text", "id": "wait_text", "label": "Before answering", "default": "Answer the four questions to see how it suits you." },
+    { "type": "text", "id": "result_label", "label": "Result label", "default": "For you" },
+    { "type": "text", "id": "similar_label", "label": "Link when it doesn't suit", "default": "See fragrances that may suit you better" },
+    { "type": "text", "id": "method_note", "label": "How it works", "default": "Based on this perfume's notes, character, projection and occasions as we assessed them. A guide, not a promise." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#E3E2F0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "Is it for you?" }]
+}
+{% endschema %}

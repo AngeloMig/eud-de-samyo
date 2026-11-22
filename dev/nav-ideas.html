@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo: 10 menu bar ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+  :root { --paper:#f3f0eb; --ink:#26221f; --soft:#6b635b; --line:rgba(38,34,31,.12); --ease:cubic-bezier(.16,1,.3,1); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.5 'Instrument Sans',system-ui,sans-serif; }
+  header.top { max-width:1240px; margin:0 auto; padding:40px 32px 8px; }
+  h1 { font:400 52px/1 'Cormorant Garamond',serif; margin:0 0 10px; letter-spacing:-.02em; }
+  .lede { color:var(--soft); max-width:78ch; margin:0; }
+  main { max-width:1240px; margin:0 auto; padding:28px 32px 80px; display:grid; gap:44px; }
+  section { border-top:1px solid rgba(38,34,31,.14); padding-top:20px; }
+  h2 { font:400 28px/1.1 'Cormorant Garamond',serif; margin:0 0 4px; } h2 b { font-weight:400; font-size:38px; margin-right:12px; }
+  .what { color:var(--soft); margin:0 0 14px; max-width:86ch; font-size:14px; }
+  .tag { font:11px 'Instrument Sans'; letter-spacing:.14em; text-transform:uppercase; border:1px solid rgba(38,34,31,.2); border-radius:999px; padding:2px 9px; color:var(--soft); margin-left:8px; vertical-align:middle; }
+  .stage { background:#e4dfd8; padding:22px 22px 26px; min-height:120px; position:relative; overflow:visible; }
+  .stage.tall { min-height:300px; }
+  .hint { font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); margin-top:10px; }
+
+  /* the bar, like the theme */
+  .bar { display:flex; justify-content:flex-end; position:relative; }
+  .bar ul { display:flex; list-style:none; margin:0; padding:0; background:#fff; }
+  .bar li { position:relative; }
+  .bar a, .bar button.l { display:flex; align-items:center; justify-content:center; height:36px; padding:0 24px; min-width:84px; font:500 13px 'Instrument Sans',sans-serif; color:var(--ink); text-decoration:none; border:0; border-right:1px solid var(--line); background:none; cursor:pointer; white-space:nowrap; }
+  .bar .bag { gap:8px; border-left:1px solid var(--line); }
+  .bar .n { background:var(--ink); color:#fff; border-radius:999px; font-size:11px; line-height:18px; min-width:18px; padding:0 5px; text-align:center; }
+  .bar .x { width:36px; min-width:36px; padding:0; font-size:20px; border-right:0; }
+  .ico { width:36px; min-width:36px !important; padding:0 !important; }
+  .ico svg { width:16px; height:16px; }
+
+  /* 1 grouped */
+  .g1 ul.util { margin-left:10px; }
+  .g1 .shop a { padding:0 26px; }
+
+  /* 2 brands mega */
+  .mega { position:absolute; top:36px; right:0; width:min(760px,100%); background:#fff; border-top:1px solid var(--line); display:grid; grid-template-columns:1fr 1fr 1fr 220px; gap:0 24px; padding:22px 24px; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity .25s, transform .4s var(--ease); z-index:3; }
+  .has-mega:hover .mega, .has-mega:focus-within .mega { opacity:1; transform:none; pointer-events:auto; }
+  .mega h4 { font:500 11px 'Instrument Sans'; letter-spacing:.14em; text-transform:uppercase; color:var(--soft); margin:0 0 8px; }
+  .mega ul { display:block; background:none; } .mega li a { display:block; height:auto; padding:3px 0; border:0; min-width:0; justify-content:flex-start; font:400 19px/1.3 'Cormorant Garamond',serif; }
+  .mega li a:hover { font-style:italic; }
+  .mega .feat { background:#d6dde5; display:grid; place-items:center; padding:10px; position:relative; }
+  .mega .feat img { height:150px; } .mega .feat span { position:absolute; left:10px; bottom:8px; font-size:11px; letter-spacing:.1em; text-transform:uppercase; }
+
+  /* 3 scent notes dropdown */
+  .drop { position:absolute; top:36px; left:0; background:#fff; border-top:1px solid var(--line); min-width:260px; padding:10px; opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity .25s, transform .4s var(--ease); z-index:3; }
+  .has-drop:hover .drop, .has-drop:focus-within .drop { opacity:1; transform:none; pointer-events:auto; }
+  .drop ul { display:grid; gap:4px; background:none; } .drop li a { justify-content:flex-start; gap:10px; height:40px; padding:0 12px; border:0; font-size:14px; }
+  .drop i { width:14px; height:14px; border-radius:50%; display:inline-block; }
+  .drop small { margin-left:auto; color:var(--soft); font-size:12px; }
+
+  /* 4 image preview */
+  .peek { position:absolute; top:46px; width:150px; height:190px; background:#ead8c2; display:grid; place-items:center; opacity:0; transform:translateY(8px) scale(.96); transition:opacity .25s, transform .45s var(--ease); pointer-events:none; z-index:3; clip-path:inset(0 0 100% 0); transition:clip-path .55s var(--ease), opacity .2s; }
+  .peek img { height:84%; }
+  .p4 li:hover .peek, .p4 li:focus-within .peek { opacity:1; clip-path:inset(0); transform:none; }
+
+  /* 5 sliding hover block */
+  .p5 ul.slide { position:relative; }
+  .p5 .blob { position:absolute; top:0; height:36px; background:var(--ink); transition:transform .5s var(--ease), width .5s var(--ease), opacity .2s; opacity:0; z-index:0; pointer-events:none; }
+  .p5 ul.slide a { position:relative; z-index:1; transition:color .3s; }
+  .p5 ul.slide a.on { color:#fff; }
+
+  /* 6 search inline */
+  .p6 .sbox { display:none; align-items:center; gap:10px; background:#fff; height:36px; padding:0 14px; width:600px; max-width:100%; }
+  .p6.searching .sbox { display:flex; } .p6.searching ul.links { display:none; }
+  .p6 input { border:0; outline:0; font:400 20px 'Cormorant Garamond',serif; flex:1; background:none; }
+  .p6 .sug { position:absolute; top:36px; right:36px; width:600px; max-width:calc(100% - 36px); background:#fff; border-top:1px solid var(--line); padding:14px 16px; display:none; font-size:13px; }
+  .p6.searching .sug { display:block; }
+  .p6 .sug span { display:inline-block; border:1px solid rgba(38,34,31,.25); border-radius:999px; padding:3px 12px; margin:6px 6px 0 0; font:italic 16px 'Cormorant Garamond',serif; }
+
+  /* 7 bag peek */
+  .bagpeek { position:absolute; top:36px; right:36px; width:300px; background:#fff; border-top:1px solid var(--line); padding:14px; opacity:0; transform:translateY(-6px); transition:opacity .25s, transform .4s var(--ease); pointer-events:none; z-index:3; font-size:13px; }
+  .p7 .bagwrap:hover .bagpeek, .p7 .bagwrap:focus-within .bagpeek { opacity:1; transform:none; pointer-events:auto; }
+  .bagpeek .it { display:grid; grid-template-columns:44px 1fr auto; gap:10px; align-items:center; padding:6px 0; border-bottom:1px solid var(--line); }
+  .bagpeek .it img { height:52px; justify-self:center; } .bagpeek .it b { font:500 13px 'Instrument Sans'; display:block; } .bagpeek .it em { font-style:normal; color:var(--soft); font-size:12px; }
+  .bagpeek .tot { display:flex; justify-content:space-between; margin:10px 0; } .bagpeek .go { display:block; background:var(--ink); color:#fff; text-align:center; padding:10px; text-decoration:none; height:auto; border:0; justify-content:center; }
+
+  /* 8 numbered */
+  .p8 a sup { font-size:9px; color:var(--soft); margin-right:6px; letter-spacing:.06em; transform:translateY(-4px); }
+
+  /* 9 serif */
+  .p9 ul.serif a { font:italic 400 19px 'Cormorant Garamond',serif; padding:0 22px; }
+  .p9 ul.util a { font-size:12px; color:var(--soft); }
+
+  /* 10 scroll compact */
+  .p10 .page { height:220px; overflow:auto; background:#e4dfd8; position:relative; }
+  .p10 .hdr { position:sticky; top:0; display:flex; justify-content:space-between; align-items:flex-start; padding:16px; transition:transform .45s var(--ease); z-index:2; }
+  .p10 .hdr.hide { transform:translateY(-110%); }
+  .p10 .logo { font:600 26px 'Cormorant Garamond',serif; background:#fff; padding:0 12px; height:36px; display:flex; align-items:center; }
+  .p10 .fake { height:900px; padding:80px 16px; background:repeating-linear-gradient(#e4dfd8 0 120px,#dcd6ce 120px 240px); font-size:12px; color:var(--soft); }
+  .p10 .bar { justify-content:flex-start; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition-duration:.01ms !important; } }
+  @media (max-width:900px) { .bar { overflow-x:auto; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Menu bar: 10 ideas</h1>
+  <p class="lede">Today the burger unrolls one flat white bar of seven equal links. These ideas give it hierarchy, help people find a perfume faster, and add a little luxury. Hover the bars. Each idea would be a setting on the Perfume header section.</p>
+</header>
+<main>
+
+<section>
+  <h2><b>0</b>Now</h2>
+  <p class="what">Seven equal boxes: shop links and utilities (Search, Log in) look the same.</p>
+  <div class="stage"><nav class="bar"><ul><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a href="#">Log in</a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav></div>
+</section>
+
+<section class="g1">
+  <h2><b>1</b>Shop links apart from utilities<span class="tag">recommended</span></h2>
+  <p class="what">Shop links in one bar; Search and Account become icon boxes next to the Bag, set apart by a small gap. Shorter, calmer, and shoppers see where to start.</p>
+  <div class="stage"><nav class="bar"><ul class="shop"><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li></ul>
+  <ul class="util"><li><a class="ico" href="#" aria-label="Search"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg></a></li><li><a class="ico" href="#" aria-label="Log in"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="3"/><path d="M2 15c1-3.5 3.5-5 6-5s5 1.5 6 5"/></svg></a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav></div>
+</section>
+
+<section>
+  <h2><b>2</b>Brands mega panel</h2>
+  <p class="what">Hovering Brands opens a white panel below the bar: brands in serif, A–Z in columns, plus a featured bottle you choose in the editor. The fastest way to "I want Dior".</p>
+  <div class="stage tall"><nav class="bar"><ul><li><a href="#">Shop all</a></li><li class="has-mega"><a href="#">Brands ▾</a>
+    <div class="mega"><div><h4>A–D</h4><ul><li><a href="#">Armani</a></li><li><a href="#">Chanel</a></li><li><a href="#">Dior</a></li><li><a href="#">Dolce &amp; Gabbana</a></li></ul></div><div><h4>H–T</h4><ul><li><a href="#">Hermès</a></li><li><a href="#">Jo Malone</a></li><li><a href="#">Tom Ford</a></li></ul></div><div><h4>V–Z</h4><ul><li><a href="#">Valentino</a></li><li><a href="#">Versace</a></li><li><a href="#">YSL</a></li></ul></div><a class="feat" href="#"><img src="shop-images/samyo-dior-homme-intense.webp" alt=""><span>New: Homme Intense</span></a></div>
+  </li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav><p class="hint">Hover "Brands"</p></div>
+</section>
+
+<section>
+  <h2><b>3</b>Scent notes dropdown in family colours</h2>
+  <p class="what">Hovering Scent notes lists the families with their colour dot and how many perfumes are in each (the count comes from the collection). Ties into the Shop by scent tiles.</p>
+  <div class="stage tall"><nav class="bar"><ul><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li class="has-drop"><a href="#">Scent notes ▾</a>
+    <div class="drop"><ul><li><a href="#"><i style="background:#f2e27e"></i>Fresh &amp; citrus<small>12</small></a></li><li><a href="#"><i style="background:#e2a07e"></i>Warm &amp; spicy<small>9</small></a></li><li><a href="#"><i style="background:#efe6d2;border:1px solid #d8ccb4"></i>Sweet &amp; creamy<small>7</small></a></li><li><a href="#"><i style="background:#c9b59a"></i>Woody<small>10</small></a></li><li><a href="#"><i style="background:#cfc3e6"></i>Floral<small>8</small></a></li></ul></div>
+  </li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav><p class="hint">Hover "Scent notes" (counts are example numbers)</p></div>
+</section>
+
+<section class="p4">
+  <h2><b>4</b>An image peeks out under each link</h2>
+  <p class="what">Like NOHO's editorial menus: hovering a link wipes in a small picture under it (a bottle for Shop all, a note for Scent notes). Each link gets an image picker in the editor.</p>
+  <div class="stage tall"><nav class="bar"><ul>
+    <li><a href="#">Shop all</a><span class="peek" style="background:#d6dde5"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></span></li>
+    <li><a href="#">Brands</a><span class="peek" style="background:#ead8c2"><img src="shop-images/samyo-dg-the-one.webp" alt=""></span></li>
+    <li><a href="#">Scent notes</a><span class="peek" style="background:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt="" style="height:70%"></span></li>
+    <li><a href="#">Journal</a><span class="peek" style="background:#dcd6e4"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></span></li>
+    <li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav><p class="hint">Hover the first four links</p></div>
+</section>
+
+<section class="p5">
+  <h2><b>5</b>A dark block glides between links</h2>
+  <p class="what">On hover, a charcoal block slides from link to link and the text turns white, instead of only the text roll. It feels physical and shows exactly where you are.</p>
+  <div class="stage"><nav class="bar"><ul class="slide" data-slide><span class="blob" aria-hidden="true"></span><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a href="#">Log in</a></li></ul><ul><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav><p class="hint">Move along the links</p></div>
+</section>
+
+<section class="p6" data-search>
+  <h2><b>6</b>Search opens inside the bar</h2>
+  <p class="what">Clicking Search turns the bar into a big serif search field with quick suggestions (notes, brands, families), with no page change. Suggestions are a list you set in the editor.</p>
+  <div class="stage tall"><nav class="bar"><ul class="links"><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><button class="l" data-open-search>Search</button></li><li><a href="#">Log in</a></li></ul>
+    <div class="sbox"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg><input type="search" placeholder="Search a perfume, brand or note" aria-label="Search"><button class="l" style="min-width:0;padding:0 6px;border:0" data-close-search>Cancel</button></div>
+    <ul><li><button class="l x" aria-label="Close menu">×</button></li></ul>
+    <div class="sug">Try: <span>Vanilla</span><span>Dior</span><span>Fresh &amp; citrus</span><span>Office-safe</span><span>Gift under ₱5,000</span></div></nav><p class="hint">Click "Search"</p></div>
+</section>
+
+<section class="p7">
+  <h2><b>7</b>Peek into the bag</h2>
+  <p class="what">Hovering Bag shows what's in it, the subtotal and a Checkout button, so people don't leave the page to check. Uses the real cart.</p>
+  <div class="stage tall"><nav class="bar"><ul><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li><li><a href="#">Search</a></li><li><a href="#">Log in</a></li><li class="bagwrap"><a class="bag" href="#">Bag <span class="n">2</span></a>
+    <div class="bagpeek"><div class="it"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span><b>Dior Sauvage</b><em>EDP · 100 ml</em></span><span>₱8,950</span></div><div class="it"><img src="shop-images/samyo-dg-the-one.webp" alt=""><span><b>D&amp;G The One</b><em>100 ml</em></span><span>₱6,400</span></div><div class="tot"><span>Subtotal</span><b>₱15,350</b></div><a class="go" href="#">Checkout</a></div>
+  </li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav><p class="hint">Hover "Bag" (demo items and prices)</p></div>
+</section>
+
+<section class="p8">
+  <h2><b>8</b>Small index numbers</h2>
+  <p class="what">A tiny 01, 02, 03 before each link, like a perfume house catalogue. Pure styling, no extra clicks; matches the numbered sections elsewhere.</p>
+  <div class="stage"><nav class="bar"><ul><li><a href="#"><sup>01</sup>Shop all</a></li><li><a href="#"><sup>02</sup>Brands</a></li><li><a href="#"><sup>03</sup>Scent notes</a></li><li><a href="#"><sup>04</sup>Journal</a></li><li><a href="#"><sup>05</sup>About</a></li><li><a href="#">Search</a></li><li><a href="#">Log in</a></li><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav></div>
+</section>
+
+<section class="p9">
+  <h2><b>9</b>Serif italic shop links</h2>
+  <p class="what">The shop links use the Hermès-like serif in italic, slightly larger; utilities stay small and grey. Same bar, but it reads as a luxury house instead of a web app.</p>
+  <div class="stage"><nav class="bar"><ul class="serif"><li><a href="#">Shop all</a></li><li><a href="#">Brands</a></li><li><a href="#">Scent notes</a></li><li><a href="#">Journal</a></li><li><a href="#">About</a></li></ul><ul class="util"><li><a href="#">Search</a></li><li><a href="#">Log in</a></li><li><a class="bag" href="#" style="color:var(--ink)">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Close menu">×</button></li></ul></nav></div>
+</section>
+
+<section class="p10">
+  <h2><b>10</b>Hides on scroll down, returns on scroll up</h2>
+  <p class="what">Reading down the page, the header slides away to give the perfume space; the smallest scroll up brings it back. Keeps the Bag reachable without covering content.</p>
+  <div class="page" data-page><div class="hdr" data-hdr><span class="logo">samyó</span><nav class="bar"><ul><li><a class="bag" href="#">Bag <span class="n">2</span></a></li><li><button class="l x" aria-label="Open menu">≡</button></li></ul></nav></div><div class="fake">Scroll inside this box ↓ then up ↑</div></div>
+</section>
+
+</main>
+<script>
+  // 5: gliding block
+  document.querySelectorAll('[data-slide]').forEach((ul) => {
+    const blob = ul.querySelector('.blob');
+    ul.querySelectorAll('a').forEach((a) => {
+      const on = () => { blob.style.opacity = 1; blob.style.width = a.offsetWidth + 'px'; blob.style.transform = `translateX(${a.parentElement.offsetLeft}px)`; ul.querySelectorAll('a').forEach((x) => x.classList.toggle('on', x === a)); };
+      a.addEventListener('mouseenter', on); a.addEventListener('focus', on);
+    });
+    ul.addEventListener('mouseleave', () => { blob.style.opacity = 0; ul.querySelectorAll('a').forEach((x) => x.classList.remove('on')); });
+  });
+  // 6: inline search
+  const s6 = document.querySelector('[data-search]');
+  s6.querySelector('[data-open-search]').addEventListener('click', () => { s6.classList.add('searching'); s6.querySelector('input').focus(); });
+  s6.querySelector('[data-close-search]').addEventListener('click', () => s6.classList.remove('searching'));
+  // 10: hide on scroll down
+  const page = document.querySelector('[data-page]'), hdr = document.querySelector('[data-hdr]'); let last = 0;
+  page.addEventListener('scroll', () => { const y = page.scrollTop; hdr.classList.toggle('hide', y > last && y > 40); last = y; }, { passive: true });
+  document.querySelectorAll('a[href="#"]').forEach((a) => a.addEventListener('click', (e) => e.preventDefault()));
+</script>
+</body>
+</html>

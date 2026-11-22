@@ -1,0 +1,79 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brands + notes: 10 variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--line:rgba(41,37,33,.14);--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:86ch;margin:0}
+ main{max-width:1320px;margin:0 auto;padding:22px 32px 70px;display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+ .v{background:#fff;min-width:0} .cap{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 20px;border-bottom:1px solid var(--line)}
+ .cap h2{font:400 24px/1.1 'Cormorant Garamond',serif;margin:0} .cap h2 b{font-weight:400;font-size:30px;margin-right:8px} .cap p{margin:0;color:var(--soft);font-size:13px;max-width:72ch;text-align:right}
+ .stage{background:var(--page);padding:26px}
+ .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:180px;grid-auto-flow:dense;gap:10px}
+ .t{position:relative;padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;overflow:visible;isolation:isolate;color:inherit;text-decoration:none;transition:background .5s,box-shadow .5s}
+ .t.big{grid-column:span 2;grid-row:span 2} .t.wide{grid-column:span 2} .t.tall{grid-row:span 2}
+ .t .art{position:absolute;inset:12px 12px 44px;display:flex;justify-content:center;align-items:flex-end;transition:transform .8s var(--ease)}
+ .t:hover .art{transform:translateY(-6px)}
+ .t .art img{height:78%;max-width:40%;object-fit:contain;object-position:bottom;margin:0 -4%;filter:drop-shadow(0 10px 10px rgba(41,37,33,.14))} .t .art img:nth-child(2){height:100%;max-width:46%;z-index:1}
+ .t.note .art img{height:92%;max-width:92%;margin:0}
+ .nm{position:relative;font:400 25px/1 'Cormorant Garamond'} .t.big .nm{font-size:44px} .note .nm{font-style:italic}
+ .sh{position:relative;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+ .bg{background:var(--t)}
+
+ /* per-variant touches */
+ .v2 .t.bg .nm,.v2 .t:not(.bg) .nm{}
+ .v4 .t:not(.bg){box-shadow:inset 0 0 0 1px var(--line)}
+ .v5 .t:not(.bg) .art::after{content:'';position:absolute;bottom:-6px;left:20%;right:20%;height:10px;border-radius:50%;background:radial-gradient(closest-side,rgba(41,37,33,.16),transparent);z-index:-1}
+ .v6 .t.bg{background:linear-gradient(to top,var(--t) 0 46%,transparent 46%)}
+ .v7 .t.ring .art::before{content:'';position:absolute;left:50%;bottom:6%;width:min(78%,170px);aspect-ratio:1;border-radius:50%;background:var(--t);transform:translateX(-50%);z-index:-1}
+ .v8 .t.note .art{inset:-14px -10px 34px} .v8 .t.note .art img{height:118%}
+ .v9 .t{background:transparent} .v9 .t:hover{background:var(--t)} .v9 .t .art img{filter:grayscale(1) drop-shadow(0 10px 10px rgba(41,37,33,.12));transition:filter .6s} .v9 .t:hover .art img{filter:none}
+ .v10 .t.note{grid-column:span 1;grid-row:span 1;align-items:center;justify-content:center;text-align:center} .v10 .t.note .art{inset:6px 20% 40px} .v10 .t.note .nm{font-size:20px}
+ .v3 .t:not(.bg) .sh,.v1 .t.note .sh{color:var(--soft)}
+ @media (prefers-reduced-motion:reduce){*{transition:none !important}}
+ @media (max-width:900px){main,header.top{padding-left:14px;padding-right:14px} .cap{flex-direction:column} .cap p{text-align:left} .stage{padding:14px}
+  /* Phones: a 6-column grid. Brands are half width (the hero and wide ones full),
+     notes a third, so three notes sit side by side. */
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr));grid-auto-rows:150px}
+  .t{grid-column:span 3} .t.big,.t.wide{grid-column:span 6} .t.big{grid-row:span 2}
+  .t.note,.t.note.tall,.t.note.wide{grid-column:span 2;grid-row:span 1;padding:8px}
+  .t{order:2} .t.big{order:0} .t.note{order:1} /* notes together in rows of three, under the hero */
+  .t.note .art{inset:6px 6px 36px} .t.note .nm{font-size:18px} .t.note .sh{font-size:8.5px;letter-spacing:.12em}
+  .t.big .nm{font-size:32px} .v10 .t.note .art{inset:6px 10% 36px}}
+</style></head><body>
+<header class="top"><h1>Brands + notes: 10 variants</h1><p class="lede">The masonry you liked, with scent notes as plain cut-outs (no background at all: just the lemon, the vanilla pods, the cinnamon) and brand tiles that sometimes have their colour and sometimes stand bare on the page. Notes: lavender, rose, orange, iris and cardamom are new cut-outs (free Unsplash photos, background removed), plus the vanilla we had. Hover tiles to see the small lift.</p></header>
+<main id="v"></main>
+<script>
+const BR = { Dior: ['dior', '#D6DDE5'], Chanel: ['chanel', '#EDE6DE'], Armani: ['armani', '#E9D3C9'], 'Hermès': ['hermes', '#F1E3CC'], 'Tom Ford': ['tom-ford', '#DCD6E4'], YSL: ['ysl', '#E4E0D8'], 'Jo Malone': ['jo-malone', '#E3E8E6'] };
+const NOTE = { Lemon: ['../assets/sample-scent-lemon.webp', '#FBF1C4'], Vanilla: ['../assets/sample-scent-vanilla.webp', '#F4EBD8'], Cinnamon: ['../assets/sample-scent-cinnamon.webp', '#F1DCCB'],
+  Lavender: ['../assets/sample-scent-lavender.webp', '#E6E0EF'], Rose: ['../assets/sample-scent-rose.webp', '#F1D6D6'], Orange: ['../assets/sample-scent-orange.webp', '#F6E2C8'], Iris: ['../assets/sample-scent-iris.webp', '#E2E0F0'], Cardamom: ['../assets/sample-scent-cardamom.webp', '#E3EAD8'] };
+// layout: [kind, name, size]
+const L = [['b', 'Dior', 'big'], ['n', 'Lavender', 'tall'], ['b', 'Chanel', ''], ['b', 'Armani', ''], ['n', 'Rose', ''], ['b', 'Hermès', 'wide'], ['n', 'Orange', ''], ['b', 'Tom Ford', ''], ['n', 'Iris', 'tall'], ['b', 'YSL', ''], ['n', 'Vanilla', ''], ['b', 'Jo Malone', 'wide'], ['n', 'Cardamom', '']];
+const V = [
+  ['Brands coloured, notes bare', 'Every brand keeps its colour tile; every note is just the ingredient on the page. The clearest split between "who" and "what it smells like".', (k, i) => k === 'b'],
+  ['Only the hero coloured', 'One big coloured tile (Dior); everything else bare on the page. Calm, gallery-like, lets the bottles speak.', (k, i) => i === 0],
+  ['Checkerboard', 'Coloured and bare tiles alternate, brands and notes alike. A lively rhythm without being busy.', (k, i) => i % 2 === 0],
+  ['Bare tiles with a hairline', 'Coloured brand tiles; bare tiles get a fine outline so the grid still reads.', (k, i) => k === 'b' && i % 3 !== 1],
+  ['Floor shadows', 'Bare tiles show a soft shadow under the bottles or ingredient, as if standing on a table. Only the wide tiles are coloured.', (k, i, s) => s === 'wide'],
+  ['Colour as a ground band', 'Coloured tiles only have their colour on the bottom half: the bottles stand on a coloured ground, the top stays open.', (k, i) => k === 'b'],
+  ['Circles behind some', 'No square tiles at all; some items (every other one) get a soft round colour behind them, the rest are bare.', null],
+  ['Notes breaking the grid ★ your pick', 'Brands coloured; the bare notes are bigger and spill a little past their tile, giving the grid movement.', (k, i) => k === 'b'],
+  ['Colour on hover', 'Everything bare and slightly greyed at rest; hovering a tile brings its colour and full colour photo. Very quiet until you look.', () => false],
+  ['Small round note stops', 'Brand tiles coloured and large; notes become small bare stops between them, centred with their name.', (k, i) => k === 'b'],
+];
+const main = document.getElementById('v');
+V.forEach(([title, desc, rule], n) => {
+  const tiles = L.map(([k, name, size], i) => {
+    const isNote = k === 'n';
+    const [src, tint] = isNote ? NOTE[name] : BR[name];
+    let cls = `t ${size} ${isNote ? 'note' : ''}`;
+    if (n === 6) { if (i % 2 === 0) cls += ' ring'; }
+    else if (rule(k, i, size)) cls += ' bg';
+    const art = isNote ? `<img src="${src}" alt="">` : `<img src="shop-images/samyo-brand-${src}-1.webp" alt=""><img src="shop-images/samyo-brand-${src}-2.webp" alt=""><img src="shop-images/samyo-brand-${src}-3.webp" alt="">`;
+    return `<a class="${cls}" style="--t:${tint}"><span class="art">${art}</span><span class="nm">${name}</span><span class="sh">${isNote ? 'Scent note' : 'Shop'}</span></a>`;
+  }).join('');
+  main.insertAdjacentHTML('beforeend', `<section class="v v${n + 1}"><div class="cap"><h2><b>${n + 1}</b>${title}</h2><p>${desc}</p></div><div class="stage"><div class="grid">${tiles}</div></div></section>`);
+});
+</script>
+</body></html>

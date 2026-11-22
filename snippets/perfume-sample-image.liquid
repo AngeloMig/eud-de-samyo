@@ -1,0 +1,52 @@
+{%- comment -%}
+  Bundled sample cut-outs (transparent WebP in assets/), shown until a merchant
+  uploads their own image. Credits: docs/CREDITS.md.
+
+  Usage: {% render 'perfume-sample-image', key: 'bottle-amber', alt: 'Amber perfume', loading: 'lazy' %}
+  Keys: bottle-amber, bottle-clear, bottle-blue, bottle-red, scent-lemon,
+  scent-cinnamon, scent-vanilla. 'none' or anything else renders nothing.
+{%- endcomment -%}
+{%- liquid
+  assign file = blank
+  case key
+    when 'bottle-amber'
+      assign file = 'sample-bottle-amber.webp'
+      assign w = 650
+      assign h = 900
+    when 'bottle-clear'
+      assign file = 'sample-bottle-clear.webp'
+      assign w = 642
+      assign h = 900
+    when 'bottle-blue'
+      assign file = 'sample-bottle-blue.webp'
+      assign w = 441
+      assign h = 900
+    when 'bottle-red'
+      assign file = 'sample-bottle-red.webp'
+      assign w = 641
+      assign h = 900
+    when 'scent-lemon'
+      assign file = 'sample-scent-lemon.webp'
+      assign w = 900
+      assign h = 587
+    when 'scent-cinnamon'
+      assign file = 'sample-scent-cinnamon.webp'
+      assign w = 743
+      assign h = 700
+    when 'scent-vanilla'
+      assign file = 'sample-scent-vanilla.webp'
+      assign w = 900
+      assign h = 483
+  endcase
+  assign img_loading = loading | default: 'lazy'
+-%}
+{%- if file != blank -%}
+  <img
+    src="{{ file | asset_url }}"
+    alt="{{ alt | escape }}"
+    width="{{ w }}"
+    height="{{ h }}"
+    loading="{{ img_loading }}"
+    decoding="async"
+  >
+{%- endif -%}

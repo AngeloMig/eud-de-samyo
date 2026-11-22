@@ -1,0 +1,37 @@
+{%- comment -%}
+  One Journal article as a card (homepage Journal, blog page, "More from the
+  journal"). Picture, first tag, title in the display serif, optional excerpt, date
+  and reading time (words ÷ 200, at least 1 minute).
+
+  Accepts:
+  - article: the article
+  - size: 'lg' (feature) or 'sm' (default)
+  - show_excerpt: true/false
+  - heading_tag: 'h2' or 'h3' (default h3)
+  - sizes: image sizes attribute (optional)
+{%- endcomment -%}
+{%- liquid
+  assign a_size = size | default: 'sm'
+  assign h_tag = heading_tag | default: 'h3'
+  assign img_sizes = sizes | default: '(min-width: 990px) 33vw, 90vw'
+  assign words = article.content | strip_html | split: ' ' | size
+  assign minutes = words | divided_by: 200 | at_least: 1
+-%}
+<article class="pja-card pja-card--{{ a_size }}">
+  <a class="pja-card__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+    {%- if article.image != blank -%}
+      {{ article.image | image_url: width: 1200 | image_tag: widths: '400, 800, 1200', sizes: img_sizes, loading: 'lazy', alt: '' }}
+    {%- else -%}
+      <span class="pja-card__blank"></span>
+    {%- endif -%}
+  </a>
+  <div class="pja-card__body">
+    {%- if article.tags.size > 0 -%}<p class="pja-card__tag">{{ article.tags.first | escape }}</p>{%- endif -%}
+    <{{ h_tag }} class="pja-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></{{ h_tag }}>
+    {%- if show_excerpt -%}
+      {%- assign excerpt = article.excerpt | default: article.content | strip_html | truncatewords: 26 -%}
+      {%- if excerpt != blank -%}<p class="pja-card__excerpt">{{ excerpt }}</p>{%- endif -%}
+    {%- endif -%}
+    <p class="pja-card__meta">{{ article.published_at | date: '%B %-d, %Y' }} · {{ minutes }} min read</p>
+  </div>
+</article>

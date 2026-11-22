@@ -1,0 +1,88 @@
+{%- comment -%}
+  Journal (blog page, templates/blog.json). A large title, an optional intro, tag
+  chips (the blog's tags; the current one is marked), then the articles: on the
+  first page the newest is a wide feature, the rest a 3-column grid. Paginated.
+
+  Cards: snippets/perfume-article-card.liquid. Styles: assets/perfume-journal.css.
+{%- endcomment -%}
+{%- liquid
+  assign jid = 'PerfumeBlog-' | append: section.id
+  assign per_page = section.settings.per_page
+-%}
+
+{{ 'perfume-journal.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ jid }} {
+    --pj-bg: {{ section.settings.background_color }};
+    --pj-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<section id="{{ jid }}" class="pj pj--blog">
+  <header class="pj__masthead" data-pf-reveal="rise">
+    {%- if section.settings.kicker != blank -%}<p class="pf-kicker pj__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+    <h1 class="pj__title">{% if current_tags %}{{ current_tags.first | escape }}{% else %}{{ blog.title | escape }}{% endif %}</h1>
+    {%- if section.settings.intro != blank and current_tags == blank -%}<div class="pj__intro">{{ section.settings.intro }}</div>{%- endif -%}
+
+    {%- if section.settings.show_tags and blog.all_tags.size > 0 -%}
+      <nav class="pj__tags" aria-label="{{ section.settings.tags_label | escape }}">
+        <a class="pj__tag{% if current_tags == blank %} is-on{% endif %}" href="{{ blog.url }}"{% if current_tags == blank %} aria-current="page"{% endif %}>{{ section.settings.all_label | escape }}</a>
+        {%- for tag in blog.all_tags -%}
+          {%- assign on = false -%}
+          {%- if current_tags contains tag -%}{%- assign on = true -%}{%- endif -%}
+          <a class="pj__tag{% if on %} is-on{% endif %}" href="{{ blog.url }}/tagged/{{ tag | handleize }}"{% if on %} aria-current="page"{% endif %}>{{ tag | escape }}</a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+  </header>
+
+  {%- paginate blog.articles by per_page -%}
+    {%- if blog.articles.size > 0 -%}
+      <div class="pj__list">
+        {%- for a in blog.articles -%}
+          {%- if forloop.first and paginate.current_page == 1 -%}
+            <div class="pj__cell pj__cell--lead" data-pf-reveal="rise">
+              {%- render 'perfume-article-card', article: a, size: 'lg', show_excerpt: true, heading_tag: 'h2', sizes: '(min-width: 990px) 60vw, 92vw' -%}
+            </div>
+          {%- else -%}
+            <div class="pj__cell" style="--i: {{ forloop.index0 | modulo: 3 }};" data-pf-reveal="rise">
+              {%- render 'perfume-article-card', article: a, size: 'sm', show_excerpt: section.settings.show_excerpt, heading_tag: 'h2' -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="pj__empty">{{ section.settings.empty_text | escape }}</p>
+    {%- endif -%}
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pj__pages" aria-label="Pages">
+        {%- if paginate.previous -%}<a class="pf-link" href="{{ paginate.previous.url }}">← Newer</a>{%- else -%}<span></span>{%- endif -%}
+        <span class="pj__page-no">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+        {%- if paginate.next -%}<a class="pf-link" href="{{ paginate.next.url }}">Older →</a>{%- else -%}<span></span>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+
+{% schema %}
+{
+  "name": "Journal page",
+  "tag": "div",
+  "class": "section-perfume-main-blog",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Samyó Journal" },
+    { "type": "richtext", "id": "intro", "label": "Intro", "default": "<p>How to choose, wear and enjoy perfume: notes explained, comparisons and what works in Philippine weather.</p>" },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tag filters", "default": true },
+    { "type": "text", "id": "tags_label", "label": "Tag filters name (screen readers)", "default": "Topics" },
+    { "type": "text", "id": "all_label", "label": "All topics label", "default": "All" },
+    { "type": "range", "id": "per_page", "label": "Articles per page", "min": 4, "max": 24, "step": 1, "default": 10 },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpts on small cards", "default": false },
+    { "type": "text", "id": "empty_text", "label": "No articles text", "default": "No articles yet. Come back soon." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ]
+}
+{% endschema %}

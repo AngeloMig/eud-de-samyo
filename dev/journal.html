@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo journal preview</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
+>
+<link rel="stylesheet" href="../assets/perfume-tokens.css?v=1795235614472">
+
+<style>
+  :root {
+    --font-body-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --font-body-style: normal;
+    --font-body-weight: 400;
+    --font-body-weight-bold: 600;
+    --font-heading-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+    --font-heading-style: normal;
+    --font-heading-weight: 500;
+  }
+</style>
+
+<style>
+  body { margin: 0; background: var(--pf-paper); color: var(--pf-ink); }
+  .preview-next { padding: 96px var(--pf-gutter); font-family: var(--pf-font-serif); font-size: var(--pf-display-sm); }
+</style>
+</head>
+<body>
+<script>
+  // PREVIEW ONLY: a fake cart (add, change, read) so Add to bag and the drawer work without a store.
+  (() => {
+    const variants = {"9001":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9002":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9003":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9004":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9005":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9006":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9007":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9008":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9009":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9010":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9011":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9012":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9013":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9014":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9015":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9016":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9017":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9018":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9019":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9020":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9021":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9022":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9023":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9024":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9025":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9026":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9027":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9028":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9029":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9030":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9031":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9032":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9033":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9034":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9035":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9036":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9037":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9038":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9039":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9040":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9041":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9042":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9043":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9044":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9045":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9046":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9047":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9048":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9049":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9050":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9051":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9052":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9055":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"product.html","currency":"PHP"},"9056":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"product.html","currency":"PHP"},"9057":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"product.html","currency":"PHP"},"9058":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"product.html","currency":"PHP"},"9059":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"product.html","currency":"PHP"},"9060":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"product.html","currency":"PHP"},"9061":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"product.html","currency":"PHP"},"9062":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"product.html","currency":"PHP"},"9063":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"product.html","currency":"PHP"}};
+    const ids = Object.keys(variants);
+    const items = [];
+    let note = '';
+    const put = (id, qty) => {
+      const v = variants[id];
+      if (!v) return;
+      const it = items.find((x) => x.key === 'k' + id);
+      if (it) it.quantity += qty;
+      else items.push({ key: 'k' + id, variant_id: Number(id), quantity: qty, ...v });
+    };
+    // Start with two items, like the header's demo count.
+    if (ids.length) { put(ids[1] || ids[0], 1); put(ids[ids.length - 1], 1); }
+    const cart = () => {
+      items.forEach((x) => { x.final_price = x.price; x.final_line_price = x.price * x.quantity; });
+      return { item_count: items.reduce((a, x) => a + x.quantity, 0), total_price: items.reduce((a, x) => a + x.final_line_price, 0), currency: 'PHP', note, items };
+    };
+    const realFetch = window.fetch.bind(window);
+    const json = (o) => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    window.fetch = async (url, opts = {}) => {
+      const u = String(url);
+      if (u.endsWith('/cart/add.js')) {
+        await new Promise((r) => setTimeout(r, 900));
+        const id = opts.body && opts.body.get ? opts.body.get('id') : null;
+        put(id, 1);
+        const it = items.find((x) => x.key === 'k' + id) || {};
+        return json({ ...it, quantity: 1 });
+      }
+      if (u.endsWith('/cart/change.js')) {
+        await new Promise((r) => setTimeout(r, 350));
+        const b = JSON.parse(opts.body || '{}');
+        const i = items.findIndex((x) => x.key === b.id);
+        if (i > -1) { if (b.quantity > 0) items[i].quantity = b.quantity; else items.splice(i, 1); }
+        return json(cart());
+      }
+      if (u.endsWith('/cart/update.js')) {
+        const b = JSON.parse(opts.body || '{}');
+        if (typeof b.note === 'string') note = b.note;
+        return json(cart());
+      }
+      if (u.endsWith('/cart.js')) return json(cart());
+      return realFetch(url, opts);
+    };
+  })();
+</script>
+<div style="position:fixed;left:8px;bottom:8px;z-index:200;font:11px/1.4 sans-serif;background:#26221f;color:#fff;padding:4px 8px;border-radius:4px;opacity:.75">Preview: demo products &amp; prices</div>
+<link rel="stylesheet" href="../assets/perfume-header.css?v=1795278938143">
+<script src="../assets/perfume-header.js?v=1795278938144" defer="defer"></script><style>#PerfumeHeader-header {
+    --ph-logo-w: 96px;
+    --ph-logo-size: 34px;
+    --ph-paper: #FFFFFF;
+    --ph-ink: #292521;
+  }</style><perfume-header
+  id="PerfumeHeader-header"
+  class="ph ph--sticky ph--hover-glide"
+  data-cart-url="/cart"
+  
+  data-blend
+><div class="ph__ann" data-ph-ann data-key="Authentic designer fragrances
+Free delivery on orders over ₱10,000
+Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph-ann-ink: #F7F5F0;">
+      <div class="ph__ann-roll" aria-live="off"><p class="ph__ann-msg is-on" data-ph-ann-msg>Authentic designer fragrances</p><p class="ph__ann-msg" data-ph-ann-msg>Free delivery on orders over ₱10,000</p><p class="ph__ann-msg" data-ph-ann-msg>Scent notes for every perfume, before you buy</p></div>
+      <button type="button" class="ph__ann-close" data-ph-ann-close aria-label="Hide announcement">×</button>
+    </div><div class="ph__inner">
+    <a href="home.html" class="ph__logo ph__box" aria-label="samyó, home"><span class="ph__mark" aria-hidden="true" data-ph-mark><span class="ph__mark-pre">eau de</span><span class="ph__mark-name">samy<span class="ph__mark-last">ó<span class="ph__mist"><span class="ph__cloud"></span><i class="r" style="--x:0.06em;--y:-0.1em;--s:0.075em;--a:0.85"></i><i class="r" style="--x:0.17em;--y:-0.2em;--s:0.06em;--a:0.65"></i><i class="r" style="--x:0.27em;--y:-0.12em;--s:0.065em;--a:0.5"></i><i class="r" style="--x:0.37em;--y:-0.25em;--s:0.045em;--a:0.4"></i><i class="r" style="--x:0.47em;--y:-0.16em;--s:0.04em;--a:0.3"></i><i class="r" style="--x:0.55em;--y:-0.28em;--s:0.03em;--a:0.2"></i><i class="b" style="--x:0.381em;--y:-0.726em;--s:0.076em;--a:0.66;--dl:0.11s;--t:1.19s"></i><i class="b" style="--x:0.392em;--y:-0.679em;--s:0.061em;--a:0.81;--dl:0.02s;--t:1.05s"></i><i class="b" style="--x:0.553em;--y:-0.842em;--s:0.064em;--a:0.47;--dl:0.22s;--t:1.38s"></i><i class="b" style="--x:0.56em;--y:-0.655em;--s:0.036em;--a:0.46;--dl:0.12s;--t:0.93s"></i><i class="b" style="--x:0.386em;--y:-0.435em;--s:0.03em;--a:0.66;--dl:0.1s;--t:1.32s"></i><i class="b" style="--x:0.648em;--y:-0.595em;--s:0.054em;--a:0.75;--dl:0.1s;--t:1.04s"></i><i class="b" style="--x:0.93em;--y:-0.671em;--s:0.072em;--a:0.77;--dl:0.07s;--t:1.01s"></i><i class="b" style="--x:0.365em;--y:-0.267em;--s:0.068em;--a:0.63;--dl:0.19s;--t:1.09s"></i><i class="b" style="--x:0.912em;--y:-0.491em;--s:0.028em;--a:0.54;--dl:0.2s;--t:1.13s"></i><i class="b" style="--x:0.636em;--y:-0.287em;--s:0.032em;--a:0.73;--dl:0.17s;--t:1.03s"></i><i class="b" style="--x:0.585em;--y:-0.283em;--s:0.078em;--a:0.79;--dl:0.03s;--t:1.02s"></i><i class="b" style="--x:0.413em;--y:-0.166em;--s:0.069em;--a:0.53;--dl:0.12s;--t:1.12s"></i><i class="b" style="--x:0.905em;--y:-0.285em;--s:0.035em;--a:0.74;--dl:0.03s;--t:1.11s"></i><i class="b" style="--x:0.586em;--y:-0.14em;--s:0.078em;--a:0.81;--dl:0.07s;--t:1.34s"></i><i class="b" style="--x:0.686em;--y:-0.116em;--s:0.072em;--a:0.74;--dl:0.02s;--t:1.39s"></i><i class="b" style="--x:0.591em;--y:-0.059em;--s:0.068em;--a:0.6;--dl:0.07s;--t:0.94s"></i></span></span></span>
+        </span></a>
+
+    <nav class="ph__nav" aria-label="Main">
+      <div class="ph__panel" id="PerfumeMenu-header" data-ph-panel><ul class="ph__cards" role="list"><li class="ph__card ph__item" data-block-id="header-b1">
+                <a href="collection.html" class="ph__card-link">
+                  <span class="ph__card-title">New arrivals</span>
+                  <span class="ph__card-media"><img src="../dev/shop-images/samyo-dior-sauvage-edp.webp" alt="" class="" loading="lazy"></span>
+                </a>
+              </li><li class="ph__card ph__item" data-block-id="header-b2">
+                <a href="collection.html" class="ph__card-link">
+                  <span class="ph__card-title">Best sellers</span>
+                  <span class="ph__card-media"><img src="../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp" alt="" class="" loading="lazy"></span>
+                </a>
+              </li></ul><span class="ph__glide" aria-hidden="true" data-ph-glide></span><ul class="ph__list" role="list"><li class="ph__item">
+              <a
+                href="collection.html"
+                class="ph__link is-active"
+                
+                
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Shop all">Shop all</span></span></a></li><li class="ph__item ph__item--mega" data-ph-mega-item>
+              <a
+                href="collection.html"
+                class="ph__link"
+                
+                aria-haspopup="true" aria-expanded="false"
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Brands">Brands</span></span><span class="ph__caret" aria-hidden="true"></span></a><button type="button" class="ph__sub" aria-expanded="false" aria-controls="PerfumeMenu-header-sub-2" data-ph-sub>
+                  <span class="pf-visually-hidden">Brands</span>
+                  <span class="ph__sub-caret" aria-hidden="true"></span>
+                </button>
+                <div class="ph__mega ph__mega--feature" id="PerfumeMenu-header-sub-2" data-ph-mega>
+                  <div class="ph__mega-main">
+                    <div class="ph__mega-head">
+                      <p class="ph__mega-kicker">Brands</p>
+                      <a href="collection.html" class="ph__mega-all">View all <span aria-hidden="true">→</span></a>
+                    </div><ul class="ph__mega-list" role="list"><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">A</span><a href="collection.html" class="ph__mega-link" data-ph-img="../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp">Armani</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">C</span><a href="collection.html" class="ph__mega-link">Chanel</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">D</span><a href="collection.html" class="ph__mega-link" data-ph-img="../dev/shop-images/samyo-dior-sauvage-edp.webp">Dior</a>
+                          </li><li class="ph__mega-item"><a href="collection.html" class="ph__mega-link" data-ph-img="../dev/shop-images/samyo-dg-the-one.webp">Dolce &amp; Gabbana</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">H</span><a href="collection.html" class="ph__mega-link">Hermès</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">J</span><a href="collection.html" class="ph__mega-link">Jo Malone</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">T</span><a href="collection.html" class="ph__mega-link">Tom Ford</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">V</span><a href="collection.html" class="ph__mega-link">Valentino</a>
+                          </li><li class="ph__mega-item"><a href="collection.html" class="ph__mega-link">Versace</a>
+                          </li><li class="ph__mega-item"><span class="ph__mega-letter" aria-hidden="true">Y</span><a href="collection.html" class="ph__mega-link">YSL</a>
+                          </li></ul></div><a href="product.html" class="ph__feature" data-ph-feature data-block-id="header-b3">
+                      <span class="ph__feature-media" style="--ph-feature-bg: #d6dde5;"><img src="../dev/shop-images/samyo-dior-homme-intense.webp" alt="" class="" loading="lazy"><img class="ph__feature-alt" alt="" width="480" height="600" data-ph-alt>
+                      </span>
+                      <span class="ph__feature-title" data-ph-feature-title>Dior Homme Intense</span>
+                    </a></div></li><li class="ph__item">
+              <a
+                href="scent-guide.html"
+                class="ph__link"
+                
+                
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Scent notes">Scent notes</span></span></a></li><li class="ph__item">
+              <a
+                href="journal.html"
+                class="ph__link"
+                
+                
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Journal">Journal</span></span></a></li><li class="ph__item">
+              <a
+                href="scent-guide.html"
+                class="ph__link"
+                
+                
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="About">About</span></span></a></li><li class="ph__item ph__item--search">
+              <a href="/search" class="ph__link" data-ph-search-open aria-controls="PerfumeSearch-header-form" aria-expanded="false">
+                <svg class="ph__field-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Search">Search</span></span>
+                <span class="ph__field-hint" aria-hidden="true">Search a perfume, brand or note</span>
+              </a>
+            </li><li class="ph__item ph__item--account">
+              <a href="/account" class="ph__link"><span class="ph__roll"><span class="ph__roll-in" data-text="Log in">Log in</span></span>
+              </a>
+            </li></ul><form action="/search" method="get" role="search" class="ph__search" id="PerfumeSearch-header-form" data-ph-search hidden>
+            <label class="pf-visually-hidden" for="PerfumeSearch-header">Search</label>
+            <svg class="ph__search-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+            <input
+              class="ph__search-input"
+              id="PerfumeSearch-header"
+              type="search"
+              name="q"
+              placeholder="Search a perfume, brand or note"
+              autocomplete="off"
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="button" class="ph__search-cancel" data-ph-search-close>Cancel</button><p class="ph__suggest">
+                <span class="ph__suggest-label">Try</span><a class="ph__suggest-link" href="/search?q=Vanilla">Vanilla</a><a class="ph__suggest-link" href="/search?q=Dior">Dior</a><a class="ph__suggest-link" href="/search?q=Citrus">Citrus</a><a class="ph__suggest-link" href="/search?q=Oud">Oud</a><a class="ph__suggest-link" href="/search?q=Lavender">Lavender</a></p></form></div>
+
+      <a
+        href="/cart"
+        class="ph__bag ph__box"
+        data-cart-drawer-open aria-haspopup="dialog" aria-controls="PerfumeCartDrawer"
+      >
+        <span class="ph__roll"><span class="ph__roll-in" data-text="Bag">Bag</span></span>
+        <span class="ph__count" data-ph-count>2</span>
+        <span class="pf-visually-hidden">items</span>
+      </a>
+
+      <button
+        type="button"
+        class="ph__burger ph__box"
+        aria-expanded="false"
+        aria-controls="PerfumeMenu-header"
+        data-ph-toggle
+      >
+        <span class="pf-visually-hidden" data-ph-label data-open="Open menu" data-close="Close menu">Open menu</span>
+        <span class="ph__lines" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </nav>
+  </div>
+</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795203139535">
+<script src="../assets/perfume-cart-drawer.js?v=1795203158781" defer="defer"></script>
+
+<perfume-cart-drawer
+  class="pcd"
+  id="PerfumeCartDrawer"
+  data-cart-url="/cart"
+  data-change-url="/cart/change"
+  data-update-url="/cart/update"
+  data-ship-threshold="10000"
+  data-ship-text="[amount] away from free delivery"
+  data-ship-done="Free delivery unlocked"
+  inert
+>
+  <div class="pcd__scrim" data-pcd-close></div>
+  <div class="pcd__panel" role="dialog" aria-modal="true" aria-labelledby="PerfumeCartDrawerTitle" tabindex="-1" data-pcd-panel>
+    <div class="pcd__head">
+      <h2 class="pcd__title" id="PerfumeCartDrawerTitle">
+        Your bag
+        <span class="pcd__count" data-pcd-count>2</span>
+      </h2>
+      <button type="button" class="pcd__close" data-pcd-close aria-label="Close bag">
+        <span aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div><div class="pcd__ship" data-pcd-ship hidden>
+        <p class="pcd__ship-text" data-pcd-ship-text aria-live="polite"></p>
+        <div class="pcd__ship-line" aria-hidden="true">
+          <span class="pcd__ship-fill" data-pcd-ship-fill></span>
+          <span class="pcd__ship-dot" data-pcd-ship-dot></span>
+          <span class="pcd__ship-goal">
+            <svg viewBox="0 0 20 20"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg>
+          </span>
+        </div>
+      </div><div class="pcd__body" data-pcd-body>
+      <ul class="pcd__items" role="list" data-pcd-items></ul>
+      <div class="pcd__empty" data-pcd-empty hidden>
+        <svg class="pcd__empty-bag" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16h28l-2 26H12z"/><path d="M18 16v-3a6 6 0 0 1 12 0v3"/></svg>
+        <p class="pcd__empty-text">Your bag is empty</p>
+        <a class="pf-button pcd__empty-btn" href="collection.html">Continue shopping</a>
+      </div>
+    </div>
+
+    <div class="pcd__foot" data-pcd-foot hidden>
+      <p class="pcd__row">
+        <span class="pcd__row-label">Subtotal</span>
+        <span class="pcd__subtotal" data-pcd-subtotal></span>
+      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><details class="pcd__gift" data-pcd-gift>
+          <summary>Add a gift message</summary>
+          <label class="pf-visually-hidden" for="PerfumeCartGift">Gift message</label>
+          <textarea id="PerfumeCartGift" class="pcd__gift-text" rows="3" maxlength="300" placeholder="Write a short message for the card" data-pcd-note></textarea>
+          <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
+        </details><form action="/cart" method="post" class="pcd__form">
+        <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+      </form>
+      <a class="pcd__view pf-link" href="/cart">View bag</a>
+    </div><div class="pcd__trust"><ul class="pcd__trust-row" role="list"><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg><span>Delivered across the Philippines</span>
+              </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l6 2.5V9c0 4-2.6 7-6 9-3.4-2-6-5-6-9V4.5z"/><path d="M7 10l2 2 4-4"/></svg><span>100% authentic fragrances</span>
+              </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg><span>Secure checkout</span>
+              </li></ul></div><p class="pf-visually-hidden" role="status" data-pcd-status></p>
+  </div>
+</perfume-cart-drawer>
+
+
+<main id="MainContent"><p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example Journal: articles made up for the preview</p><link rel="stylesheet" href="../assets/perfume-journal.css?v=1795209083741">
+<script src="../assets/perfume-reveal.js?v=1795194271512" defer="defer"></script><style>#PerfumeBlog-main {
+    --pj-bg: #F3F0EB;
+    --pj-ink: #26221F;
+  }</style><section id="PerfumeBlog-main" class="pj pj--blog">
+  <header class="pj__masthead" data-pf-reveal="rise"><p class="pf-kicker pj__kicker">Samyó Journal</p><h1 class="pj__title">Journal</h1><div class="pj__intro"><p>How to choose, wear and enjoy perfume: notes explained, comparisons and what works in Philippine weather.</p></div><nav class="pj__tags" aria-label="Topics">
+        <a class="pj__tag is-on" href="journal.html" aria-current="page">All</a><a class="pj__tag" href="journal.html">Basics</a><a class="pj__tag" href="journal.html">Guides</a><a class="pj__tag" href="journal.html">Weather</a></nav></header><div class="pj__list"><div class="pj__cell pj__cell--lead" data-pf-reveal="rise"><article class="pja-card pja-card--lg">
+  <a class="pja-card__media" href="article.html" tabindex="-1" aria-hidden="true"><img src="https://images.unsplash.com/photo-1585768750637-ada36319a484?w=1400&q=70&auto=format&fit=crop" alt="" class="" loading="lazy"></a>
+  <div class="pja-card__body"><p class="pja-card__tag">Guides</p><h2 class="pja-card__title"><a href="article.html">How to choose a perfume you&#39;ve never smelled</a></h2><p class="pja-card__excerpt">Buying perfume online starts with words instead of a scent strip, so it helps to know which words matter. Start with the family: fresh, floral, woody,...</p><p class="pja-card__meta">November 18, 2026 · 1 min read</p>
+  </div>
+</article>
+</div><div class="pj__cell" style="--i: 1;" data-pf-reveal="rise"><article class="pja-card pja-card--sm">
+  <a class="pja-card__media" href="article.html" tabindex="-1" aria-hidden="true"><img src="https://images.unsplash.com/photo-1515446134809-993c501ca304?w=1400&q=70&auto=format&fit=crop" alt="" class="" loading="lazy"></a>
+  <div class="pja-card__body"><p class="pja-card__tag">Basics</p><h2 class="pja-card__title"><a href="article.html">Eau de Parfum or Eau de Toilette?</a></h2><p class="pja-card__meta">November 12, 2026 · 1 min read</p>
+  </div>
+</article>
+</div><div class="pj__cell" style="--i: 2;" data-pf-reveal="rise"><article class="pja-card pja-card--sm">
+  <a class="pja-card__media" href="article.html" tabindex="-1" aria-hidden="true"><img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=1400&q=70&auto=format&fit=crop" alt="" class="" loading="lazy"></a>
+  <div class="pja-card__body"><p class="pja-card__tag">Weather</p><h2 class="pja-card__title"><a href="article.html">Wearing perfume in Philippine heat</a></h2><p class="pja-card__meta">November 5, 2026 · 1 min read</p>
+  </div>
+</article>
+</div><div class="pj__cell" style="--i: 0;" data-pf-reveal="rise"><article class="pja-card pja-card--sm">
+  <a class="pja-card__media" href="article.html" tabindex="-1" aria-hidden="true"><img src="https://images.unsplash.com/photo-1563364664-399838d1394c?w=1400&q=70&auto=format&fit=crop" alt="" class="" loading="lazy"></a>
+  <div class="pja-card__body"><p class="pja-card__tag">Basics</p><h2 class="pja-card__title"><a href="article.html">Top, heart and base notes, explained</a></h2><p class="pja-card__meta">October 29, 2026 · 1 min read</p>
+  </div>
+</article>
+</div></div></section>
+
+
+</main>
+<link rel="stylesheet" href="../assets/perfume-footer.css?v=1795277826342">
+<script src="../assets/perfume-footer.js?v=1795193174961" defer="defer"></script><style>#PerfumeFooter-footer {
+    --pfo-bg: #D8D1C5;
+    --pfo-ink: #292521;
+    --pfo-len: 9;
+  }</style><perfume-footer id="PerfumeFooter-footer" class="pfo" data-reveal="true">
+  <div class="pfo__inner" data-pfo-inner><form method="post" action="/contact#PerfumeFooterNewsletter" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeFooterNewsletter" class="pfo-news" novalidate><input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="pf-visually-hidden" for="PerfumeFooterEmail-footer">Your email, for new arrivals and scent notes</label>
+        <input
+          id="PerfumeFooterEmail-footer"
+          class="pfo-news__input"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+          placeholder="Your email, for new arrivals and scent notes"
+          
+        >
+        <button type="submit" class="pfo-news__button">
+          <span class="pfo-roll"><span class="pfo-roll-in" data-text="Subscribe">Subscribe</span></span>
+        </button></form><div class="pfo__cols"><div class="pfo-col" data-block-id="footer-b1"><p class="pfo-col__heading">Contact us</p><div class="pfo-col__text"><p>hello@samyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p></div></div><div class="pfo-col" data-block-id="footer-b2"><p class="pfo-col__heading">Shop</p><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="collection.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Shop all">Shop all</span></span></a></li><li><a class="pfo-link" href="collection.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Brands">Brands</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Scent notes">Scent notes</span></span></a></li><li><a class="pfo-link" href="journal.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Journal">Journal</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="About">About</span></span></a></li></ul></div><div class="pfo-col" data-block-id="footer-b3"><p class="pfo-col__heading">Help</p><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="/policies/shipping-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Shipping &amp; delivery">Shipping &amp; delivery</span></span></a></li><li><a class="pfo-link" href="/policies/refund-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Returns">Returns</span></span></a></li><li><a class="pfo-link" href="/pages/authenticity"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Authenticity">Authenticity</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="About us">About us</span></span></a></li><li><a class="pfo-link" href="/pages/contact"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Contact">Contact</span></span></a></li><li><a class="pfo-link" href="/policies/privacy-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Privacy policy">Privacy policy</span></span></a></li><li><a class="pfo-link" href="/policies/terms-of-service"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Terms of service">Terms of service</span></span></a></li></ul></div><a class="pfo-top pfo-link" href="#MainContent" data-pfo-top>
+          <span class="pfo-roll"><span class="pfo-roll-in" data-text="Back to top">Back to top</span></span>
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 14V2M3 7l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a></div><p class="pfo-wordmark pfo-wordmark--logo" aria-hidden="true" data-pfo-wordmark><span class="pfo-wordmark__pre"><span>eau de</span></span><span class="pfo-wordmark__ch" style="--i: 0;"><span>s</span></span><span class="pfo-wordmark__ch" style="--i: 1;"><span>a</span></span><span class="pfo-wordmark__ch" style="--i: 2;"><span>m</span></span><span class="pfo-wordmark__ch" style="--i: 3;"><span>y</span></span><span class="pfo-wordmark__ch" style="--i: 4;"><span>ó</span></span></p><div class="pfo__bottom">
+      <ul class="pfo__legal" role="list">
+        <li>&copy; 2026 Samyo</li><li><a class="pfo-link" href="/policies/shipping-policy">Shipping &amp; delivery</a></li><li><a class="pfo-link" href="/policies/refund-policy">Returns</a></li><li><a class="pfo-link" href="/pages/authenticity">Authenticity</a></li><li><a class="pfo-link" href="scent-guide.html">About us</a></li><li><a class="pfo-link" href="/pages/contact">Contact</a></li><li><a class="pfo-link" href="/policies/privacy-policy">Privacy policy</a></li><li><a class="pfo-link" href="/policies/terms-of-service">Terms of service</a></li></ul><p class="pfo__credit">Authentic fragrances, delivered across the Philippines</p></div>
+  </div>
+</perfume-footer>
+
+
+
+
+</body>
+</html>

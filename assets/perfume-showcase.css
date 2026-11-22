@@ -1,0 +1,1820 @@
+/*
+  Perfume showcase (sections/perfume-showcase.liquid): compact take on the High Spirits
+  "Homegrown brands" carousel. Every bottle sits on one floor; its place comes from
+  data-offset (distance from the chosen one), see "Stops". Motion: transform / opacity.
+  Desktop 990px+, tablet 750-989px, phone 749px and below.
+*/
+
+perfume-showcase {
+  display: block;
+}
+
+.ps {
+  --ps-line: color-mix(in srgb, var(--ps-ink) 18%, transparent);
+  --ps-ink-soft: color-mix(in srgb, var(--ps-ink) 72%, transparent);
+  --ps-serif: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  --ps-script: var(--pf-font-script, 'Mrs Saint Delafield', cursive);
+  --ps-sans: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  --ps-ease: cubic-bezier(0.2, 0, 0, 1); /* emphasized, as the High Spirits carousel */
+  --ps-ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Floor geometry (desktop): the chosen bottle's box and the step between places. */
+  --ps-slot-w: 34%;
+  /* The chosen bottle is centred on the stage. */
+  --ps-origin: calc(50% - var(--ps-slot-w) / 2);
+  /* One step along the floor, as a share of a bottle's own box (translate % is relative to it). */
+  --ps-step: 88%;
+  --ps-lift: calc(var(--ps-stage-h) * 0.14);
+
+  background-color: var(--ps-bg);
+  color: var(--ps-ink);
+  font-family: var(--ps-sans);
+  isolation: isolate;
+  overflow: hidden;
+  /* clip (not hidden) so the pinned entrance can use position: sticky inside. */
+  overflow: clip;
+  padding-block: var(--ps-pt) var(--ps-pb);
+  position: relative;
+  transition:
+    background-color var(--ps-dur) var(--ps-ease-soft),
+    color var(--ps-dur) var(--ps-ease-soft);
+}
+
+.ps *,
+.ps *::before,
+.ps *::after {
+  box-sizing: border-box;
+}
+
+.ps__inner {
+  column-gap: clamp(24px, 3vw, 56px);
+  display: grid;
+  grid-template-areas:
+    'head stage'
+    'info stage'
+    'nav nav';
+  grid-template-columns: minmax(340px, 1fr) minmax(0, 1.6fr);
+  grid-template-rows: auto 1fr auto;
+  margin-inline: auto;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--pf-gutter, clamp(16px, 4vw, 56px));
+}
+
+/* ---------- Head ---------- */
+.ps__head {
+  grid-area: head;
+  position: relative;
+  z-index: 3;
+}
+
+/* The section label sits centred across the top (2026-11-22). */
+.ps__head {
+  justify-self: center;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.ps__head .ps__heading {
+  margin-inline: auto;
+  max-width: none;
+}
+
+@media screen and (min-width: 990px) {
+  .ps__head {
+    grid-area: 1 / 1 / 2 / 3;
+    margin-bottom: 8px;
+  }
+}
+
+.ps__kicker {
+  color: var(--ps-ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.ps__heading {
+  font-family: var(--ps-serif);
+  font-size: var(--ps-h);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin: 0;
+  max-width: 16ch;
+}
+
+/* ---------- Stage ---------- */
+.ps__stage {
+  cursor: grab;
+  grid-area: stage;
+  min-height: var(--ps-stage-h);
+  position: relative;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.ps__stage:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -6px;
+}
+
+/* Desktop: the stage spans the whole section behind the text, so the chosen bottle
+   stands on the page's centre line. */
+@media screen and (min-width: 990px) {
+  .ps {
+    --ps-slot-w: 24%;
+  }
+
+  .ps__stage {
+    grid-area: 2 / 1 / 3 / 3;
+    z-index: 1;
+  }
+
+  .ps__head,
+  .ps__info {
+    position: relative;
+    z-index: 3;
+  }
+
+  .ps__info {
+    max-width: 500px;
+  }
+
+  /* Arrows sit in the stage's bottom-right corner, clear of the caption. */
+  .ps .ps__controls {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+}
+
+/* Giant italic name and caption behind / under the chosen bottle */
+.ps__names {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.ps-name {
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity calc(var(--ps-dur) * 0.6) var(--ps-ease-soft);
+}
+
+.ps-name.is-active {
+  opacity: 1;
+  transition-delay: calc(var(--ps-dur) * 0.25);
+}
+
+.ps-name__big {
+  color: var(--v-accent);
+  filter: blur(var(--ps-blur, 6px));
+  font-family: var(--ps-serif);
+  /* Big and cropped at the edges for long names, centred on the bottle. */
+  font-size: min(calc(var(--ps-bgname) * 1.3), calc(220vw / var(--len)));
+  font-style: italic;
+  left: 50%;
+  letter-spacing: -0.045em;
+  line-height: 0.8;
+  margin: 0;
+  opacity: 0.85;
+  position: absolute;
+  /* Resting place: a little above centre (the entrance brings it up from the middle). */
+  top: 24%;
+  /* Switching: the new name writes itself in from the left (clip-path) while
+     drifting a touch into place; the old one fades while drifting on (is-leaving).
+     Small distances, long soft easing. */
+  clip-path: inset(-25% 100% -45% -5%);
+  transform: translate3d(-48.5%, -50%, 0);
+  transition:
+    transform calc(var(--ps-dur) * 1.8) var(--ps-ease),
+    clip-path calc(var(--ps-dur) * 1.6) var(--ps-ease);
+  white-space: nowrap;
+}
+
+.ps-name.is-active .ps-name__big {
+  clip-path: inset(-25% -5% -45% -5%);
+  transform: translate3d(-50%, -50%, 0);
+  transition-delay: calc(var(--ps-dur) * 0.2);
+}
+
+.ps-name.is-leaving .ps-name__big {
+  clip-path: inset(-25% -5% -45% -5%);
+  transform: translate3d(-51.5%, -50%, 0);
+  transition-duration: calc(var(--ps-dur) * 1.2), 0s;
+}
+
+/* Background name styles (setting "Background name style").
+   Crisp (default): thin, sharp italic letters in the perfume's colour, fading toward
+   the bottom so the bottle stands in front of them; no blur, so they stay sharp. */
+.ps--name-crisp .ps-name__big,
+.ps--name-outline .ps-name__big {
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, rgba(0, 0, 0, 0.35) 68%, transparent 96%);
+  mask-image: linear-gradient(to bottom, #000 30%, rgba(0, 0, 0, 0.35) 68%, transparent 96%);
+}
+
+.ps--name-crisp .ps-name__big {
+  color: color-mix(in srgb, var(--v-accent) 70%, var(--v-ink) 12%);
+  filter: none;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  opacity: 0.75;
+}
+
+/* Outline: fine outlined letters, like an engraved label. */
+.ps--name-outline .ps-name__big {
+  -webkit-text-stroke: 1.2px color-mix(in srgb, var(--v-ink) 28%, transparent);
+  color: transparent;
+  filter: none;
+  font-weight: 300;
+  opacity: 1;
+}
+
+.ps-name__caption {
+  bottom: calc(var(--ps-stage-h) * 0.03);
+  color: var(--v-ink);
+  font-family: var(--ps-script);
+  font-size: clamp(34px, 3vw, 52px);
+  left: 50%;
+  line-height: 1;
+  margin: -0.3em 0;
+  padding: 0.3em 0.45em; /* room for the script's loops (Safari clips ink to the box) */
+  position: absolute;
+  transform: translateX(-50%) rotate(-5deg);
+  white-space: nowrap;
+  z-index: 6;
+  /* The handwriting writes itself in, left to right, after the name. */
+  clip-path: inset(-30% 100% -30% -10%);
+  transition: clip-path calc(var(--ps-dur) * 1.3) cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+.ps-name.is-active .ps-name__caption {
+  clip-path: inset(-30% -10% -30% -10%);
+  transition-delay: calc(var(--ps-dur) * 0.55);
+}
+
+.ps-name.is-leaving .ps-name__caption {
+  clip-path: inset(-30% -10% -30% -10%);
+  transition-duration: 0s;
+}
+
+/* The floor every bottle stands on */
+.ps__floor {
+  bottom: max(64px, 9%);
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 3%;
+  z-index: 2;
+}
+
+.ps-slide {
+  --x: 0;
+  --lift: 0;
+  --scale: 1;
+  --op: 1;
+  bottom: 0;
+  cursor: pointer;
+  height: calc(100% * var(--ps-scale));
+  left: var(--ps-origin);
+  opacity: var(--op);
+  position: absolute;
+  transform:
+    translate3d(calc(var(--x) * var(--ps-step)), calc(var(--lift) * var(--ps-lift) * -1), 0)
+    scale(var(--scale));
+  transform-origin: 50% 100%;
+  transition:
+    transform var(--ps-dur) var(--ps-ease),
+    opacity var(--ps-dur) var(--ps-ease),
+    translate var(--ps-dur) var(--ps-ease);
+  width: var(--ps-slot-w);
+  z-index: var(--z, 1);
+}
+
+/* Stops: place by distance from the chosen bottle (after $homegrown-brands-stops). */
+.ps-slide[data-offset='-1'] { --x: -1.3; --lift: 0; --scale: 0.6; --op: 0; --z: 2; pointer-events: none; }
+.ps-slide[data-offset='0'] { --x: 0; --lift: 0; --scale: 1; --op: 1; --z: 4; cursor: default; }
+.ps-slide[data-offset='1'] { --x: 1; --lift: -0.05; --scale: 0.62; --op: 1; --z: 3; }
+.ps-slide[data-offset='2'] { --x: 1.55; --lift: 0.55; --scale: 0.3; --op: 0.9; --z: 2; }
+.ps-slide[data-offset='3'] { --x: 1.9; --lift: 0.9; --scale: 0.1; --op: 0; --z: 1; pointer-events: none; }
+
+.ps-slide__pose {
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  transform: translate(var(--v-shift, 0%), var(--ps-offset)) rotate(var(--v-tilt, 0deg));
+  transform-origin: 50% 100%;
+}
+
+/* Soft floor shadow */
+.ps-slide__pose::after {
+  background: radial-gradient(closest-side, rgba(20, 15, 10, 0.22), transparent);
+  bottom: -10px;
+  content: '';
+  height: 22px;
+  left: 20%;
+  position: absolute;
+  right: 20%;
+  z-index: -1;
+}
+
+.ps-slide__img,
+.ps-slide .pf-bottle-art {
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  pointer-events: none;
+  width: auto;
+}
+
+.ps-slide:not([data-offset='0']):hover {
+  --op: 1;
+}
+
+.ps-slide[data-offset='1']:hover { --lift: 0.08; }
+.ps-slide[data-offset='2']:hover { --lift: 0.7; }
+
+/* Drag: every bottle follows the pointer (--ps-drag, set per frame by JS) through
+   the independent translate property; the transform transition keeps gliding them
+   between places. Released, the translate eases back as the next stop takes over. */
+.ps-slide {
+  translate: var(--ps-drag, 0px) 0;
+  will-change: transform, translate;
+}
+
+.ps.is-dragging .ps-slide {
+  transition:
+    transform var(--ps-dur) var(--ps-ease),
+    opacity var(--ps-dur) var(--ps-ease),
+    translate 0s;
+}
+
+.ps.is-dragging .ps__stage {
+  cursor: grabbing;
+}
+
+/* ---------- Panel ---------- */
+.ps__info {
+  align-self: end;
+  display: grid;
+  grid-area: info;
+  padding-block: 20px 8px;
+  position: relative;
+  z-index: 3;
+}
+
+.ps-panel {
+  grid-area: 1 / 1;
+  transition: visibility 0s linear calc(var(--ps-dur) * 0.4);
+  visibility: hidden;
+}
+
+.ps-panel.is-active {
+  transition-delay: 0s;
+  visibility: visible;
+}
+
+.ps-panel > * {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+  transition:
+    opacity 0.25s var(--ps-ease-soft),
+    transform 0.25s var(--ps-ease-soft);
+}
+
+.ps-panel.is-active > * {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--ps-dur) * 0.3 + var(--d, 0ms));
+  transition-duration: 0.5s, calc(var(--ps-dur) * 0.9);
+  transition-timing-function: var(--ps-ease-soft), var(--ps-ease);
+}
+
+.ps-panel > :nth-child(2) { --d: 50ms; }
+.ps-panel > :nth-child(3) { --d: 100ms; }
+.ps-panel > :nth-child(4) { --d: 150ms; }
+.ps-panel > :nth-child(5) { --d: 200ms; }
+.ps-panel > :nth-child(6) { --d: 250ms; }
+.ps-panel > :nth-child(7) { --d: 300ms; }
+.ps-panel > :nth-child(8) { --d: 350ms; }
+
+/* The perfume name rises out of a mask (like the site's headings): it is revealed
+   from the top while it moves up a little. */
+.ps-panel .ps-panel__name {
+  clip-path: inset(-0.2em -0.2em 100% -0.2em);
+  transform: translateY(0.35em);
+  transition:
+    clip-path calc(var(--ps-dur) * 1.1) var(--ps-ease),
+    transform calc(var(--ps-dur) * 1.1) var(--ps-ease);
+}
+
+.ps-panel.is-active .ps-panel__name {
+  clip-path: inset(-0.2em -0.2em -0.3em -0.2em);
+  transform: none;
+  transition-delay: calc(var(--ps-dur) * 0.3 + 40ms);
+}
+
+/* Brand + perfume name: the clearest thing in the panel. The brand is a bold,
+   dark capitals line; the perfume name is the biggest text, right under it. */
+.ps-panel__brand {
+  color: var(--ps-ink);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  line-height: 1.2;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+/* Name with the price beside it (price wraps under long names). */
+.ps-panel__title {
+  align-items: baseline;
+  column-gap: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+}
+
+.ps-panel__title .ps-panel__name {
+  margin-bottom: 0;
+}
+
+.ps-panel__price {
+  font-family: var(--ps-serif);
+  font-size: calc(var(--ps-name) * 0.46);
+  line-height: 1;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.ps-panel__price small {
+  font-family: var(--ps-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  margin-left: 8px;
+  opacity: 0.7;
+}
+
+.ps-panel__name {
+  font-family: var(--ps-serif);
+  font-size: var(--ps-name);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin: 0 0 12px;
+  max-width: 14ch;
+}
+
+.ps-panel__meta {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 6px 10px;
+  margin: 0 0 14px;
+}
+
+.ps-panel__meta > span + span::before {
+  content: '·';
+  margin-right: 10px;
+}
+
+.ps-stock--in::after {
+  background: #3f8a55;
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: 6px;
+  margin-left: 6px;
+  vertical-align: middle;
+  width: 6px;
+}
+
+.ps-stock--out {
+  color: #9b2c2c;
+}
+
+.ps-panel__desc {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  max-width: 36ch;
+}
+
+/* What it smells like: illustrated chips */
+.ps-panel__notes {
+  border-top: 1px solid var(--ps-line);
+  margin: 0 0 16px;
+  padding-top: 12px;
+}
+
+.ps-panel__notes .pf-kicker,
+.ps-sizes legend {
+  color: var(--ps-ink-soft);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  margin: 0 0 8px;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.ps-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ps-chip {
+  align-items: center;
+  background: color-mix(in srgb, #fff 55%, transparent);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 6px;
+  padding: 3px 12px 3px 3px;
+}
+
+.ps-panel.is-active .ps-chip {
+  animation: ps-chip-in 0.6s var(--ps-ease) both;
+  animation-delay: calc(var(--ps-dur) * 0.45 + var(--n) * 70ms);
+}
+
+@keyframes ps-chip-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+.ps-chip__art {
+  display: block;
+  height: 30px;
+  width: 30px;
+}
+
+.ps-chip__art svg,
+.ps-chip__art img {
+  display: block;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.ps-chip__label {
+  font-family: var(--ps-serif);
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1;
+}
+
+/* Notes, one-line style: overlapping round note photos + one italic line. */
+.ps-notes-line {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.ps-notes-line__photos {
+  display: flex;
+  flex: none;
+}
+
+.ps-notes-line__ph {
+  background: color-mix(in srgb, #fff 70%, transparent);
+  border: 2px solid var(--ps-bg);
+  border-radius: 50%;
+  display: block;
+  height: 40px;
+  margin-left: -11px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.4s var(--ps-ease), border-color var(--ps-dur) var(--ps-ease-soft);
+  width: 40px;
+  z-index: calc(5 - var(--n));
+}
+
+.ps-notes-line__ph:first-child {
+  margin-left: 0;
+}
+
+.ps-notes-line__ph svg,
+.ps-notes-line__ph img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.ps-notes-line:hover .ps-notes-line__ph {
+  transform: translateX(calc((var(--n) - 1) * 4px));
+}
+
+.ps-notes-line__text {
+  font-family: var(--ps-serif);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.ps-panel.is-active .ps-notes-line__ph {
+  animation: ps-chip-in 0.6s var(--ps-ease) both;
+  animation-delay: calc(var(--ps-dur) * 0.45 + var(--n) * 70ms);
+}
+
+/* Sizes (variants) */
+.ps-sizes {
+  border: 0;
+  margin: 0 0 14px;
+  min-inline-size: 0;
+  padding: 0;
+}
+
+.ps-sizes__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ps-size {
+  cursor: pointer;
+  position: relative;
+}
+
+.ps-size input {
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.ps-size span {
+  border: 1px solid var(--ps-line);
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 13px;
+  min-height: 36px;
+  min-width: 64px;
+  padding: 8px 14px;
+  text-align: center;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.ps-size input:checked + span {
+  background: var(--ps-ink);
+  border-color: var(--ps-ink);
+  color: var(--ps-bg);
+}
+
+.ps-size input:disabled + span {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.ps-size input:focus-visible + span {
+  outline: 2px solid var(--ps-ink);
+  outline-offset: 2px;
+}
+
+/* Actions */
+.ps-panel__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 24px;
+}
+
+.ps .pf-button {
+  --pf-button-bg: var(--ps-ink);
+  --pf-button-fg: var(--ps-bg);
+}
+
+/* Add to bag: the label and price, a fill when added, a spritz of mist while adding */
+.ps-add {
+  isolation: isolate;
+  overflow: visible;
+  position: relative;
+}
+
+.ps-add__text {
+  align-items: center;
+  display: inline-flex;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Rolling label: the label rolls up through Adding… to Added ✓ (like the header links). */
+.ps-roll {
+  display: inline-block;
+  height: 1.3em;
+  line-height: 1.3em;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.ps-roll__track {
+  display: grid;
+  transition: transform 0.5s var(--ps-ease);
+}
+
+.ps-roll__track > span {
+  height: 1.3em;
+  white-space: nowrap;
+}
+
+.ps-add.is-loading .ps-roll__track {
+  transform: translateY(-1.3em);
+}
+
+.ps-add.is-added .ps-roll__track {
+  transform: translateY(-2.6em);
+}
+
+.ps-add--roll::before,
+.ps-add--drop::before {
+  display: none;
+}
+
+/* Drop: a tiny bottle falls into the bag icon, which wobbles as it lands. */
+.ps-add__bag {
+  display: inline-flex;
+  position: relative;
+}
+
+.ps-add__bottle {
+  background: currentColor;
+  border-radius: 1.5px 1.5px 2.5px 2.5px;
+  height: 9px;
+  left: 50%;
+  margin-left: -3px;
+  opacity: 0;
+  position: absolute;
+  top: -16px;
+  width: 6px;
+}
+
+.ps-add__bottle::before {
+  background: currentColor;
+  content: '';
+  height: 3px;
+  left: 1.5px;
+  position: absolute;
+  top: -3px;
+  width: 3px;
+}
+
+.ps-add--drop.is-added .ps-add__bottle {
+  animation: ps-bottle-drop 0.75s cubic-bezier(0.5, 0, 0.75, 0) both;
+}
+
+.ps-add--drop.is-added .ps-add__icon {
+  animation: ps-bag-wobble 0.5s ease 0.6s;
+  transform-origin: 50% 100%;
+}
+
+@keyframes ps-bottle-drop {
+  0% { opacity: 0; transform: translateY(-6px); }
+  20% { opacity: 1; }
+  85% { opacity: 1; transform: translateY(18px) scale(0.75); }
+  100% { opacity: 0; transform: translateY(20px) scale(0.6); }
+}
+
+@keyframes ps-bag-wobble {
+  30% { transform: rotate(-12deg); }
+  60% { transform: rotate(8deg); }
+  100% { transform: none; }
+}
+
+/* A small bag icon at the end of the button; it lifts on hover. */
+.ps-add__icon {
+  fill: none;
+  flex: none;
+  height: 17px;
+  margin-left: 4px;
+  stroke: currentColor;
+  stroke-linejoin: round;
+  stroke-width: 1.3;
+  transition: transform 0.45s var(--ps-ease);
+  width: 17px;
+}
+
+.ps-add:hover .ps-add__icon,
+.ps-add:focus-visible .ps-add__icon {
+  transform: translateY(-2px) rotate(-6deg);
+}
+
+.ps-add__price {
+  border-left: 1px solid color-mix(in srgb, currentColor 35%, transparent);
+  padding-left: 12px;
+}
+
+/* Busy and done states keep the solid button colours, hovered or not. */
+.ps-add.is-loading,
+.ps-add.is-added,
+.ps-add.is-loading:hover,
+.ps-add.is-added:hover {
+  background: var(--ps-ink);
+  color: var(--ps-bg);
+}
+
+.ps-add::before {
+  background: color-mix(in srgb, var(--ps-bg) 20%, transparent);
+  content: '';
+  inset: 0;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ps-ease);
+  z-index: 1;
+}
+
+.ps-add.is-loading::before {
+  transform: scaleX(0.7);
+  transition-duration: 1.4s;
+}
+
+.ps-add.is-added::before {
+  transform: scaleX(1);
+}
+
+.ps-add:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ps-add.is-loading:disabled,
+.ps-add.is-added:disabled {
+  opacity: 1;
+}
+
+.ps-add__mist {
+  height: 0;
+  left: 16px;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  width: 0;
+  z-index: 4;
+}
+
+/* Droplets */
+.ps-add__mist i {
+  animation: ps-spritz var(--d, 900ms) cubic-bezier(0.12, 0.75, 0.3, 1) var(--delay, 0ms) forwards;
+  background: color-mix(in srgb, #fff 82%, var(--ps-ink));
+  border-radius: 50%;
+  box-shadow: 0 0 4px color-mix(in srgb, #fff 60%, transparent);
+  filter: blur(var(--b, 0.5px));
+  height: var(--s, 4px);
+  left: 0;
+  margin: calc(var(--s, 4px) / -2);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: var(--s, 4px);
+}
+
+@keyframes ps-spritz {
+  0% { opacity: 0.95; transform: translate(0, 0) scale(0.3); }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.9); }
+}
+
+/* Soft mist cloud */
+.ps-add__mist b {
+  animation: ps-cloud calc(1100ms * var(--k, 1)) ease-out forwards;
+  background: radial-gradient(closest-side, color-mix(in srgb, #fff 55%, transparent), transparent);
+  border-radius: 50%;
+  filter: blur(6px);
+  height: 70px;
+  left: -10px;
+  opacity: 0;
+  position: absolute;
+  top: -35px;
+  transform-origin: left center;
+  width: 130px;
+}
+
+@keyframes ps-cloud {
+  0% { opacity: 0.8; transform: translateX(0) scale(0.2, 0.3); }
+  100% { opacity: 0; transform: translateX(calc(150px * var(--k, 1))) scale(1.7, 1.3); }
+}
+
+.ps-status {
+  font-size: 13px;
+  margin: 10px 0 0;
+  min-height: 1.2em;
+}
+
+/* ---------- Rating (real review data only) ---------- */
+.ps-rating {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+  margin: -6px 0 14px;
+}
+
+.ps-rating__stars {
+  color: color-mix(in srgb, var(--ps-ink) 22%, transparent);
+  display: inline-block;
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.ps-rating__stars > span::after {
+  color: var(--ps-ink);
+  content: '★★★★★';
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+  width: calc(var(--r) * 100%);
+}
+
+.ps-rating__count {
+  color: var(--ps-ink-soft);
+}
+
+/* ---------- Compare notes ---------- */
+.ps-compare-open {
+  align-items: center;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--ps-line);
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 12px;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+  padding: 4px 0;
+  text-transform: uppercase;
+}
+
+.ps-compare-open:hover {
+  border-color: currentColor;
+}
+
+.ps-compare {
+  overflow-x: hidden;
+  background: var(--pf-paper, #f3f0eb);
+  border: 0;
+  color: var(--pf-ink, #26221f);
+  max-height: min(86vh, 760px);
+  max-width: min(920px, calc(100vw - 32px));
+  padding: 28px;
+  width: 100%;
+}
+
+.ps-compare::backdrop {
+  backdrop-filter: blur(4px);
+  background: rgba(38, 34, 31, 0.35);
+}
+
+.ps-compare[open] {
+  animation: ps-pop 0.45s var(--ps-ease);
+}
+
+@keyframes ps-pop {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.ps-compare__head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.ps-compare__title {
+  font-family: var(--ps-serif);
+  font-size: 34px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.ps-compare__close,
+.ps-mini__close {
+  background: none;
+  border: 1px solid rgba(38, 34, 31, 0.2);
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  font-size: 20px;
+  height: 40px;
+  line-height: 1;
+  width: 40px;
+}
+
+.ps-compare__grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.ps-compare__col,
+.ps-cmp {
+  align-content: start;
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.ps-cmp__media {
+  align-items: flex-end;
+  background: var(--cmp-bg, #e8e3db);
+  display: flex;
+  height: 220px;
+  justify-content: center;
+  padding: 16px;
+}
+
+.ps-cmp__media img,
+.ps-cmp__media svg {
+  height: 100%;
+  object-fit: contain;
+  width: auto;
+}
+
+.ps-cmp__brand {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  margin: 4px 0 0;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.ps-cmp__name {
+  font-family: var(--ps-serif);
+  font-size: 26px;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.ps-cmp__meta {
+  font-size: 13px;
+  margin: 0;
+}
+
+.ps-compare .ps-chip {
+  background: #fff;
+}
+
+.ps-compare .ps-chip.is-shared {
+  background: var(--pf-ink, #26221f);
+  color: var(--pf-paper, #f3f0eb);
+}
+
+.ps-compare .ps-chip.is-shared .ps-chip__art {
+  filter: grayscale(1) brightness(2);
+}
+
+.ps-compare__pick {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ps-compare__pick select {
+  max-width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.ps-compare__pick select {
+  appearance: none;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2326221f' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right 12px center / 12px;
+  border: 1px solid rgba(38, 34, 31, 0.2);
+  font: inherit;
+  min-height: 44px;
+  padding: 0 36px 0 12px;
+}
+
+.ps-compare__legend {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.ps-compare__legend .ps-chip {
+  padding: 3px 10px;
+}
+
+/* ---------- Mini bag ---------- */
+.ps-mini {
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(38, 34, 31, 0.18);
+  color: var(--pf-ink, #26221f);
+  padding: 18px;
+  position: fixed;
+  right: 24px;
+  top: 84px;
+  width: min(360px, calc(100vw - 32px));
+  z-index: 70;
+}
+
+.ps-mini:not([hidden]) {
+  animation: ps-mini-in 0.55s var(--ps-ease);
+}
+
+.ps-mini.is-leaving {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+@keyframes ps-mini-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: none; }
+}
+
+.ps-mini__head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.ps-mini__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.ps-mini__title span {
+  color: #3f8a55;
+  margin-right: 4px;
+}
+
+.ps-mini__item {
+  align-items: center;
+  border-block: 1px solid rgba(38, 34, 31, 0.12);
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 64px 1fr;
+  padding: 12px 0;
+}
+
+.ps-mini__img {
+  background: #f3f0eb;
+  height: 80px;
+  object-fit: contain;
+  width: 64px;
+}
+
+.ps-mini__name {
+  font-family: var(--ps-serif);
+  font-size: 20px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.ps-mini__variant,
+.ps-mini__price {
+  font-size: 13px;
+  margin: 2px 0 0;
+}
+
+.ps-mini__sub {
+  font-size: 13px;
+  margin: 12px 0;
+}
+
+.ps-mini__actions {
+  align-items: center;
+  display: flex;
+  gap: 18px;
+}
+
+.ps-mini__actions .pf-button {
+  --pf-button-bg: var(--pf-ink, #26221f);
+  --pf-button-fg: #fff;
+  flex: 1;
+}
+
+/* ---------- Affiliate ---------- */
+.ps-aff span[aria-hidden] {
+  margin-left: 6px;
+}
+
+.ps-disclosure {
+  color: var(--ps-ink-soft);
+  font-size: 12px;
+  margin: 10px 0 0;
+}
+
+@media screen and (max-width: 749px) {
+  .ps-compare {
+    padding: 20px;
+  }
+
+  .ps-compare__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ps-cmp__media {
+    height: 160px;
+  }
+
+  .ps-mini {
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 16px;
+    width: auto;
+  }
+}
+
+/* ---------- Bottom tabs ---------- */
+.ps__nav {
+  align-items: end;
+  display: flex;
+  gap: 24px;
+  grid-area: nav;
+  margin-top: 24px;
+  position: relative;
+  z-index: 3;
+}
+
+.ps__tabs {
+  display: grid;
+  flex: 1;
+  gap: 24px;
+  grid-template-columns: repeat(var(--ps-count), minmax(0, 1fr));
+}
+
+.ps-tab {
+  align-items: start;
+  background: none;
+  border: 0;
+  color: inherit;
+  column-gap: 14px;
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  grid-template-columns: auto auto 1fr;
+  min-height: 44px;
+  opacity: 0.55;
+  padding: 16px 0 4px;
+  position: relative;
+  text-align: left;
+  transition: opacity 0.35s var(--ps-ease-soft);
+}
+
+.ps-tab:hover,
+.ps-tab.is-active {
+  opacity: 1;
+}
+
+.ps-tab:focus-visible,
+.ps__arrow:focus-visible,
+.ps__toggle:focus-visible,
+.ps-add:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.ps-tab__bar {
+  background: var(--ps-line);
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.ps-tab__progress {
+  background: currentColor;
+  inset: -0.5px 0;
+  position: absolute;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ps-ease);
+}
+
+.ps-tab.is-active .ps-tab__progress {
+  transform: scaleX(1);
+}
+
+.ps.is-autoplay .ps-tab.is-active .ps-tab__progress {
+  animation: ps-progress var(--ps-interval) linear forwards;
+  transition: none;
+}
+
+.ps.is-autoplay.is-paused .ps-tab.is-active .ps-tab__progress {
+  animation-play-state: paused;
+}
+
+@keyframes ps-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.ps-tab__num {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  padding-top: 5px;
+}
+
+.ps-tab__text {
+  display: grid;
+  gap: 3px;
+  grid-column: 3;
+}
+
+.ps-tab__name {
+  font-family: var(--ps-serif);
+  font-size: 21px;
+  line-height: 1.05;
+}
+
+.ps-tab__brand {
+  color: var(--ps-ink-soft);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ps-tab__thumb {
+  display: block;
+  height: 52px;
+  width: 38px;
+}
+
+.ps-tab__thumb img {
+  display: block;
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}
+
+.ps-tab__swatch {
+  border-radius: 50%;
+  display: block;
+  height: 26px;
+  margin-top: 4px;
+  width: 26px;
+}
+
+.ps--nav-numbers .ps-tab {
+  grid-template-columns: auto;
+}
+
+.ps--nav-numbers .ps-tab__num {
+  font-family: var(--ps-serif);
+  font-size: 28px;
+  letter-spacing: 0;
+}
+
+.ps__toggle {
+  background: none;
+  border: 1px solid var(--ps-line);
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  min-height: 44px;
+  padding: 0 18px;
+  text-transform: uppercase;
+}
+
+.ps__toggle-play,
+.ps__toggle[aria-pressed='true'] .ps__toggle-pause {
+  display: none;
+}
+
+.ps__toggle[aria-pressed='true'] .ps__toggle-play {
+  display: inline;
+}
+
+/* Prev / count / next, centred under the bottle */
+.ps__controls {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  gap: 14px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+/* Dots: one per perfume; the current one stretches. */
+.ps__controls--dots {
+  gap: 10px;
+  min-height: 36px;
+}
+
+.ps__dot {
+  background: color-mix(in srgb, var(--ps-ink) 25%, transparent);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 8px;
+  padding: 0;
+  position: relative;
+  transition: width 0.5s var(--ps-ease), background-color 0.3s ease;
+  width: 8px;
+}
+
+/* A comfortable tap area around each small dot. */
+.ps__dot::after {
+  content: '';
+  inset: -14px -6px;
+  position: absolute;
+}
+
+.ps__dot:hover {
+  background: color-mix(in srgb, var(--ps-ink) 55%, transparent);
+}
+
+.ps__dot.is-active {
+  background: var(--ps-ink);
+  width: 30px;
+}
+
+.ps__dot:focus-visible {
+  outline: 2px solid var(--ps-ink);
+  outline-offset: 4px;
+}
+
+.ps__arrow {
+  align-items: center;
+  background: color-mix(in srgb, #fff 55%, transparent);
+  border: 1px solid var(--ps-line);
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  width: 44px;
+}
+
+.ps__arrow svg {
+  height: 20px;
+  width: 20px;
+}
+
+.ps__count {
+  align-items: center;
+  display: flex;
+  font-family: var(--ps-serif);
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  gap: 12px;
+  margin: 0;
+}
+
+.ps__bar {
+  background: var(--ps-line);
+  display: block;
+  height: 1px;
+  overflow: hidden;
+  position: relative;
+  width: 64px;
+}
+
+.ps__bar-fill {
+  background: currentColor;
+  inset: 0;
+  position: absolute;
+  transform: scaleX(var(--ps-frac, 0.25));
+  transform-origin: left;
+  transition: transform var(--ps-dur) var(--ps-ease);
+}
+
+.ps.is-autoplay .ps__bar-fill.is-run {
+  animation: ps-progress var(--ps-interval) linear forwards;
+  transition: none;
+}
+
+.ps.is-autoplay.is-paused .ps__bar-fill {
+  animation-play-state: paused;
+}
+
+.ps .is-prep,
+.ps .is-prep * {
+  transition: none !important;
+}
+
+.ps-empty {
+  padding: 48px 16px;
+  text-align: center;
+}
+
+/* ---------- Tablet ---------- */
+@media screen and (max-width: 989px) {
+  .ps {
+    --ps-slot-w: 40%;
+    --ps-step: 85%;
+  }
+
+  .ps__inner {
+    grid-template-areas:
+      'head'
+      'stage'
+      'info'
+      'nav';
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .ps__stage {
+    margin-top: 12px;
+  }
+
+  .ps__tabs {
+    gap: 16px;
+  }
+
+  .ps-tab__name {
+    font-size: 19px;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media screen and (max-width: 749px) {
+  .ps {
+    --ps-slot-w: 52%;
+    --ps-step: 85%;
+  }
+
+  /* Phone stops: the next bottle stays beside the chosen one, the third peeks at the edge. */
+  .ps-slide[data-offset='1'] { --scale: 0.7; }
+  .ps-slide[data-offset='2'] { --x: 1.62; --scale: 0.32; }
+
+  /* Phones: no caption (the note chips say it); the arrows get their own row. */
+  .ps-name__caption {
+    display: none;
+  }
+
+  .ps__stage {
+    min-height: calc(var(--ps-stage-h) + 52px);
+  }
+
+  .ps__floor {
+    bottom: 58px;
+  }
+
+  .ps__count {
+    font-size: 17px;
+  }
+
+  .ps-panel__desc,
+  .ps-panel__notes {
+    max-width: none;
+  }
+
+  .ps-panel__actions .ps-form,
+  .ps-panel__actions .pf-button {
+    width: 100%;
+  }
+
+  .ps__nav {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ps__tabs {
+    display: flex;
+    gap: 16px;
+    margin-inline: calc(var(--pf-gutter, 16px) * -1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-inline: var(--pf-gutter, 16px);
+    scroll-padding-inline: var(--pf-gutter, 16px);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .ps__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ps-tab {
+    flex: 0 0 62%;
+    scroll-snap-align: start;
+  }
+
+  .ps--nav-numbers .ps-tab {
+    flex-basis: 22%;
+  }
+
+  .ps__toggle {
+    align-self: flex-start;
+  }
+}
+
+/* ---------- Entrance (after the High Spirits "Homegrown brands" intro) ----------
+   While .is-intro is on, JS sets each part's progress (0 to 1) from how far the
+   section has scrolled in, smoothed: the big name grows then blurs, the chosen bottle
+   rises from the bottom of the stage, the heading rises after it, then the details,
+   the waiting bottles and the arrows come in. At 1 everything looks exactly as
+   normal, so removing the class changes nothing on screen. */
+.ps-slide__pose {
+  translate: 0 calc((1 - var(--i-rise, 1)) * 112%);
+}
+
+.ps.is-intro .ps__stage {
+  overflow: hidden;
+}
+
+/* Desktop (JS adds .is-rise-free): no stage clip; the bottle starts just below the
+   section's bottom edge (the screen's bottom edge while pinned) and rises whole. */
+.ps.is-rise-free .ps-slide__pose {
+  translate: 0 calc((1 - var(--i-rise, 1)) * var(--ps-rise-from, 112%));
+}
+
+.ps.is-intro.is-rise-free .ps__stage {
+  overflow: visible;
+}
+
+/* The name appears in the centre as the heading leaves it, then follows it up to
+   its resting place, shrinking and softening into the background (crisp/outline
+   styles stay sharp: no blur). */
+.ps.is-intro .ps-name.is-active .ps-name__big {
+  filter: blur(calc(var(--ps-blur, 6px) * var(--i-blur, 1)));
+  transform:
+    translate3d(
+      calc(-50% + var(--n-dx, 0px) * (1 - var(--i-nmove, 1))),
+      calc(-50% + var(--n-dy, 0px) * (1 - var(--i-nmove, 1))),
+      0
+    )
+    scale(calc((0.85 + 0.15 * var(--i-grow, 1)) * (1 + (var(--n-s, 1) - 1) * (1 - var(--i-nmove, 1)))));
+  transition: none;
+}
+
+.ps--name-crisp.is-intro .ps-name.is-active .ps-name__big,
+.ps--name-outline.is-intro .ps-name.is-active .ps-name__big {
+  filter: none;
+}
+
+.ps.is-intro .ps-name.is-active {
+  opacity: var(--i-grow, 1);
+  transition: none;
+}
+
+.ps.is-intro .ps__head {
+  z-index: 6;
+}
+
+/* The heading starts large in the centre (blurred, fading in), then glides to its
+   place at the top centre and shrinks; the kicker above it appears once it lands. */
+.ps.is-intro .ps__heading {
+  filter: blur(calc((1 - var(--i-show, 1)) * 10px));
+  opacity: var(--i-show, 1);
+  transform:
+    translate(calc(var(--h-dx, 0px) * (1 - var(--i-move, 1))), calc(var(--h-dy, 0px) * (1 - var(--i-move, 1))))
+    scale(calc(1 + (var(--h-s, 1) - 1) * (1 - var(--i-move, 1))));
+  transform-origin: center;
+  white-space: nowrap;
+}
+
+.ps.is-intro .ps__kicker {
+  opacity: var(--i-head, 1);
+  translate: 0 calc((1 - var(--i-head, 1)) * 10px);
+}
+
+.ps.is-intro .ps__info,
+.ps.is-intro .ps__controls,
+.ps.is-intro .ps-name__caption {
+  opacity: var(--i-rest, 1);
+  translate: 0 calc((1 - var(--i-rest, 1)) * 26px);
+}
+
+.ps.is-intro .ps-slide:not([data-offset='0']) {
+  opacity: calc(var(--op) * var(--i-rest, 1));
+  transition: none;
+}
+
+.ps.is-intro .ps-panel > * {
+  transition: none;
+}
+
+/* Pinned entrance (desktop, when the section fits the screen): the section gets
+   extra scroll room and its content sticks in the middle of the screen while that
+   room scrolls by, playing the entrance. JS removes the room afterwards and moves
+   the scroll position by the same amount, so nothing jumps. */
+/* The room is a spacer inside the content box: a sticky element can only travel
+   within its parent's content box (padding would not count). */
+.ps.is-pinned::after {
+  content: '';
+  display: block;
+  height: var(--ps-room, 0px);
+}
+
+.ps.is-pinned .ps__inner {
+  position: sticky;
+  top: var(--ps-pin-top, 0px);
+}
+
+/* ---------- Subtle buttons: every control is 36px tall, the height of a note chip ----------
+   On touch screens an invisible ::after keeps the tap area at least 44px. */
+.ps .pf-button {
+  font-size: 11px;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 20px;
+}
+
+.ps-size span {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.ps .ps__arrow {
+  height: 36px;
+  width: 36px;
+}
+
+.ps .ps__arrow svg {
+  height: 16px;
+  width: 16px;
+}
+
+.ps .ps__toggle {
+  min-height: 36px;
+  padding: 0 14px;
+}
+
+.ps .ps-mini__close,
+.ps .ps-compare__close {
+  font-size: 18px;
+  height: 36px;
+  width: 36px;
+}
+
+@media (pointer: coarse) {
+  .ps .pf-button,
+  .ps .ps__arrow,
+  .ps .ps__toggle,
+  .ps .ps-mini__close,
+  .ps .ps-compare__close,
+  .ps-size span {
+    position: relative;
+  }
+
+  .ps .pf-button::after,
+  .ps .ps__arrow::after,
+  .ps .ps__toggle::after,
+  .ps .ps-mini__close::after,
+  .ps .ps-compare__close::after,
+  .ps-size span::after {
+    content: '';
+    inset: -4px;
+    position: absolute;
+  }
+}
+
+/* ---------- Reduced motion: fades only ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ps,
+  .ps * {
+    animation: none !important;
+  }
+
+  .ps-slide,
+  .ps-name,
+  .ps-name__big,
+  .ps-panel > *,
+  .ps-add::before {
+    transition-delay: 0s !important;
+    transition-duration: 0.2s !important;
+  }
+
+  .ps-panel > * {
+    transform: none;
+  }
+
+  .ps-name__big,
+  .ps-name__caption,
+  .ps-panel .ps-panel__name {
+    clip-path: none !important;
+  }
+
+  .ps-panel .ps-panel__name {
+    transform: none;
+  }
+}

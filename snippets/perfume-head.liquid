@@ -1,0 +1,31 @@
+{%- comment -%}
+  Perfume design system: fonts and tokens. Render once inside <head> in
+  layout/theme.liquid:  {% render 'perfume-head' %}
+
+  Fonts are SIL Open Font License families served by Google Fonts:
+  Cormorant Garamond (display), Instrument Sans (body/UI), Mrs Saint Delafield
+  (signature captions). For the best Core Web Vitals, self-host the woff2 files
+  in assets/ later and swap this link for @font-face rules.
+{%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
+>
+{{ 'perfume-tokens.css' | asset_url | stylesheet_tag }}
+{%- comment -%}
+  Rendered after Dawn's own :root block in layout/theme.liquid, so these win: Dawn's
+  pages (product, collection, cart, search, account) use Samyo's fonts too.
+{%- endcomment -%}
+<style>
+  :root {
+    --font-body-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --font-body-style: normal;
+    --font-body-weight: 400;
+    --font-body-weight-bold: 600;
+    --font-heading-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+    --font-heading-style: normal;
+    --font-heading-weight: 500;
+  }
+</style>

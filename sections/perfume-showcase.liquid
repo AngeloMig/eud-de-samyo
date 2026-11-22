@@ -1,0 +1,1789 @@
+{%- comment -%}
+  Perfume Showcase: the homepage featured-fragrance carousel, after the High Spirits
+  "Homegrown brands" carousel, in a compact form.
+
+  Stage: the chosen bottle stands large on a floor; the next ones wait in line to its
+  right, smaller and a little higher, and the ones already seen slip away left. Choosing
+  another perfume (tabs, a bottle in the line, swipe, arrow keys) glides every bottle to
+  its new place (one easing, ~0.8s). A giant italic name and a handwritten caption sit
+  behind and under the chosen bottle, and the section fades to its colours.
+
+  Panel (left): brand, name, concentration and stock, description, what it smells like
+  (illustrated note chips), bottle sizes (the product's variants), Add to bag with the
+  price, and a secondary link. Add to bag posts the native product form: in place with
+  a small "spritz" while adding and "Added to bag" after (the header Bag count follows);
+  without JavaScript the form goes to the cart. Without a product the button links out.
+
+  A block's own fields win; empty ones fall back to its product: vendor, title,
+  fragrance.concentration metafield, description, featured image, URL.
+
+  Script: assets/perfume-showcase.js (<perfume-showcase>). Styles:
+  assets/perfume-showcase.css. Tokens: snippets/perfume-head.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign sid = 'PerfumeShowcase-' | append: section.id
+  assign perfumes = section.blocks | where: 'type', 'perfume'
+  assign total = perfumes.size
+  assign first = perfumes.first
+  assign show_notes = section.settings.show_notes
+  assign show_captions = section.settings.show_captions
+  assign nav_layout = section.settings.nav_layout
+  assign eager = false
+  if section.index == nil or section.index <= 2
+    assign eager = true
+  endif
+  assign total_label = total
+  if total < 10
+    assign total_label = '0' | append: total
+  endif
+-%}
+
+{{ 'perfume-showcase.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-showcase.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ sid }} {
+    --ps-pt: {{ section.settings.padding_top }}px;
+    --ps-pb: {{ section.settings.padding_bottom }}px;
+    --ps-dur: {{ section.settings.transition_ms }}ms;
+    --ps-interval: {{ section.settings.autoplay_seconds }}s;
+    --ps-h: {{ section.settings.heading_size }}px;
+    --ps-name: {{ section.settings.name_size }}px;
+    --ps-bgname: {{ section.settings.bg_name_size }}vw;
+    --ps-blur: {{ section.settings.bg_name_blur }}px;
+    --ps-stage-h: {{ section.settings.image_max_height }}px;
+    --ps-scale: {{ section.settings.image_scale | divided_by: 100.0 }};
+    --ps-offset: {{ section.settings.image_offset }}%;
+    --ps-count: {{ total }};
+  }
+  @media screen and (max-width: 749px) {
+    #{{ sid }} {
+      --ps-pt: {{ section.settings.padding_top_mobile }}px;
+      --ps-pb: {{ section.settings.padding_bottom_mobile }}px;
+      --ps-h: {{ section.settings.heading_size_mobile }}px;
+      --ps-name: {{ section.settings.name_size_mobile }}px;
+      --ps-bgname: {{ section.settings.bg_name_size_mobile }}vw;
+      --ps-stage-h: {{ section.settings.image_max_height_mobile }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- if total == 0 -%}
+  {%- if request.design_mode -%}
+    <div class="ps-empty page-width">Add a Perfume block to start the showcase.</div>
+  {%- endif -%}
+{%- else -%}
+  {%- capture slides_html -%}{%- endcapture -%}
+  {%- capture names_html -%}{%- endcapture -%}
+  {%- capture panels_html -%}{%- endcapture -%}
+  {%- capture tabs_html -%}{%- endcapture -%}
+
+  {%- for block in perfumes -%}
+    {%- liquid
+      assign i = forloop.index0
+      assign is_first = forloop.first
+      assign p = block.settings.product
+      assign current = blank
+      if p != blank
+        assign current = p.selected_or_first_available_variant
+      endif
+
+      assign name = block.settings.title
+      if name == blank and p != blank
+        assign name = p.title
+      endif
+      if name == blank
+        assign name = 'Perfume'
+      endif
+
+      assign brand = block.settings.brand
+      if brand == blank and p != blank
+        assign brand = p.vendor
+      endif
+
+      assign concentration = block.settings.concentration
+      if concentration == blank and p != blank
+        assign concentration = p.metafields.fragrance.concentration.value
+      endif
+
+      assign description = block.settings.description
+      if description == blank and p != blank
+        assign description = p.description | strip_html | truncatewords: 28
+      endif
+
+      assign image = block.settings.image
+      if image == blank and p != blank
+        assign image = p.featured_media.preview_image
+      endif
+
+      assign primary_url = block.settings.primary_link
+      if primary_url == blank and p != blank
+        assign primary_url = p.url
+      endif
+      if primary_url == blank
+        assign primary_url = routes.all_products_collection_url
+      endif
+
+      assign secondary_url = block.settings.secondary_link
+      if secondary_url == blank and p != blank
+        assign secondary_url = p.url | append: '#fragrance-profile'
+      endif
+
+      assign number = forloop.index
+      if forloop.index < 10
+        assign number = '0' | append: forloop.index
+      endif
+
+      assign name_length = name | size
+      if name_length < 4
+        assign name_length = 4
+      endif
+
+      assign offset = i
+      if offset > 3
+        assign offset = 3
+      endif
+
+      assign bg = block.settings.background_color
+      assign accent = block.settings.accent_color
+      assign ink = block.settings.text_color
+      assign bottle_alt = name | prepend: ' ' | prepend: brand | strip | escape
+      assign form_id = sid | append: '-form-' | append: i
+
+      assign can_buy = false
+      if section.settings.show_add_to_cart and p != blank and current != blank and block.settings.primary_link == blank and block.settings.affiliate_url == blank
+        assign can_buy = true
+      endif
+    -%}
+
+    {%- capture bottle_html -%}
+      {%- if image != blank -%}
+        {%- liquid
+          assign img_loading = 'lazy'
+          assign img_priority = 'auto'
+          if is_first and eager
+            assign img_loading = 'eager'
+            assign img_priority = 'high'
+          endif
+          assign img_alt = image.alt | default: bottle_alt
+        -%}
+        {{
+          image
+          | image_url: width: 1200
+          | image_tag:
+            class: 'ps-slide__img',
+            widths: '300, 450, 600, 800, 1000, 1200',
+            sizes: '(min-width: 990px) 26vw, (min-width: 750px) 34vw, 50vw',
+            loading: img_loading,
+            fetchpriority: img_priority,
+            alt: img_alt,
+            draggable: 'false'
+        }}
+      {%- else -%}
+        {%- render 'perfume-bottle-art',
+          shape: block.settings.placeholder_shape,
+          liquid: block.settings.liquid_color,
+          label: name,
+          uid: block.id
+        -%}
+      {%- endif -%}
+    {%- endcapture -%}
+
+    {%- capture slides_html -%}
+      {{ slides_html }}
+      <div
+        class="ps-slide{% if is_first %} is-active{% endif %}"
+        data-ps-slide
+        data-index="{{ i }}"
+        data-offset="{{ offset }}"
+        data-bg="{{ bg }}"
+        data-accent="{{ accent }}"
+        data-ink="{{ ink }}"
+        style="--v-tilt: {{ block.settings.image_tilt }}deg; --v-shift: {{ block.settings.image_shift }}%;"
+        {% unless is_first %}aria-hidden="true"{% endunless %}
+        {{ block.shopify_attributes }}
+      >
+        <div class="ps-slide__pose">{{ bottle_html }}</div>
+      </div>
+    {%- endcapture -%}
+
+    {%- capture names_html -%}
+      {{ names_html }}
+      <div class="ps-name{% if is_first %} is-active{% endif %}" data-ps-name style="--v-accent: {{ accent }}; --v-ink: {{ ink }}; --len: {{ name_length }};" aria-hidden="true">
+        <p class="ps-name__big">{{ name | escape }}</p>
+        {%- if show_captions and block.settings.caption != blank -%}
+          <p class="ps-name__caption">{{ block.settings.caption | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endcapture -%}
+
+    {%- assign notes_list = '' -%}
+    {%- capture notes_photos -%}
+      {%- for n in (1..4) -%}
+        {%- liquid
+          assign label_key = 'note_' | append: n | append: '_label'
+          assign art_key = 'note_' | append: n | append: '_art'
+          assign image_key = 'note_' | append: n | append: '_image'
+          assign note_label = block.settings[label_key] | strip
+          assign note_art = block.settings[art_key]
+          assign note_image = block.settings[image_key]
+        -%}
+        {%- if note_label == blank -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign first_letter = note_label | slice: 0 | downcase
+          assign rest_len = note_label | size | minus: 1
+          assign rest = note_label | slice: 1, rest_len
+          assign notes_list = notes_list | append: first_letter | append: rest | append: '|'
+        -%}
+        <span class="ps-notes-line__ph" style="--n: {{ n }};">
+          {%- if note_image != blank -%}
+            {{ note_image | image_url: width: 120 | image_tag: widths: '60, 120', sizes: '40px', loading: 'lazy', alt: '' }}
+          {%- else -%}
+            {%- render 'perfume-note-art', note: note_art -%}
+          {%- endif -%}
+        </span>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- liquid
+      assign note_names = notes_list | split: '|'
+      assign notes_line = ''
+      if block.settings.notes_line != blank
+        assign note_names = ''
+        assign notes_line = block.settings.notes_line
+      endif
+      for nm in note_names
+        if forloop.first
+          assign notes_line = nm
+        elsif forloop.last
+          assign notes_line = notes_line | append: ' & ' | append: nm
+        else
+          assign notes_line = notes_line | append: ', ' | append: nm
+        endif
+      endfor
+    -%}
+    {%- capture notes_html -%}
+      {%- for n in (1..4) -%}
+        {%- liquid
+          assign label_key = 'note_' | append: n | append: '_label'
+          assign art_key = 'note_' | append: n | append: '_art'
+          assign image_key = 'note_' | append: n | append: '_image'
+          assign note_label = block.settings[label_key]
+          assign note_art = block.settings[art_key]
+          assign note_image = block.settings[image_key]
+        -%}
+        {%- if note_label == blank -%}{%- continue -%}{%- endif -%}
+        <li class="ps-chip" style="--n: {{ n }};">
+          <span class="ps-chip__art" aria-hidden="true">
+            {%- if note_image != blank -%}
+              {{ note_image | image_url: width: 120 | image_tag: widths: '60, 120', sizes: '44px', loading: 'lazy', alt: '' }}
+            {%- else -%}
+              {%- render 'perfume-note-art', note: note_art -%}
+            {%- endif -%}
+          </span>
+          <span class="ps-chip__label">{{ note_label | escape }}</span>
+        </li>
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    {%- capture panels_html -%}
+      {{ panels_html }}
+      <div
+        class="ps-panel{% if is_first %} is-active{% endif %}"
+        id="{{ sid }}-panel-{{ i }}"
+        {% if section.settings.show_tabs %}role="tabpanel" aria-labelledby="{{ sid }}-tab-{{ i }}"{% else %}role="group" aria-roledescription="fragrance" aria-label="{{ forloop.index }} / {{ total }}: {{ name | escape }}"{% endif %}
+        data-ps-panel
+        {% unless is_first %}inert{% endunless %}
+      >
+        {%- if brand != blank -%}
+          <p class="ps-panel__brand pf-kicker">{{ brand | escape }}</p>
+        {%- endif -%}
+        <div class="ps-panel__title">
+          <h3 class="ps-panel__name">{{ name | escape }}</h3>
+          {%- if section.settings.show_price_name and current != blank -%}
+            <p class="ps-panel__price">
+              <span data-ps-price-top>{{ current.price | money }}</span>
+              {%- unless p.has_only_default_variant -%}<small data-ps-price-size>{{ current.title | escape }}</small>{%- endunless -%}
+            </p>
+          {%- endif -%}
+        </div>
+        {%- capture meta -%}
+          {%- if concentration != blank -%}<span>{{ concentration | escape }}</span>{%- endif -%}
+          {%- if p != blank -%}
+            {%- if p.available -%}
+              <span class="ps-stock ps-stock--in">In stock</span>
+            {%- else -%}
+              <span class="ps-stock ps-stock--out">Sold out</span>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endcapture -%}
+        {%- if meta != blank -%}
+          <p class="ps-panel__meta">{{ meta }}</p>
+        {%- endif -%}
+        {%- if section.settings.show_rating and p != blank and p.metafields.reviews.rating.value != blank -%}
+          {%- liquid
+            assign r = p.metafields.reviews.rating.value
+            assign r_max = r.scale_max | default: 5
+            assign r_share = r.rating | times: 1.0 | divided_by: r_max
+            assign r_count = p.metafields.reviews.rating_count.value | default: 0
+          -%}
+          <p class="ps-rating">
+            <span class="ps-rating__stars" style="--r: {{ r_share }};" aria-hidden="true"><span>★★★★★</span></span>
+            <span class="ps-rating__value">{{ r.rating | round: 1 }}</span>
+            {%- if r_count > 0 %}<span class="ps-rating__count">({{ r_count }} reviews)</span>{% endif -%}
+            <span class="pf-visually-hidden">Rated {{ r.rating | round: 1 }} out of {{ r_max }}</span>
+          </p>
+        {%- endif -%}
+        {%- if description != blank -%}
+          <p class="ps-panel__desc">{{ description | escape }}</p>
+        {%- endif -%}
+        {%- if show_notes and notes_html != blank -%}
+          <div class="ps-panel__notes">
+            {%- if section.settings.notes_style == 'chips' -%}
+              <p class="pf-kicker">{{ section.settings.notes_label | escape }}</p>
+              <ul class="ps-chips" role="list">{{ notes_html }}</ul>
+            {%- else -%}
+              <div class="ps-notes-line">
+                <span class="ps-notes-line__photos" aria-hidden="true">{{ notes_photos }}</span>
+                <p class="ps-notes-line__text"><span class="pf-visually-hidden">{{ section.settings.notes_label | escape }}: </span>{{ notes_line | escape }}</p>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.show_compare and total > 1 -%}
+              <button type="button" class="ps-compare-open" data-ps-compare-open aria-haspopup="dialog">
+                <span aria-hidden="true">⇄</span> {{ section.settings.compare_label | escape }}
+              </button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if can_buy -%}
+          {%- form 'product', p, id: form_id, class: 'ps-form', novalidate: 'novalidate' -%}
+            {%- if p.has_only_default_variant -%}
+              <input type="hidden" name="id" value="{{ current.id }}">
+            {%- else -%}
+              <fieldset class="ps-sizes">
+                <legend class="pf-kicker">{{ section.settings.size_label | escape }}</legend>
+                <div class="ps-sizes__list">
+                  {%- for variant in p.variants -%}
+                    <label class="ps-size">
+                      <input
+                        type="radio"
+                        name="id"
+                        value="{{ variant.id }}"
+                        data-price="{{ variant.price | money | escape }}"
+                        data-available="{{ variant.available }}"
+                        {% if variant.id == current.id %}checked{% endif %}
+                        {% unless variant.available %}disabled{% endunless %}
+                      >
+                      <span>{{ variant.title | escape }}</span>
+                    </label>
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endif -%}
+            <input type="hidden" name="quantity" value="1">
+            <div class="ps-panel__actions">
+              <button
+                type="submit"
+                class="pf-button ps-add ps-add--{{ section.settings.add_animation }}"
+                data-ps-add
+                data-anim="{{ section.settings.add_animation }}"
+                data-label="{{ section.settings.add_label | escape }}"
+                data-adding="{{ section.settings.adding_label | escape }}"
+                data-added="{{ section.settings.added_label | escape }}"
+                data-soldout="Sold out"
+                {% unless current.available %}disabled{% endunless %}
+              >
+                <span class="ps-add__mist" aria-hidden="true"></span>
+                <span class="ps-add__text">
+                  {%- if section.settings.add_animation == 'roll' or section.settings.add_animation == 'drop' -%}
+                    <span class="ps-roll" aria-hidden="true">
+                      <span class="ps-roll__track">
+                        <span data-ps-add-label>{% if current.available %}{{ section.settings.add_label | escape }}{% else %}Sold out{% endif %}</span>
+                        <span>{{ section.settings.adding_label | escape }}</span>
+                        <span>{{ section.settings.added_label | escape }} ✓</span>
+                      </span>
+                    </span>
+                    <span class="pf-visually-hidden" data-ps-add-sr>{% if current.available %}{{ section.settings.add_label | escape }}{% else %}Sold out{% endif %}</span>
+                  {%- else -%}
+                    <span data-ps-add-label>{% if current.available %}{{ section.settings.add_label | escape }}{% else %}Sold out{% endif %}</span>
+                  {%- endif -%}
+                  {%- if section.settings.show_price %}<span class="ps-add__price" data-ps-price>{{ current.price | money }}</span>{% endif -%}
+                  <span class="ps-add__bag" aria-hidden="true">
+                    <span class="ps-add__bottle"></span>
+                    <svg class="ps-add__icon" viewBox="0 0 20 20" focusable="false"><path d="M4.5 7h11l-.9 9.5H5.4L4.5 7Z"/><path d="M7.5 7V5.8a2.5 2.5 0 0 1 5 0V7"/></svg>
+                  </span>
+                </span>
+              </button>
+              {%- if block.settings.secondary_label != blank and secondary_url != blank -%}
+                <a class="pf-link" href="{{ secondary_url }}">{{ block.settings.secondary_label | escape }}</a>
+              {%- endif -%}
+            </div>
+            <p class="ps-status" role="status" aria-live="polite" data-ps-status></p>
+          {%- endform -%}
+        {%- elsif block.settings.affiliate_url != blank -%}
+          <div class="ps-panel__actions">
+            <a
+              class="pf-button ps-aff"
+              href="{{ block.settings.affiliate_url }}"
+              target="_blank"
+              rel="{% if block.settings.affiliate_approved %}sponsored {% endif %}noopener"
+            >
+              {{- block.settings.affiliate_label | default: 'Buy online' | escape }} <span aria-hidden="true">↗</span>
+              <span class="pf-visually-hidden"> (opens in a new tab)</span>
+            </a>
+            {%- if block.settings.secondary_label != blank and secondary_url != blank -%}
+              <a class="pf-link" href="{{ secondary_url }}">{{ block.settings.secondary_label | escape }}</a>
+            {%- endif -%}
+          </div>
+          {%- if block.settings.affiliate_approved -%}
+            <p class="ps-disclosure">{{ section.settings.affiliate_disclosure | escape }}</p>
+          {%- endif -%}
+        {%- else -%}
+          <div class="ps-panel__actions">
+            {%- if block.settings.primary_label != blank -%}
+              <a class="pf-button" href="{{ primary_url }}">{{ block.settings.primary_label | escape }}</a>
+            {%- endif -%}
+            {%- if block.settings.secondary_label != blank and secondary_url != blank -%}
+              <a class="pf-link" href="{{ secondary_url }}">{{ block.settings.secondary_label | escape }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endcapture -%}
+
+    {%- capture tabs_html -%}
+      {{ tabs_html }}
+      <button
+        type="button"
+        class="ps-tab{% if is_first %} is-active{% endif %}"
+        id="{{ sid }}-tab-{{ i }}"
+        role="tab"
+        aria-controls="{{ sid }}-panel-{{ i }}"
+        aria-selected="{% if is_first %}true{% else %}false{% endif %}"
+        tabindex="{% if is_first %}0{% else %}-1{% endif %}"
+        data-ps-tab
+      >
+        <span class="ps-tab__bar" aria-hidden="true"><span class="ps-tab__progress"></span></span>
+        {%- if nav_layout == 'thumbs' -%}
+          <span class="ps-tab__thumb" aria-hidden="true">
+            {%- if image != blank -%}
+              {{ image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '', sizes: '48px', widths: '80, 160' }}
+            {%- else -%}
+              <span class="ps-tab__swatch" style="background: {{ block.settings.liquid_color }};"></span>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+        <span class="ps-tab__num">{{ number }}</span>
+        {%- if nav_layout != 'numbers' -%}
+          <span class="ps-tab__text">
+            <span class="ps-tab__name">{{ name | escape }}</span>
+            {%- if brand != blank -%}<span class="ps-tab__brand">{{ brand | escape }}</span>{%- endif -%}
+          </span>
+        {%- else -%}
+          <span class="pf-visually-hidden">{{ name | escape }}</span>
+        {%- endif -%}
+      </button>
+    {%- endcapture -%}
+  {%- endfor -%}
+
+  <perfume-showcase
+    id="{{ sid }}"
+    class="ps ps--nav-{{ nav_layout }} ps--name-{{ section.settings.bg_name_style | default: 'crisp' }}{% if section.settings.autoplay %} is-autoplay{% endif %}"
+    data-autoplay="{{ section.settings.autoplay }}"
+    data-duration="{{ section.settings.transition_ms }}"
+    data-cart-add="{{ routes.cart_add_url }}"
+    data-cart="{{ routes.cart_url }}"
+    data-after-add="{{ section.settings.after_add }}"
+    style="--ps-bg: {{ first.settings.background_color }}; --ps-accent: {{ first.settings.accent_color }}; --ps-ink: {{ first.settings.text_color }};"
+    role="region"
+    aria-labelledby="{{ sid }}-heading"
+  >
+    <div class="ps__inner">
+      <header class="ps__head">
+        {%- if section.settings.kicker != blank -%}
+          <p class="ps__kicker pf-kicker">{{ section.settings.kicker | escape }}</p>
+        {%- endif -%}
+        <{{ section.settings.heading_tag }} id="{{ sid }}-heading" class="ps__heading">
+          {{- section.settings.heading | default: 'Featured fragrances' | escape -}}
+        </{{ section.settings.heading_tag }}>
+      </header>
+
+      <div
+        class="ps__stage"
+        data-ps-stage
+        {% if total > 1 %}tabindex="0" aria-label="{{ section.settings.heading | default: 'Featured fragrances' | escape }}: use the arrow keys to switch"{% endif %}
+      >
+        <div class="ps__names">{{ names_html }}</div>
+        <div class="ps__floor">{{ slides_html }}</div>
+        {%- if total > 1 -%}
+          {%- if section.settings.controls_style == 'arrows' -%}
+          <div class="ps__controls">
+            <button type="button" class="ps__arrow" data-ps-prev aria-label="Previous fragrance">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <p class="ps__count" aria-hidden="true">
+              <span data-ps-current>01</span>
+              <span class="ps__bar"><span class="ps__bar-fill" data-ps-bar></span></span>
+              <span>{{ total_label }}</span>
+            </p>
+            <button type="button" class="ps__arrow" data-ps-next aria-label="Next fragrance">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+          </div>
+          {%- else -%}
+            {%- comment -%} Dots: one per perfume, made by the script (the name is each dot's label). {%- endcomment -%}
+            <div class="ps__controls ps__controls--dots" data-ps-dots role="group" aria-label="{{ section.settings.heading | default: 'Featured fragrances' | escape }}"></div>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+      <div class="ps__info">
+        {{ panels_html }}
+      </div>
+
+      {%- if total > 1 and section.settings.show_tabs -%}
+        <div class="ps__nav">
+          <div class="ps__tabs" role="tablist" aria-label="{{ section.settings.heading | default: 'Featured fragrances' | escape }}">
+            {{ tabs_html }}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.show_compare and total > 1 -%}
+      <dialog class="ps-compare" data-ps-compare aria-labelledby="{{ sid }}-compare-title">
+        <div class="ps-compare__head">
+          <h3 class="ps-compare__title" id="{{ sid }}-compare-title">{{ section.settings.compare_label | escape }}</h3>
+          <button type="button" class="ps-compare__close" data-ps-compare-close aria-label="Close">×</button>
+        </div>
+        <div class="ps-compare__grid">
+          <div class="ps-compare__col" data-ps-compare-a></div>
+          <div class="ps-compare__col">
+            <label class="ps-compare__pick">
+              <span class="pf-kicker">Compare with</span>
+              <select data-ps-compare-select></select>
+            </label>
+            <div data-ps-compare-b></div>
+          </div>
+        </div>
+        <p class="ps-compare__legend"><span class="ps-chip is-shared">Shared</span> notes both perfumes have</p>
+      </dialog>
+    {%- endif -%}
+
+    {%- if section.settings.after_add == 'mini' -%}
+      <div class="ps-mini" data-ps-mini hidden role="dialog" aria-modal="false" aria-labelledby="{{ sid }}-mini-title">
+        <div class="ps-mini__head">
+          <p class="ps-mini__title" id="{{ sid }}-mini-title"><span aria-hidden="true">✓</span> Added to your bag</p>
+          <button type="button" class="ps-mini__close" data-ps-mini-close aria-label="Close">×</button>
+        </div>
+        <div class="ps-mini__item">
+          <img class="ps-mini__img" data-ps-mini-img alt="" width="64" height="80">
+          <div>
+            <p class="ps-mini__name" data-ps-mini-name></p>
+            <p class="ps-mini__variant" data-ps-mini-variant></p>
+            <p class="ps-mini__price" data-ps-mini-price></p>
+          </div>
+        </div>
+        <p class="ps-mini__sub">Subtotal <strong data-ps-mini-subtotal></strong> · <span data-ps-mini-count></span></p>
+        <div class="ps-mini__actions">
+          <a class="pf-button" href="{{ routes.cart_url }}">View bag</a>
+          <a class="pf-link" href="{{ routes.cart_url }}/checkout">Checkout</a>
+        </div>
+      </div>
+    {%- endif -%}
+  </perfume-showcase>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Perfume showcase",
+  "tag": "section",
+  "class": "section-perfume-showcase",
+  "max_blocks": 8,
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Featured fragrances"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Samyó edit"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "info": "Use H1 only when this is the page's main heading.",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "notes_style",
+      "label": "Notes style",
+      "options": [
+        { "value": "line", "label": "One line: overlapping note photos + a handwritten-style line" },
+        { "value": "chips", "label": "Chips with a label" }
+      ],
+      "default": "line"
+    },
+    {
+      "type": "text",
+      "id": "notes_label",
+      "label": "Notes label",
+      "info": "Shown above the chips; read out to screen readers in the one-line style.",
+      "default": "Smells like"
+    },
+    {
+      "type": "header",
+      "content": "Add to bag"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Add to bag in place",
+      "info": "For blocks with a product and no Primary button link. Otherwise the button links to the product.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price_name",
+      "label": "Show price beside the name",
+      "info": "With the chosen size; it changes when another size is picked.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price on the button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "size_label",
+      "label": "Sizes label",
+      "default": "Size"
+    },
+    {
+      "type": "text",
+      "id": "add_label",
+      "label": "Button label",
+      "default": "Add to bag"
+    },
+    {
+      "type": "text",
+      "id": "adding_label",
+      "label": "Button label while adding",
+      "default": "Adding…"
+    },
+    {
+      "type": "text",
+      "id": "added_label",
+      "label": "Button label once added",
+      "default": "Added to bag"
+    },
+    {
+      "type": "select",
+      "id": "add_animation",
+      "label": "Add to bag animation",
+      "options": [
+        {
+          "value": "roll",
+          "label": "Rolling label"
+        },
+        {
+          "value": "spritz",
+          "label": "Spritz (mist spray)"
+        },
+        {
+          "value": "drop",
+          "label": "A bottle drops into the bag, with a light spray"
+        }
+      ],
+      "default": "drop"
+    },
+    {
+      "type": "select",
+      "id": "after_add",
+      "label": "After adding",
+      "options": [
+        {
+          "value": "drawer",
+          "label": "Open the cart drawer"
+        },
+        {
+          "value": "mini",
+          "label": "Slide in a mini bag"
+        },
+        {
+          "value": "message",
+          "label": "Show a short message only"
+        }
+      ],
+      "default": "drawer",
+      "info": "The cart drawer is switched on in the Perfume header (Cart drawer)."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show star rating",
+      "info": "Only from real reviews: reads the product's reviews.rating and reviews.rating_count metafields (filled by review apps such as Judge.me or Shopify Product Reviews). Nothing shows without them.",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare",
+      "label": "Show Compare notes",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "compare_label",
+      "label": "Compare label",
+      "default": "Compare notes"
+    },
+    {
+      "type": "text",
+      "id": "affiliate_disclosure",
+      "label": "Affiliate disclosure",
+      "info": "Shown under an affiliate button only when that block is marked as an approved affiliate link.",
+      "default": "We may earn a commission when you buy through this link."
+    },
+    {
+      "type": "header",
+      "content": "Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_notes",
+      "label": "Show scent notes",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_captions",
+      "label": "Show handwritten captions",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Navigation and motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tabs",
+      "label": "Show the row of perfume tabs",
+      "info": "Off: arrows and a counter under the bottle switch perfumes.",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "controls_style",
+      "label": "Switching controls",
+      "options": [
+        { "value": "dots", "label": "Dots (one per perfume)" },
+        { "value": "arrows", "label": "Arrows with a counter" }
+      ],
+      "default": "dots"
+    },
+    {
+      "type": "select",
+      "id": "nav_layout",
+      "label": "Tabs style",
+      "options": [
+        {
+          "value": "list",
+          "label": "Numbers, names and brands"
+        },
+        {
+          "value": "thumbs",
+          "label": "Thumbnails and names"
+        },
+        {
+          "value": "numbers",
+          "label": "Numbers only"
+        }
+      ],
+      "default": "list"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Rotate automatically",
+      "info": "Pauses on hover, keyboard focus, and when off screen.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_seconds",
+      "label": "Time per perfume",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 7
+    },
+    {
+      "type": "range",
+      "id": "transition_ms",
+      "label": "Transition speed",
+      "min": 300,
+      "max": 1500,
+      "step": 50,
+      "unit": "ms",
+      "default": 800
+    },
+    {
+      "type": "header",
+      "content": "Bottle image"
+    },
+    {
+      "type": "range",
+      "id": "image_scale",
+      "label": "Bottle size on the stage",
+      "min": 60,
+      "max": 130,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "image_offset",
+      "label": "Bottle vertical offset",
+      "min": -20,
+      "max": 20,
+      "step": 1,
+      "unit": "%",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_max_height",
+      "label": "Stage height, desktop",
+      "min": 360,
+      "max": 760,
+      "step": 10,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "image_max_height_mobile",
+      "label": "Stage height, mobile",
+      "min": 240,
+      "max": 520,
+      "step": 10,
+      "unit": "px",
+      "default": 320
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size, desktop",
+      "min": 32,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size, mobile",
+      "min": 24,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "label": "Perfume name size, desktop",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 58
+    },
+    {
+      "type": "range",
+      "id": "name_size_mobile",
+      "label": "Perfume name size, mobile",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 42
+    },
+    {
+      "type": "range",
+      "id": "bg_name_size",
+      "label": "Background name size, desktop",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "vw",
+      "default": 16,
+      "info": "Long names grow up to the width of the page and crop at the edges."
+    },
+    {
+      "type": "range",
+      "id": "bg_name_size_mobile",
+      "label": "Background name size, mobile",
+      "min": 15,
+      "max": 45,
+      "step": 1,
+      "unit": "vw",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "bg_name_style",
+      "label": "Background name style",
+      "options": [
+        { "value": "crisp", "label": "Crisp: thin sharp letters fading downward" },
+        { "value": "outline", "label": "Outline: fine outlined letters" },
+        { "value": "blur", "label": "Soft blur" }
+      ],
+      "default": "crisp"
+    },
+    {
+      "type": "range",
+      "id": "bg_name_blur",
+      "label": "Background name blur (Soft blur style)",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding, desktop",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding, mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding, mobile",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "perfume",
+      "name": "Perfume",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Empty fields below fall back to this product."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Bottle image",
+          "info": "Transparent PNG or WebP, bottle only. Falls back to the product's featured image."
+        },
+        {
+          "type": "select",
+          "id": "placeholder_shape",
+          "label": "Placeholder bottle (until an image is set)",
+          "options": [
+            {
+              "value": "square",
+              "label": "Square"
+            },
+            {
+              "value": "column",
+              "label": "Column"
+            },
+            {
+              "value": "round",
+              "label": "Round"
+            },
+            {
+              "value": "faceted",
+              "label": "Faceted"
+            }
+          ],
+          "default": "square"
+        },
+        {
+          "type": "range",
+          "id": "image_tilt",
+          "label": "Image tilt",
+          "min": -12,
+          "max": 12,
+          "step": 1,
+          "unit": "deg",
+          "default": 0,
+          "info": "Give each perfume its own pose."
+        },
+        {
+          "type": "range",
+          "id": "image_shift",
+          "label": "Image horizontal shift",
+          "min": -20,
+          "max": 20,
+          "step": 1,
+          "unit": "%",
+          "default": 0
+        },
+        {
+          "type": "text",
+          "id": "brand",
+          "label": "Brand",
+          "info": "Falls back to the product's vendor."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Perfume name",
+          "info": "Falls back to the product title."
+        },
+        {
+          "type": "text",
+          "id": "concentration",
+          "label": "Concentration",
+          "info": "For example Eau de Parfum. Falls back to the fragrance.concentration metafield."
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short description",
+          "info": "Two lines. Falls back to the product description."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Handwritten caption",
+          "info": "A few words, for example: lavender meets vanilla"
+        },
+        {
+          "type": "header",
+          "content": "What it smells like"
+        },
+        {
+          "type": "paragraph",
+          "content": "Up to four notes. Use the brand's official note list. Pick a built-in illustration or upload a transparent cutout (the upload wins)."
+        },
+        {
+          "type": "text",
+          "id": "notes_line",
+          "label": "Notes line (one-line notes style)",
+          "info": "Shown as you type it, e.g. bergamot, Sichuan pepper, lavender & vanilla. Empty: built from the notes below."
+        },
+        {
+          "type": "text",
+          "id": "note_1_label",
+          "label": "Note 1"
+        },
+        {
+          "type": "select",
+          "id": "note_1_art",
+          "label": "Note 1 illustration",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "lemon",
+              "label": "Lemon"
+            },
+            {
+              "value": "orange",
+              "label": "Orange / mandarin"
+            },
+            {
+              "value": "bergamot",
+              "label": "Bergamot"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "apple",
+              "label": "Green apple"
+            },
+            {
+              "value": "lavender",
+              "label": "Lavender"
+            },
+            {
+              "value": "rose",
+              "label": "Rose"
+            },
+            {
+              "value": "jasmine",
+              "label": "Jasmine"
+            },
+            {
+              "value": "orange_blossom",
+              "label": "Orange blossom / neroli"
+            },
+            {
+              "value": "vanilla",
+              "label": "Vanilla"
+            },
+            {
+              "value": "cinnamon",
+              "label": "Cinnamon"
+            },
+            {
+              "value": "pepper",
+              "label": "Pepper"
+            },
+            {
+              "value": "cedar",
+              "label": "Cedar / woods"
+            },
+            {
+              "value": "vetiver",
+              "label": "Vetiver"
+            },
+            {
+              "value": "patchouli",
+              "label": "Patchouli"
+            },
+            {
+              "value": "musk",
+              "label": "Musk"
+            },
+            {
+              "value": "amber",
+              "label": "Amber / ambroxan"
+            },
+            {
+              "value": "tonka",
+              "label": "Tonka bean"
+            },
+            {
+              "value": "mineral",
+              "label": "Mineral / flint"
+            },
+            {
+              "value": "iris",
+              "label": "Iris"
+            },
+            {
+              "value": "grapefruit",
+              "label": "Grapefruit"
+            },
+            {
+              "value": "cardamom",
+              "label": "Cardamom"
+            },
+            {
+              "value": "tobacco",
+              "label": "Tobacco"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "note_1_image",
+          "label": "Note 1 image"
+        },
+        {
+          "type": "text",
+          "id": "note_2_label",
+          "label": "Note 2"
+        },
+        {
+          "type": "select",
+          "id": "note_2_art",
+          "label": "Note 2 illustration",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "lemon",
+              "label": "Lemon"
+            },
+            {
+              "value": "orange",
+              "label": "Orange / mandarin"
+            },
+            {
+              "value": "bergamot",
+              "label": "Bergamot"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "apple",
+              "label": "Green apple"
+            },
+            {
+              "value": "lavender",
+              "label": "Lavender"
+            },
+            {
+              "value": "rose",
+              "label": "Rose"
+            },
+            {
+              "value": "jasmine",
+              "label": "Jasmine"
+            },
+            {
+              "value": "orange_blossom",
+              "label": "Orange blossom / neroli"
+            },
+            {
+              "value": "vanilla",
+              "label": "Vanilla"
+            },
+            {
+              "value": "cinnamon",
+              "label": "Cinnamon"
+            },
+            {
+              "value": "pepper",
+              "label": "Pepper"
+            },
+            {
+              "value": "cedar",
+              "label": "Cedar / woods"
+            },
+            {
+              "value": "vetiver",
+              "label": "Vetiver"
+            },
+            {
+              "value": "patchouli",
+              "label": "Patchouli"
+            },
+            {
+              "value": "musk",
+              "label": "Musk"
+            },
+            {
+              "value": "amber",
+              "label": "Amber / ambroxan"
+            },
+            {
+              "value": "tonka",
+              "label": "Tonka bean"
+            },
+            {
+              "value": "mineral",
+              "label": "Mineral / flint"
+            },
+            {
+              "value": "iris",
+              "label": "Iris"
+            },
+            {
+              "value": "grapefruit",
+              "label": "Grapefruit"
+            },
+            {
+              "value": "cardamom",
+              "label": "Cardamom"
+            },
+            {
+              "value": "tobacco",
+              "label": "Tobacco"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "note_2_image",
+          "label": "Note 2 image"
+        },
+        {
+          "type": "text",
+          "id": "note_3_label",
+          "label": "Note 3"
+        },
+        {
+          "type": "select",
+          "id": "note_3_art",
+          "label": "Note 3 illustration",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "lemon",
+              "label": "Lemon"
+            },
+            {
+              "value": "orange",
+              "label": "Orange / mandarin"
+            },
+            {
+              "value": "bergamot",
+              "label": "Bergamot"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "apple",
+              "label": "Green apple"
+            },
+            {
+              "value": "lavender",
+              "label": "Lavender"
+            },
+            {
+              "value": "rose",
+              "label": "Rose"
+            },
+            {
+              "value": "jasmine",
+              "label": "Jasmine"
+            },
+            {
+              "value": "orange_blossom",
+              "label": "Orange blossom / neroli"
+            },
+            {
+              "value": "vanilla",
+              "label": "Vanilla"
+            },
+            {
+              "value": "cinnamon",
+              "label": "Cinnamon"
+            },
+            {
+              "value": "pepper",
+              "label": "Pepper"
+            },
+            {
+              "value": "cedar",
+              "label": "Cedar / woods"
+            },
+            {
+              "value": "vetiver",
+              "label": "Vetiver"
+            },
+            {
+              "value": "patchouli",
+              "label": "Patchouli"
+            },
+            {
+              "value": "musk",
+              "label": "Musk"
+            },
+            {
+              "value": "amber",
+              "label": "Amber / ambroxan"
+            },
+            {
+              "value": "tonka",
+              "label": "Tonka bean"
+            },
+            {
+              "value": "mineral",
+              "label": "Mineral / flint"
+            },
+            {
+              "value": "iris",
+              "label": "Iris"
+            },
+            {
+              "value": "grapefruit",
+              "label": "Grapefruit"
+            },
+            {
+              "value": "cardamom",
+              "label": "Cardamom"
+            },
+            {
+              "value": "tobacco",
+              "label": "Tobacco"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "note_3_image",
+          "label": "Note 3 image"
+        },
+        {
+          "type": "text",
+          "id": "note_4_label",
+          "label": "Note 4"
+        },
+        {
+          "type": "select",
+          "id": "note_4_art",
+          "label": "Note 4 illustration",
+          "default": "none",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "lemon",
+              "label": "Lemon"
+            },
+            {
+              "value": "orange",
+              "label": "Orange / mandarin"
+            },
+            {
+              "value": "bergamot",
+              "label": "Bergamot"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "apple",
+              "label": "Green apple"
+            },
+            {
+              "value": "lavender",
+              "label": "Lavender"
+            },
+            {
+              "value": "rose",
+              "label": "Rose"
+            },
+            {
+              "value": "jasmine",
+              "label": "Jasmine"
+            },
+            {
+              "value": "orange_blossom",
+              "label": "Orange blossom / neroli"
+            },
+            {
+              "value": "vanilla",
+              "label": "Vanilla"
+            },
+            {
+              "value": "cinnamon",
+              "label": "Cinnamon"
+            },
+            {
+              "value": "pepper",
+              "label": "Pepper"
+            },
+            {
+              "value": "cedar",
+              "label": "Cedar / woods"
+            },
+            {
+              "value": "vetiver",
+              "label": "Vetiver"
+            },
+            {
+              "value": "patchouli",
+              "label": "Patchouli"
+            },
+            {
+              "value": "musk",
+              "label": "Musk"
+            },
+            {
+              "value": "amber",
+              "label": "Amber / ambroxan"
+            },
+            {
+              "value": "tonka",
+              "label": "Tonka bean"
+            },
+            {
+              "value": "mineral",
+              "label": "Mineral / flint"
+            },
+            {
+              "value": "iris",
+              "label": "Iris"
+            },
+            {
+              "value": "grapefruit",
+              "label": "Grapefruit"
+            },
+            {
+              "value": "cardamom",
+              "label": "Cardamom"
+            },
+            {
+              "value": "tobacco",
+              "label": "Tobacco"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "note_4_image",
+          "label": "Note 4 image"
+        },
+        {
+          "type": "header",
+          "content": "Colours"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background",
+          "default": "#E8E3DB"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Background name",
+          "default": "#D9D2C6"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#26221F"
+        },
+        {
+          "type": "color",
+          "id": "liquid_color",
+          "label": "Placeholder bottle liquid",
+          "default": "#C9A46B"
+        },
+        {
+          "type": "header",
+          "content": "Buttons"
+        },
+        {
+          "type": "text",
+          "id": "primary_label",
+          "label": "Primary button label",
+          "default": "Shop fragrance"
+        },
+        {
+          "type": "url",
+          "id": "primary_link",
+          "label": "Primary button link",
+          "info": "Leave empty to add to bag in place (needs a product). A link (for example an affiliate link) turns the button into that link."
+        },
+        {
+          "type": "text",
+          "id": "secondary_label",
+          "label": "Secondary link label",
+          "default": "Discover the scent"
+        },
+        {
+          "type": "url",
+          "id": "secondary_link",
+          "label": "Secondary link",
+          "info": "Falls back to the product's fragrance profile."
+        },
+        {
+          "type": "header",
+          "content": "Sold elsewhere (affiliate)"
+        },
+        {
+          "type": "paragraph",
+          "content": "For perfumes you don't stock: the button links to the retailer instead of adding to bag."
+        },
+        {
+          "type": "text",
+          "id": "affiliate_label",
+          "label": "Button label",
+          "default": "Buy at FragranceX"
+        },
+        {
+          "type": "url",
+          "id": "affiliate_url",
+          "label": "Retailer link",
+          "info": "Your tracking link (e.g. from CJ) or the retailer's product page."
+        },
+        {
+          "type": "checkbox",
+          "id": "affiliate_approved",
+          "label": "This is an approved affiliate tracking link",
+          "info": "Shows the disclosure and marks the link as sponsored. Leave off until the programme has approved you and the link is your tracking URL.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume showcase",
+      "blocks": [
+        {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dior",
+            "title": "Sauvage",
+            "concentration": "Eau de Parfum",
+            "description": "Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.",
+            "caption": "fresh, spicy & smooth",
+            "placeholder_shape": "square",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Bergamot",
+            "note_1_art": "bergamot",
+            "note_2_label": "Sichuan pepper",
+            "note_2_art": "pepper",
+            "note_3_label": "Lavender",
+            "note_3_art": "lavender",
+            "note_4_label": "Vanilla",
+            "note_4_art": "vanilla",
+            "background_color": "#D6DDE5",
+            "accent_color": "#BCC8D5",
+            "text_color": "#1F2A36",
+            "liquid_color": "#6F8AA6"
+          }
+        },
+        {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dior",
+            "title": "Dior Homme Intense",
+            "concentration": "Eau de Parfum",
+            "description": "Powdery and woody: iris and lavender over vetiver and cedar.",
+            "caption": "powdery iris, dark woods",
+            "placeholder_shape": "column",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Lavender",
+            "note_1_art": "lavender",
+            "note_2_label": "Iris",
+            "note_2_art": "iris",
+            "note_3_label": "Vetiver",
+            "note_3_art": "vetiver",
+            "note_4_label": "Cedar",
+            "note_4_art": "cedar",
+            "background_color": "#DFD9E6",
+            "accent_color": "#CCC1DA",
+            "text_color": "#2A2233",
+            "liquid_color": "#D9B25A"
+          }
+        },
+        {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dolce & Gabbana",
+            "title": "The One",
+            "concentration": "Eau de Toilette",
+            "description": "Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.",
+            "caption": "warm tobacco & spice",
+            "placeholder_shape": "square",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Grapefruit",
+            "note_1_art": "grapefruit",
+            "note_2_label": "Cardamom",
+            "note_2_art": "cardamom",
+            "note_3_label": "Tobacco",
+            "note_3_art": "tobacco",
+            "note_4_label": "Amber",
+            "note_4_art": "amber",
+            "background_color": "#EAD8C2",
+            "accent_color": "#DDC4A5",
+            "text_color": "#3A2618",
+            "liquid_color": "#C98A3C"
+          }
+        },
+        {
+          "type": "perfume",
+          "settings": {
+            "brand": "Emporio Armani",
+            "title": "Stronger With You Intensely",
+            "concentration": "Eau de Parfum",
+            "description": "Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.",
+            "caption": "cinnamon, vanilla & heat",
+            "placeholder_shape": "round",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Pink pepper",
+            "note_1_art": "pepper",
+            "note_2_label": "Cinnamon",
+            "note_2_art": "cinnamon",
+            "note_3_label": "Vanilla",
+            "note_3_art": "vanilla",
+            "note_4_label": "Tonka bean",
+            "note_4_art": "tonka",
+            "background_color": "#F1D2C6",
+            "accent_color": "#E7B9A8",
+            "text_color": "#3B1A14",
+            "liquid_color": "#D2452B"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

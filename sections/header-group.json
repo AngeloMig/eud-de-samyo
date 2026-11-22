@@ -1,54 +1,54 @@
 {
-  "name": "t:sections.header.name",
+  "name": "Header group",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
+    "header": {
+      "type": "perfume-header",
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
+        "card_1": {
+          "type": "card",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
-            "link": ""
+            "title": "New arrivals",
+            "sample": "bottle-amber",
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp"
+          }
+        },
+        "card_2": {
+          "type": "card",
+          "settings": {
+            "title": "Best sellers",
+            "sample": "bottle-blue",
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp"
+          }
+        },
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "menu_item": "Brands",
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
+            "background": "#d6dde5",
+            "title": "Dior Homme Intense",
+            "link": "/products/dior-homme-intense"
           }
         }
       },
       "block_order": [
-        "announcement-bar-0"
-      ]
-    },
-    "header": {
-      "type": "header",
+        "card_1",
+        "card_2",
+        "feature_1"
+      ],
       "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
-        "logo_position": "middle-left",
-        "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "drawer_ship_threshold": 10000,
+        "background_color": "#FFFFFF",
+        "text_color": "#292521",
+        "blend": true,
+        "announcement_bg": "#292521",
+        "announcement_ink": "#F7F5F0",
+        "adapt_dark": false
       }
     }
   },
   "order": [
-    "announcement-bar",
     "header"
   ]
 }

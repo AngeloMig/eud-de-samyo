@@ -1,36 +1,80 @@
 {
   "sections": {
-    "banner": {
-      "type": "main-collection-banner",
+    "main": {
+      "type": "main-collection-perfume",
       "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
+        "kicker": "Collection",
+        "show_description": true,
+        "per_page": 24,
+        "show_filters": true,
+        "show_sort": true,
+        "quick_add": true,
+        "tints": "#D6DDE5, #EAD8C2, #E9D3C9, #DFD9E6",
+        "background_color": "#F7F5F0",
+        "text_color": "#292521"
       }
     },
-    "product-grid": {
-      "type": "main-collection-product-grid",
+    "lineup": {
+      "type": "perfume-lineup",
+      "blocks": {
+        "bottle_1": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
+            "label": "Sauvage",
+            "link": "/products/dior-sauvage-eau-de-parfum"
+          }
+        },
+        "bottle_2": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
+            "label": "Dior Homme Intense",
+            "link": "/products/dior-homme-intense"
+          }
+        },
+        "bottle_3": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dg-the-one.webp",
+            "label": "The One",
+            "link": "/products/dolce-gabbana-the-one"
+          }
+        },
+        "bottle_4": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
+            "label": "Stronger With You Intensely",
+            "link": "/products/emporio-armani-stronger-with-you-intensely"
+          }
+        }
+      },
+      "block_order": [
+        "bottle_1",
+        "bottle_2",
+        "bottle_3",
+        "bottle_4"
+      ],
       "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "enable_filtering": true,
-        "filter_type": "horizontal",
-        "enable_sorting": true,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "heading": "More to discover",
+        "script": "one spray at a time",
+        "button_label": "",
+        "button_link": "/collections/all",
+        "background_color": "#E8E4DC",
+        "text_color": "#292521",
+        "script_color": "#686A54",
+        "surround_color": "#D8D1C5",
+        "corner_radius": 40,
+        "corner_radius_mobile": 28,
+        "show_shadow": true,
+        "overlap": 5,
+        "padding_bottom": 48
       }
     }
   },
   "order": [
-    "banner",
-    "product-grid"
+    "main",
+    "lineup"
   ]
 }

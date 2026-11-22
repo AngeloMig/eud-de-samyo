@@ -1,0 +1,78 @@
+{%- comment -%}
+  Journal (homepage): the latest articles of a blog. The newest is a large feature
+  on the left; the next ones stack on the right. A link goes to the whole Journal.
+  Hidden when the blog has no articles (the theme editor shows a hint instead).
+
+  Cards: snippets/perfume-article-card.liquid. Styles: assets/perfume-journal.css.
+{%- endcomment -%}
+{%- liquid
+  assign jid = 'PerfumeJournal-' | append: section.id
+  assign j_blog = section.settings.blog
+  if j_blog == blank
+    assign j_blog = blogs.journal
+  endif
+  assign j_count = section.settings.count
+-%}
+
+{%- if j_blog.articles_count > 0 or request.design_mode -%}
+  {{ 'perfume-journal.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+  {%- style -%}
+    #{{ jid }} {
+      --pj-bg: {{ section.settings.background_color }};
+      --pj-ink: {{ section.settings.text_color }};
+      --pj-pt: {{ section.settings.padding_top }}px;
+      --pj-pb: {{ section.settings.padding_bottom }}px;
+    }
+  {%- endstyle -%}
+
+  <section id="{{ jid }}" class="pj pj--home" aria-labelledby="{{ jid }}-h">
+    <div class="pj__head" data-pf-reveal="rise">
+      <div>
+        {%- if section.settings.kicker != blank -%}<p class="pf-kicker pj__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="pj__h" id="{{ jid }}-h">{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.link_label != blank and j_blog != blank -%}
+        <a class="pf-link pj__all" href="{{ j_blog.url }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if j_blog.articles_count > 0 -%}
+      <div class="pj__home-grid">
+        {%- for a in j_blog.articles limit: j_count -%}
+          <div class="pj__home-cell{% if forloop.first %} pj__home-cell--lead{% endif %}" style="--i: {{ forloop.index0 }};" data-pf-reveal="rise">
+            {%- if forloop.first -%}
+              {%- render 'perfume-article-card', article: a, size: 'lg', show_excerpt: true, sizes: '(min-width: 990px) 55vw, 92vw' -%}
+            {%- else -%}
+              {%- render 'perfume-article-card', article: a, size: 'row', show_excerpt: false, sizes: '(min-width: 990px) 16vw, 40vw' -%}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="pj__empty">Pick a blog with articles (Online Store › Blog posts) to fill the Journal.</p>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Journal",
+  "tag": "div",
+  "class": "section-perfume-journal",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog", "info": "Falls back to a blog with the handle 'journal'." },
+    { "type": "range", "id": "count", "label": "Articles", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Journal" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Notes on scent" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Read the journal" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 }
+  ],
+  "presets": [{ "name": "Journal" }]
+}
+{% endschema %}

@@ -1,0 +1,557 @@
+/*
+  Perfume hero (sections/perfume-hero.liquid). NOHO-style split hero.
+  Desktop 990px+: two halves. Below 990px: heading, then the tile grid.
+  Intro states live under .phh.is-pre (set by the section's inline script, removed by
+  assets/perfume-hero.js). Motion: transform, opacity and clip-path only.
+*/
+perfume-hero {
+  display: block;
+}
+
+.phh {
+  --phh-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --phh-ease-io: cubic-bezier(0.76, 0, 0.24, 1);
+  --phh-serif: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  --phh-sans: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  --phh-script: var(--pf-font-script, 'Mrs Saint Delafield', cursive);
+  --phh-gutter: 30px;
+  /* Tile size: NOHO's proportions, capped by the viewport height so 3 rows fit. */
+  --tw: min(13vw, 19.5svh);
+  --th: calc(var(--tw) * 1.32);
+  --tgap: calc(var(--tw) * 0.09);
+  --phh-delay: 0ms;
+  --phh-k: 1; /* intro speed: 1 normal, 0.6 fast */
+
+  color: var(--phh-ink);
+  display: grid;
+  font-family: var(--phh-sans);
+  grid-template-columns: 1fr 1fr;
+  min-height: max(640px, 100svh);
+  position: relative;
+}
+
+.phh *,
+.phh *::before,
+.phh *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Left half ---------- */
+.phh__left {
+  background: var(--phh-left);
+  display: flex;
+  flex-direction: column;
+  /* Clear the header's logo row, plus the announcement line when it shows. */
+  padding: calc(var(--phh-gutter) + 84px + var(--pf-ann-h, 0px)) var(--phh-gutter) var(--phh-gutter);
+}
+
+.phh__heading {
+  font-family: var(--phh-serif);
+  font-size: var(--phh-h);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  margin: 0;
+  max-width: 11.5em;
+}
+
+/* Each line is a mask; its text slides up into it. Padding keeps descenders. */
+.phh__line {
+  display: block;
+  margin-bottom: -0.14em;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+}
+
+.phh__line > span {
+  display: block;
+  transition: transform calc(1.15s * var(--phh-k)) var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + var(--i) * 85ms * var(--phh-k));
+}
+
+.phh__accent {
+  color: color-mix(in srgb, var(--phh-ink) 72%, transparent);
+  font-family: var(--phh-script);
+  font-size: clamp(34px, 3vw, 48px);
+  line-height: 1;
+  margin: calc(28px - 0.3em) -0.45em -0.3em -0.05em;
+  padding: 0.3em 0.45em; /* room for the script's loops (Safari clips ink to the box) */
+  transform: rotate(-4deg);
+  transform-origin: left center;
+  transition: opacity 0.9s ease, transform 1.1s var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + 420ms * var(--phh-k));
+}
+
+.phh__foot {
+  margin-top: auto;
+  padding-top: 32px;
+}
+
+.phh__slogan {
+  font-size: 19px;
+  margin: 0;
+  transition: opacity 0.9s ease, transform 1.1s var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + 520ms * var(--phh-k));
+}
+
+/* 1. Buttons */
+.phh__actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-top: 36px;
+  transition: opacity 0.9s ease, transform calc(1.1s * var(--phh-k)) var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + 470ms * var(--phh-k));
+}
+
+.phh .pf-button {
+  --pf-button-bg: var(--phh-ink);
+  --pf-button-fg: var(--phh-left);
+}
+
+/* 6. Trust points */
+.phh__trust {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 13px;
+  gap: 6px 22px;
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  transition: opacity 0.9s ease, transform calc(1.1s * var(--phh-k)) var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + 600ms * var(--phh-k));
+}
+
+.phh__trust li {
+  align-items: center;
+  display: inline-flex;
+  gap: 7px;
+}
+
+.phh__trust li::before {
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: '✓';
+  display: inline-grid;
+  font-size: 9px;
+  height: 16px;
+  place-items: center;
+  width: 16px;
+}
+
+/* ---------- Right half: tiles ---------- */
+.phh__right {
+  align-items: center;
+  background: var(--phh-right);
+  display: flex;
+  overflow: hidden;
+  padding: 72px 0 32px calc(var(--tw) * 0.28);
+}
+
+.phh__grid {
+  display: grid;
+  gap: var(--tgap);
+  grid-auto-rows: var(--th);
+  grid-template-columns: repeat(4, var(--tw));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2-3-2 stagger that runs off the right edge */
+.phh-tile:nth-child(1) { grid-area: 1 / 1; }
+.phh-tile:nth-child(2) { grid-area: 1 / 2; }
+.phh-tile:nth-child(3) { grid-area: 2 / 2; }
+.phh-tile:nth-child(4) { grid-area: 2 / 3; }
+.phh-tile:nth-child(5) { grid-area: 2 / 4; }
+.phh-tile:nth-child(6) { grid-area: 3 / 1; }
+.phh-tile:nth-child(7) { grid-area: 3 / 2; }
+
+.phh-tile__inner {
+  background: var(--tile-bg);
+  clip-path: inset(0 0 0 0);
+  color: inherit;
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  transition: clip-path calc(1s * var(--phh-k)) var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + (180ms + var(--i) * 75ms) * var(--phh-k));
+}
+
+.phh-tile__media {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+  transition: transform calc(1.3s * var(--phh-k)) var(--phh-ease);
+  transition-delay: calc(var(--phh-delay) + (180ms + var(--i) * 75ms) * var(--phh-k));
+}
+
+.phh-tile__media {
+  padding: 5%;
+}
+
+/* Pose: where the image sits in its tile and how it is tilted. */
+.phh-tile__pose {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  transform: rotate(var(--tilt, 0deg));
+  width: 100%;
+}
+
+.phh-tile--bottom-left .phh-tile__pose { align-items: flex-end; justify-content: flex-start; }
+.phh-tile--bottom-right .phh-tile__pose { align-items: flex-end; justify-content: flex-end; }
+.phh-tile--top-left .phh-tile__pose { align-items: flex-start; justify-content: flex-start; }
+.phh-tile--top-right .phh-tile__pose { align-items: flex-start; justify-content: flex-end; }
+
+/* Half: the image hangs partly outside the tile. */
+.phh-tile--half-bottom .phh-tile__pose { align-items: flex-end; transform: translateY(48%) rotate(var(--tilt, 0deg)); }
+.phh-tile--half-left .phh-tile__pose { justify-content: flex-start; transform: translateX(-42%) rotate(var(--tilt, 0deg)); }
+.phh-tile--half-right .phh-tile__pose { justify-content: flex-end; transform: translateX(42%) rotate(var(--tilt, 0deg)); }
+
+.phh-tile__media img {
+  display: block;
+  filter: drop-shadow(0 14px 14px rgba(40, 30, 20, 0.16));
+  flex: none;
+  height: auto;
+  max-height: calc(var(--tile-scale) * 100%);
+  max-width: calc(var(--tile-scale) * 100%);
+  object-fit: contain;
+  transition: transform 0.7s var(--phh-ease);
+  width: auto;
+}
+
+/* Fill the tile (ingredients): the cut-out covers the whole tile; size zooms in. */
+.phh-tile--cover .phh-tile__media {
+  padding: 0;
+}
+
+.phh-tile--cover .phh-tile__pose {
+  transform: rotate(var(--tilt, 0deg)) scale(var(--tile-scale));
+}
+
+.phh-tile--cover .phh-tile__media img {
+  filter: none;
+  height: 100%;
+  max-height: none;
+  max-width: none;
+  object-fit: cover;
+  width: 100%;
+}
+
+.phh-tile__inner:hover .phh-tile__media img,
+.phh-tile__inner:focus-visible .phh-tile__media img {
+  transform: translateY(-5%) scale(1.05) rotate(-2deg);
+}
+
+.phh-tile__inner:focus-visible {
+  outline: 2px solid var(--phh-ink);
+  outline-offset: 3px;
+}
+
+.phh-tile__label {
+  bottom: 10px;
+  display: grid;
+  gap: 2px;
+  left: 12px;
+  opacity: 0;
+  position: absolute;
+  right: 12px;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.5s var(--phh-ease);
+}
+
+.phh-tile__inner:hover .phh-tile__label,
+.phh-tile__inner:focus-visible .phh-tile__label {
+  opacity: 1;
+  transform: none;
+}
+
+.phh-tile__kicker {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.phh-tile__name {
+  font-family: var(--phh-serif);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.05;
+}
+
+/* Vertical label on the tile's right edge, reading upwards, in a deep shade of the
+   tile's own colour (computed per tile in Liquid). Always visible; on hover it
+   strengthens and steps in a little. */
+.phh-tile__spine {
+  color: var(--spine, var(--phh-ink));
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  max-height: calc(100% - 20px);
+  overflow: hidden;
+  position: absolute;
+  right: 8px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  top: 10px;
+  transform: rotate(180deg);
+  transition: letter-spacing 0.5s var(--phh-ease), right 0.5s var(--phh-ease);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  z-index: 2;
+}
+
+/* Desktop: the label appears on hover / keyboard focus, sliding in from the edge.
+   Phones and touch screens (no hover): always shown. */
+.phh-tile__spine {
+  opacity: 0;
+  translate: 8px 0;
+}
+
+.phh-tile__inner:hover .phh-tile__spine,
+.phh-tile__inner:focus-visible .phh-tile__spine {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.phh-tile__spine {
+  transition: opacity 0.35s ease, translate 0.5s var(--phh-ease);
+}
+
+@media (hover: none), (max-width: 989px) {
+  .phh-tile__spine {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .phh-tile__spine {
+    font-size: 8.5px;
+    letter-spacing: 0.16em;
+    right: 5px;
+    top: 7px;
+  }
+}
+
+/* ---------- Intro: start states ---------- */
+.phh.is-pre .phh__line > span {
+  transform: translateY(108%);
+}
+
+.phh.is-pre .phh__accent {
+  opacity: 0;
+  transform: translateY(14px) rotate(-4deg);
+}
+
+.phh.is-pre .phh__slogan,
+.phh.is-pre .phh__actions,
+.phh.is-pre .phh__trust {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.phh--fast {
+  --phh-k: 0.6;
+}
+
+.phh--fast .phh-loader {
+  transition-duration: 0.5s;
+}
+
+.phh--fast .phh-loader__fill {
+  transition-duration: 0.57s;
+}
+
+/* 5. Labels always visible on phones and touch screens */
+@media (hover: none), (max-width: 989px) {
+  .phh--labels-touch .phh-tile__label {
+    display: grid;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.phh.is-pre .phh-tile__inner {
+  clip-path: inset(100% 0 0 0);
+}
+
+.phh.is-pre .phh-tile__media {
+  transform: translateY(12%) scale(1.18);
+}
+
+/* Header fades in with the hero. */
+html.pf-intro-pre perfume-header {
+  opacity: 0;
+}
+
+perfume-header {
+  transition: opacity 0.9s ease 0.35s;
+}
+
+/* ---------- Preloader (first visit per session) ---------- */
+.phh-loader {
+  background: var(--phh-left);
+  inset: 0;
+  position: fixed;
+  transition: transform 0.85s var(--phh-ease-io);
+  z-index: 100;
+}
+
+.phh-loader__fill {
+  background: var(--phh-loader);
+  inset: 0;
+  position: absolute;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.95s var(--phh-ease-io);
+}
+
+.phh.is-loading .phh-loader__fill {
+  transform: scaleY(1);
+}
+
+.phh.is-lifting .phh-loader {
+  transform: translateY(-100%);
+}
+
+/* ---------- Dot cursor (mouse only) ---------- */
+.phh-cursor {
+  height: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: opacity 0.3s ease;
+  width: 0;
+  z-index: 60;
+}
+
+.phh-cursor.is-on {
+  opacity: 1;
+}
+
+.phh-cursor::before {
+  background: var(--phh-ink);
+  border-radius: 50%;
+  content: '';
+  height: 76px;
+  left: -38px;
+  position: absolute;
+  top: -38px;
+  transform: scale(0.16);
+  transition: transform 0.45s var(--phh-ease);
+  width: 76px;
+}
+
+.phh-cursor.is-big::before {
+  transform: scale(1);
+}
+
+.phh-cursor__label {
+  color: var(--phh-left);
+  font-size: 12px;
+  font-weight: 500;
+  left: 0;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.25s ease;
+  white-space: nowrap;
+}
+
+.phh-cursor.is-big .phh-cursor__label {
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+/* ---------- Tablet: stacked ---------- */
+@media screen and (max-width: 989px) {
+  .phh {
+    --tw: 21vw;
+    --phh-gutter: 16px;
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .phh__left {
+    padding-top: calc(100px + var(--pf-ann-h, 0px));
+  }
+
+  .phh__slogan {
+    margin-top: 0;
+  }
+
+  .phh__right {
+    padding: 28px 0 40px var(--phh-gutter);
+  }
+
+  .phh:not(.phh--labels-touch) .phh-tile__label {
+    display: none;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media screen and (max-width: 749px) {
+  .phh {
+    --tw: 30vw;
+    --tgap: 2.2vw;
+  }
+
+  .phh__heading {
+    font-size: var(--phh-h-m);
+  }
+
+  .phh__accent {
+    font-size: 34px;
+    margin-top: 20px;
+  }
+
+  .phh__slogan {
+    font-size: 16px;
+    padding-top: 24px;
+  }
+
+  .phh__right {
+    padding: 20px 0 32px 3vw;
+  }
+
+  .phh--labels-touch .phh-tile__label {
+    background: color-mix(in srgb, var(--tile-bg) 82%, transparent);
+    bottom: 6px;
+    left: 6px;
+    padding: 4px 6px;
+    right: 6px;
+  }
+
+  .phh--labels-touch .phh-tile__kicker {
+    font-size: 8px;
+  }
+
+  .phh--labels-touch .phh-tile__name {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phh *,
+  .phh *::before {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+
+  .phh-cursor {
+    display: none;
+  }
+}

@@ -1,0 +1,169 @@
+{%- comment -%}
+  Where to buy: every honest way to get the perfume, Samyó first.
+  1. Samyó (when sold here): sizes with ₱ prices and stock, Add to bag (adds in place
+     and opens the cart drawer; assets/perfume-card.js).
+  2. The brand's own website: a plain link, or an affiliate link when one is set
+     (labelled "Affiliate link").
+  3. Partner retailers: retailer_offer metaobjects (merchant, verified price and date,
+     availability) and CJ feed offers (samyo.affiliate_offers). Affiliate links are
+     labelled, rel="sponsored", and the disclosure shows under the list; plain links
+     are not labelled. Nothing is invented: what isn't verified isn't shown.
+
+  Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign bid = 'PerfumeBuy-' | append: section.id
+  assign name = profile.name.value | default: product.title
+  assign sold = product
+  if sold == blank
+    assign sold = profile.products.value.first
+  endif
+  assign offers = profile.offers.value
+  assign cj = sold.metafields.samyo.affiliate_offers.value
+  assign cj_retailer = sold.metafields.samyo.retailer.value | default: 'Partner'
+  assign cj_checked = sold.metafields.samyo.price_checked.value
+  assign any_aff = false
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+{{ 'perfume-card.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-card.js' | asset_url }}" defer="defer"></script>
+
+<section id="{{ bid }}" class="pwb" style="--pwb-bg: {{ section.settings.background_color }}; --pwb-ink: {{ section.settings.text_color }};" aria-labelledby="{{ bid }}-h">
+  <span class="pd-anchor" id="where-to-buy"></span>
+  <div class="pd-head">
+    <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+    <h2 class="pd-h" id="{{ bid }}-h">{{ section.settings.heading | replace: '[name]', name | escape }}</h2>
+  </div>
+
+  <div class="pwb__list">
+    {%- if sold != blank and cj == blank -%}
+      {%- assign v0 = sold.selected_or_first_available_variant -%}
+      {%- assign form_id = 'PerfumeBuyForm-' | append: section.id -%}
+      <article class="pwb__row pwb__row--samyo">
+        <div class="pwb__who">
+          <p class="pwb__merchant">Samyó</p>
+          <p class="pwb__meta">{{ section.settings.samyo_note | escape }}</p>
+        </div>
+        {%- form 'product', sold, id: form_id, class: 'pwb__form', data-pcard-add: 'true' -%}
+          <div class="pwb__sizes" role="radiogroup" aria-label="Size">
+            {%- for v in sold.variants -%}
+              <label class="pwb__size{% unless v.available %} is-out{% endunless %}">
+                <input type="radio" name="id" value="{{ v.id }}" {% if v.id == v0.id %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
+                <span>
+                  {%- unless sold.has_only_default_variant -%}<b>{{ v.title | escape }}</b>{%- endunless -%}
+                  {{ v.price | money }}{% unless v.available %} · Sold out{% endunless %}
+                </span>
+              </label>
+            {%- endfor -%}
+          </div>
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="pf-button pwb__btn"{% unless sold.available %} disabled{% endunless %}>
+            <span data-pcard-label>{% if sold.available %}Add to bag{% else %}Sold out{% endif %}</span>
+          </button>
+        {%- endform -%}
+      </article>
+    {%- endif -%}
+
+    {%- if profile.brand_url.value != blank or profile.brand_affiliate_url.value != blank -%}
+      {%- liquid
+        assign b_url = profile.brand_affiliate_url.value | default: profile.brand_url.value
+        assign b_aff = false
+        if profile.brand_affiliate_url.value != blank
+          assign b_aff = true
+          assign any_aff = true
+        endif
+        assign b_name = profile.brand.value | default: 'the brand'
+      -%}
+      <article class="pwb__row">
+        <div class="pwb__who">
+          <p class="pwb__merchant">{{ b_name | escape }} official</p>
+          <p class="pwb__meta">{{ section.settings.brand_note | escape }}</p>
+        </div>
+        <div class="pwb__end">
+          {%- if b_aff -%}<span class="pd-chip">Affiliate link</span>{%- endif -%}
+          <a class="pwb__link" href="{{ b_url }}" target="_blank" rel="{% if b_aff %}sponsored {% endif %}nofollow noopener">Visit ↗<span class="pf-visually-hidden"> (opens a new tab)</span></a>
+        </div>
+      </article>
+    {%- endif -%}
+
+    {%- for o in offers -%}
+      {%- liquid
+        assign o_aff = false
+        if o.is_affiliate_approved.value and o.affiliate_url.value != blank
+          assign o_aff = true
+          assign any_aff = true
+        endif
+        assign o_url = o.url.value
+        if o_aff
+          assign o_url = o.affiliate_url.value
+        endif
+      -%}
+      {%- if o_url != blank -%}
+        <article class="pwb__row">
+          <div class="pwb__who">
+            <p class="pwb__merchant">{{ o.merchant.value | escape }}</p>
+            <p class="pwb__meta">
+              {%- if o.price.value != blank -%}{{ o.price.value }}{%- endif -%}
+              {%- if o.availability.value != blank %} · {{ o.availability.value | escape }}{% endif -%}
+              {%- if o.verified_on.value != blank %} · checked {{ o.verified_on.value | date: '%-d %b %Y' }}{% endif -%}
+            </p>
+          </div>
+          <div class="pwb__end">
+            {%- if o_aff -%}<span class="pd-chip">Affiliate link</span>{%- endif -%}
+            <a class="pwb__link" href="{{ o_url }}" target="_blank" rel="{% if o_aff %}sponsored {% endif %}nofollow noopener">Visit ↗<span class="pf-visually-hidden"> (opens a new tab)</span></a>
+          </div>
+        </article>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if cj != blank and cj.size > 0 -%}
+      {%- assign any_aff = true -%}
+      <article class="pwb__row">
+        <div class="pwb__who">
+          <p class="pwb__merchant">{{ cj_retailer | escape }}</p>
+          <p class="pwb__meta">
+            {%- for o in cj -%}{{ o.size | escape }} {{ o.price | escape }}{% if o.in_stock == false %} (out of stock){% endif %}{% unless forloop.last %} · {% endunless %}{%- endfor -%}
+            {%- if cj_checked != blank %} · checked {{ cj_checked | date: '%-d %b %Y' }}{% endif -%}
+          </p>
+        </div>
+        <div class="pwb__end">
+          <span class="pd-chip">Affiliate link</span>
+          <a class="pwb__link" href="{{ cj.first.url }}" target="_blank" rel="sponsored nofollow noopener">Visit ↗<span class="pf-visually-hidden"> (opens a new tab)</span></a>
+        </div>
+      </article>
+    {%- endif -%}
+
+    {%- if sold == blank and offers == blank and profile.brand_url.value == blank -%}
+      <p class="pd-basis">{{ section.settings.none_text | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if any_aff and section.settings.disclosure != blank -%}
+    <p class="pd-basis pwb__disclosure">{{ section.settings.disclosure | escape }}</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Where to buy",
+  "tag": "div",
+  "class": "section-perfume-where",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Where to buy" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "Get [name]" },
+    { "type": "text", "id": "samyo_note", "label": "Samyó line", "default": "Authentic, shipped from the Philippines" },
+    { "type": "text", "id": "brand_note", "label": "Brand line", "default": "The brand's own website" },
+    { "type": "text", "id": "none_text", "label": "Nothing to show", "default": "No verified place to buy yet." },
+    { "type": "textarea", "id": "disclosure", "label": "Affiliate disclosure", "default": "Some links are affiliate links: if you buy through them we may earn a commission, at no extra cost to you. Prices and stock on other sites can change." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "Where to buy" }]
+}
+{% endschema %}

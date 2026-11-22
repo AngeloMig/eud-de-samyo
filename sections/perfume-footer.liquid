@@ -1,0 +1,199 @@
+{%- comment -%}
+  Perfume footer (NOHO-style). Put it in the footer group (sections/footer-group.json).
+
+  Sand background, revealed from under the page as you scroll (the footer's content
+  starts a little lower and settles as it comes into view). Top: a full-width email
+  bar (Shopify customer form, tagged "newsletter"). Then columns (blocks: a menu or a
+  text column), "Back to top" on the right, a giant wordmark across the full width
+  whose letters rise in, and a bottom row with the legal menu, payment icons and a
+  credit line.
+
+  Script: assets/perfume-footer.js (<perfume-footer>). Styles: assets/perfume-footer.css.
+{%- endcomment -%}
+{%- liquid
+  assign fid = 'PerfumeFooter-' | append: section.id
+  assign wordmark = section.settings.wordmark | default: shop.name
+  assign wordmark_length = wordmark | size
+  assign wm_logo = false
+  if section.settings.wordmark_style == 'logo'
+    assign wm_logo = true
+    assign wm_words = wordmark | split: ' '
+    assign wm_last = wm_words | last
+    assign wm_prefix = wordmark | remove_last: wm_last | strip
+    assign wm_last_len = wm_last | size
+    assign wm_prefix_len = wm_prefix | size
+    assign wordmark_length = wm_prefix_len | times: 0.4 | plus: wm_last_len | plus: 1.6
+  endif
+  if wordmark_length < 4
+    assign wordmark_length = 4
+  endif
+-%}
+
+{{ 'perfume-footer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-footer.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ fid }} {
+    --pfo-bg: {{ section.settings.background_color }};
+    --pfo-ink: {{ section.settings.text_color }};
+    --pfo-len: {{ wordmark_length }};
+  }
+{%- endstyle -%}
+
+<perfume-footer id="{{ fid }}" class="pfo" data-reveal="{{ section.settings.reveal }}">
+  <div class="pfo__inner" data-pfo-inner>
+    {%- if section.settings.show_newsletter -%}
+      {%- form 'customer', id: 'PerfumeFooterNewsletter', class: 'pfo-news' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="pf-visually-hidden" for="PerfumeFooterEmail-{{ section.id }}">{{ section.settings.email_placeholder | escape }}</label>
+        <input
+          id="PerfumeFooterEmail-{{ section.id }}"
+          class="pfo-news__input"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+          placeholder="{{ section.settings.email_placeholder | escape }}"
+          {% if form.errors %}aria-invalid="true" aria-describedby="PerfumeFooterNews-msg"{% endif %}
+        >
+        <button type="submit" class="pfo-news__button">
+          <span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ section.settings.subscribe_label | escape }}">{{ section.settings.subscribe_label | escape }}</span></span>
+        </button>
+        {%- if form.posted_successfully? -%}
+          <p class="pfo-news__msg" id="PerfumeFooterNews-msg" role="status">{{ section.settings.success_message | escape }}</p>
+        {%- elsif form.errors -%}
+          <p class="pfo-news__msg pfo-news__msg--error" id="PerfumeFooterNews-msg" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    {%- endif -%}
+
+    <div class="pfo__cols">
+      {%- for block in section.blocks -%}
+        <div class="pfo-col" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}
+            <p class="pfo-col__heading">{{ block.settings.heading | escape }}</p>
+          {%- endif -%}
+          {%- case block.type -%}
+            {%- when 'menu' -%}
+              <ul class="pfo-col__list" role="list">
+                {%- for link in block.settings.menu.links -%}
+                  <li><a class="pfo-link" href="{{ link.url }}"><span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ link.title | escape }}">{{ link.title | escape }}</span></span></a></li>
+                {%- endfor -%}
+              </ul>
+            {%- when 'text' -%}
+              <div class="pfo-col__text">{{ block.settings.text }}</div>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+
+      {%- if section.settings.show_back_to_top -%}
+        <a class="pfo-top pfo-link" href="#MainContent" data-pfo-top>
+          <span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ section.settings.back_to_top_label | escape }}">{{ section.settings.back_to_top_label | escape }}</span></span>
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 14V2M3 7l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if wordmark != blank -%}
+      <p class="pfo-wordmark{% if wm_logo %} pfo-wordmark--logo{% endif %}" aria-hidden="true" data-pfo-wordmark>
+        {%- assign chars = wordmark | split: '' -%}
+        {%- if wm_logo -%}
+          {%- if wm_prefix != blank -%}<span class="pfo-wordmark__pre"><span>{{ wm_prefix | escape }}</span></span>{%- endif -%}
+          {%- assign chars = wm_last | split: '' -%}
+        {%- endif -%}
+        {%- for ch in chars -%}
+          {%- if ch == ' ' -%}<span class="pfo-wordmark__space"> </span>{%- else -%}<span class="pfo-wordmark__ch" style="--i: {{ forloop.index0 }};"><span>{{ ch | escape }}</span></span>{%- endif -%}
+        {%- endfor -%}
+      </p>
+    {%- endif -%}
+
+    <div class="pfo__bottom">
+      <ul class="pfo__legal" role="list">
+        <li>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</li>
+        {%- for link in section.settings.legal_menu.links -%}
+          <li><a class="pfo-link" href="{{ link.url }}">{{ link.title | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="pfo__payments" role="list">
+          {%- for type in shop.enabled_payment_types -%}
+            <li>{{ type | payment_type_svg_tag: class: 'pfo__payment' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+      {%- if section.settings.credit != blank -%}
+        <p class="pfo__credit">{{ section.settings.credit | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</perfume-footer>
+
+{% schema %}
+{
+  "name": "Perfume footer",
+  "tag": "footer",
+  "class": "section-perfume-footer",
+  "enabled_on": { "groups": ["footer"] },
+  "max_blocks": 4,
+  "settings": [
+    { "type": "header", "content": "Newsletter" },
+    { "type": "checkbox", "id": "show_newsletter", "label": "Show email signup", "info": "Signups become customers tagged newsletter (Customers in Shopify admin).", "default": true },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Your email, for new arrivals and scent notes" },
+    { "type": "text", "id": "subscribe_label", "label": "Button label", "default": "Subscribe" },
+    { "type": "text", "id": "success_message", "label": "Thank-you message", "default": "Thank you. You're on the list." },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "checkbox", "id": "show_back_to_top", "label": "Show Back to top", "default": true },
+    { "type": "text", "id": "back_to_top_label", "label": "Back to top label", "default": "Back to top" },
+    { "type": "text", "id": "wordmark", "label": "Giant wordmark", "info": "Fills the footer's width. Falls back to the store name.", "default": "eau de samyó" },
+    {
+      "type": "select",
+      "id": "wordmark_style",
+      "label": "Wordmark lettering",
+      "options": [
+        { "value": "logo", "label": "Like the logo: small italic prefix, last word in Italiana" },
+        { "value": "serif", "label": "All in the serif" }
+      ],
+      "default": "logo"
+    },
+    { "type": "link_list", "id": "legal_menu", "label": "Legal menu", "default": "footer" },
+    { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
+    { "type": "text", "id": "credit", "label": "Credit line", "default": "Authentic fragrances, delivered across the Philippines" },
+    { "type": "checkbox", "id": "reveal", "label": "Reveal from under the page on scroll", "default": true },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#D8D1C5" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Contact us" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>hello@samyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume footer",
+      "blocks": [
+        { "type": "text", "settings": { "heading": "Contact us" } },
+        { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
+        { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

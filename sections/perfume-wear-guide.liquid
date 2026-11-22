@@ -1,0 +1,281 @@
+{%- comment -%}
+  When to wear it: day or night, Philippine weather, occasions.
+  Researched after how fragrance databases show "when" (day/night and season bars),
+  rebuilt for the tropics: instead of four seasons, the four situations that matter
+  here.
+
+  - Day ↔ Night: a sun-to-moon line with a marker.
+  - "Made for your climate?": a selector (Hot day · Office · Rainy day · Evening).
+    Each situation opens a panel: suitability (Great / Good / Careful), why, the
+    characteristics that help, how to apply, and when it may feel overwhelming.
+  - Occasions: six drawn cards; choosing one explains why it suits (or doesn't).
+  All editorial, labelled with the basis. Rich data (climate_fit, occasion_fit)
+  wins; the simple Phase 1 ratings still work; nothing set says "Not assessed yet".
+  Every panel is in the HTML; JS only switches them.
+
+  Data: docs/METAFIELDS.md. Script: assets/perfume-discovery.js (<perfume-tabs>).
+  Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign wid = 'PerfumeWear-' | append: section.id
+  assign name = profile.name.value | default: product.title
+  assign na = section.settings.not_assessed
+  assign dn = profile.day_night.value
+  assign basis = profile.wear_basis.value
+  assign fits = profile.climate.value
+  assign occ_fits = profile.occasion_fits.value
+  assign occ = profile.occasions.value | default: product.metafields.fragrance.best_occasions.value
+  assign occ_join = occ | join: '|' | downcase
+  assign dn_pos = ''
+  case dn
+    when 'Day'
+      assign dn_pos = 12
+    when 'Day and night'
+      assign dn_pos = 50
+    when 'Night'
+      assign dn_pos = 88
+  endcase
+  assign top_traits = ''
+  for t in profile.characteristics.value limit: 3
+    assign top_traits = top_traits | append: t.accord.value
+    unless forloop.last
+      assign top_traits = top_traits | append: ', '
+    endunless
+  endfor
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+<section id="{{ wid }}" class="pwr" style="--pwr-bg: {{ section.settings.background_color }}; --pwr-ink: {{ section.settings.text_color }};" aria-labelledby="{{ wid }}-h">
+  <span class="pd-anchor" id="best-for"></span>
+  <div class="pd-head" data-pf-reveal="rise">
+    <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+    <h2 class="pd-h" id="{{ wid }}-h">{{ section.settings.heading | replace: '[name]', name | escape }}</h2>
+    <p class="pd-basis">{% if basis != blank %}<b>Basis</b> {{ basis | escape }}. {% endif %}{{ section.settings.basis_note | escape }}</p>
+  </div>
+
+  <div class="pwr__grid">
+    {%- comment -%} Made for your climate? {%- endcomment -%}
+    <perfume-tabs class="pwr__card pwr__card--climate" data-pf-reveal="rise">
+      <h3 class="pwr__title">{{ section.settings.climate_title | escape }}</h3>
+      <div class="pwr__tabs" role="tablist" aria-label="{{ section.settings.climate_title | escape }}">
+        {%- for c in (1..4) -%}
+          {%- liquid
+            case c
+              when 1
+                assign c_key = 'Hot day'
+                assign c_label = section.settings.hot_label
+                assign c_simple = profile.climate_hot_day.value
+              when 2
+                assign c_key = 'Office'
+                assign c_label = section.settings.office_label
+                assign c_simple = profile.climate_office.value
+              when 3
+                assign c_key = 'Rainy day'
+                assign c_label = section.settings.rainy_label
+                assign c_simple = profile.climate_rainy.value
+              else
+                assign c_key = 'Evening'
+                assign c_label = section.settings.evening_label
+                assign c_simple = profile.climate_evening.value
+            endcase
+            assign c_val = c_simple
+            for f in fits
+              if f.scenario.value == c_key
+                assign c_val = f.suitability.value
+              endif
+            endfor
+            assign c_class = 'is-empty'
+            case c_val
+              when 'Great'
+                assign c_class = 'is-great'
+              when 'Good'
+                assign c_class = 'is-good'
+              when 'Careful'
+                assign c_class = 'is-careful'
+            endcase
+          -%}
+          <button type="button" class="pwr__tab {{ c_class }}" role="tab" id="{{ wid }}-ct{{ c }}" aria-controls="{{ wid }}-cp{{ c }}" aria-selected="{% if c == 1 %}true{% else %}false{% endif %}">
+            <span class="pwr__tab-icon" aria-hidden="true">
+              {%- case c -%}
+                {%- when 1 -%}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+                {%- when 2 -%}<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="7" rx="1.5"/><path d="M6 15c0 2 1 3 1 5M12 15v5M18 15c0 2-1 3-1 5"/></svg>
+                {%- when 3 -%}<svg viewBox="0 0 24 24"><path d="M7 15a4 4 0 0 1 0-8 5 5 0 0 1 9.6 1.4A3.5 3.5 0 0 1 17 15Z"/><path d="M8 18l-1 3M12 18l-1 3M16 18l-1 3"/></svg>
+                {%- else -%}<svg viewBox="0 0 24 24"><path d="M3 18h18M6 18a6 6 0 0 1 12 0"/><path d="M12 6v3M5.6 9.6l1.8 1.8M18.4 9.6l-1.8 1.8"/></svg>
+              {%- endcase -%}
+            </span>
+            <span class="pwr__tab-label">{{ c_label | escape }}</span>
+            <span class="pwr__tab-val">{{ c_val | default: '—' | escape }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="pwr__panels" data-tabs-panels>
+        {%- for c in (1..4) -%}
+          {%- liquid
+            case c
+              when 1
+                assign c_key = 'Hot day'
+                assign c_label = section.settings.hot_label
+                assign c_simple = profile.climate_hot_day.value
+              when 2
+                assign c_key = 'Office'
+                assign c_label = section.settings.office_label
+                assign c_simple = profile.climate_office.value
+              when 3
+                assign c_key = 'Rainy day'
+                assign c_label = section.settings.rainy_label
+                assign c_simple = profile.climate_rainy.value
+              else
+                assign c_key = 'Evening'
+                assign c_label = section.settings.evening_label
+                assign c_simple = profile.climate_evening.value
+            endcase
+            assign fit = nil
+            for f in fits
+              if f.scenario.value == c_key
+                assign fit = f
+              endif
+            endfor
+            assign c_val = fit.suitability.value | default: c_simple
+            assign c_class = 'is-empty'
+            case c_val
+              when 'Great'
+                assign c_class = 'is-great'
+              when 'Good'
+                assign c_class = 'is-good'
+              when 'Careful'
+                assign c_class = 'is-careful'
+            endcase
+            assign helps = fit.helps.value
+            if helps == blank and c_val != blank
+              assign helps = top_traits
+            endif
+          -%}
+          <div class="pwr__panel {{ c_class }}" role="tabpanel" id="{{ wid }}-cp{{ c }}" aria-labelledby="{{ wid }}-ct{{ c }}" data-tab-panel>
+            <p class="pwr__verdict"><span>{{ c_label | escape }}</span> {{ c_val | default: na | escape }}</p>
+            {%- if fit.why.value != blank -%}<p class="pwr__why">{{ fit.why.value | escape }}</p>{%- endif -%}
+            <dl class="pwr__facts">
+              {%- if helps != blank -%}<div><dt>{{ section.settings.helps_label | escape }}</dt><dd>{{ helps | escape }}</dd></div>{%- endif -%}
+              {%- if fit.apply.value != blank -%}<div><dt>{{ section.settings.apply_label | escape }}</dt><dd>{{ fit.apply.value | escape }}</dd></div>{%- endif -%}
+              {%- if fit.watch_out.value != blank -%}<div><dt>{{ section.settings.watch_label | escape }}</dt><dd>{{ fit.watch_out.value | escape }}</dd></div>{%- endif -%}
+            </dl>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if profile.wear_note.value != blank -%}<p class="pwr__note">{{ profile.wear_note.value | escape }}</p>{%- endif -%}
+    </perfume-tabs>
+
+    {%- comment -%} Day or night {%- endcomment -%}
+    <div class="pwr__card pwr__card--dn" data-pf-reveal="rise">
+      <h3 class="pwr__title">{{ section.settings.dn_title | escape }}</h3>
+      <div class="pwr__dn{% if dn_pos == '' %} is-empty{% endif %}" {% if dn_pos != '' %}style="--pos: {{ dn_pos }}%;"{% endif %} aria-hidden="true">
+        <svg class="pwr__sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+        <span class="pwr__dn-line"><i></i></span>
+        <svg class="pwr__moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      </div>
+      <p class="pwr__value{% if dn == blank %} is-empty{% endif %}">{{ dn | default: na | escape }}</p>
+    </div>
+
+    {%- comment -%} Occasions {%- endcomment -%}
+    <perfume-tabs class="pwr__card pwr__card--occ" data-pf-reveal="rise">
+      <h3 class="pwr__title">{{ section.settings.occ_title | escape }}</h3>
+      {%- assign occ_all = 'Everyday,Office,Date night,Formal,Casual,Special occasions' | split: ',' -%}
+      <div class="pwr__occ" role="tablist" aria-label="{{ section.settings.occ_title | escape }}">
+        {%- for o in occ_all -%}
+          {%- liquid
+            assign o_key = o | downcase
+            assign o_fit = ''
+            for f in occ_fits
+              if f.occasion.value == o
+                assign o_fit = f.fit.value
+              endif
+            endfor
+            if o_fit == blank and occ_join contains o_key
+              assign o_fit = 'Good'
+            endif
+            assign o_class = ''
+            case o_fit
+              when 'Great'
+                assign o_class = 'is-on is-great'
+              when 'Good'
+                assign o_class = 'is-on'
+              when 'Not ideal'
+                assign o_class = 'is-no'
+            endcase
+          -%}
+          <button type="button" class="pwr__o {{ o_class }}" role="tab" id="{{ wid }}-ot{{ forloop.index }}" aria-controls="{{ wid }}-op{{ forloop.index }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span class="pwr__o-icon" aria-hidden="true">
+              {%- case forloop.index -%}
+                {%- when 1 -%}<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 9h16M9 3v4M15 3v4"/></svg>
+                {%- when 2 -%}<svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M9 8V5h6v3"/></svg>
+                {%- when 3 -%}<svg viewBox="0 0 24 24"><path d="M8 3h8l-1 7a3 3 0 0 1-6 0zM12 13v7M8 21h8"/></svg>
+                {%- when 4 -%}<svg viewBox="0 0 24 24"><path d="M12 3l3 4-3 3-3-3zM9 7l-4 13h14L15 7"/></svg>
+                {%- when 5 -%}<svg viewBox="0 0 24 24"><path d="M4 18c3-6 6-9 8-9s5 3 8 9"/><circle cx="12" cy="6" r="2"/></svg>
+                {%- else -%}<svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 15.6 7 18.2l1-5.5-4-3.9 5.5-.8z"/></svg>
+              {%- endcase -%}
+            </span>
+            <span class="pwr__o-name">{{ o }}</span>
+            <span class="pwr__o-fit">{{ o_fit | default: '—' }}</span>
+          </button>
+        {%- endfor -%}
+      </div>
+      <div class="pwr__panels" data-tabs-panels>
+        {%- for o in occ_all -%}
+          {%- liquid
+            assign o_key = o | downcase
+            assign o_fit = ''
+            assign o_why = ''
+            for f in occ_fits
+              if f.occasion.value == o
+                assign o_fit = f.fit.value
+                assign o_why = f.why.value
+              endif
+            endfor
+            if o_fit == blank and occ_join contains o_key
+              assign o_fit = 'Good'
+            endif
+          -%}
+          <div class="pwr__panel pwr__panel--occ" role="tabpanel" id="{{ wid }}-op{{ forloop.index }}" aria-labelledby="{{ wid }}-ot{{ forloop.index }}" data-tab-panel>
+            <p class="pwr__verdict"><span>{{ o }}</span> {{ o_fit | default: na | escape }}</p>
+            {%- if o_why != blank -%}<p class="pwr__why">{{ o_why | escape }}</p>{%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </perfume-tabs>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "When to wear it",
+  "tag": "div",
+  "class": "section-perfume-wear",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "When to wear it" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "Made for your day, and your climate?" },
+    { "type": "text", "id": "basis_note", "label": "Basis note", "default": "Our recommendation, not a guarantee: skin and weather change every scent." },
+    { "type": "text", "id": "not_assessed", "label": "Not assessed text", "default": "Not assessed yet" },
+    { "type": "text", "id": "climate_title", "label": "Climate title", "default": "Made for your climate?" },
+    { "type": "text", "id": "hot_label", "label": "Hot day label", "default": "Hot day" },
+    { "type": "text", "id": "office_label", "label": "Office label", "default": "Office" },
+    { "type": "text", "id": "rainy_label", "label": "Rainy day label", "default": "Rainy day" },
+    { "type": "text", "id": "evening_label", "label": "Evening label", "default": "Evening" },
+    { "type": "text", "id": "helps_label", "label": "Helps label", "default": "What helps" },
+    { "type": "text", "id": "apply_label", "label": "Apply label", "default": "How to apply" },
+    { "type": "text", "id": "watch_label", "label": "Watch-out label", "default": "May feel too much when" },
+    { "type": "text", "id": "dn_title", "label": "Day / night title", "default": "Day or night" },
+    { "type": "text", "id": "occ_title", "label": "Occasions title", "default": "Best for" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#EAE4F0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "When to wear it" }]
+}
+{% endschema %}

@@ -1,75 +1,710 @@
+/*
+ * Samyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
+ * Settings > Files with the same names before using this template.
+ */
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "perfume-hero",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "tile_1": {
+          "type": "tile",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "background_color": "#CFD7E1",
+            "image_fit": "contain",
+            "image_position": "center",
+            "image_scale": 80,
+            "image_tilt": 0,
+            "link": "/products/dior-sauvage-eau-de-parfum",
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
+            "kicker": "Dior",
+            "label": "Sauvage Eau de Parfum",
+            "spine_text": "Dior · Sauvage"
           }
         },
-        "button": {
-          "type": "buttons",
+        "tile_2": {
+          "type": "tile",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "sample": "scent-lemon",
+            "background_color": "#F2E27E",
+            "kicker": "Top note",
+            "label": "Lemon",
+            "image_fit": "cover",
+            "image_scale": 100,
+            "link": "/collections/fresh-citrus",
+            "spine_text": "Top note · Lemon"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "background_color": "#F0C2B2",
+            "image_fit": "contain",
+            "image_position": "center",
+            "image_scale": 80,
+            "image_tilt": 0,
+            "link": "/products/emporio-armani-stronger-with-you-intensely",
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
+            "kicker": "Emporio Armani",
+            "label": "Stronger With You Intensely",
+            "spine_text": "Armani · Stronger With You"
+          }
+        },
+        "tile_4": {
+          "type": "tile",
+          "settings": {
+            "sample": "scent-cinnamon",
+            "background_color": "#E2A07E",
+            "kicker": "Heart note",
+            "label": "Cinnamon",
+            "image_fit": "cover",
+            "image_scale": 100,
+            "link": "/collections/warm-spicy",
+            "spine_text": "Heart note · Cinnamon"
+          }
+        },
+        "tile_5": {
+          "type": "tile",
+          "settings": {
+            "background_color": "#DCD6E4",
+            "image_fit": "contain",
+            "image_position": "center",
+            "image_scale": 80,
+            "image_tilt": 0,
+            "link": "/products/dior-homme-intense",
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
+            "kicker": "Dior",
+            "label": "Homme Intense",
+            "spine_text": "Dior · Homme Intense"
+          }
+        },
+        "tile_6": {
+          "type": "tile",
+          "settings": {
+            "sample": "scent-vanilla",
+            "background_color": "#EFE6D2",
+            "kicker": "Base note",
+            "label": "Vanilla",
+            "image_fit": "cover",
+            "image_scale": 110,
+            "link": "/collections/sweet-creamy",
+            "spine_text": "Base note · Vanilla"
+          }
+        },
+        "tile_7": {
+          "type": "tile",
+          "settings": {
+            "background_color": "#EAD8C2",
+            "image_fit": "contain",
+            "image_position": "center",
+            "image_scale": 80,
+            "image_tilt": 0,
+            "link": "/products/dolce-gabbana-the-one",
+            "image": "shopify://shop_images/samyo-dg-the-one.webp",
+            "kicker": "Dolce & Gabbana",
+            "label": "The One",
+            "spine_text": "D&G · The One"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_5",
+        "tile_4",
+        "tile_6",
+        "tile_7"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "button_label": "Shop fragrances",
+        "button2_label": "Find your scent",
+        "labels_on_touch": true,
+        "intro_speed": "normal",
+        "button_link": "/collections/all",
+        "button2_link": "/pages/find-your-scent",
+        "show_preloader": true,
+        "heading": "Find the perfume\nthat smells\nlike you",
+        "slogan": "Designer fragrances, delivered across the Philippines",
+        "trust_points": "100% authentic designer fragrances\nSecure checkout\nScent notes for every perfume, before you buy",
+        "label_style": "spine"
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "showcase": {
+      "type": "perfume-showcase",
+      "blocks": {
+        "perfume_1": {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dior",
+            "title": "Sauvage",
+            "concentration": "Eau de Parfum",
+            "description": "Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.",
+            "caption": "fresh, spicy & smooth",
+            "placeholder_shape": "square",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Bergamot",
+            "note_1_art": "bergamot",
+            "note_2_label": "Sichuan pepper",
+            "note_2_art": "pepper",
+            "note_3_label": "Lavender",
+            "note_3_art": "lavender",
+            "note_4_label": "Vanilla",
+            "note_4_art": "vanilla",
+            "background_color": "#D6DDE5",
+            "accent_color": "#BCC8D5",
+            "text_color": "#1F2A36",
+            "liquid_color": "#6F8AA6",
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
+            "notes_line": "bergamot, Sichuan pepper, lavender & vanilla"
+          }
+        },
+        "perfume_2": {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dior",
+            "title": "Dior Homme Intense",
+            "concentration": "Eau de Parfum",
+            "description": "Powdery and woody: iris and lavender over vetiver and cedar.",
+            "caption": "powdery iris, dark woods",
+            "placeholder_shape": "column",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Lavender",
+            "note_1_art": "lavender",
+            "note_2_label": "Iris",
+            "note_2_art": "iris",
+            "note_3_label": "Vetiver",
+            "note_3_art": "vetiver",
+            "note_4_label": "Cedar",
+            "note_4_art": "cedar",
+            "background_color": "#DFD9E6",
+            "accent_color": "#CCC1DA",
+            "text_color": "#2A2233",
+            "liquid_color": "#D9B25A",
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp"
+          }
+        },
+        "perfume_3": {
+          "type": "perfume",
+          "settings": {
+            "brand": "Dolce & Gabbana",
+            "title": "The One",
+            "concentration": "",
+            "description": "Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.",
+            "caption": "warm tobacco & spice",
+            "placeholder_shape": "square",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Grapefruit",
+            "note_1_art": "grapefruit",
+            "note_2_label": "Cardamom",
+            "note_2_art": "cardamom",
+            "note_3_label": "Tobacco",
+            "note_3_art": "tobacco",
+            "note_4_label": "Amber",
+            "note_4_art": "amber",
+            "background_color": "#EAD8C2",
+            "accent_color": "#DDC4A5",
+            "text_color": "#3A2618",
+            "liquid_color": "#C98A3C",
+            "image": "shopify://shop_images/samyo-dg-the-one.webp"
+          }
+        },
+        "perfume_4": {
+          "type": "perfume",
+          "settings": {
+            "brand": "Emporio Armani",
+            "title": "Stronger With You Intensely",
+            "concentration": "Eau de Parfum",
+            "description": "Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.",
+            "caption": "cinnamon, vanilla & heat",
+            "placeholder_shape": "round",
+            "image_tilt": 0,
+            "image_shift": 0,
+            "note_1_label": "Pink pepper",
+            "note_1_art": "pepper",
+            "note_2_label": "Cinnamon",
+            "note_2_art": "cinnamon",
+            "note_3_label": "Vanilla",
+            "note_3_art": "vanilla",
+            "note_4_label": "Tonka bean",
+            "note_4_art": "tonka",
+            "background_color": "#F1D2C6",
+            "accent_color": "#E7B9A8",
+            "text_color": "#3B1A14",
+            "liquid_color": "#D2452B",
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp"
+          }
+        }
+      },
+      "block_order": [
+        "perfume_1",
+        "perfume_2",
+        "perfume_3",
+        "perfume_4"
+      ],
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "image_scale": 95,
+        "show_compare": false,
+        "after_add": "drawer"
+      }
+    },
+    "families": {
+      "type": "perfume-families",
+      "blocks": {
+        "family_1": {
+          "type": "family",
+          "settings": {
+            "title": "Fresh & citrus",
+            "text": "Lemon, bergamot, mint. Bright and clean.",
+            "sample": "scent-lemon",
+            "background_color": "#F2E27E",
+            "link": "/collections/fresh-citrus"
+          }
+        },
+        "family_2": {
+          "type": "family",
+          "settings": {
+            "title": "Warm & spicy",
+            "text": "Cinnamon, pepper, cardamom. Warm and bold.",
+            "sample": "scent-cinnamon",
+            "background_color": "#E2A07E",
+            "link": "/collections/warm-spicy"
+          }
+        },
+        "family_3": {
+          "type": "family",
+          "settings": {
+            "title": "Sweet & creamy",
+            "text": "Vanilla, tonka, amber. Soft and close.",
+            "sample": "scent-vanilla",
+            "background_color": "#EFE6D2",
+            "link": "/collections/sweet-creamy"
+          }
+        },
+        "cta_4": {
+          "type": "cta",
+          "settings": {
+            "link": "/pages/find-your-scent"
+          }
+        }
+      },
+      "block_order": [
+        "family_1",
+        "family_2",
+        "family_3",
+        "cta_4"
+      ],
+      "settings": {}
+    },
+    "brands": {
+      "type": "perfume-brands",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "name": "Dior"
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "name": "Chanel"
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "name": "Hermès"
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "name": "Yves Saint Laurent"
+          }
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {
+            "name": "Emporio Armani"
+          }
+        },
+        "brand_6": {
+          "type": "brand",
+          "settings": {
+            "name": "Dolce & Gabbana"
+          }
+        },
+        "brand_7": {
+          "type": "brand",
+          "settings": {
+            "name": "Versace"
+          }
+        },
+        "brand_8": {
+          "type": "brand",
+          "settings": {
+            "name": "Prada"
+          }
+        }
+      },
+      "block_order": [
+        "brand_1",
+        "brand_2",
+        "brand_3",
+        "brand_4",
+        "brand_5",
+        "brand_6",
+        "brand_7",
+        "brand_8"
+      ],
+      "settings": {},
+      "disabled": true
+    },
+    "shop_brands": {
+      "type": "perfume-shop-brands",
+      "blocks": {
+        "brand_1": {
+          "type": "brand",
+          "settings": {
+            "name": "Armani",
+            "tint": "#E9D3C9",
+            "image": "shopify://shop_images/samyo-brand-armani-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-armani-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-armani-3.webp",
+            "group_images": true,
+            "size": "normal"
+          }
+        },
+        "brand_2": {
+          "type": "brand",
+          "settings": {
+            "name": "Chanel",
+            "tint": "#E8E3DB",
+            "image": "shopify://shop_images/samyo-brand-chanel-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-chanel-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-chanel-3.webp",
+            "group_images": true,
+            "size": "normal"
+          }
+        },
+        "brand_3": {
+          "type": "brand",
+          "settings": {
+            "name": "Dior",
+            "tint": "#D6DDE5",
+            "image": "shopify://shop_images/samyo-brand-dior-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-dior-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-dior-3.webp",
+            "group_images": true,
+            "size": "big",
+            "spill": true
+          }
+        },
+        "brand_4": {
+          "type": "brand",
+          "settings": {
+            "name": "Dolce & Gabbana",
+            "tint": "#EAD8C2",
+            "image": "shopify://shop_images/samyo-brand-dolce-gabbana-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-dolce-gabbana-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-dolce-gabbana-3.webp",
+            "group_images": true,
+            "size": "wide"
+          }
+        },
+        "brand_5": {
+          "type": "brand",
+          "settings": {
+            "name": "Hermès",
+            "tint": "#EFE2CF",
+            "image": "shopify://shop_images/samyo-brand-hermes-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-hermes-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-hermes-3.webp",
+            "group_images": true,
+            "size": "wide",
+            "spill": true
+          }
+        },
+        "brand_6": {
+          "type": "brand",
+          "settings": {
+            "name": "Jo Malone",
+            "tint": "#E3E8E6",
+            "image": "shopify://shop_images/samyo-brand-jo-malone-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-jo-malone-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-jo-malone-3.webp",
+            "group_images": true,
+            "size": "wide",
+            "spill": true
+          }
+        },
+        "brand_7": {
+          "type": "brand",
+          "settings": {
+            "name": "Tom Ford",
+            "tint": "#DCD6E4",
+            "image": "shopify://shop_images/samyo-brand-tom-ford-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-tom-ford-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-tom-ford-3.webp",
+            "group_images": true,
+            "size": "normal",
+            "spill": true
+          }
+        },
+        "brand_8": {
+          "type": "brand",
+          "settings": {
+            "name": "Valentino",
+            "tint": "#EBDDDD",
+            "image": "shopify://shop_images/samyo-brand-valentino-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-valentino-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-valentino-3.webp",
+            "group_images": true,
+            "size": "wide"
+          }
+        },
+        "brand_9": {
+          "type": "brand",
+          "settings": {
+            "name": "Versace",
+            "tint": "#E6E3EC",
+            "image": "shopify://shop_images/samyo-brand-versace-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-versace-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-versace-3.webp",
+            "group_images": true,
+            "size": "normal",
+            "spill": true
+          }
+        },
+        "brand_10": {
+          "type": "brand",
+          "settings": {
+            "name": "YSL",
+            "tint": "#E4E0D8",
+            "image": "shopify://shop_images/samyo-brand-ysl-1.webp",
+            "image_2": "shopify://shop_images/samyo-brand-ysl-2.webp",
+            "image_3": "shopify://shop_images/samyo-brand-ysl-3.webp",
+            "group_images": true,
+            "size": "normal"
+          }
+        },
+        "note_lavender": {
+          "type": "note",
+          "settings": {
+            "name": "Lavender",
+            "sample": "lavender",
+            "size": "tall"
+          }
+        },
+        "note_rose": {
+          "type": "note",
+          "settings": {
+            "name": "Rose",
+            "sample": "rose",
+            "size": "normal"
+          }
+        },
+        "note_orange": {
+          "type": "note",
+          "settings": {
+            "name": "Orange",
+            "sample": "orange",
+            "size": "normal"
+          }
+        },
+        "note_iris": {
+          "type": "note",
+          "settings": {
+            "name": "Iris",
+            "sample": "iris",
+            "size": "tall"
+          }
+        },
+        "note_vanilla": {
+          "type": "note",
+          "settings": {
+            "name": "Vanilla",
+            "sample": "vanilla",
+            "size": "normal"
+          }
+        },
+        "note_cardamom": {
+          "type": "note",
+          "settings": {
+            "name": "Cardamom",
+            "sample": "cardamom",
+            "size": "normal"
+          }
+        },
+        "note_cinnamon": {
+          "type": "note",
+          "settings": {
+            "name": "Cinnamon",
+            "sample": "cinnamon",
+            "size": "normal"
+          }
+        },
+        "note_lemon": {
+          "type": "note",
+          "settings": {
+            "name": "Lemon",
+            "sample": "lemon",
+            "size": "wide"
+          }
+        }
+      },
+      "block_order": [
+        "brand_3",
+        "note_lavender",
+        "brand_2",
+        "brand_1",
+        "note_rose",
+        "brand_5",
+        "note_orange",
+        "brand_7",
+        "note_iris",
+        "brand_10",
+        "note_vanilla",
+        "brand_6",
+        "note_cardamom",
+        "brand_8",
+        "brand_9",
+        "brand_4",
+        "note_cinnamon",
+        "note_lemon"
+      ],
+      "settings": {
+        "link": "/collections",
+        "layout": "masonry",
+        "initial_count": 13,
+        "load_step": 6,
+        "heading": "The houses we carry",
+        "kicker": "Shop by brand & note"
+      }
+    },
+    "why": {
+      "type": "perfume-why",
+      "blocks": {
+        "promise_1": {
+          "type": "promise",
+          "settings": {
+            "icon": "seal",
+            "title": "Authentic designer fragrances",
+            "text": "Genuine bottles from the houses you know."
+          }
+        },
+        "promise_2": {
+          "type": "promise",
+          "settings": {
+            "icon": "truck",
+            "title": "Free delivery over ₱10,000",
+            "text": "Delivered across the Philippines; the fee for smaller orders shows at checkout."
+          }
+        },
+        "promise_3": {
+          "type": "promise",
+          "settings": {
+            "icon": "notes",
+            "title": "Notes before you buy",
+            "text": "Top, heart and base notes, how it wears and when to wear it."
+          }
+        },
+        "promise_4": {
+          "type": "promise",
+          "settings": {
+            "icon": "compass",
+            "title": "Help choosing",
+            "text": "Not sure what you like? Four questions point you to a scent.",
+            "link_label": "Find your scent",
+            "link": "/pages/find-your-scent"
+          }
+        }
+      },
+      "block_order": [
+        "promise_1",
+        "promise_2",
+        "promise_3",
+        "promise_4"
+      ],
+      "settings": {
+        "link": "/collections/all"
+      }
+    },
+    "journal": {
+      "type": "perfume-journal",
+      "settings": {}
+    },
+    "faq": {
+      "type": "perfume-faq",
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "Are your perfumes authentic?",
+            "answer": "<p>Yes. We sell authentic designer fragrances only.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "How much is delivery?",
+            "answer": "<p>Delivery is free on orders over ₱10,000. For smaller orders, the fee and the delivery options for your address show at checkout.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I choose a perfume I've never smelled?",
+            "answer": "<p>Every perfume page shows its top, heart and base notes, how it wears and when to wear it. Not sure where to start? Take the <a href=\"/pages/find-your-scent\">Find your scent</a> quiz: four questions point you to a scent.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "What's the difference between Eau de Parfum and Eau de Toilette?",
+            "answer": "<p>Eau de Parfum has a higher concentration of perfume oils than Eau de Toilette, so it usually smells richer and lasts longer. How long any perfume lasts still depends on the perfume, your skin and the weather.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return a perfume?",
+            "answer": "<p>Please see our <a href=\"/policies/refund-policy\">refund policy</a> for what can be returned and how.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "How can I pay?",
+            "answer": "<p>All the payment options we accept show at checkout.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6"
+      ],
+      "settings": {
+        "link": "/pages/contact"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "showcase",
+    "families",
+    "shop_brands",
+    "why",
+    "journal",
+    "faq",
+    "brands"
   ]
 }

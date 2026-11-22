@@ -1,0 +1,363 @@
+/*
+  Product cards (snippets/perfume-product-card.liquid) and the product rail
+  (sections/perfume-product-rail.liquid). Motion: transform and opacity only.
+*/
+.pcard {
+  --pcard-ink: var(--pf-ink, #26221f);
+  color: var(--pcard-ink);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  position: relative;
+}
+
+.pcard__media {
+  aspect-ratio: 4 / 5;
+  background: var(--pcard-bg, #e9e4dc);
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.pcard__img {
+  height: 84%;
+  left: 8%;
+  object-fit: contain;
+  position: absolute;
+  top: 8%;
+  transition: transform 0.9s var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1)), opacity 0.5s ease;
+  width: 84%;
+}
+
+.pcard__img--second {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.pcard:hover .pcard__img:not(.pcard__img--second) {
+  transform: translateY(-3%) scale(1.04);
+}
+
+.pcard--second:hover .pcard__img:not(.pcard__img--second) {
+  opacity: 0;
+}
+
+.pcard--second:hover .pcard__img--second {
+  opacity: 1;
+  transform: none;
+}
+
+.pcard__badge {
+  background: var(--pf-paper, #f3f0eb);
+  font-size: 10px;
+  font-weight: 600;
+  left: 12px;
+  letter-spacing: 0.14em;
+  padding: 4px 9px;
+  position: absolute;
+  text-transform: uppercase;
+  top: 12px;
+}
+
+.pcard__body {
+  display: grid;
+  gap: 2px;
+  padding: 12px 2px 0;
+}
+
+.pcard__brand {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.pcard__name {
+  color: inherit;
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: 23px;
+  line-height: 1.1;
+  text-decoration: none;
+}
+
+/* The whole card is clickable through the name link. */
+.pcard__name::after {
+  content: '';
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.pcard__name:hover {
+  font-style: italic;
+}
+
+.pcard__meta {
+  color: color-mix(in srgb, var(--pcard-ink) 65%, transparent);
+  font-size: 12px;
+  margin: 0;
+}
+
+.pcard__price {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 0;
+}
+
+.pcard__from {
+  color: color-mix(in srgb, var(--pcard-ink) 65%, transparent);
+  font-size: 12px;
+}
+
+/* Quick add: a small pill over the tile's bottom-right corner */
+.pcard__add {
+  margin: 0;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  z-index: 2;
+}
+
+.pcard__add-btn {
+  align-items: center;
+  background: var(--pcard-ink);
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  height: 36px;
+  letter-spacing: 0.14em;
+  opacity: 0;
+  padding: 0 16px;
+  position: relative;
+  text-transform: uppercase;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease, transform 0.45s var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.pcard__add-btn::after {
+  content: '';
+  inset: -4px;
+  position: absolute;
+}
+
+.pcard:hover .pcard__add-btn,
+.pcard__add-btn:focus-visible,
+.pcard__add-btn.is-busy,
+.pcard__add-btn.is-added {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (max-width: 749px) {
+  .pcard__add-btn {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pcard__add-btn:disabled {
+  cursor: default;
+}
+
+.pcard__add-btn:focus-visible,
+.pcard__name:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ---------- Product rail ---------- */
+.prail {
+  background: var(--prail-bg, transparent);
+  color: var(--prail-ink, var(--pf-ink, #26221f));
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  padding-block: var(--prail-pt, 80px) var(--prail-pb, 80px);
+  --prail-gutter: var(--pf-gutter, clamp(16px, 4vw, 56px));
+}
+
+.prail__head,
+.prail__controls {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 32px;
+  justify-content: space-between;
+  margin-inline: auto;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--prail-gutter);
+}
+
+.prail__head {
+  margin-bottom: 28px;
+}
+
+.prail__kicker {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin: 0 0 10px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.prail__heading {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: clamp(36px, 24px + 2.4vw, 60px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.prail__list {
+  display: grid;
+  gap: 18px;
+  grid-auto-columns: calc((100% - 18px * 3 - var(--prail-gutter) * 2) / 4);
+  grid-auto-flow: column;
+  list-style: none;
+  margin: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  padding: 0 var(--prail-gutter);
+  scroll-behavior: smooth;
+  scroll-padding-inline: var(--prail-gutter);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.prail__list::-webkit-scrollbar {
+  display: none;
+}
+
+.prail__item {
+  scroll-snap-align: start;
+}
+
+.prail__list.is-draggable {
+  cursor: grab;
+}
+
+.prail__list.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.prail__list.is-dragging a,
+.prail__list.is-dragging button {
+  pointer-events: none;
+}
+
+.prail__list img {
+  -webkit-user-drag: none;
+}
+
+.prail__controls {
+  align-items: center;
+  margin-top: 20px;
+}
+
+.prail__controls[hidden] {
+  display: none;
+}
+
+.prail__progress {
+  background: color-mix(in srgb, currentColor 15%, transparent);
+  flex: 1;
+  height: 1px;
+  max-width: 320px;
+  overflow: hidden;
+  position: relative;
+}
+
+.prail__progress span {
+  background: currentColor;
+  display: block;
+  height: 100%;
+  transform: scaleX(var(--prail-progress, 0.25));
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.prail__arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.prail__arrow {
+  align-items: center;
+  background: color-mix(in srgb, #fff 55%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  width: 36px;
+}
+
+.prail__arrow::after {
+  content: '';
+  inset: -4px;
+  position: absolute;
+}
+
+.prail__arrow:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.prail__arrow svg {
+  fill: none;
+  height: 16px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  width: 16px;
+}
+
+.prail__arrow:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.prail__empty {
+  margin: 0 auto;
+  max-width: var(--pf-max-width, 1680px);
+  opacity: 0.7;
+  padding-inline: var(--prail-gutter);
+}
+
+@media screen and (max-width: 989px) {
+  .prail__list {
+    grid-auto-columns: calc((100% - 14px - var(--prail-gutter) * 2) / 2.3);
+    gap: 14px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .prail__list {
+    grid-auto-columns: 68%;
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard__img,
+  .pcard__add-btn {
+    transition-duration: 0.01ms;
+  }
+
+  .prail__list {
+    scroll-behavior: auto;
+  }
+}

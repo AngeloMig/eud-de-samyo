@@ -1,0 +1,659 @@
+/*
+  Scent guide page (sections/perfume-scent-guide.liquid).
+  Motion: transform, opacity and clip-path only, with a reduced-motion path.
+*/
+.pgd {
+  --pgd-ink: var(--pf-ink, #26221f);
+  --pgd-paper: var(--pf-paper, #f3f0eb);
+  --pgd-tint: #e9e2d8;
+  --pgd-soft: color-mix(in srgb, var(--pgd-ink) 66%, transparent);
+  --pgd-line: color-mix(in srgb, var(--pgd-ink) 14%, transparent);
+  --pgd-serif: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  --pgd-script: var(--pf-font-script, 'Mrs Saint Delafield', cursive);
+  --pgd-ease: var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  --pgd-gutter: var(--pf-gutter, clamp(16px, 4vw, 56px));
+  background: var(--pgd-paper);
+  color: var(--pgd-ink);
+  display: block;
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  /* The wheel's square box sticks out while it turns in. */
+  overflow-x: clip;
+}
+
+.pgd *,
+.pgd *::before,
+.pgd *::after {
+  box-sizing: border-box;
+}
+
+/* 1. Opening */
+.pgd__open {
+  margin: 0 auto;
+  max-width: var(--pf-max-width, 1680px);
+  padding: 72px var(--pgd-gutter) 88px;
+  text-align: center;
+}
+
+.pgd__kicker {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin: 0 0 18px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.pgd__title {
+  font-family: var(--pgd-serif);
+  font-size: clamp(60px, 30px + 7vw, 168px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.88;
+  margin: 0 auto;
+  max-width: 12ch;
+}
+
+.pgd__script {
+  font-family: var(--pgd-script);
+  font-size: clamp(40px, 4vw, 64px);
+  line-height: 1;
+  margin: calc(10px - 0.3em) -0.45em -0.3em;
+  padding: 0.3em 0.45em; /* room for the script's loops (Safari clips ink to the box) */
+  transform: rotate(-4deg);
+}
+
+.pgd__intro {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 28px auto 0;
+  max-width: 54ch;
+}
+
+.pgd__intro p {
+  margin: 0;
+}
+
+.pgd__toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 34px;
+}
+
+.pgd__toc a {
+  border: 1px solid color-mix(in srgb, var(--pgd-ink) 28%, transparent);
+  border-radius: 999px;
+  color: inherit;
+  font-family: var(--pgd-serif);
+  font-size: 18px;
+  font-style: italic;
+  padding: 6px 16px 8px;
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.pgd__toc a:hover,
+.pgd__toc a:focus-visible {
+  background: var(--pgd-ink);
+  color: var(--pgd-paper);
+}
+
+/* Parts */
+.pgd__part {
+  padding: 96px var(--pgd-gutter);
+  scroll-margin-top: 70px;
+}
+
+.pgd__part--tint {
+  background: var(--pgd-tint);
+}
+
+.pgd__part > * {
+  margin-inline: auto;
+  max-width: var(--pf-max-width, 1680px);
+}
+
+.pgd__part-head {
+  margin-bottom: 48px;
+}
+
+.pgd__num {
+  font-family: var(--pgd-serif);
+  font-size: 22px;
+  margin: 0 0 8px;
+  opacity: 0.6;
+}
+
+.pgd__h {
+  font-family: var(--pgd-serif);
+  font-size: clamp(42px, 26px + 3.4vw, 84px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin: 0;
+  max-width: 16ch;
+}
+
+.pgd__lede {
+  color: var(--pgd-soft);
+  font-size: 15px;
+  margin: 14px 0 0;
+  max-width: 52ch;
+}
+
+.pgd__note {
+  color: var(--pgd-soft);
+  font-size: 12px;
+  margin-top: 26px;
+}
+
+/* 2. The pyramid: three stacked trapezoid layers make one triangle */
+.pgd__pyramid {
+  align-items: center;
+  display: grid;
+  gap: 56px;
+  grid-template-columns: minmax(280px, 520px) minmax(0, 1fr);
+}
+
+.pgd__tri {
+  display: grid;
+  filter: drop-shadow(0 18px 30px rgba(38, 34, 31, 0.08));
+  gap: 6px;
+}
+
+.pgd__layer {
+  align-items: center;
+  background: var(--c);
+  border: 0;
+  color: var(--pgd-ink);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--pgd-serif);
+  font-size: 26px;
+  height: 120px;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.5s var(--pgd-ease), opacity 0.3s ease;
+}
+
+/* Row 1 is the tip: draw it as a triangle. */
+.pgd__layer[style*='--row: 1'] {
+  clip-path: polygon(50% 0, calc(100% - 33.33%) 100%, 33.33% 100%);
+  padding-top: 40px;
+}
+
+.pgd__layer[style*='--row: 2'] {
+  clip-path: polygon(33.33% 0, 66.67% 0, 83.33% 100%, 16.67% 100%);
+}
+
+.pgd__layer[style*='--row: 3'] {
+  clip-path: polygon(16.67% 0, 83.33% 0, 100% 100%, 0 100%);
+}
+
+.pgd__layer[aria-selected='false'] {
+  opacity: 0.45;
+}
+
+.pgd__layer:hover {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+.pgd__layer:focus-visible {
+  outline: 2px solid var(--pgd-ink);
+  outline-offset: 4px;
+}
+
+.pgd__layer[aria-selected='true'] span {
+  font-style: italic;
+}
+
+.pgd__panel {
+  border-left: 3px solid var(--c);
+  padding: 6px 0 6px 28px;
+}
+
+.pgd__panel[hidden] {
+  display: none;
+}
+
+.pgd__panel.is-shown {
+  animation: pgd-in 0.6s var(--pgd-ease) both;
+}
+
+@keyframes pgd-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.pgd__when {
+  color: var(--pgd-soft);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+}
+
+.pgd__panel-title {
+  font-family: var(--pgd-serif);
+  font-size: clamp(40px, 4vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  margin: 0 0 12px;
+}
+
+.pgd__panel-title em {
+  font-family: var(--pgd-script);
+  font-size: 0.8em;
+  font-style: normal;
+  margin-left: 6px;
+}
+
+.pgd__panel-text {
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 24px;
+  max-width: 44ch;
+}
+
+.pgd__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pgd__examples li {
+  align-items: center;
+  background: #fff;
+  border-radius: 999px;
+  display: inline-flex;
+  font-family: var(--pgd-serif);
+  font-size: 20px;
+  font-style: italic;
+  gap: 8px;
+  padding: 4px 16px 4px 4px;
+}
+
+.pgd__ex-art {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.pgd__ex-art svg,
+.pgd__hub-art svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* 3. Strength scale */
+.pgd__scale {
+  display: grid;
+  gap: 22px;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.pgd__conc {
+  align-items: center;
+  display: grid;
+  gap: 8px 28px;
+  grid-template-columns: 220px minmax(0, 1fr) 260px;
+}
+
+.pgd__conc-name {
+  font-family: var(--pgd-serif);
+  font-size: 28px;
+  margin: 0;
+}
+
+.pgd__conc-bar {
+  background: color-mix(in srgb, var(--pgd-ink) 10%, transparent);
+  border-radius: 999px;
+  display: block;
+  height: 14px;
+  overflow: hidden;
+}
+
+.pgd__conc-bar span {
+  background: linear-gradient(90deg, color-mix(in srgb, var(--pgd-ink) 55%, transparent), var(--pgd-ink));
+  border-radius: 999px;
+  display: block;
+  height: 100%;
+  transform: scaleX(var(--v));
+  transform-origin: left;
+  transition: transform 1.4s var(--pgd-ease);
+  transition-delay: calc(0.15s + var(--i) * 0.12s);
+}
+
+.pf-js .pgd__scale[data-pf-reveal]:not(.is-in) .pgd__conc-bar span {
+  transform: scaleX(0);
+}
+
+.pgd__conc-facts {
+  color: var(--pgd-soft);
+  display: flex;
+  font-size: 13px;
+  gap: 16px;
+  justify-content: space-between;
+  margin: 0;
+}
+
+/* 4. Wear words */
+.pgd__terms {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 auto;
+}
+
+.pgd__term {
+  background: #fff;
+  padding: 28px 26px 30px;
+}
+
+.pgd__icon {
+  display: block;
+  height: 64px;
+  margin-bottom: 20px;
+  width: 64px;
+}
+
+.pgd__icon svg {
+  fill: none;
+  height: 100%;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+  width: 100%;
+}
+
+.pgd__icon--rings .r1,
+.pgd__icon--rings .r2 {
+  animation: pgd-ring 3s ease-out infinite;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.pgd__icon--rings .r2 {
+  animation-delay: 0.8s;
+}
+
+@keyframes pgd-ring {
+  0% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+.pgd__icon--trail .t {
+  stroke-dasharray: 3 5;
+}
+
+.pgd__term dt {
+  font-family: var(--pgd-serif);
+  font-size: 32px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.pgd__term dd {
+  color: var(--pgd-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* 5. The scent wheel */
+.pgd__wheel-wrap {
+  display: grid;
+  justify-items: center;
+}
+
+.pgd__wheel {
+  aspect-ratio: 1;
+  container-type: inline-size;
+  max-width: 640px;
+  position: relative;
+  width: 100%;
+}
+
+/* A ring: the colour wheel with its centre cut out (hole = 64% of the radius). */
+.pgd__disc {
+  background: var(--wheel);
+  border-radius: 50%;
+  inset: 0;
+  -webkit-mask: radial-gradient(circle closest-side, transparent 64%, #000 64.6%);
+  mask: radial-gradient(circle closest-side, transparent 64%, #000 64.6%);
+  position: absolute;
+  transition: transform 1.6s var(--pgd-ease);
+}
+
+.pf-js .pgd__wheel[data-pf-reveal]:not(.is-in) .pgd__disc {
+  transform: rotate(-90deg) scale(0.86);
+}
+
+.pgd__labels {
+  inset: 0;
+  position: absolute;
+}
+
+/* Each label sits in the middle of its slice of the ring (41% of the width from
+   the centre), turned back upright. */
+.pgd__fam {
+  background: none;
+  border: 0;
+  color: var(--pgd-ink);
+  cursor: pointer;
+  font-family: var(--pgd-serif);
+  font-size: clamp(14px, 3.2cqw, 20px);
+  height: 0;
+  left: 50%;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: rotate(var(--a)) translateY(-41cqw) rotate(calc(var(--a) * -1));
+  white-space: nowrap;
+  width: 0;
+}
+
+.pgd__fam span {
+  background: color-mix(in srgb, #fff 72%, transparent);
+  border-radius: 999px;
+  left: 0;
+  padding: 6px 14px 8px;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.pgd__fam[aria-selected='true'] span {
+  background: var(--pgd-ink);
+  color: #fff;
+  font-style: italic;
+}
+
+.pgd__fam:focus-visible span {
+  outline: 2px solid var(--pgd-ink);
+  outline-offset: 2px;
+}
+
+.pgd__hub {
+  display: grid;
+  inset: 21%;
+  place-items: center;
+  position: absolute;
+  text-align: center;
+}
+
+.pgd__fampanel {
+  display: grid;
+  gap: 8px;
+  grid-area: 1 / 1;
+  justify-items: center;
+  max-width: 260px;
+}
+
+.pgd__fampanel[hidden] {
+  display: none;
+}
+
+.pgd__fampanel.is-shown {
+  animation: pgd-in 0.5s var(--pgd-ease) both;
+}
+
+.pgd__hub-art {
+  display: block;
+  height: 72px;
+  width: 72px;
+}
+
+.pgd__hub-name {
+  font-family: var(--pgd-serif);
+  font-size: clamp(32px, 3.4vw, 48px);
+  line-height: 1;
+  margin: 0;
+}
+
+.pgd__hub-text {
+  color: var(--pgd-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 6. Heat tips */
+.pgd__tips {
+  counter-reset: tip;
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.pgd__tip {
+  border-left: 1px solid var(--pgd-line);
+  padding: 4px 28px 40px;
+}
+
+.pgd__tip-n {
+  display: block;
+  font-family: var(--pgd-serif);
+  font-size: 64px;
+  line-height: 1;
+  margin-bottom: 30px;
+}
+
+.pgd__tip h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.pgd__tip p {
+  color: var(--pgd-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Ending */
+.pgd__end {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  padding: 40px var(--pgd-gutter) 120px;
+}
+
+.pgd .pf-button {
+  min-height: 44px;
+}
+
+.pgd .pf-link {
+  color: inherit;
+}
+
+@media screen and (max-width: 989px) {
+  .pgd__pyramid {
+    gap: 36px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pgd__tri {
+    margin: 0 auto;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .pgd__layer {
+    font-size: 21px;
+    height: 92px;
+  }
+
+  .pgd__layer[style*='--row: 1'] {
+    padding-top: 30px;
+  }
+
+  .pgd__conc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pgd__terms,
+  .pgd__tips {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pgd__tip {
+    border-left: 0;
+    border-top: 1px solid var(--pgd-line);
+    padding: 22px 0 28px;
+  }
+
+  .pgd__tip-n {
+    font-size: 44px;
+    margin-bottom: 14px;
+  }
+
+  .pgd__part {
+    padding-block: 72px;
+  }
+
+
+  .pgd__hub-art {
+    height: 48px;
+    width: 48px;
+  }
+
+  .pgd__hub-text {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .pgd__fam span {
+    padding: 4px 9px 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pgd__panel.is-shown,
+  .pgd__fampanel.is-shown,
+  .pgd__icon--rings .r1,
+  .pgd__icon--rings .r2 {
+    animation: none;
+    opacity: 1;
+  }
+
+  .pgd__disc,
+  .pgd__conc-bar span,
+  .pgd__layer {
+    transition: none;
+  }
+}

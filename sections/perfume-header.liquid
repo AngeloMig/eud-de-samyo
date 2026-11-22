@@ -1,0 +1,527 @@
+{%- comment -%}
+  Perfume header (NOHO-style). Put it in the header group (sections/header-group.json).
+
+  Desktop (990px+): the logo top-left; on the right a Bag box and a burger box.
+  The burger unrolls a white bar of menu links leftwards out of itself and turns
+  into a close (X). Links roll their text up on hover.
+  Tablet and phone: a row of white boxes (logo, Bag, burger); the burger drops a
+  white panel below them with up to two product cards, then the links as rows.
+
+  On the home page the header can float over the hero (Overlay); elsewhere it is
+  sticky on the paper background.
+
+  Desktop extras (each a setting):
+  - Hover style "Glide": a charcoal block slides between the links (transform only).
+  - Mega menu: a menu item with child links (Online Store > Navigation) opens a wide
+    white panel under the bar on hover, focus or tap: an A–Z list with letter marks
+    (Brands > Dior, Chanel…), or columns when the children have their own links
+    (Shop > Scent families > Fresh & citrus…), a "View all" link and an optional
+    picture (a "Menu feature" block naming that menu item). Hovering a link to a
+    collection or product swaps the picture for that link's own image (the
+    collection image, else its first product's photo) and its name. On phones the same links
+    open under the item with its + button.
+  - Logo (no image set): the "spray" lockup: a small italic prefix ("eau de"), the
+    name in Italiana, and a fine mist of dots by its last letter (the ó's accent).
+    On hover/focus, and once after the page loads, the letter sprays: a soft cloud
+    blooms and droplets fan out and fade, then the resting mist settles back.
+  - Search opens inside the bar with suggestion links; without JS it is a plain link.
+  - Phones: the menu is a full-height sheet (the page behind stays put): a search
+    field on top, large serif rows (mega items open in place with +), the two
+    picture cards, then Log in at the bottom.
+  - Cart drawer: the Bag opens snippets/perfume-cart-drawer.liquid.
+  - Announcement line: a thin charcoal line above everything, one message per line
+    (several roll through every few seconds, stopping while hovered); × hides it for
+    the visit, and a changed message shows again.
+  - Over dark sections the white boxes turn charcoal (JS reads the colour under the
+    header), so the header stays visible on any background.
+  - Inner pages (sticky header): its background takes the colour of the section
+    under it, so it blends with the product's tint instead of showing a band.
+
+  Script: assets/perfume-header.js (<perfume-header>). Styles: assets/perfume-header.css.
+{%- endcomment -%}
+{%- liquid
+  assign menu = section.settings.menu
+  assign panel_id = 'PerfumeMenu-' | append: section.id
+  assign cards = section.blocks | where: 'type', 'card'
+  assign overlay = false
+  if section.settings.overlay and template.name == 'index'
+    assign overlay = true
+  endif
+  assign logo_text = section.settings.logo_text | default: shop.name
+  assign features = section.blocks | where: 'type', 'feature'
+  assign search_id = 'PerfumeSearch-' | append: section.id
+  assign suggestions = section.settings.search_suggestions | split: ','
+-%}
+
+{{ 'perfume-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-header.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #PerfumeHeader-{{ section.id }} {
+    --ph-logo-w: {{ section.settings.logo_width }}px;
+    --ph-logo-size: {{ section.settings.logo_size }}px;
+    --ph-paper: {{ section.settings.background_color }};
+    --ph-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<perfume-header
+  id="PerfumeHeader-{{ section.id }}"
+  class="ph{% if overlay %} ph--overlay{% else %} ph--sticky{% endif %} ph--hover-{{ section.settings.hover_style }}"
+  data-cart-url="{{ routes.cart_url }}"
+  {% if section.settings.adapt_dark %}data-adapt-dark{% endif %}
+  {% if section.settings.blend %}data-blend{% endif %}
+>
+  {%- liquid
+    assign ann_lines = section.settings.announcement | newline_to_br | split: '<br />'
+    assign ann_count = 0
+    for l in ann_lines
+      assign lt = l | strip
+      if lt != blank
+        assign ann_count = ann_count | plus: 1
+      endif
+    endfor
+    assign ann_key = section.settings.announcement | strip | md5
+  -%}
+  {%- if section.settings.show_announcement and ann_count > 0 -%}
+    <div class="ph__ann" data-ph-ann data-key="{{ ann_key }}" style="--ph-ann-bg: {{ section.settings.announcement_bg }}; --ph-ann-ink: {{ section.settings.announcement_ink }};">
+      <div class="ph__ann-roll" aria-live="off">
+        {%- assign ai = 0 -%}
+        {%- for l in ann_lines -%}
+          {%- assign lt = l | strip -%}
+          {%- if lt == blank -%}{%- continue -%}{%- endif -%}
+          <p class="ph__ann-msg{% if ai == 0 %} is-on{% endif %}" data-ph-ann-msg>
+            {%- if section.settings.announcement_link != blank -%}
+              <a href="{{ section.settings.announcement_link }}">{{ lt | escape }}</a>
+            {%- else -%}
+              {{ lt | escape }}
+            {%- endif -%}
+          </p>
+          {%- assign ai = ai | plus: 1 -%}
+        {%- endfor -%}
+      </div>
+      <button type="button" class="ph__ann-close" data-ph-ann-close aria-label="Hide announcement">×</button>
+    </div>
+  {%- endif -%}
+  <div class="ph__inner">
+    <a href="{{ routes.root_url }}" class="ph__logo ph__box" aria-label="{{ logo_text | escape }}, home">
+      {%- if section.settings.logo != blank -%}
+        {%- assign logo_alt = section.settings.logo.alt | default: logo_text -%}
+        {{
+          section.settings.logo
+          | image_url: width: 400
+          | image_tag: class: 'ph__logo-img', widths: '120, 200, 400', sizes: '200px', alt: logo_alt, loading: 'eager'
+        }}
+      {%- elsif section.settings.logo_style == 'spray' -%}
+        {%- liquid
+          assign name_len = logo_text | size
+          assign head_len = name_len | minus: 1
+          assign name_head = logo_text | slice: 0, head_len
+          assign name_last = logo_text | slice: -1
+        -%}
+        <span class="ph__mark" aria-hidden="true" data-ph-mark>
+          {%- if section.settings.logo_prefix != blank -%}<span class="ph__mark-pre">{{ section.settings.logo_prefix | escape }}</span>{%- endif -%}
+          <span class="ph__mark-name">{{ name_head | escape }}<span class="ph__mark-last">{{ name_last | escape }}<span class="ph__mist"><span class="ph__cloud"></span><i class="r" style="--x:0.06em;--y:-0.1em;--s:0.075em;--a:0.85"></i><i class="r" style="--x:0.17em;--y:-0.2em;--s:0.06em;--a:0.65"></i><i class="r" style="--x:0.27em;--y:-0.12em;--s:0.065em;--a:0.5"></i><i class="r" style="--x:0.37em;--y:-0.25em;--s:0.045em;--a:0.4"></i><i class="r" style="--x:0.47em;--y:-0.16em;--s:0.04em;--a:0.3"></i><i class="r" style="--x:0.55em;--y:-0.28em;--s:0.03em;--a:0.2"></i><i class="b" style="--x:0.381em;--y:-0.726em;--s:0.076em;--a:0.66;--dl:0.11s;--t:1.19s"></i><i class="b" style="--x:0.392em;--y:-0.679em;--s:0.061em;--a:0.81;--dl:0.02s;--t:1.05s"></i><i class="b" style="--x:0.553em;--y:-0.842em;--s:0.064em;--a:0.47;--dl:0.22s;--t:1.38s"></i><i class="b" style="--x:0.56em;--y:-0.655em;--s:0.036em;--a:0.46;--dl:0.12s;--t:0.93s"></i><i class="b" style="--x:0.386em;--y:-0.435em;--s:0.03em;--a:0.66;--dl:0.1s;--t:1.32s"></i><i class="b" style="--x:0.648em;--y:-0.595em;--s:0.054em;--a:0.75;--dl:0.1s;--t:1.04s"></i><i class="b" style="--x:0.93em;--y:-0.671em;--s:0.072em;--a:0.77;--dl:0.07s;--t:1.01s"></i><i class="b" style="--x:0.365em;--y:-0.267em;--s:0.068em;--a:0.63;--dl:0.19s;--t:1.09s"></i><i class="b" style="--x:0.912em;--y:-0.491em;--s:0.028em;--a:0.54;--dl:0.2s;--t:1.13s"></i><i class="b" style="--x:0.636em;--y:-0.287em;--s:0.032em;--a:0.73;--dl:0.17s;--t:1.03s"></i><i class="b" style="--x:0.585em;--y:-0.283em;--s:0.078em;--a:0.79;--dl:0.03s;--t:1.02s"></i><i class="b" style="--x:0.413em;--y:-0.166em;--s:0.069em;--a:0.53;--dl:0.12s;--t:1.12s"></i><i class="b" style="--x:0.905em;--y:-0.285em;--s:0.035em;--a:0.74;--dl:0.03s;--t:1.11s"></i><i class="b" style="--x:0.586em;--y:-0.14em;--s:0.078em;--a:0.81;--dl:0.07s;--t:1.34s"></i><i class="b" style="--x:0.686em;--y:-0.116em;--s:0.072em;--a:0.74;--dl:0.02s;--t:1.39s"></i><i class="b" style="--x:0.591em;--y:-0.059em;--s:0.068em;--a:0.6;--dl:0.07s;--t:0.94s"></i></span></span></span>
+        </span>
+      {%- else -%}
+        <span class="ph__wordmark" aria-hidden="true">{{ logo_text | escape }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="ph__nav" aria-label="{{ section.settings.nav_label | escape }}">
+      <div class="ph__panel" id="{{ panel_id }}" data-ph-panel>
+        {%- if cards.size > 0 -%}
+          <ul class="ph__cards" role="list">
+            {%- for block in cards limit: 2 -%}
+              {%- liquid
+                assign p = block.settings.product
+                assign card_title = block.settings.title
+                if card_title == blank and p != blank
+                  assign card_title = p.title
+                endif
+                assign card_url = block.settings.link
+                if card_url == blank and p != blank
+                  assign card_url = p.url
+                endif
+                if card_url == blank
+                  assign card_url = routes.all_products_collection_url
+                endif
+                assign card_image = block.settings.image
+                if card_image == blank and p != blank
+                  assign card_image = p.featured_media.preview_image
+                endif
+              -%}
+              <li class="ph__card ph__item" {{ block.shopify_attributes }}>
+                <a href="{{ card_url }}" class="ph__card-link">
+                  <span class="ph__card-title">{{ card_title | escape }}</span>
+                  <span class="ph__card-media">
+                    {%- if card_image != blank -%}
+                      {{ card_image | image_url: width: 400 | image_tag: widths: '200, 400', sizes: '160px', loading: 'lazy', alt: '' }}
+                    {%- else -%}
+                      {%- render 'perfume-sample-image', key: block.settings.sample, alt: '' -%}
+                    {%- endif -%}
+                  </span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- if section.settings.hover_style == 'glide' -%}
+          <span class="ph__glide" aria-hidden="true" data-ph-glide></span>
+        {%- endif -%}
+        <ul class="ph__list" role="list">
+          {%- for link in menu.links -%}
+            {%- assign has_mega = false -%}
+            {%- if section.settings.mega and link.links.size > 0 -%}
+              {%- assign has_mega = true -%}
+            {%- endif -%}
+            <li class="ph__item{% if has_mega %} ph__item--mega{% endif %}"{% if has_mega %} data-ph-mega-item{% endif %}>
+              <a
+                href="{{ link.url }}"
+                class="ph__link{% if link.active %} is-active{% endif %}"
+                {% if link.current %}aria-current="page"{% endif %}
+                {% if has_mega %}aria-haspopup="true" aria-expanded="false"{% endif %}
+              >
+                <span class="ph__roll"><span class="ph__roll-in" data-text="{{ link.title | escape }}">{{ link.title | escape }}</span></span>
+                {%- if has_mega -%}<span class="ph__caret" aria-hidden="true"></span>{%- endif -%}
+              </a>
+              {%- if has_mega -%}
+                {%- liquid
+                  assign link_key = link.title | downcase | strip
+                  assign feature = nil
+                  for f in features
+                    assign f_key = f.settings.menu_item | downcase | strip
+                    if f_key == link_key
+                      assign feature = f
+                      break
+                    endif
+                  endfor
+                  assign last_letter = ''
+                -%}
+                {%- liquid
+                  assign grouped = false
+                  for child in link.links
+                    if child.links.size > 0
+                      assign grouped = true
+                      break
+                    endif
+                  endfor
+                  assign sub_id = panel_id | append: '-sub-' | append: forloop.index
+                -%}
+                <button type="button" class="ph__sub" aria-expanded="false" aria-controls="{{ sub_id }}" data-ph-sub>
+                  <span class="pf-visually-hidden">{{ link.title | escape }}</span>
+                  <span class="ph__sub-caret" aria-hidden="true"></span>
+                </button>
+                <div class="ph__mega{% if feature %} ph__mega--feature{% endif %}{% if grouped %} ph__mega--grouped{% endif %}" id="{{ sub_id }}" data-ph-mega>
+                  <div class="ph__mega-main">
+                    <div class="ph__mega-head">
+                      <p class="ph__mega-kicker">{{ link.title | escape }}</p>
+                      <a href="{{ link.url }}" class="ph__mega-all">{{ section.settings.mega_all_label | replace: '[menu]', link.title | escape }} <span aria-hidden="true">→</span></a>
+                    </div>
+                    {%- if grouped -%}
+                      <div class="ph__mega-groups">
+                        {%- for child in link.links -%}
+                          <div class="ph__mega-group">
+                            <a href="{{ child.url }}" class="ph__mega-heading"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                            {%- if child.links.size > 0 -%}
+                              <ul class="ph__mega-sublist" role="list">
+                                {%- for g in child.links -%}
+                                  <li class="ph__mega-item">{%- liquid
+                              assign c_img = nil
+                              if g.type == 'collection_link'
+                                assign c_img = g.object.image
+                                if c_img == blank
+                                  assign c_img = g.object.products.first.featured_media.preview_image
+                                endif
+                              elsif g.type == 'product_link'
+                                assign c_img = g.object.featured_media.preview_image
+                              endif
+                            -%}<a href="{{ g.url }}" class="ph__mega-link"{% if g.current %} aria-current="page"{% endif %}{% if feature and c_img != blank %} data-ph-img="{{ c_img | image_url: width: 480 }}"{% endif %}>{{ g.title | escape }}</a></li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                      </div>
+                    {%- else -%}
+                      <ul class="ph__mega-list" role="list">
+                        {%- for child in link.links -%}
+                          {%- assign letter = child.title | slice: 0 | upcase -%}
+                          <li class="ph__mega-item">
+                            {%- if letter != last_letter -%}
+                              <span class="ph__mega-letter" aria-hidden="true">{{ letter }}</span>
+                              {%- assign last_letter = letter -%}
+                            {%- endif -%}
+                            {%- liquid
+                              assign c_img = nil
+                              if child.type == 'collection_link'
+                                assign c_img = child.object.image
+                                if c_img == blank
+                                  assign c_img = child.object.products.first.featured_media.preview_image
+                                endif
+                              elsif child.type == 'product_link'
+                                assign c_img = child.object.featured_media.preview_image
+                              endif
+                            -%}
+                            <a href="{{ child.url }}" class="ph__mega-link"{% if child.current %} aria-current="page"{% endif %}{% if feature and c_img != blank %} data-ph-img="{{ c_img | image_url: width: 480 }}"{% endif %}>{{ child.title | escape }}</a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {%- endif -%}
+                  </div>
+                  {%- if feature -%}
+                    {%- assign feature_url = feature.settings.link | default: link.url -%}
+                    <a href="{{ feature_url }}" class="ph__feature" data-ph-feature {{ feature.shopify_attributes }}>
+                      <span class="ph__feature-media" style="--ph-feature-bg: {{ feature.settings.background }};">
+                        {%- if feature.settings.image != blank -%}
+                          {{ feature.settings.image | image_url: width: 480 | image_tag: widths: '240, 480', sizes: '220px', loading: 'lazy', alt: '' }}
+                        {%- endif -%}
+                        <img class="ph__feature-alt" alt="" width="480" height="600" data-ph-alt>
+                      </span>
+                      <span class="ph__feature-title" data-ph-feature-title>{{ feature.settings.title | escape }}</span>
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+          {%- if section.settings.show_search -%}
+            <li class="ph__item ph__item--search">
+              <a href="{{ routes.search_url }}" class="ph__link" data-ph-search-open aria-controls="{{ search_id }}-form" aria-expanded="false">
+                <svg class="ph__field-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+                <span class="ph__roll"><span class="ph__roll-in" data-text="Search">Search</span></span>
+                <span class="ph__field-hint" aria-hidden="true">{{ section.settings.search_placeholder | escape }}</span>
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+            <li class="ph__item ph__item--account">
+              <a href="{{ routes.account_url }}" class="ph__link">
+                {%- assign account_label = 'Log in' -%}
+                {%- if customer -%}{%- assign account_label = 'Account' -%}{%- endif -%}
+                <span class="ph__roll"><span class="ph__roll-in" data-text="{{ account_label }}">{{ account_label }}</span></span>
+              </a>
+            </li>
+          {%- endif -%}
+        </ul>
+
+        {%- if section.settings.show_search -%}
+          <form action="{{ routes.search_url }}" method="get" role="search" class="ph__search" id="{{ search_id }}-form" data-ph-search hidden>
+            <label class="pf-visually-hidden" for="{{ search_id }}">Search</label>
+            <svg class="ph__search-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="7" cy="7" r="5"/><path d="M11 11l4 4"/></svg>
+            <input
+              class="ph__search-input"
+              id="{{ search_id }}"
+              type="search"
+              name="q"
+              placeholder="{{ section.settings.search_placeholder | escape }}"
+              autocomplete="off"
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="button" class="ph__search-cancel" data-ph-search-close>Cancel</button>
+            {%- if section.settings.search_suggestions != blank -%}
+              <p class="ph__suggest">
+                <span class="ph__suggest-label">Try</span>
+                {%- for term in suggestions -%}
+                  {%- assign t = term | strip -%}
+                  {%- if t == blank -%}{%- continue -%}{%- endif -%}
+                  {%- assign q = t | url_encode -%}
+                  <a class="ph__suggest-link" href="{{ routes.search_url }}?q={{ q }}">{{ t | escape }}</a>
+                {%- endfor -%}
+              </p>
+            {%- endif -%}
+          </form>
+        {%- endif -%}
+      </div>
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="ph__bag ph__box"
+        {% if section.settings.cart_drawer %}data-cart-drawer-open aria-haspopup="dialog" aria-controls="PerfumeCartDrawer"{% endif %}
+      >
+        <span class="ph__roll"><span class="ph__roll-in" data-text="{{ section.settings.bag_label | escape }}">{{ section.settings.bag_label | escape }}</span></span>
+        <span class="ph__count" data-ph-count>{{ cart.item_count }}</span>
+        <span class="pf-visually-hidden">items</span>
+      </a>
+
+      <button
+        type="button"
+        class="ph__burger ph__box"
+        aria-expanded="false"
+        aria-controls="{{ panel_id }}"
+        data-ph-toggle
+      >
+        <span class="pf-visually-hidden" data-ph-label data-open="Open menu" data-close="Close menu">Open menu</span>
+        <span class="ph__lines" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+    </nav>
+  </div>
+</perfume-header>
+
+{%- if section.settings.cart_drawer -%}
+  {%- liquid
+    assign d_title = section.settings.drawer_title
+    assign d_note = section.settings.drawer_note
+    assign d_empty = section.settings.drawer_empty
+    assign d_empty_label = section.settings.drawer_empty_label
+    assign d_empty_url = section.settings.drawer_empty_link
+    assign d_ship = section.settings.drawer_ship_threshold | default: 0
+    assign d_ship_text = section.settings.drawer_ship_text
+    assign d_ship_done = section.settings.drawer_ship_done
+    assign d_gift = section.settings.drawer_gift_label
+    assign d_trust = section.settings.drawer_trust
+    assign d_help = section.settings.drawer_help
+  -%}
+  {%- render 'perfume-cart-drawer', title: d_title, note: d_note, empty_text: d_empty, empty_label: d_empty_label, empty_url: d_empty_url, ship_threshold: d_ship, ship_text: d_ship_text, ship_done: d_ship_done, gift_label: d_gift, trust: d_trust, help: d_help -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Perfume header",
+  "tag": "header",
+  "class": "section-perfume-header",
+  "enabled_on": { "groups": ["header"] },
+  "max_blocks": 8,
+  "settings": [
+    { "type": "header", "content": "Logo" },
+    { "type": "image_picker", "id": "logo", "label": "Logo image", "info": "Leave empty to use the logo text." },
+    { "type": "text", "id": "logo_text", "label": "Logo text", "default": "samyó" },
+    {
+      "type": "select",
+      "id": "logo_style",
+      "label": "Logo text style",
+      "options": [
+        { "value": "spray", "label": "Spray: small prefix, light wordmark, a mist from the last letter" },
+        { "value": "text", "label": "Plain serif text" }
+      ],
+      "default": "spray"
+    },
+    { "type": "text", "id": "logo_prefix", "label": "Logo prefix (spray style)", "default": "eau de" },
+    { "type": "range", "id": "logo_size", "label": "Logo text size", "min": 18, "max": 48, "step": 1, "unit": "px", "default": 34 },
+    { "type": "range", "id": "logo_width", "label": "Logo image width", "min": 60, "max": 240, "step": 4, "unit": "px", "default": 96 },
+
+    { "type": "header", "content": "Menu" },
+    { "type": "color", "id": "background_color", "label": "Box colour", "info": "The header is transparent; this colours its boxes (logo, links, Bag, menu) and the menu panels.", "default": "#FFFFFF" },
+    { "type": "color", "id": "text_color", "label": "Header text", "default": "#292521" },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "text", "id": "nav_label", "label": "Menu name for screen readers", "default": "Main" },
+    { "type": "text", "id": "bag_label", "label": "Bag label", "default": "Bag" },
+    { "type": "checkbox", "id": "show_search", "label": "Show Search link", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account link", "default": true },
+    { "type": "checkbox", "id": "overlay", "label": "Float over the home page hero", "default": true },
+    { "type": "checkbox", "id": "adapt_dark", "label": "Turn charcoal over dark sections", "default": true },
+    { "type": "checkbox", "id": "blend", "label": "Header background follows the page", "info": "Inner pages: behind the boxes the header takes the colour of the section under it, so it disappears into the page. Off: the page background shows behind the boxes.", "default": true },
+    {
+      "type": "select",
+      "id": "hover_style",
+      "label": "Link hover (desktop)",
+      "options": [
+        { "value": "glide", "label": "A dark block glides between links" },
+        { "value": "roll", "label": "Text rolls up" }
+      ],
+      "default": "glide"
+    },
+    {
+      "type": "checkbox",
+      "id": "mega",
+      "label": "Show sub-menus as a mega menu",
+      "info": "Give a menu item child links in Online Store > Navigation, e.g. Brands > Dior, Chanel (an A–Z list), or Shop > Scent families > Fresh & citrus (columns). Add a Menu feature block for a picture. Phones show them as an expandable list.",
+      "default": true
+    },
+    { "type": "text", "id": "mega_all_label", "label": "Mega menu 'view all' link", "info": "[menu] becomes the menu item's name, e.g. All [menu] → All Brands.", "default": "View all" },
+
+    { "type": "header", "content": "Announcement line" },
+    { "type": "checkbox", "id": "show_announcement", "label": "Show announcement line", "default": true },
+    {
+      "type": "textarea",
+      "id": "announcement",
+      "label": "Messages",
+      "info": "One per line; several roll through. Only what is true for your store.",
+      "default": "Authentic designer fragrances\nFree delivery on orders over ₱10,000\nScent notes for every perfume, before you buy"
+    },
+    { "type": "url", "id": "announcement_link", "label": "Link (optional)" },
+    { "type": "color", "id": "announcement_bg", "label": "Background", "default": "#292521" },
+    { "type": "color", "id": "announcement_ink", "label": "Text", "default": "#F7F5F0" },
+
+    { "type": "header", "content": "Search" },
+    { "type": "text", "id": "search_placeholder", "label": "Search field text", "default": "Search a perfume, brand or note" },
+    {
+      "type": "text",
+      "id": "search_suggestions",
+      "label": "Suggestions",
+      "info": "Separate with commas. Each one searches that word.",
+      "default": "Vanilla, Dior, Citrus, Oud, Lavender"
+    },
+
+    { "type": "header", "content": "Cart drawer" },
+    { "type": "checkbox", "id": "cart_drawer", "label": "Open the bag in a drawer", "info": "The Bag and Add to bag (Perfume showcase: After adding = Open the cart drawer) slide it in. Off: the Bag goes to the cart page.", "default": true },
+    { "type": "text", "id": "drawer_title", "label": "Title", "default": "Your bag" },
+    { "type": "text", "id": "drawer_note", "label": "Note under the subtotal", "default": "Shipping and taxes are worked out at checkout." },
+    { "type": "text", "id": "drawer_empty", "label": "Empty bag text", "default": "Your bag is empty" },
+    { "type": "text", "id": "drawer_empty_label", "label": "Empty bag button", "default": "Continue shopping" },
+    { "type": "url", "id": "drawer_empty_link", "label": "Empty bag link", "info": "Falls back to all products." },
+    {
+      "type": "number",
+      "id": "drawer_ship_threshold",
+      "label": "Free delivery from (₱)",
+      "info": "Shows a progress bar to this amount. It must match your real rates in Settings › Shipping and delivery. Leave empty or 0 to hide it."
+    },
+    { "type": "text", "id": "drawer_ship_text", "label": "Progress text", "info": "[amount] becomes what's left.", "default": "[amount] away from free delivery" },
+    { "type": "text", "id": "drawer_ship_done", "label": "Reached text", "default": "Free delivery unlocked" },
+    { "type": "text", "id": "drawer_gift_label", "label": "Gift message toggle", "info": "Saved as the order note. Leave empty to hide.", "default": "Add a gift message" },
+    {
+      "type": "textarea",
+      "id": "drawer_trust",
+      "label": "Reassurances",
+      "info": "Up to three, one per line (delivery, authenticity, secure checkout icons in that order). Only what is true.",
+      "default": "Delivered across the Philippines\n100% authentic fragrances\nSecure checkout"
+    },
+    { "type": "text", "id": "drawer_help", "label": "Help line", "info": "e.g. your customer service hours and email." }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Menu card (phones)",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Transparent PNG works best. Falls back to the product image." },
+        {
+          "type": "select",
+          "id": "sample",
+          "label": "Sample image (until an image is set)",
+          "options": [
+            { "value": "bottle-amber", "label": "Amber bottle" },
+            { "value": "bottle-clear", "label": "Clear bottle" },
+            { "value": "bottle-blue", "label": "Blue bottle" },
+            { "value": "bottle-red", "label": "Red bottle" }
+          ],
+          "default": "bottle-amber"
+        },
+        { "type": "text", "id": "title", "label": "Title", "info": "Falls back to the product title." },
+        { "type": "url", "id": "link", "label": "Link", "info": "Falls back to the product page." }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Menu feature (desktop)",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Menu item", "info": "The exact name of the menu item whose sub-menu panel shows this, for example Brands.", "default": "Brands" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "A transparent bottle works best." },
+        { "type": "color", "id": "background", "label": "Background", "default": "#d6dde5" },
+        { "type": "text", "id": "title", "label": "Caption", "default": "New in" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Falls back to the menu item's link." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume header",
+      "blocks": [
+        { "type": "card", "settings": { "title": "New arrivals", "sample": "bottle-amber" } },
+        { "type": "card", "settings": { "title": "Best sellers", "sample": "bottle-blue" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

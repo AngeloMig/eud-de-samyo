@@ -1,0 +1,196 @@
+/* FAQ (sections/perfume-faq.liquid). Sizes in px (Dawn: 1rem = 10px). */
+.pfq {
+  background: var(--pq-bg, #f3f0eb);
+  color: var(--pq-ink, #26221f);
+  font-family: var(--pf-font-sans);
+  padding: var(--pq-pt, 96px) var(--pf-gutter, 32px) var(--pq-pb, 96px);
+}
+
+.pfq *,
+.pfq *::before,
+.pfq *::after {
+  box-sizing: border-box;
+}
+
+.pfq__wrap {
+  align-items: start;
+  display: grid;
+  gap: 40px 72px;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  margin: 0 auto;
+  max-width: 1360px;
+}
+
+/* The intro stays in view while the questions scroll (desktop). */
+.pfq__intro {
+  position: sticky;
+  top: calc(var(--pd-offset, 96px));
+}
+
+.pfq__kicker {
+  margin: 0 0 16px;
+}
+
+.pfq__h {
+  font-family: var(--pf-font-serif);
+  font-size: var(--pf-display-md, 56px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.pfq__text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-top: 20px;
+  opacity: 0.8;
+}
+
+.pfq__text p {
+  margin: 0;
+}
+
+.pfq__link {
+  display: inline-block;
+  margin-top: 22px;
+}
+
+.pfq__list {
+  border-top: 1px solid color-mix(in srgb, var(--pq-ink) 16%, transparent);
+}
+
+.pfq__item {
+  border-bottom: 1px solid color-mix(in srgb, var(--pq-ink) 16%, transparent);
+}
+
+.pfq__q {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  list-style: none;
+  min-height: 72px;
+  padding: 18px 0;
+}
+
+.pfq__q::-webkit-details-marker {
+  display: none;
+}
+
+.pfq__q-text {
+  font-family: var(--pf-font-serif);
+  font-size: clamp(21px, 1.7vw, 27px);
+  line-height: 1.2;
+  transition: transform 0.45s var(--pf-ease-out, ease);
+}
+
+.pfq__q:hover .pfq__q-text {
+  transform: translateX(6px);
+}
+
+.pfq__q:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* + that turns into × */
+.pfq__icon {
+  border: 1px solid color-mix(in srgb, var(--pq-ink) 30%, transparent);
+  border-radius: 50%;
+  flex: none;
+  height: 36px;
+  position: relative;
+  transition: transform 0.45s var(--pf-ease-out, ease), background-color 0.3s ease, color 0.3s ease;
+  width: 36px;
+}
+
+.pfq__icon::before,
+.pfq__icon::after {
+  background: currentColor;
+  content: '';
+  height: 1.2px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+}
+
+.pfq__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.pfq__item[open] .pfq__icon {
+  background: var(--pq-ink);
+  color: var(--pq-bg);
+  transform: rotate(45deg);
+}
+
+.pfq__a {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 62ch;
+  padding: 0 60px 26px 0;
+}
+
+.pfq__a p {
+  margin: 0 0 10px;
+}
+
+.pfq__a a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+.pfq__item[open] .pfq__a {
+  animation: pfq-in 0.5s var(--pf-ease-out, ease) both;
+}
+
+@keyframes pfq-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .pfq__wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pfq__intro {
+    position: static;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .pfq {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .pfq__q {
+    min-height: 64px;
+  }
+
+  .pfq__a {
+    padding-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfq__item[open] .pfq__a {
+    animation: none;
+  }
+
+  .pfq__q-text,
+  .pfq__icon {
+    transition: none;
+  }
+}

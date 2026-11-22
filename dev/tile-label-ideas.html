@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo hero tiles: 10 label ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
+<style>
+  :root { --paper: #f3f0eb; --stone: #e7e2da; --ink: #26221f; --soft: #6b635b; --line: rgba(38,34,31,.14); --ease: cubic-bezier(.16,1,.3,1); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 'Instrument Sans', system-ui, sans-serif; }
+  header { max-width: 1400px; margin: 0 auto; padding: 40px 32px 8px; }
+  h1 { font: 400 52px/1 'Cormorant Garamond', serif; margin: 0 0 10px; letter-spacing: -.02em; }
+  .lede { color: var(--soft); max-width: 76ch; margin: 0; }
+  main { max-width: 1400px; margin: 0 auto; padding: 28px 32px 80px; display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(620px, 1fr)); }
+  @media (max-width: 700px) { main { grid-template-columns: 1fr; padding: 20px 16px; } }
+  .idea { background: var(--stone); padding: 22px; display: grid; gap: 12px; }
+  .idea h2 { font: 400 26px/1.1 'Cormorant Garamond', serif; margin: 0; display: flex; gap: 12px; align-items: baseline; }
+  .idea h2 > span:first-child { font-size: 36px; }
+  .idea p { margin: 0; color: var(--soft); font-size: 14px; max-width: 70ch; }
+  .tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 2px 9px; color: var(--soft); }
+  .grid { display: grid; grid-template-columns: repeat(3, 170px); gap: 14px; padding-top: 6px; }
+  .tile { position: relative; height: 224px; background: var(--bg); overflow: hidden; color: var(--ink); text-decoration: none; display: block; }
+  .tile img { position: absolute; inset: 0; margin: auto; max-height: 76%; max-width: 76%; object-fit: contain; filter: drop-shadow(0 12px 12px rgba(40,30,20,.16)); transition: transform .6s var(--ease); }
+  .tile.cover img { inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; filter: none; }
+  .tile:hover img { transform: translateY(-4%) scale(1.04); }
+  .k { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+  .n { font: italic 400 19px/1.05 'Cormorant Garamond', serif; }
+  .cell { display: grid; gap: 8px; align-content: start; }
+  .now .lab { position: absolute; left: 10px; bottom: 8px; display: grid; gap: 2px; }
+
+  /* 1 caption below */
+  .i1 .cap { display: grid; gap: 1px; }
+  .i1 .n { font-style: normal; font-size: 20px; }
+  /* 2 top-left kicker */
+  .i2 .lab { position: absolute; left: 10px; top: 10px; }
+  .i2 .cap .n { font-size: 18px; }
+  /* 3 pill */
+  .i3 .pill { position: absolute; left: 8px; top: 8px; background: rgba(255,255,255,.8); border-radius: 999px; padding: 4px 10px; font-size: 11px; font-weight: 500; }
+  /* 4 vertical edge */
+  .i4 .v { position: absolute; right: 6px; top: 10px; writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+  /* 5 hover panel */
+  .i5 .panel { position: absolute; left: 0; right: 0; bottom: 0; background: var(--paper); padding: 10px 12px; transform: translateY(101%); transition: transform .5s var(--ease); display: grid; gap: 2px; }
+  .i5 .tile:hover .panel, .i5 .tile:focus-visible .panel { transform: none; }
+  @media (hover: none) { .i5 .panel { transform: none; } }
+  /* 6 number + name */
+  .i6 .cap { display: flex; gap: 10px; align-items: baseline; border-top: 1px solid var(--line); padding-top: 6px; }
+  .i6 .cap b { font-weight: 500; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .i6 .cap span { font-size: 13px; }
+  /* 7 handwritten */
+  .i7 .hand { position: absolute; right: 8px; top: 8px; font: 30px/1 'Mrs Saint Delafield', cursive; transform: rotate(-8deg); }
+  /* 8 sticker */
+  .i8 .cell { position: relative; }
+  .i8 .sticker { position: absolute; left: -6px; top: 14px; background: var(--ink); color: var(--paper); padding: 5px 9px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; transform: rotate(-4deg); z-index: 2; box-shadow: 0 6px 14px rgba(0,0,0,.15); }
+  /* 9 one shared caption */
+  .i9 .shared { min-height: 44px; display: grid; gap: 2px; border-top: 1px solid var(--line); padding-top: 8px; }
+  .i9 .shared .n { font-style: normal; font-size: 22px; }
+  .i9 .tile { outline: 0 solid var(--ink); transition: outline-width .2s; }
+  .i9 .tile.on { outline-width: 2px; outline-offset: 3px; }
+  /* 10 frosted bar */
+  .i10 .bar { position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 10px; background: rgba(255,255,255,.35); backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2); display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .i10 .bar .n { font-size: 16px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hero tiles: 10 label ideas</h1>
+  <p class="lede">Today the label sits <em>on</em> the bottle at the bottom of the tile, so on narrower screens it runs over the glass ("Stronger With You Intensely" crossing the bottle). Each idea below fixes that a different way. Hover the tiles (on a phone, the "always on" versions show).</p>
+</header>
+<main>
+  <section class="idea now"><h2><span>0</span> Now <span class="tag">the problem</span></h2><p>Kicker + italic name over the bottom of the image: it collides with tall bottles and long names.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="lab"><span class="k">Dior</span><span class="n">Sauvage Eau de Parfum</span></span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="lab"><span class="k">Top note</span><span class="n">Lemon</span></span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="lab"><span class="k">Emporio Armani</span><span class="n">Stronger With You Intensely</span></span></a>
+    </div></section>
+
+  <section class="idea i1"><h2><span>1</span> Caption under the tile <span class="tag">recommended</span></h2><p>Like a gallery or NOHO's product cards: the image stays clean, the text sits on the stone background below in upright serif. Never collides, always readable, works on phones.</p>
+    <div class="grid">
+      <div class="cell"><a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></a><span class="cap"><span class="k">Dior</span><span class="n">Sauvage EDP</span></span></div>
+      <div class="cell"><a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""></a><span class="cap"><span class="k">Top note</span><span class="n">Lemon</span></span></div>
+      <div class="cell"><a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></a><span class="cap"><span class="k">Emporio Armani</span><span class="n">Stronger With You</span></span></div>
+    </div></section>
+
+  <section class="idea i2"><h2><span>2</span> Kicker top-left, name below</h2><p>A tiny "Dior / Top note" in the tile's empty top corner (where bottles never reach) and the name under the tile.</p>
+    <div class="grid">
+      <div class="cell"><a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="lab k">Dior</span></a><span class="cap"><span class="n">Sauvage EDP</span></span></div>
+      <div class="cell"><a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="lab k">Top note</span></a><span class="cap"><span class="n">Lemon</span></span></div>
+      <div class="cell"><a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="lab k">Armani</span></a><span class="cap"><span class="n">Stronger With You</span></span></div>
+    </div></section>
+
+  <section class="idea i3"><h2><span>3</span> White pill in the corner</h2><p>One short word on a soft white pill, top-left ("Sauvage", "Lemon"). Reads instantly on any colour; full names live on the product page.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="pill">Sauvage</span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="pill">Lemon · top note</span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="pill">Stronger With You</span></a>
+    </div></section>
+
+  <section class="idea i4"><h2><span>4</span> Vertical label on the edge</h2><p>Small capitals running up the tile's right edge, like a spine label. Editorial, never touches the bottle, needs short names.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="v">Dior · Sauvage</span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="v">Top note · Lemon</span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="v">Armani · SWY</span></a>
+    </div></section>
+
+  <section class="idea i5"><h2><span>5</span> Panel slides up on hover</h2><p>No text until you hover; then a paper panel slides up from the bottom with kicker + name. On phones (no hover) the panel simply stays up.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="panel"><span class="k">Dior</span><span class="n">Sauvage EDP</span></span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="panel"><span class="k">Top note</span><span class="n">Lemon</span></span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="panel"><span class="k">Emporio Armani</span><span class="n">Stronger With You</span></span></a>
+    </div></section>
+
+  <section class="idea i6"><h2><span>6</span> Number + name, sans</h2><p>"01 Sauvage" under each tile with a hairline, in the body sans. The most minimal, very NOHO; echoes the showcase counter.</p>
+    <div class="grid">
+      <div class="cell"><a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></a><span class="cap"><b>01</b><span>Sauvage</span></span></div>
+      <div class="cell"><a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""></a><span class="cap"><b>02</b><span>Lemon</span></span></div>
+      <div class="cell"><a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></a><span class="cap"><b>03</b><span>Stronger With You</span></span></div>
+    </div></section>
+
+  <section class="idea i7"><h2><span>7</span> Handwritten note</h2><p>One word in the signature script in the tile's empty corner ("fresh", "lemon", "warm"). Charming and on-brand with the hero accent; names go to the product page.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="hand">fresh</span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="hand">lemon</span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="hand">warm</span></a>
+    </div></section>
+
+  <section class="idea i8"><h2><span>8</span> Sticker tag</h2><p>A small dark tag pinned over the tile's edge, slightly rotated, like a price tag on a bottle box. Playful, high contrast.</p>
+    <div class="grid">
+      <div class="cell"><span class="sticker">Sauvage</span><a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></a></div>
+      <div class="cell"><span class="sticker">Lemon</span><a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""></a></div>
+      <div class="cell"><span class="sticker">Stronger With You</span><a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></a></div>
+    </div></section>
+
+  <section class="idea i9"><h2><span>9</span> One shared caption</h2><p>No text on tiles at all. One caption line under the grid shows whichever tile you hover or focus (outlined). Cleanest grid; NOHO-like.</p>
+    <div class="grid" data-shared>
+      <a class="tile" href="#" style="--bg:#cfd7e1" data-k="Dior" data-n="Sauvage Eau de Parfum"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e" data-k="Top note" data-n="Lemon"><img src="../assets/sample-scent-lemon.webp" alt=""></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2" data-k="Emporio Armani" data-n="Stronger With You Intensely"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></a>
+    </div>
+    <div class="shared" aria-live="polite"><span class="k" data-sk>Dior</span><span class="n" data-sn>Sauvage Eau de Parfum</span></div></section>
+
+  <section class="idea i10"><h2><span>10</span> Frosted bar</h2><p>A thin frosted-glass strip across the bottom with the name left and "View →" right. The bottle shows through softly, so text stays readable over glass.</p>
+    <div class="grid">
+      <a class="tile" href="#" style="--bg:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="bar"><span class="n">Sauvage</span><span class="k">View →</span></span></a>
+      <a class="tile cover" href="#" style="--bg:#f2e27e"><img src="../assets/sample-scent-lemon.webp" alt=""><span class="bar"><span class="n">Lemon</span><span class="k">Top note</span></span></a>
+      <a class="tile" href="#" style="--bg:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""><span class="bar"><span class="n">Stronger With You</span><span class="k">View →</span></span></a>
+    </div></section>
+</main>
+<script>
+  document.querySelectorAll('a[href="#"]').forEach((a) => a.addEventListener('click', (e) => e.preventDefault()));
+  const g = document.querySelector('[data-shared]');
+  if (g) {
+    const k = document.querySelector('[data-sk]'), n = document.querySelector('[data-sn]');
+    const show = (t) => { g.querySelectorAll('.tile').forEach((x) => x.classList.toggle('on', x === t)); k.textContent = t.dataset.k; n.textContent = t.dataset.n; };
+    g.querySelectorAll('.tile').forEach((t) => { t.addEventListener('pointerenter', () => show(t)); t.addEventListener('focus', () => show(t)); });
+    show(g.querySelector('.tile'));
+  }
+</script>
+</body>
+</html>

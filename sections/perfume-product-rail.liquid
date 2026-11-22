@@ -1,0 +1,124 @@
+{%- comment -%}
+  Product rail: a heading and a row of product cards (snippets/perfume-product-card)
+  that swipes, drags with the mouse, and has arrows with a progress line.
+  Source: Shopify's product recommendations (on a product page; loaded after the
+  page, as Shopify requires) or a collection (anywhere, e.g. Best sellers on the
+  homepage).
+
+  Styles: assets/perfume-card.css. Script: assets/perfume-card.js (<perfume-rail>).
+{%- endcomment -%}
+{%- liquid
+  assign rid = 'PerfumeRail-' | append: section.id
+  assign tints = section.settings.tints | split: ','
+  assign use_reco = false
+  if section.settings.source == 'recommendations' and product
+    assign use_reco = true
+  endif
+  if use_reco
+    assign items = recommendations.products
+  else
+    assign items = section.settings.collection.products
+  endif
+-%}
+
+{{ 'perfume-card.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-card.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ rid }} {
+    --prail-bg: {{ section.settings.background_color }};
+    --prail-ink: {{ section.settings.text_color }};
+    --prail-pt: {{ section.settings.padding_top }}px;
+    --prail-pb: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="{{ rid }}" class="prail" aria-labelledby="{{ rid }}-heading">
+  <div class="prail__head">
+    <div>
+      {%- if section.settings.kicker != blank -%}
+        <p class="prail__kicker">{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
+      <h2 class="prail__heading" id="{{ rid }}-heading">{{ section.settings.heading | escape }}</h2>
+    </div>
+    {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+      <a class="pf-link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+    {%- endif -%}
+  </div>
+
+  <perfume-rail
+    {% if use_reco and recommendations.performed? == false %}
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=related"
+    {% endif %}
+  >
+    {%- if items.size > 0 -%}
+      <ul class="prail__list" role="list" data-prail-list>
+        {%- for p in items limit: section.settings.limit -%}
+          {%- liquid
+            assign t_index = forloop.index0 | modulo: tints.size
+            assign t = tints[t_index] | strip
+            assign card_key = section.id | append: '-' | append: forloop.index
+          -%}
+          <li class="prail__item">
+            {%- render 'perfume-product-card', product: p, bg: t, quick_add: section.settings.quick_add, key: card_key, sizes: '(min-width: 990px) 25vw, 68vw' -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="prail__controls" data-prail-controls hidden>
+        <span class="prail__progress" aria-hidden="true"><span></span></span>
+        <div class="prail__arrows">
+          <button type="button" class="prail__arrow" data-prail-prev aria-label="Previous products">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M12 4l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" class="prail__arrow" data-prail-next aria-label="Next products">
+            <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M8 4l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+    {%- elsif use_reco == false and request.design_mode -%}
+      <p class="prail__empty">Choose a collection with products in the section settings.</p>
+    {%- endif -%}
+  </perfume-rail>
+</section>
+
+{% schema %}
+{
+  "name": "Product rail",
+  "tag": "div",
+  "class": "section-perfume-rail",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "You might also like" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "More to smell" },
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Products",
+      "options": [
+        { "value": "recommendations", "label": "Shopify recommendations (product pages)" },
+        { "value": "collection", "label": "A collection" }
+      ],
+      "default": "collection"
+    },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 12, "step": 1, "default": 8 },
+    { "type": "checkbox", "id": "quick_add", "label": "Quick Add button", "default": true },
+    {
+      "type": "text",
+      "id": "tints",
+      "label": "Tile colours",
+      "info": "Comma-separated, used in turn. A product's fragrance.tile_color metafield wins.",
+      "default": "#D6DDE5, #EAD8C2, #E9D3C9, #DFD9E6"
+    },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop all" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 }
+  ],
+  "presets": [
+    { "name": "Product rail", "settings": { "kicker": "Best sellers", "heading": "Loved right now" } }
+  ]
+}
+{% endschema %}

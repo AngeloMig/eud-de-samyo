@@ -5,7 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
-    <link rel="canonical" href="{{ canonical_url }}">
+    {%- comment -%} Samyo: a fragrance profile page for a perfume we sell points to its product page (docs/DISCOVERY-PLAN.md). {%- endcomment -%}
+    {%- if template.name == 'metaobject' and metaobject.products.value.size > 0 -%}
+      <link rel="canonical" href="{{ shop.url }}{{ metaobject.products.value.first.url }}">
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}">
+    {%- endif -%}
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -319,6 +324,8 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
+    {%- comment -%} Samyo: fonts, design tokens, Dawn font overrides (snippets/perfume-head.liquid). {%- endcomment -%}
+    {%- render 'perfume-head' -%}
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">

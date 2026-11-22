@@ -1,0 +1,7 @@
+dev/**
+docs/**
+scripts/**
+AGENTS.md
+CLAUDE.md
+LICENSE-dawn.md
+.theme-check.yml

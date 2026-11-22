@@ -1,0 +1,97 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyó edit panel: 10 ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--bg:#d6dde5;--ink:#1f2a36;--soft:#55606d;--line:rgba(31,42,54,.16);--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:#292521;font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:#6e665e;max-width:84ch;margin:0}
+ main{max-width:1320px;margin:0 auto;padding:24px 32px 70px;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(420px,1fr))}
+ .card{background:#fff;display:grid;align-content:start;min-width:0}
+ .p{background:var(--bg);color:var(--ink);padding:26px 26px 24px;display:grid;gap:11px;position:relative;overflow:hidden;min-height:380px;align-content:start}
+ .info{padding:16px 18px 18px;display:grid;gap:6px} h2{font:400 24px/1.1 'Cormorant Garamond',serif;margin:0} h2 b{font-weight:400;font-size:30px;margin-right:8px}
+ .info p{margin:0;color:#6e665e;font-size:13.5px} .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px} .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(41,37,33,.14);border-radius:999px;padding:2px 9px;color:#6e665e} .tag.pick{border-color:#292521;color:#292521}
+
+ .brand{font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;margin:0}
+ .name{font:400 44px/1 'Cormorant Garamond';margin:0;letter-spacing:-.01em}
+ .meta{font-size:12px;margin:0} .meta i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#3c9a5f;margin-left:5px;vertical-align:middle}
+ .desc{font-size:13.5px;line-height:1.55;margin:0}
+ .k{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--soft);margin:4px 0 -4px}
+ .chips{display:flex;flex-wrap:wrap;gap:6px} .chip{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.55);border-radius:999px;padding:3px 12px 3px 3px;font:italic 16px 'Cormorant Garamond';position:relative}
+ .chip img{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
+ .sizes{display:flex;gap:6px;flex-wrap:wrap} .sz{border:1px solid rgba(31,42,54,.3);border-radius:999px;font-size:12px;padding:0 14px;height:34px;display:grid;place-items:center;line-height:1.1;text-align:center} .sz.on{background:var(--ink);color:#fff;border-color:var(--ink)} .sz.off{opacity:.5;text-decoration:line-through}
+ .act{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+ .buy{display:inline-flex;align-items:center;gap:16px;background:var(--ink);color:#fff;height:38px;padding:0 20px;font:600 10.5px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border:0}
+ .buy span{border-left:1px solid rgba(255,255,255,.3);padding-left:14px}
+ .lnk{font:600 10.5px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid;padding-bottom:3px}
+ .rule{height:1px;background:var(--line)}
+ img.lc{object-fit:contain!important;background:#efe3c8;padding:3px}
+
+ /* 1 price up top */
+ .price{font:400 26px/1 'Cormorant Garamond';margin:0} .price small{font:400 12px 'Instrument Sans';color:var(--soft);margin-left:8px}
+ .row{display:flex;justify-content:space-between;align-items:end;gap:12px}
+
+ /* 2 size pills with prices */
+ .sz2 .sz{height:auto;padding:7px 14px;border-radius:14px} .sz2 .sz small{display:block;font-size:10px;opacity:.75} .sz2 .sz.off{text-decoration:none;opacity:.6} .sz2 .sz.off small{text-decoration:underline}
+
+ /* 3 pyramid */
+ .pyr{display:grid;grid-template-columns:52px 1fr;gap:6px 10px;align-items:center} .pyr .lv{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+
+ /* 4 stacked notes */
+ .stack{display:flex;align-items:center;gap:12px} .stack .ph{display:flex} .stack img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid var(--bg);margin-left:-10px} .stack img:first-child{margin-left:0}
+ .stack p{margin:0;font:italic 17px/1.25 'Cormorant Garamond'}
+
+ /* 5 hover note */
+ .chip.hov .pop{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translateX(-50%) translateY(6px);width:170px;background:#fff;color:#292521;padding:8px;display:grid;gap:6px;box-shadow:0 18px 30px -18px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s,transform .5s var(--ease);font:normal 11px/1.4 'Instrument Sans';z-index:5}
+ .chip.hov .pop img{width:100%;height:80px;border-radius:0}
+ .chip.hov:hover .pop,.chip.hov.demo .pop{opacity:1;transform:translateX(-50%)}
+
+ /* 6 free delivery */
+ .ship{display:grid;gap:6px;font-size:12px} .ship .bar{height:3px;background:rgba(31,42,54,.15);border-radius:2px;overflow:hidden} .ship .bar i{display:block;height:100%;width:62%;background:var(--ink);border-radius:2px;transform-origin:left;animation:grow 2.4s var(--ease) infinite alternate}
+ @keyframes grow{from{transform:scaleX(.5)}to{transform:scaleX(1)}}
+
+ /* 7 qty + heart */
+ .qty{display:inline-flex;align-items:center;border:1px solid rgba(31,42,54,.3);height:38px} .qty span{width:32px;text-align:center} .qty b{font-weight:500;width:26px;text-align:center}
+ .heart{width:38px;height:38px;border:1px solid rgba(31,42,54,.3);display:grid;place-items:center;font-size:16px}
+ .act7{display:flex;gap:6px;align-items:center}
+
+ /* 8 EDP tip */
+ .tipwrap{position:relative;display:inline-flex;align-items:center;gap:5px} .tipwrap .i{width:15px;height:15px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:9px}
+ .tip{position:absolute;left:0;top:calc(100% + 8px);width:240px;background:var(--ink);color:#fff;font-size:11.5px;line-height:1.45;padding:9px 11px;z-index:4}
+
+ /* 9 rating */
+ .stars{display:flex;align-items:center;gap:8px;font-size:12px} .stars span{letter-spacing:2px;font-size:13px}
+
+ /* 10 veil */
+ .bigS{position:absolute;right:-30px;top:-10px;font:italic 400 300px/1 'Cormorant Garamond';color:rgba(31,42,54,.12);pointer-events:none}
+ .veil{position:relative;z-index:1;background:linear-gradient(90deg,var(--bg) 70%,color-mix(in srgb,var(--bg) 0%,transparent));margin:-26px -26px -24px;padding:26px 26px 24px;display:grid;gap:11px}
+ .before{position:absolute;right:12px;top:10px;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);z-index:2}
+
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+ @media (max-width:640px){main,header.top{padding-left:14px;padding-right:14px} main{grid-template-columns:minmax(0,1fr)}}
+</style></head><body>
+<header class="top"><h1>The Samyó edit panel: 10 ideas</h1><p class="lede">Improvements for the perfume details next to the bottle (name, notes, sizes, Add to bag). Each mock-up shows just the panel in the Sauvage colours. Data-dependent ideas say what they need; nothing is invented (ratings only with a real reviews app). Prices are preview values.</p></header>
+<main>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><div class="row"><h3 class="name">Sauvage</h3><p class="price">₱6,200<small>60 ml</small></p></div><p class="meta">Eau de Parfum · In stock<i></i></p><p class="desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="sizes"><span class="sz on">60 ml</span><span class="sz">100 ml</span></div><div class="act"><span class="buy">Add to bag</span><span class="lnk">Discover the scent</span></div></div><div class="info"><h2><b>1</b>Price beside the name</h2><p>The price moves up next to the name (updating with the size), so the button can simply say "Add to bag". Clearer at a glance; the classic luxury layout.</p><div class="tags"><span class="tag pick">My pick</span><span class="tag">layout</span></div></div></section>
+
+<section class="card"><div class="p sz2"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="k">Size</p><div class="sizes"><span class="sz on">60 ml<small>₱6,200 · ₱103/ml</small></span><span class="sz">100 ml<small>₱8,900 · ₱89/ml</small></span><span class="sz off">200 ml<small>Notify me</small></span></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div><div class="info"><h2><b>2</b>Sizes that explain themselves</h2><p>Each size shows its price and price per ml, so the better value of the bigger bottle is obvious. A sold-out size says "Notify me" instead of a crossed-out label (uses Shopify's back-in-stock or an app).</p><div class="tags"><span class="tag">data: variants</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="k">Smells like</p><div class="pyr"><span class="lv">Top</span><div class="chips"><span class="chip"><img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=80&h=80&fit=crop" alt="">Bergamot</span><span class="chip"><img src="https://images.unsplash.com/photo-1652128288742-df890f000a56?w=80&h=80&fit=crop" alt="">Sichuan pepper</span></div><span class="lv">Heart</span><div class="chips"><span class="chip"><img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=80&h=80&fit=crop" alt="">Lavender</span></div><span class="lv">Base</span><div class="chips"><span class="chip"><img class="lc" src="../assets/sample-scent-vanilla.webp" alt="">Vanilla</span><span class="chip"><img src="https://images.unsplash.com/photo-1631624406592-f599694e6b2c?w=80&h=80&fit=crop" alt="">Ambroxan</span></div></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div><div class="info"><h2><b>3</b>Notes as Top · Heart · Base</h2><p>The chips grouped into three short rows, so shoppers see what they smell first and what lasts. Uses the fragrance profile's top/heart/base notes when the product has one.</p><div class="tags"><span class="tag">data: profile</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="meta">Eau de Parfum · In stock<i></i></p><div class="stack"><div class="ph"><img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=80&h=80&fit=crop" alt=""><img src="https://images.unsplash.com/photo-1652128288742-df890f000a56?w=80&h=80&fit=crop" alt=""><img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=80&h=80&fit=crop" alt=""><img class="lc" src="../assets/sample-scent-vanilla.webp" alt=""></div><p>bergamot, Sichuan pepper,<br>lavender &amp; vanilla</p></div><div class="rule"></div><div class="sizes"><span class="sz on">60 ml</span><span class="sz">100 ml</span></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span><span class="lnk">Discover</span></div></div><div class="info"><h2><b>4</b>Compact notes line</h2><p>The four chips become overlapping round photos with one handwritten-style line beside them. Half the height, and the description can go (the line says it). Cleaner on phones.</p><div class="tags"><span class="tag">compact</span></div></div></section>
+
+<section class="card"><div class="p" style="padding-top:120px"><p class="k">Smells like</p><div class="chips"><span class="chip hov demo"><img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=80&h=80&fit=crop" alt="">Bergamot<span class="pop"><img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=340&h=160&fit=crop" alt=""><span>Bright, sparkling citrus peel. A top note: what you smell first.</span></span></span><span class="chip hov"><img src="https://images.unsplash.com/photo-1652128288742-df890f000a56?w=80&h=80&fit=crop" alt="">Sichuan pepper<span class="pop"><img src="https://images.unsplash.com/photo-1652128288742-df890f000a56?w=340&h=160&fit=crop" alt=""><span>Tingling, spicy-citrus. A top note.</span></span></span><span class="chip hov"><img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=80&h=80&fit=crop" alt="">Lavender<span class="pop"><img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=340&h=160&fit=crop" alt=""><span>Clean, herbal, calming. A heart note.</span></span></span></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div><div class="info"><h2><b>5</b>Hover a note to learn it</h2><p>Hovering (or tapping) a note chip opens a small card with a bigger photo and one line about how it smells and where it sits. Text comes from the note's own entry, written once for all perfumes.</p><div class="tags"><span class="tag">data: note descriptions</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><div class="sizes"><span class="sz on">60 ml</span><span class="sz">100 ml</span></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div><div class="ship"><span>Add <b>₱3,800</b> more for free delivery</span><span class="bar"><i></i></span></div></div><div class="info"><h2><b>6</b>Free-delivery nudge</h2><p>Under the button: how far this bottle (plus what's already in the bag) is from free delivery at ₱10,000, with a thin bar. Uses the same threshold as the cart drawer; disappears once reached.</p><div class="tags"><span class="tag">uses cart drawer setting</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="sizes"><span class="sz on">60 ml</span><span class="sz">100 ml</span></div><div class="act7"><span class="qty"><span>−</span><b>1</b><span>+</span></span><span class="buy">Add to bag <span>₱6,200.00</span></span><span class="heart">♡</span></div><span class="lnk" style="justify-self:start">Discover the scent</span></div><div class="info"><h2><b>7</b>Quantity and Save in one row</h2><p>A quantity stepper before the button and a heart to save it for later after it, all one height. Gifting two bottles becomes one click; the heart works with a wishlist app or saves on the device.</p><div class="tags"><span class="tag">app or local</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="meta"><span class="tipwrap">Eau de Parfum <span class="i">i</span><span class="tip">Eau de Parfum has more perfume oil than Eau de Toilette, so it usually smells richer and lasts longer. How long it lasts still depends on your skin and the weather.</span></span></p><div style="height:70px"></div><div class="sizes"><span class="sz on">60 ml</span><span class="sz">100 ml</span></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div><div class="info"><h2><b>8</b>What "Eau de Parfum" means</h2><p>A tiny ⓘ next to the concentration opens one plain line explaining it (general knowledge, the same for every EDP). Helps first-time buyers choose between EDP and EDT.</p><div class="tags"><span class="tag">copy only</span></div></div></section>
+
+<section class="card"><div class="p"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><div class="stars"><span>★★★★★</span> 4.8 · <u>214 reviews</u></div><p class="meta">Eau de Parfum · In stock<i></i></p><p class="desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div><div class="info"><h2><b>9</b>Stars under the name</h2><p>Average rating and review count under the name, linking to the reviews on the product page. Only shown when a reviews app provides real ratings; hidden otherwise (the numbers here are preview examples).</p><div class="tags"><span class="tag">needs a reviews app</span></div></div></section>
+
+<section class="card"><div class="p"><span class="bigS">Sa</span><span class="before">With a soft veil</span><div class="veil"><p class="brand">Dior</p><h3 class="name">Sauvage</h3><p class="meta">Eau de Parfum · In stock<i></i></p><p class="desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="rule" style="width:80%"></div><div class="act"><span class="buy">Add to bag <span>₱6,200.00</span></span></div></div></div><div class="info"><h2><b>10</b>Keep the text clear of the big name</h2><p>In your screenshot the large "Sa" runs into the divider line and the text. A soft veil in the background colour behind the text side (and dividers that stop before the name) keeps the details easy to read while the name stays visible beside them.</p><div class="tags"><span class="tag pick">Fix</span><span class="tag">small</span></div></div></section>
+
+</main>
+</body></html>

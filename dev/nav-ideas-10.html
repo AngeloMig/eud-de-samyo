@@ -1,0 +1,116 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navigation: 10 new ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap">
+<style>
+ :root{--paper:#f3f0eb;--ink:#26221f;--soft:#6b635b;--line:rgba(38,34,31,.14);--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1300px;margin:0 auto;padding:40px 32px 8px} h1{font:400 52px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:82ch;margin:0}
+ main{max-width:1300px;margin:0 auto;padding:24px 32px 60px;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(400px,1fr))}
+ .card{background:#fff;display:grid;align-content:start}
+ .mock{height:210px;background:#e9e4dc;position:relative;overflow:hidden;padding:14px}
+ .card:nth-child(3n+2) .mock{background:#dfe3e8}.card:nth-child(3n) .mock{background:#ece3d6}
+ .info{padding:16px 18px 18px;display:grid;gap:6px} h2{font:400 24px/1.1 'Cormorant Garamond',serif;margin:0} h2 b{font-weight:400;font-size:30px;margin-right:8px}
+ .info p{margin:0;color:var(--soft);font-size:13.5px} .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px} .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--soft)} .tag.pick{border-color:var(--ink);color:var(--ink)}
+
+ /* the header, in miniature */
+ .bar{display:flex;align-items:center;justify-content:space-between;gap:6px}
+ .logo{display:inline-flex;align-items:baseline;gap:.2em;font-size:22px;line-height:1;white-space:nowrap}
+ .logo .pre{font:italic 400 .42em 'Cormorant Garamond';opacity:.8} .logo .nm{font-family:'Italiana'}
+ .boxes{display:flex;gap:3px} .boxes > span{background:#fff;height:30px;display:grid;place-items:center;padding:0 10px;font:500 11px 'Instrument Sans'}
+ .links{display:flex;background:#fff;height:30px;align-items:stretch;font:500 11px 'Instrument Sans'} .links a{display:flex;align-items:center;padding:0 9px;color:inherit;text-decoration:none;position:relative;white-space:nowrap}
+ .note{position:absolute;left:14px;bottom:10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+
+ /* 1 condense from mist */
+ .m1 .links a{animation:condense 4s var(--ease) infinite;animation-delay:calc(var(--i)*.12s)}
+ @keyframes condense{0%,8%{opacity:0;filter:blur(6px);transform:translateY(-4px)}30%,85%{opacity:1;filter:blur(0);transform:none}100%{opacity:0;filter:blur(6px)}}
+ .m1 .puff{position:absolute;left:96px;top:18px;width:40px;height:26px;border-radius:50%;background:radial-gradient(closest-side,rgba(38,34,31,.25),transparent);animation:puff 4s ease-out infinite}
+ @keyframes puff{0%{opacity:0;transform:scale(.2)}6%{opacity:1}30%{opacity:0;transform:scale(3) translateX(20px)}100%{opacity:0}}
+
+ /* 2 links puff */
+ .m2 .links a::after{content:'';position:absolute;right:2px;top:6px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0;box-shadow:5px -4px 0 -1px currentColor,9px 1px 0 -1.5px currentColor}
+ .m2 .links a:nth-child(2)::after{animation:linkpuff 2.4s ease-out infinite}
+ .m2 .links a:nth-child(2){background:#26221f;color:#fff}
+ @keyframes linkpuff{0%{opacity:0;transform:translate(0,0) scale(.5)}20%{opacity:.8}100%{opacity:0;transform:translate(10px,-10px) scale(1.4)}}
+
+ /* 3 scent of the day */
+ .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border-radius:999px;padding:4px 12px 4px 4px;font-size:11px;margin-top:16px}
+ .chip i{width:22px;height:22px;border-radius:50%;background:#f0d98a center/cover}
+ .chip b{font:italic 400 14px 'Cormorant Garamond'}
+ .m3 .chip{animation:float 3s ease-in-out infinite}
+ @keyframes float{50%{transform:translateY(-3px)}}
+
+ /* 4 shelf preview */
+ .shelf{position:absolute;left:150px;top:52px;background:#fff;padding:12px 14px 10px;display:flex;gap:12px;align-items:flex-end;clip-path:inset(0 0 100% 0);animation:shelf 4s var(--ease) infinite}
+ .shelf span{width:28px;background:linear-gradient(#26221f 0 22%,#a8794a 22%);border-radius:3px 3px 5px 5px}
+ .shelf span:nth-child(1){height:52px}.shelf span:nth-child(2){height:44px;background:linear-gradient(#26221f 0 20%,#1d2a44 20%)}.shelf span:nth-child(3){height:48px;background:linear-gradient(#3a302a 0 20%,#c99a6e 20%)}.shelf span:nth-child(4){height:40px;background:linear-gradient(#26221f 0 20%,#d9c9a8 20%)}
+ .shelf em{font:italic 12px 'Cormorant Garamond';align-self:center;margin-left:4px}
+ @keyframes shelf{0%,15%{clip-path:inset(0 0 100% 0)}35%,85%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 100% 0)}}
+ .m4 .links a:first-child{background:#26221f;color:#fff}
+
+ /* 5 bag as bottles */
+ .boxes .bag{display:flex;align-items:center;gap:8px;background:#fff;height:30px;padding:0 10px 0 12px;font:500 11px 'Instrument Sans'}
+ .stack{display:flex} .stack i{width:12px;height:18px;border-radius:2px 2px 3px 3px;margin-left:-4px;border:1.5px solid #fff;background:linear-gradient(#26221f 0 25%,var(--c) 25%)}
+ .stack i:last-child{animation:drop 3s var(--ease) infinite}
+ @keyframes drop{0%,20%{transform:translateY(-30px);opacity:0}45%,100%{transform:none;opacity:1}}
+
+ /* 6 logo collapses */
+ .m6 .logo{animation:collapse 4s var(--ease) infinite}
+ .m6 .logo .pre,.m6 .logo .head{display:inline-block;overflow:hidden;white-space:nowrap;vertical-align:baseline;animation:shrink 4s var(--ease) infinite}
+ .m6 .logo .pre{max-width:3em}.m6 .logo .head{max-width:3em}
+ @keyframes shrink{0%,25%{max-width:3em;opacity:1}45%,80%{max-width:0;opacity:0}100%{max-width:3em;opacity:1}}
+ .m6 .bar{position:relative;z-index:1} .m6 .page{position:absolute;left:14px;right:14px;top:72px;bottom:0;background:linear-gradient(#fff 0 0) 0 0/100% 10px no-repeat,repeating-linear-gradient(#0000 0 18px,rgba(38,34,31,.08) 18px 20px);animation:scrollp 4s var(--ease) infinite}
+ @keyframes scrollp{0%,25%{transform:none}45%,80%{transform:translateY(-16px)}100%{transform:none}}
+
+ /* 7 breadcrumb */
+ .crumb{display:flex;align-items:center;gap:8px;background:#fff;height:30px;padding:0 12px;font-size:11px;color:var(--soft)} .crumb b{color:var(--ink);font:italic 400 14px 'Cormorant Garamond'}
+ .m7 .crumb{animation:crumbin 4s var(--ease) infinite}
+ @keyframes crumbin{0%,20%{clip-path:inset(0 100% 0 0)}40%,85%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 100% 0 0)}}
+
+ /* 8 command search */
+ .cmd{position:absolute;left:50%;top:44px;width:300px;transform:translateX(-50%);background:#fff;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);animation:cmd 4.5s var(--ease) infinite}
+ .cmd .q{display:flex;gap:8px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line);font-size:12px} .cmd .q kbd{margin-left:auto;font:10px 'Instrument Sans';border:1px solid var(--line);padding:1px 5px;border-radius:4px}
+ .cmd ul{list-style:none;margin:0;padding:6px 0} .cmd li{padding:4px 12px;font-size:12px;display:flex;justify-content:space-between} .cmd li span{color:var(--soft);font-size:10px;letter-spacing:.1em;text-transform:uppercase} .cmd li.on{background:#f3f0eb}
+ @keyframes cmd{0%,10%{opacity:0;transform:translate(-50%,8px) scale(.98)}25%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+ .typed{overflow:hidden;white-space:nowrap;display:inline-block;max-width:0;animation:type 4.5s steps(14) infinite;vertical-align:bottom}
+ @keyframes type{0%,25%{max-width:0}55%,100%{max-width:9em}}
+
+ /* 9 family colour underline */
+ .m9 .links a::before{content:'';position:absolute;left:8px;right:8px;bottom:4px;height:3px;border-radius:2px;background:var(--fc);transform:scaleX(0);transform-origin:left;animation:fam 4s var(--ease) infinite;animation-delay:calc(var(--i)*.5s)}
+ @keyframes fam{0%{transform:scaleX(0)}15%,40%{transform:scaleX(1)}55%,100%{transform:scaleX(0);transform-origin:right}}
+ .fam{position:absolute;left:14px;right:14px;bottom:30px;display:flex;gap:6px} .fam span{flex:1;height:44px;border-radius:2px;display:flex;align-items:flex-end;padding:5px 7px;font:italic 13px 'Cormorant Garamond';background:var(--fc)}
+
+ /* 10 gift finder */
+ .gift{position:absolute;right:14px;top:52px;width:190px;background:#fff;padding:12px;display:grid;gap:6px;animation:giftin 4s var(--ease) infinite}
+ .gift p{margin:0;font:italic 16px 'Cormorant Garamond'}
+ .gift .pills{display:flex;flex-wrap:wrap;gap:5px} .gift .pills span{border:1px solid var(--line);border-radius:999px;font-size:10px;padding:3px 8px} .gift .pills span.on{background:#26221f;color:#fff;border-color:#26221f}
+ @keyframes giftin{0%,10%{opacity:0;transform:translateY(-6px)}25%,85%{opacity:1;transform:none}100%{opacity:0}}
+
+ @media (prefers-reduced-motion:reduce){*{animation:none !important}}
+ @media (max-width:640px){main,header.top{padding-left:16px;padding-right:16px} main{grid-template-columns:minmax(0,1fr)}}
+</style></head><body>
+<header class="top"><h1>Navigation: 10 new ideas</h1><p class="lede">Fresh ideas for the current header (the "eau de samyó" logo, white boxes, Shop all · Brands · Scent notes · Journal · About), none repeating the 40 from before. Each mock-up loops its idea. Tags say what it needs; nothing here invents product data.</p></header>
+<main>
+
+<section class="card"><div class="mock m1"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="links"><a style="--i:0">Shop all</a><a style="--i:1">Brands</a><a style="--i:2">Scent notes</a><a style="--i:3">Journal</a><a style="--i:4">☰</a></span></div><span class="puff"></span><span class="note">menu opens from the logo's spray</span></div><div class="info"><h2><b>1</b>The menu condenses from the mist</h2><p>Opening the menu makes the ó spray, and the links appear out of that mist: blurred, then sharp, one after another. The logo and the menu tell one story.</p><div class="tags"><span class="tag pick">My pick</span><span class="tag">motion</span><span class="tag">desktop + phone</span></div></div></section>
+
+<section class="card"><div class="mock m2"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="links"><a>Shop all</a><a>Brands</a><a>Scent notes</a><a>Journal</a></span></div><span class="note">hover: a tiny puff from the link</span></div><div class="info"><h2><b>2</b>Every link gives a little puff</h2><p>Hovering a link releases three tiny droplets from its corner, a whisper of the logo's spray. Subtle enough for every visit, brand-defining.</p><div class="tags"><span class="tag">motion</span><span class="tag">desktop</span></div></div></section>
+
+<section class="card"><div class="mock m3"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="boxes"><span>Bag 2</span><span>☰</span></span></div><span class="chip"><i style="background-image:url(https://images.unsplash.com/photo-1612253167527-0598073d2979?w=80&h=80&fit=crop)"></i>Scent of the day · <b>bergamot &amp; vetiver</b> →</span></div><div class="info"><h2><b>3</b>Scent of the day</h2><p>A small chip next to the logo: today's perfume with a photo of one of its notes, linking to it. You pick the product each week in the editor; the notes come from its profile.</p><div class="tags"><span class="tag">setting: product</span><span class="tag">desktop + phone</span></div></div></section>
+
+<section class="card"><div class="mock m4"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="links"><a>Shop all</a><a>Brands</a><a>Scent notes</a><a>Journal</a></span></div><div class="shelf"><span></span><span></span><span></span><span></span><em>New in →</em></div></div><div class="info"><h2><b>4</b>A shelf under Shop all</h2><p>Hovering Shop all drops a slim shelf of the four newest bottles (real product photos), each clickable. One glance shows what's new without leaving the page.</p><div class="tags"><span class="tag">data: a collection</span><span class="tag">desktop</span></div></div></section>
+
+<section class="card"><div class="mock m5"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="boxes"><span class="bag">Bag <span class="stack"><i style="--c:#1d2a44"></i><i style="--c:#a8794a"></i><i style="--c:#c99a6e"></i></span></span><span>☰</span></span></div><span class="note">adding drops a bottle into the bag</span></div><div class="info"><h2><b>5</b>The bag shows its bottles</h2><p>Instead of a number, the Bag box shows tiny thumbnails of the bottles inside (up to three, then +2). Adding to bag drops the new bottle in.</p><div class="tags"><span class="tag">data: cart</span><span class="tag">desktop + phone</span></div></div></section>
+
+<section class="card"><div class="mock m6"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm"><span class="head">samy</span>ó</span></span><span class="boxes"><span>Bag 2</span><span>☰</span></span></div><div class="page"></div><span class="note">scrolling: logo shrinks to its ó</span></div><div class="info"><h2><b>6</b>The logo folds into its ó</h2><p>As you scroll, "eau de samy" slides away and only the ó with its mist remains: a compact monogram that frees space on phones. At the top it unfolds again.</p><div class="tags"><span class="tag pick">My pick</span><span class="tag">motion</span><span class="tag">phone first</span></div></div></section>
+
+<section class="card"><div class="mock m7"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="crumb">Brands › Dior › <b>Sauvage</b></span><span class="boxes"><span>Bag 2</span></span></div><span class="note">on product pages after scrolling</span></div><div class="info"><h2><b>7</b>Where you are, in the bar</h2><p>On inner pages the bar shows a quiet path, Brands › Dior › Sauvage, so you can jump back to the brand. Uses the collection the shopper came from.</p><div class="tags"><span class="tag">data: page</span><span class="tag">desktop</span></div></div></section>
+
+<section class="card"><div class="mock m8"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="boxes"><span>Search ⌘K</span><span>Bag 2</span></span></div><div class="cmd"><div class="q">⌕ <span class="typed">fresh for office</span><kbd>esc</kbd></div><ul><li class="on">Sauvage Eau de Parfum <span>perfume</span></li><li>Fresh &amp; citrus <span>family</span></li><li>Bergamot <span>note</span></li><li>Find your scent <span>quiz</span></li></ul></div></div><div class="info"><h2><b>8</b>One search for everything</h2><p>⌘K (or the Search box) opens a centred finder that searches perfumes, brands, notes and pages together, grouped and keyboard-friendly. Uses Shopify's predictive search.</p><div class="tags"><span class="tag">data: predictive search</span><span class="tag">desktop + phone</span></div></div></section>
+
+<section class="card"><div class="mock m9"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="links"><a style="--i:0;--fc:#e9b949">Fresh</a><a style="--i:1;--fc:#d98ea6">Floral</a><a style="--i:2;--fc:#8b6b4a">Woody</a><a style="--i:3;--fc:#c77a3a">Amber</a></span></div><div class="fam"><span style="--fc:#f3e6b8">Fresh</span><span style="--fc:#f0d6df">Floral</span><span style="--fc:#e3d6c6">Woody</span><span style="--fc:#ecd2bd">Amber</span></div></div><div class="info"><h2><b>9</b>Scent notes in their colours</h2><p>Scent notes opens a row of the families in their own colours (the same as the homepage tiles); each link gets a coloured underline on hover. Shopping by smell, not by brand.</p><div class="tags"><span class="tag">uses family colours</span><span class="tag">desktop + phone</span></div></div></section>
+
+<section class="card"><div class="mock m10"><div class="bar"><span class="logo"><span class="pre">eau de</span><span class="nm">samyó</span></span><span class="boxes"><span>Gifts</span><span>Bag 2</span><span>☰</span></span></div><div class="gift"><p>Finding a gift?</p><div class="pills"><span class="on">For him</span><span>For her</span><span>Under ₱5,000</span><span>Under ₱10,000</span><span>Gift sets</span></div></div></div><div class="info"><h2><b>10</b>A Gifts box</h2><p>A small Gifts box beside the Bag opens quick picks: for him, for her, by budget in ₱, gift sets. Made for Christmas, Valentine's and birthdays; each pick is a collection you choose.</p><div class="tags"><span class="tag">setting: collections</span><span class="tag">seasonal</span></div></div></section>
+
+</main>
+</body></html>

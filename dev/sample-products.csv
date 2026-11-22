@@ -1,0 +1,11 @@
+Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Status,Option1 Name,Option1 Value,Variant SKU,Variant Price,Variant Inventory Policy,Variant Fulfillment Service,Variant Requires Shipping,Variant Taxable,Image Src,Image Position,Image Alt Text,Concentration (product.metafields.fragrance.concentration)
+emporio-armani-stronger-with-you-intensely,Stronger With You Intensely,,Emporio Armani,Fragrance,"Armani, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum
+chanel-bleu-de-chanel-eau-de-parfum,Bleu de Chanel Eau de Parfum,,Chanel,Fragrance,"Chanel, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum
+dior-sauvage-eau-de-parfum,Sauvage Eau de Parfum,,Dior,Fragrance,"Dior, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum
+dolce-gabbana-the-one-for-men-eau-de-parfum,The One for Men Eau de Parfum,,Dolce & Gabbana,Fragrance,"Dolce & Gabbana, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum
+hermes-terre-d-hermes-eau-de-toilette,Terre d'Hermès Eau de Toilette,,Hermès,Fragrance,"Hermès, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Toilette
+jo-malone-london-wood-sage-sea-salt-cologne,Wood Sage & Sea Salt Cologne,,Jo Malone London,Fragrance,"Jo Malone, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Cologne
+tom-ford-oud-wood-eau-de-parfum,Oud Wood Eau de Parfum,,Tom Ford,Fragrance,"Tom Ford, sample",FALSE,draft,Size,50 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum
+valentino-uomo-born-in-roma-eau-de-toilette,Uomo Born in Roma Eau de Toilette,,Valentino,Fragrance,"Valentino, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Toilette
+versace-eros-eau-de-toilette,Eros Eau de Toilette,,Versace,Fragrance,"Versace, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Toilette
+yves-saint-laurent-y-eau-de-parfum,Y Eau de Parfum,,Yves Saint Laurent,Fragrance,"YSL, sample",FALSE,draft,Size,100 ml,,0.00,deny,manual,TRUE,TRUE,,,,Eau de Parfum

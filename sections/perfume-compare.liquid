@@ -1,0 +1,150 @@
+{%- comment -%}
+  Compare two fragrances side by side, as an editorial spread, not a table.
+  Rows: family, main notes, character, longevity, projection, sillage, Philippine
+  weather, best for, where to buy. Rows where both say the same thing are marked
+  "Same"; missing data reads "Not yet evaluated".
+
+  Two modes:
+  - On a product or profile page: this fragrance against one chosen with "Compare
+    with…" (perfumes with a profile in the chosen collection, up to 12, all rendered
+    in the page; the choice only switches which one shows).
+  - On an "A vs B" page (templates/metaobject/fragrance_comparison.json): both
+    come from the fragrance_comparison metaobject, with its title as the H1 and the
+    editorial verdict above the spread (crawlable, for searches like
+    "Versace Eros vs Dior Sauvage").
+
+  Columns: snippets/perfume-compare-col.liquid. Script: assets/perfume-discovery.js
+  (<perfume-compare>). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign cid = 'PerfumeCompare-' | append: section.id
+  assign na = section.settings.not_evaluated
+  assign page_mode = false
+  if metaobject.a.value != blank and metaobject.b.value != blank
+    assign page_mode = true
+    assign a_profile = metaobject.a.value
+    assign b_profile = metaobject.b.value
+    assign a_item = a_profile.products.value.first
+    assign b_item = b_profile.products.value.first
+  else
+    assign a_profile = metaobject
+    if a_profile == blank
+      assign a_profile = product.metafields.fragrance.profile.value
+    endif
+    assign a_item = product
+    if a_item == blank
+      assign a_item = a_profile.products.value.first
+    endif
+  endif
+  assign a_name = a_profile.name.value | default: a_item.title
+  assign pool = section.settings.collection.products
+  if pool == blank or pool.size == 0
+    assign pool = collections.all.products
+  endif
+  assign count = 0
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+
+{%- capture b_cols -%}
+  {%- unless page_mode -%}
+    {%- for p in pool limit: 40 -%}
+      {%- if p.id == a_item.id -%}{%- continue -%}{%- endif -%}
+      {%- assign bp = p.metafields.fragrance.profile.value -%}
+      {%- if bp == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign b_name = bp.name.value | default: p.title -%}
+      {%- if b_name == a_name -%}{%- continue -%}{%- endif -%}
+      {%- if count >= 12 -%}{%- break -%}{%- endif -%}
+      {%- assign count = count | plus: 1 -%}
+      <div class="pcmp__slot"{% if count > 1 %} hidden{% endif %} data-key="{{ p.handle }}">
+        {%- render 'perfume-compare-col', profile: bp, item: p, side: 'b', na: na -%}
+      </div>
+    {%- endfor -%}
+  {%- endunless -%}
+{%- endcapture -%}
+
+{%- if page_mode or count > 0 or request.design_mode -%}
+  <perfume-compare id="{{ cid }}" class="pcmp" style="--pcmp-bg: {{ section.settings.background_color }}; --pcmp-ink: {{ section.settings.text_color }};">
+    <span class="pd-anchor" id="compare"></span>
+    <div class="pd-head">
+      <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+      {%- if page_mode -%}
+        {%- liquid
+          assign b_name = b_profile.name.value | default: b_item.title
+          assign vs_title = a_name | append: ' vs ' | append: b_name
+          if metaobject.title.value != blank
+            assign vs_title = metaobject.title.value
+          endif
+        -%}
+        <h1 class="pd-h pcmp__title">{{ vs_title | escape }}</h1>
+        {%- if metaobject.verdict.value != blank -%}
+          <div class="pcmp__verdict rte">{{ metaobject.verdict | metafield_tag }}</div>
+        {%- endif -%}
+      {%- else -%}
+        <h2 class="pd-h">{{ section.settings.heading | replace: '[name]', a_name | escape }}</h2>
+        {%- if count > 0 -%}
+          <label class="pcmp__pick">
+            <span>{{ section.settings.pick_label | escape }}</span>
+            <select data-pcmp-select>
+              {%- for p in pool limit: 40 -%}
+                {%- if p.id == a_item.id -%}{%- continue -%}{%- endif -%}
+                {%- assign bp = p.metafields.fragrance.profile.value -%}
+                {%- if bp == blank -%}{%- continue -%}{%- endif -%}
+                {%- assign b_name = bp.name.value | default: p.title -%}
+                {%- if b_name == a_name -%}{%- continue -%}{%- endif -%}
+                {%- liquid
+                  assign opt_label = b_name
+                  unless b_name contains p.vendor
+                    assign opt_label = p.vendor | append: ' ' | append: b_name | strip
+                  endunless
+                -%}
+                <option value="{{ p.handle }}">{{ opt_label | escape }}</option>
+              {%- endfor -%}
+            </select>
+          </label>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    {%- if page_mode or count > 0 -%}
+      <div class="pcmp__spread">
+        <div class="pcmp__slot pcmp__slot--a">
+          {%- render 'perfume-compare-col', profile: a_profile, item: a_item, side: 'a', na: na -%}
+        </div>
+        <span class="pcmp__vs" aria-hidden="true">vs</span>
+        {%- if page_mode -%}
+          <div class="pcmp__slot">
+            {%- render 'perfume-compare-col', profile: b_profile, item: b_item, side: 'b', na: na -%}
+          </div>
+        {%- else -%}
+          {{ b_cols }}
+        {%- endif -%}
+      </div>
+      <p class="pd-basis">{{ section.settings.note | escape }}</p>
+    {%- else -%}
+      <p class="pd-basis">Add fragrance profiles to more products to compare them.</p>
+    {%- endif -%}
+  </perfume-compare>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Compare fragrances",
+  "tag": "div",
+  "class": "section-perfume-compare",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "paragraph", "content": "On an A vs B page (fragrance_comparison metaobject) it compares the two set there. Elsewhere it compares this fragrance with one the shopper picks." },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Compare" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "[name], side by side" },
+    { "type": "text", "id": "pick_label", "label": "Picker label", "default": "Compare with" },
+    { "type": "collection", "id": "collection", "label": "Perfumes to compare with", "info": "Falls back to all products; only those with a fragrance profile. Up to 12." },
+    { "type": "text", "id": "not_evaluated", "label": "Missing data text", "default": "Not yet evaluated" },
+    { "type": "text", "id": "note", "label": "Note under the comparison", "default": "Performance and weather are our editorial estimates; prices on other sites can change." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "Compare fragrances" }]
+}
+{% endschema %}

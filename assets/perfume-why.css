@@ -1,0 +1,201 @@
+/* Why Samyó (sections/perfume-why.liquid). Sizes in px (Dawn: 1rem = 10px). */
+.pw {
+  background: var(--pw-bg, #e8e3db);
+  color: var(--pw-ink, #26221f);
+  font-family: var(--pf-font-sans);
+  overflow: hidden;
+  padding: var(--pw-pt, 96px) var(--pf-gutter, 32px) var(--pw-pb, 96px);
+  position: relative;
+}
+
+.pw *,
+.pw *::before,
+.pw *::after {
+  box-sizing: border-box;
+}
+
+/* A large faint word behind the content, cut by the bottom edge. */
+.pw__word {
+  bottom: -0.32em;
+  color: color-mix(in srgb, var(--pw-ink) 5%, transparent);
+  font-family: var(--pf-font-serif);
+  font-size: clamp(140px, 22vw, 360px);
+  font-style: italic;
+  left: 50%;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.pw__wrap {
+  align-items: start;
+  display: grid;
+  gap: 48px 72px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  margin: 0 auto;
+  max-width: 1360px;
+  position: relative;
+}
+
+.pw__kicker {
+  margin: 0 0 16px;
+}
+
+.pw__h {
+  font-family: var(--pf-font-serif);
+  font-size: var(--pf-display-md, 56px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
+}
+
+.pw__text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-top: 22px;
+  max-width: 44ch;
+  opacity: 0.8;
+}
+
+.pw__text p {
+  margin: 0;
+}
+
+.pw__link {
+  display: inline-block;
+  margin-top: 26px;
+}
+
+/* Promises: a hairline 2-column grid */
+.pw__grid {
+  border-top: 1px solid color-mix(in srgb, var(--pw-ink) 16%, transparent);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pw__item {
+  border-bottom: 1px solid color-mix(in srgb, var(--pw-ink) 16%, transparent);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 44px minmax(0, 1fr);
+  padding: 28px 28px 30px 0;
+  transition-delay: calc(var(--i, 0) * 0.08s);
+}
+
+.pw__item:nth-child(2n) {
+  border-left: 1px solid color-mix(in srgb, var(--pw-ink) 16%, transparent);
+  padding-left: 28px;
+}
+
+.pw__icon {
+  grid-row: span 3;
+  height: 32px;
+  width: 32px;
+}
+
+.pw__icon svg {
+  display: block;
+  fill: none;
+  height: 100%;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.3;
+  width: 100%;
+}
+
+.pw__title {
+  font-family: var(--pf-font-serif);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 2px 0 0;
+}
+
+.pw__line {
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  opacity: 0.75;
+}
+
+.pw__more {
+  color: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  justify-self: start;
+  letter-spacing: 0.14em;
+  margin-top: 6px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.pw__more:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.pw__more:focus-visible,
+.pw__link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* The icon draws itself once the promise is revealed (stroke via clip-path wipe). */
+.pf-js .pw__item[data-pf-reveal] .pw__icon svg {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.9s var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1)) calc(0.2s + var(--i, 0) * 0.08s);
+}
+
+.pf-js .pw__item[data-pf-reveal].is-in .pw__icon svg {
+  clip-path: inset(0 0 0 0);
+}
+
+@media screen and (max-width: 989px) {
+  .pw__wrap {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .pw {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .pw__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pw__item,
+  .pw__item:nth-child(2n) {
+    border-left: 0;
+    padding: 22px 0 24px;
+  }
+
+  .pw__title {
+    font-size: 23px;
+  }
+
+  .pw__more {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-js .pw__item[data-pf-reveal] .pw__icon svg {
+    clip-path: none;
+    transition: none;
+  }
+}

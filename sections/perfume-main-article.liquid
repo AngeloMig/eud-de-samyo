@@ -1,0 +1,115 @@
+{%- comment -%}
+  Journal article (templates/article.json). Back link to the Journal, the first tag,
+  a large title, date · author · reading time, the featured image, then the text in
+  a readable column (serif headings, a drop cap, styled quotes and lists), sharing
+  (Copy link, Facebook, X, Pinterest) and "More from the journal" (the blog's
+  other recent articles).
+
+  Cards: snippets/perfume-article-card.liquid. Styles: assets/perfume-journal.css.
+  The tiny script only copies the link (a plain link remains without JS).
+{%- endcomment -%}
+{%- liquid
+  assign aid = 'PerfumeArticle-' | append: section.id
+  assign words = article.content | strip_html | split: ' ' | size
+  assign minutes = words | divided_by: 200 | at_least: 1
+  assign share_url = shop.url | append: article.url
+-%}
+
+{{ 'perfume-journal.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ aid }} {
+    --pj-bg: {{ section.settings.background_color }};
+    --pj-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<article id="{{ aid }}" class="pj pj--article">
+  <header class="pja__head" data-pf-reveal="rise">
+    <a class="pja__back" href="{{ blog.url }}"><span aria-hidden="true">←</span> {{ blog.title | escape }}</a>
+    {%- if article.tags.size > 0 -%}<p class="pja__tag">{{ article.tags.first | escape }}</p>{%- endif -%}
+    <h1 class="pja__title">{{ article.title | escape }}</h1>
+    <p class="pja__meta">
+      {{ article.published_at | date: '%B %-d, %Y' }}
+      {%- if section.settings.show_author and article.author != blank %} · {{ article.author | escape }}{% endif %} · {{ minutes }} min read
+    </p>
+  </header>
+
+  {%- if article.image != blank -%}
+    <figure class="pja__hero" data-pf-reveal="rise">
+      {{ article.image | image_url: width: 2000 | image_tag: widths: '600, 1000, 1400, 2000', sizes: '(min-width: 1400px) 1300px, 94vw', loading: 'eager', fetchpriority: 'high', alt: article.image.alt }}
+    </figure>
+  {%- endif -%}
+
+  <div class="pja__body rte{% if section.settings.drop_cap %} has-drop-cap{% endif %}">
+    {{ article.content }}
+  </div>
+
+  {%- if section.settings.show_share -%}
+    <div class="pja__share">
+      <span class="pja__share-label">{{ section.settings.share_label | escape }}</span>
+      <a class="pja__share-link" href="{{ share_url }}" data-pja-copy data-done="Link copied">Copy link</a>
+      <a class="pja__share-link" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}" target="_blank" rel="noopener">Facebook</a>
+      <a class="pja__share-link" href="https://twitter.com/intent/tweet?url={{ share_url | url_encode }}&text={{ article.title | url_encode }}" target="_blank" rel="noopener">X</a>
+      {%- if article.image != blank -%}
+        <a class="pja__share-link" href="https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}&media={{ article.image | image_url: width: 1200 | prepend: 'https:' | url_encode }}&description={{ article.title | url_encode }}" target="_blank" rel="noopener">Pinterest</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_more -%}
+    {%- assign more = 0 -%}
+    {%- capture more_html -%}
+      {%- for a in blog.articles limit: 6 -%}
+        {%- if a.id == article.id or more >= 3 -%}{%- continue -%}{%- endif -%}
+        {%- assign more = more | plus: 1 -%}
+        <div class="pj__cell" style="--i: {{ more }};" data-pf-reveal="rise">
+          {%- render 'perfume-article-card', article: a, size: 'sm', show_excerpt: false -%}
+        </div>
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if more > 0 -%}
+      <section class="pja__more" aria-labelledby="{{ aid }}-more">
+        <div class="pj__head">
+          <h2 class="pj__h pj__h--sm" id="{{ aid }}-more">{{ section.settings.more_heading | escape }}</h2>
+          <a class="pf-link pj__all" href="{{ blog.url }}">{{ section.settings.more_link | escape }}</a>
+        </div>
+        <div class="pj__list pj__list--three">{{ more_html }}</div>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+</article>
+
+<script>
+  document.querySelectorAll('[data-pja-copy]').forEach((a) =>
+    a.addEventListener('click', (e) => {
+      if (!navigator.clipboard) return;
+      e.preventDefault();
+      navigator.clipboard.writeText(a.href).then(() => {
+        const label = a.textContent;
+        a.textContent = a.dataset.done;
+        setTimeout(() => (a.textContent = label), 1800);
+      });
+    })
+  );
+</script>
+
+{% schema %}
+{
+  "name": "Journal article",
+  "tag": "div",
+  "class": "section-perfume-main-article",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false },
+    { "type": "checkbox", "id": "drop_cap", "label": "Large first letter", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show sharing", "default": true },
+    { "type": "text", "id": "share_label", "label": "Sharing label", "default": "Share" },
+    { "type": "checkbox", "id": "show_more", "label": "Show more articles", "default": true },
+    { "type": "text", "id": "more_heading", "label": "More articles heading", "default": "More from the journal" },
+    { "type": "text", "id": "more_link", "label": "More articles link", "default": "All articles" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ]
+}
+{% endschema %}

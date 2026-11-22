@@ -1,0 +1,82 @@
+{
+  "_note": "PREVIEW ONLY. Placeholder products and prices so the showcase's Add to bag can be seen without a store. Not real prices; not part of the theme. Ratings are EXAMPLE values used only in dev/showcase-idea-1.html.",
+  "showcase": [
+    {
+      "title": "Sauvage Eau de Parfum",
+      "vendor": "Dior",
+      "variants": [
+        [
+          "60 ml",
+          620000,
+          true
+        ],
+        [
+          "100 ml",
+          890000,
+          true
+        ],
+        [
+          "200 ml",
+          1390000,
+          false
+        ]
+      ],
+      "rating": 4.8,
+      "rating_count": 214
+    },
+    {
+      "title": "Dior Homme Intense",
+      "vendor": "Dior",
+      "variants": [
+        [
+          "50 ml",
+          610000,
+          true
+        ],
+        [
+          "100 ml",
+          850000,
+          true
+        ]
+      ],
+      "rating": 4.7,
+      "rating_count": 96
+    },
+    {
+      "title": "The One",
+      "vendor": "Dolce & Gabbana",
+      "variants": [
+        [
+          "50 ml",
+          430000,
+          true
+        ],
+        [
+          "100 ml",
+          590000,
+          true
+        ]
+      ],
+      "rating": 4.6,
+      "rating_count": 151
+    },
+    {
+      "title": "Stronger With You Intensely",
+      "vendor": "Emporio Armani",
+      "variants": [
+        [
+          "50 ml",
+          520000,
+          true
+        ],
+        [
+          "100 ml",
+          720000,
+          true
+        ]
+      ],
+      "rating": 4.8,
+      "rating_count": 188
+    }
+  ]
+}

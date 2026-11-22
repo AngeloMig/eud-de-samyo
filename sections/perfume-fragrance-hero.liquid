@@ -1,0 +1,124 @@
+{%- comment -%}
+  Fragrance hero ("Meet the fragrance") for fragrance profile pages
+  (templates/metaobject/fragrance_profile.json). Product pages use
+  main-product-perfume as their hero instead.
+
+  Full screen on the profile's two colours: the bottle huge in the centre (it leans a
+  little toward the cursor on desktop), the name oversized behind it, brand,
+  concentration, a short description, the first three characteristics, the
+  handwritten tagline and a scroll cue. Breadcrumbs above. If Samyó sells it, a
+  "from ₱…" link to the product.
+
+  Data: the fragrance_profile metaobject (docs/METAFIELDS.md). Script:
+  assets/perfume-discovery.js (<perfume-tilt>). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign hid = 'PerfumeFragranceHero-' | append: section.id
+  assign name = profile.name.value | default: product.title
+  assign brand = profile.brand.value | default: product.vendor
+  assign conc = profile.concentration.value
+  assign desc = profile.description.value
+  assign tagline = profile.tagline.value
+  assign ca = profile.palette_a.value | default: section.settings.color_a
+  assign cb = profile.palette_b.value | default: section.settings.color_b
+  assign sold = profile.products.value.first | default: product
+  assign img = profile.hero_image.value
+  if img == blank and sold != blank
+    assign img = sold.featured_media.preview_image
+  endif
+  assign traits = profile.characteristics.value
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ hid }} {
+    --pfh-a: {{ ca }};
+    --pfh-b: {{ cb }};
+    --pfh-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<section id="{{ hid }}" class="pfh" aria-labelledby="{{ hid }}-name">
+  <span class="pd-anchor" id="overview"></span>
+  <nav class="pfh__crumbs" aria-label="Breadcrumb">
+    <ol role="list">
+      <li><a href="{{ section.settings.root_link | default: routes.all_products_collection_url }}">{{ section.settings.root_label | escape }}</a></li>
+      {%- if brand != blank -%}<li><span>{{ brand | escape }}</span></li>{%- endif -%}
+      <li><span aria-current="page">{{ name | escape }}</span></li>
+    </ol>
+  </nav>
+
+  <p class="pfh__big" aria-hidden="true">{{ name | escape }}</p>
+
+  <div class="pfh__grid">
+    <div class="pfh__text">
+      {%- if brand != blank -%}<p class="pfh__brand">{{ brand | escape }}</p>{%- endif -%}
+      <h1 class="pfh__name" id="{{ hid }}-name">{{ name | escape }}</h1>
+      {%- if conc != blank -%}<p class="pfh__conc">{{ conc | escape }}</p>{%- endif -%}
+      {%- if desc != blank -%}<p class="pfh__desc">{{ desc | escape }}</p>{%- endif -%}
+      {%- if sold != blank -%}
+        <a class="pf-button pfh__buy" href="{{ sold.url }}">
+          {%- if sold.price_varies %}From {% endif -%}{{ sold.price_min | money }} · {{ section.settings.buy_label | escape }}
+        </a>
+      {%- else -%}
+        <a class="pf-link pfh__buy-link" href="#where-to-buy">{{ section.settings.where_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    <perfume-tilt class="pfh__bottle">
+      {%- if img != blank -%}
+        {{ img | image_url: width: 1400 | image_tag: widths: '500, 800, 1100, 1400', sizes: '(min-width: 990px) 40vw, 80vw', alt: name, loading: 'eager', fetchpriority: 'high', class: 'pfh__img' }}
+      {%- else -%}
+        {%- render 'perfume-bottle-art', shape: 'square', uid: section.id -%}
+      {%- endif -%}
+      {%- if tagline != blank -%}<p class="pfh__tagline" aria-hidden="true">{{ tagline | escape }}</p>{%- endif -%}
+    </perfume-tilt>
+
+    <div class="pfh__traits">
+      {%- if traits != blank and traits.size > 0 -%}
+        <p class="pfh__label">{{ section.settings.traits_label | escape }}</p>
+        <ul role="list">
+          {%- for t in traits limit: 3 -%}
+            <li style="--i: {{ forloop.index0 }};">{{ t.accord.value | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- elsif profile.family.value != blank -%}
+        <p class="pfh__label">{{ section.settings.family_label | escape }}</p>
+        <ul role="list"><li>{{ profile.family.value | escape }}</li></ul>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <a class="pfh__cue" href="#scent-dna" aria-label="{{ section.settings.cue_label | escape }}">
+    <span>{{ section.settings.cue_label | escape }}</span><i aria-hidden="true"></i>
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "Fragrance hero",
+  "tag": "div",
+  "class": "section-perfume-fragrance-hero",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "paragraph", "content": "Reads the fragrance profile (metaobject page) or the product's fragrance.profile metafield." },
+    { "type": "text", "id": "root_label", "label": "First breadcrumb", "default": "Fragrances" },
+    { "type": "url", "id": "root_link", "label": "First breadcrumb link" },
+    { "type": "text", "id": "traits_label", "label": "Characteristics label", "default": "Character" },
+    { "type": "text", "id": "family_label", "label": "Family label (no scores yet)", "default": "Family" },
+    { "type": "text", "id": "buy_label", "label": "Buy button text", "default": "Shop at Samyó" },
+    { "type": "text", "id": "where_label", "label": "Link when not sold here", "default": "Where to buy" },
+    { "type": "text", "id": "cue_label", "label": "Scroll cue", "default": "Discover the scent" },
+    { "type": "color", "id": "color_a", "label": "Colour A (when the profile has none)", "default": "#DFD9E6" },
+    { "type": "color", "id": "color_b", "label": "Colour B (when the profile has none)", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "Fragrance hero" }]
+}
+{% endschema %}

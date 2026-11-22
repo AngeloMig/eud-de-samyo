@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo: 20 design ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
+<style>
+  :root { --paper: #f3f0eb; --stone: #e8e3db; --sand: #cdc0b0; --ink: #26221f; --soft: #6b635b; --line: rgba(38,34,31,.14); --ease: cubic-bezier(.16,1,.3,1); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 'Instrument Sans', system-ui, sans-serif; }
+  header { max-width: 1440px; margin: 0 auto; padding: 40px 32px 8px; }
+  h1 { font: 400 52px/1 'Cormorant Garamond', serif; margin: 0 0 10px; letter-spacing: -.02em; }
+  .lede { color: var(--soft); max-width: 78ch; margin: 0; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .filters span { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--soft); }
+  main { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+  .card { background: var(--stone); display: grid; grid-template-rows: 200px auto; }
+  .mock { position: relative; overflow: hidden; background: var(--paper); border-bottom: 1px solid var(--line); display: grid; place-items: center; padding: 14px; }
+  .body { padding: 16px 18px 20px; display: grid; gap: 6px; align-content: start; }
+  .top { display: flex; gap: 10px; align-items: baseline; }
+  .num { font: 400 30px/1 'Cormorant Garamond', serif; }
+  h2 { font: 400 22px/1.1 'Cormorant Garamond', serif; margin: 0; }
+  .body p { margin: 0; color: var(--soft); font-size: 13.5px; }
+  .where { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--soft); }
+  .k { font-size: 9px; letter-spacing: .16em; text-transform: uppercase; }
+  .serif { font-family: 'Cormorant Garamond', serif; }
+  .btn { background: var(--ink); color: var(--paper); font: 600 10px/1 'Instrument Sans'; letter-spacing: .14em; text-transform: uppercase; padding: 10px 14px; display: inline-block; }
+  img.b { height: 120px; width: auto; object-fit: contain; }
+
+  /* 1 sticky bar */
+  .m1 { align-content: end; background: linear-gradient(#e8e3db 0 70%, var(--paper) 70%); }
+  .m1 .bar { width: 100%; background: #fff; display: flex; align-items: center; gap: 10px; padding: 8px 10px; box-shadow: 0 -6px 20px rgba(0,0,0,.08); animation: up 2.4s var(--ease) infinite alternate; }
+  .m1 .bar img { height: 34px; }
+  @keyframes up { from { transform: translateY(70px); } to { transform: none; } }
+  /* 2 family colours */
+  .m2 { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .m2 div { height: 120px; display: grid; align-content: end; padding: 8px; font-size: 11px; }
+  /* 3 note tooltip */
+  .m3 .chip { background: #fff; border-radius: 999px; padding: 4px 12px 4px 4px; display: inline-flex; gap: 6px; align-items: center; font: italic 16px 'Cormorant Garamond', serif; position: relative; }
+  .m3 .chip i { width: 24px; height: 24px; border-radius: 50%; background: #c3cc45; }
+  .m3 .tip { position: absolute; bottom: 130%; left: 0; width: 220px; background: var(--ink); color: var(--paper); font: 12px/1.4 'Instrument Sans'; padding: 10px; font-style: normal; }
+  .m3 .tip::after { content: ''; position: absolute; top: 100%; left: 18px; border: 6px solid transparent; border-top-color: var(--ink); }
+  /* 4 grain */
+  .m4 { background: #e2d6c4; }
+  .m4::after { content: ''; position: absolute; inset: 0; opacity: .35; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E"); mix-blend-mode: multiply; }
+  .m4 span { position: relative; z-index: 1; font: italic 34px 'Cormorant Garamond', serif; }
+  /* 5 quote with inline images */
+  .m5 p { margin: 0; font: 500 24px/1.25 'Cormorant Garamond', serif; text-align: center; color: var(--ink); }
+  .m5 img { height: 26px; vertical-align: middle; border-radius: 4px; background: #f2e27e; }
+  /* 6 numbered cards */
+  .m6 { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .m6 div { background: var(--stone); height: 130px; padding: 8px; display: grid; align-content: space-between; font-size: 10px; }
+  .m6 b { font: 500 16px/1.1 'Cormorant Garamond', serif; text-align: center; }
+  /* 7 rail */
+  .m7 { place-items: stretch; align-content: center; gap: 10px; }
+  .m7 .rail { display: flex; gap: 8px; animation: rail 6s ease-in-out infinite alternate; }
+  .m7 .rail div { flex: 0 0 90px; height: 120px; display: grid; place-items: center; }
+  .m7 .rail img { height: 90px; }
+  .m7 .line { height: 1px; background: var(--line); position: relative; }
+  .m7 .line::after { content: ''; position: absolute; left: 0; top: 0; height: 1px; width: 30%; background: var(--ink); animation: line 6s ease-in-out infinite alternate; }
+  @keyframes rail { to { transform: translateX(-160px); } }
+  @keyframes line { to { left: 70%; } }
+  /* 8 accord bars */
+  .m8 { place-items: stretch; align-content: center; gap: 7px; padding: 18px 26px; }
+  .m8 div { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 10px; font-size: 11px; }
+  .m8 i { height: 6px; background: var(--line); position: relative; display: block; }
+  .m8 i::after { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--w); background: var(--ink); }
+  /* 9 hover swap */
+  .m9 .swap { position: relative; width: 120px; height: 150px; background: #cfd7e1; }
+  .m9 .swap img { position: absolute; inset: 0; margin: auto; height: 120px; transition: opacity .5s; }
+  .m9 .swap .two { opacity: 0; height: 130px; }
+  .m9 .swap:hover .one { opacity: 0; } .m9 .swap:hover .two { opacity: 1; }
+  /* 10 cursor */
+  .m10 { background: #f0c2b2; cursor: none; }
+  .m10 .c { position: absolute; width: 70px; height: 70px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-size: 11px; left: 50%; top: 50%; transform: translate(-50%,-50%); animation: cur 3s ease-in-out infinite alternate; }
+  @keyframes cur { to { left: 70%; top: 40%; } }
+  /* 11 page wipe */
+  .m11 { background: #e8e3db; }
+  .m11::before { content: ''; position: absolute; inset: 0; background: #3c3c3c; animation: wipe 2.6s cubic-bezier(.76,0,.24,1) infinite; }
+  @keyframes wipe { 0% { transform: translateY(100%); } 45%, 55% { transform: none; } 100% { transform: translateY(-100%); } }
+  .m11 span { position: relative; z-index: 1; font: italic 30px 'Cormorant Garamond', serif; color: var(--paper); mix-blend-mode: difference; }
+  /* 12 gift toggle */
+  .m12 label { display: flex; gap: 10px; align-items: center; background: #fff; padding: 12px 14px; font-size: 13px; }
+  .m12 .sw { width: 34px; height: 20px; border-radius: 999px; background: var(--ink); position: relative; }
+  .m12 .sw::after { content: ''; position: absolute; right: 3px; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  /* 13 layering */
+  .m13 { grid-auto-flow: column; gap: 10px; align-items: center; }
+  .m13 b { font: 400 34px 'Cormorant Garamond', serif; }
+  .m13 img { height: 110px; }
+  /* 14 review in script */
+  .m14 p { font: 34px/1 'Mrs Saint Delafield', cursive; color: var(--ink); text-align: center; margin: 0; }
+  .m14 small { display: block; font-size: 11px; color: var(--soft); text-align: center; margin-top: 8px; }
+  /* 15 footer note marquee */
+  .m15 { background: var(--sand); overflow: hidden; place-items: center start; }
+  .m15 .mq { white-space: nowrap; font: italic 40px 'Cormorant Garamond', serif; animation: mq 10s linear infinite; }
+  @keyframes mq { to { transform: translateX(-50%); } }
+  /* 16 season tabs */
+  .m16 { align-content: center; gap: 10px; }
+  .m16 .tabs { display: flex; gap: 6px; }
+  .m16 .tabs span { border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 12px; }
+  .m16 .tabs span.on { background: var(--ink); color: var(--paper); }
+  /* 17 mobile bottom nav */
+  .m17 .phone { width: 150px; height: 180px; border: 6px solid #222; border-radius: 22px; position: relative; background: var(--paper); overflow: hidden; }
+  .m17 .nav { position: absolute; left: 0; right: 0; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid var(--line); font-size: 8px; text-align: center; padding: 6px 0 8px; }
+  /* 18 quiz bubble */
+  .m18 .bub { position: absolute; right: 16px; bottom: 16px; background: var(--ink); color: var(--paper); border-radius: 999px; padding: 10px 16px; font-size: 12px; display: flex; gap: 8px; align-items: center; animation: bob 2s ease-in-out infinite; }
+  .m18 .bub i { font: italic 18px 'Mrs Saint Delafield', cursive; font-style: normal; }
+  @keyframes bob { 50% { transform: translateY(-6px); } }
+  /* 19 numerals */
+  .m19 { gap: 6px; align-content: center; }
+  .m19 .price { font: 500 40px/1 'Cormorant Garamond', serif; font-variant-numeric: lining-nums tabular-nums; }
+  .m19 .price small { font: 600 12px 'Instrument Sans'; letter-spacing: .14em; vertical-align: top; margin-right: 4px; }
+  /* 20 evening section */
+  .m20 { background: #17141a; color: #efe7dc; }
+  .m20 span { font: italic 32px 'Cormorant Garamond', serif; }
+  .m20 small { display: block; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: #a99f93; margin-bottom: 6px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>20 design ideas</h1>
+  <p class="lede">Ideas to make Samyo feel more premium and easier to shop, each with a small live sketch. Tags say where it applies. Nothing here is built into the theme yet; pick the ones you like and each has a ready-to-run Codex task in <code>docs/prompts/design-ideas.md</code>.</p>
+  <div class="filters"><span>Site-wide</span><span>Homepage</span><span>Product page</span><span>Shopping</span><span>Motion</span></div>
+</header>
+<main>
+  <article class="card"><div class="mock m1"><div class="bar"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><span class="serif" style="font-size:16px">Sauvage EDP</span><span style="margin-left:auto" class="btn">Add · ₱6,200</span></div></div>
+    <div class="body"><div class="top"><span class="num">1</span><h2>Sticky buy bar</h2></div><span class="where">Product page · Shopping</span><p>When the Add to bag button scrolls out of view on a product page, a slim bar slides up with the bottle, name, size and Add. Fewer scrolls back up to buy.</p></div></article>
+
+  <article class="card"><div class="mock m2"><div style="background:#f2e27e">Fresh</div><div style="background:#e2a07e">Spicy</div><div style="background:#efe6d2">Sweet</div><div style="background:#b9c9a3">Woody</div></div>
+    <div class="body"><div class="top"><span class="num">2</span><h2>One colour per scent family</h2></div><span class="where">Site-wide</span><p>Fresh = lemon yellow, spicy = cinnamon, sweet = vanilla cream, woody = sage… used on tiles, chips, collection headers and product backgrounds, so colour itself tells people what a perfume smells like.</p></div></article>
+
+  <article class="card"><div class="mock m3"><span class="chip"><i></i>Bergamot<span class="tip">A citrus fruit from Calabria: bright, slightly bitter, like Earl Grey tea. Opens the perfume.</span></span></div>
+    <div class="body"><div class="top"><span class="num">3</span><h2>"What does it smell like?" note tips</h2></div><span class="where">Product page · Showcase</span><p>Hover or tap a note chip to get one plain sentence about it (from the note metaobject). Teaches beginners; fits "smell it before you buy it".</p></div></article>
+
+  <article class="card"><div class="mock m4"><span>a little paper grain</span></div>
+    <div class="body"><div class="top"><span class="num">4</span><h2>Subtle paper texture</h2></div><span class="where">Site-wide</span><p>A very light grain over the paper and sand backgrounds (one tiny SVG, no image download) makes flat colour feel like printed stock: warmer, more luxurious.</p></div></article>
+
+  <article class="card"><div class="mock m5"><p>We find the <img src="../assets/sample-scent-lemon.webp" alt=""> note you love, then the <img src="shop-images/samyo-dior-sauvage-edp.webp" alt="" style="background:#cfd7e1"> perfume that has it</p></div>
+    <div class="body"><div class="top"><span class="num">5</span><h2>Big statement with images in the words</h2></div><span class="where">Homepage</span><p>NOHO's quote section: one large centred sentence with small pictures dropped into the text, lines revealing as you scroll. A strong "about us" moment between sections.</p></div></article>
+
+  <article class="card"><div class="mock m6"><div><span>01</span><b>100% authentic</b><span class="k">Always</span></div><div><span>02</span><b>Notes before you buy</b><span class="k">Every perfume</span></div><div><span>03</span><b>Delivered across PH</b><span class="k">Nationwide</span></div></div>
+    <div class="body"><div class="top"><span class="num">6</span><h2>Numbered "Why Samyó" cards</h2></div><span class="where">Homepage</span><p>NOHO's "Chairs that care" cards: three or four calm, numbered promises. Only claims that are true for your store.</p></div></article>
+
+  <article class="card"><div class="mock m7"><div class="rail"><div style="background:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></div><div style="background:#f0c2b2"><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></div><div style="background:#dcd6e4"><img src="shop-images/samyo-dior-homme-intense.webp" alt=""></div><div style="background:#ead8c2"><img src="shop-images/samyo-dg-the-one.webp" alt=""></div><div style="background:#cfd7e1"><img src="shop-images/samyo-dior-sauvage-edp.webp" alt=""></div></div><div class="line"></div></div>
+    <div class="body"><div class="top"><span class="num">7</span><h2>Draggable best-sellers rail</h2></div><span class="where">Homepage · Collections</span><p>A horizontal row of product cards you drag or swipe, with a thin progress line under it (NOHO's gallery). Shows more products without a long page.</p></div></article>
+
+  <article class="card"><div class="mock m8"><div>Fresh<i style="--w:85%"></i></div><div>Spicy<i style="--w:60%"></i></div><div>Woody<i style="--w:45%"></i></div><div>Sweet<i style="--w:25%"></i></div><div class="k" style="display:block;color:var(--soft)">Example values</div></div>
+    <div class="body"><div class="top"><span class="num">8</span><h2>Accord bars on product pages</h2></div><span class="where">Product page</span><p>Simple horizontal bars for the scent profile (citrus, woody, spicy…), labelled with their source (brand, community or your own wear test). Never invented; empty shows "not assessed yet".</p></div></article>
+
+  <article class="card"><div class="mock m9"><div class="swap"><img class="one" src="shop-images/samyo-dior-sauvage-edp.webp" alt=""><img class="two" src="shop-images/with-box/samyo-dior-sauvage-edt.webp" alt=""></div><span class="where">Hover me</span></div>
+    <div class="body"><div class="top"><span class="num">9</span><h2>Second image on hover</h2></div><span class="where">Collections</span><p>Product cards show the bottle, and the bottle with its box when hovered. Feels like picking it up in a store.</p></div></article>
+
+  <article class="card"><div class="mock m10"><span class="c">View</span><img class="b" src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></div>
+    <div class="body"><div class="top"><span class="num">10</span><h2>The dot cursor everywhere</h2></div><span class="where">Site-wide · Motion</span><p>The hero's dot cursor on all product cards and carousels, saying "View" on cards and "Drag" on carousels. Mouse only; touch keeps normal behaviour.</p></div></article>
+
+  <article class="card"><div class="mock m11"><span>samyó</span></div>
+    <div class="body"><div class="top"><span class="num">11</span><h2>Page-change wipe</h2></div><span class="where">Site-wide · Motion</span><p>When moving between pages, a quick charcoal wipe (the preloader's colour) covers and lifts. Makes the site feel like one continuous experience. Short, and off with reduced motion.</p></div></article>
+
+  <article class="card"><div class="mock m12"><label><span class="sw"></span>Gift wrap + handwritten note <b style="margin-left:auto">+₱150</b></label></div>
+    <div class="body"><div class="top"><span class="num">12</span><h2>Gift option at Add to bag</h2></div><span class="where">Product page · Shopping</span><p>Perfume is a top gift. A gift-wrap + note toggle next to Add to bag (as a cart line attribute or a gift-wrap product). Price is an example.</p></div></article>
+
+  <article class="card"><div class="mock m13"><img src="shop-images/samyo-dior-homme-intense.webp" alt=""><b>+</b><img src="shop-images/samyo-armani-stronger-with-you-intensely.webp" alt=""></div>
+    <div class="body"><div class="top"><span class="num">13</span><h2>"Pairs well with"</h2></div><span class="where">Product page</span><p>Suggest perfumes that share notes (e.g. both have lavender), chosen from the same notes data. Helps people discover, and raises order value honestly.</p></div></article>
+
+  <article class="card"><div class="mock m14"><div><p>"smells like a fresh shirt on a hot day"</p><small>Example quote · real reviews only</small></div></div>
+    <div class="body"><div class="top"><span class="num">14</span><h2>Reviews in the signature hand</h2></div><span class="where">Product page · Homepage</span><p>Show one short line from a real customer review in the script font. Personal and on-brand. Only verified reviews from your review app.</p></div></article>
+
+  <article class="card"><div class="mock m15"><span class="mq">bergamot · vanilla · cedar · iris · lemon · tonka · bergamot · vanilla · cedar · iris · lemon · tonka ·</span></div>
+    <div class="body"><div class="top"><span class="num">15</span><h2>Notes marquee</h2></div><span class="where">Homepage · Footer</span><p>A slow ribbon of note names in large italic between sections or above the footer (with a pause control). Sets the "notes first" tone.</p></div></article>
+
+  <article class="card"><div class="mock m16"><div class="tabs"><span class="on">Rainy season</span><span>Summer heat</span><span>Night out</span></div><span class="serif" style="font-size:22px">Picks for humid days</span></div>
+    <div class="body"><div class="top"><span class="num">16</span><h2>Seasonal edits for the Philippines</h2></div><span class="where">Homepage · Collections</span><p>Curated tabs like "Summer heat", "Rainy season", "Night out", built from your season and occasion fields. Very relevant locally.</p></div></article>
+
+  <article class="card"><div class="mock m17"><div class="phone"><div class="nav"><span>Shop</span><span>Notes</span><span>Search</span><span>Bag 2</span></div></div></div>
+    <div class="body"><div class="top"><span class="num">17</span><h2>Thumb-friendly bottom bar on phones</h2></div><span class="where">Site-wide (phones)</span><p>Shop, Notes, Search and Bag always in reach at the bottom of the screen. Most of your visitors in the Philippines will be on phones.</p></div></article>
+
+  <article class="card"><div class="mock m18"><span class="serif" style="font-size:26px">any page</span><span class="bub"><i>not sure?</i> Find your scent</span></div>
+    <div class="body"><div class="top"><span class="num">18</span><h2>Floating "Find your scent" bubble</h2></div><span class="where">Site-wide</span><p>A small floating button that opens the scent quiz from anywhere; hides on scroll down, returns on scroll up; never covers Add to bag.</p></div></article>
+
+  <article class="card"><div class="mock m19"><span class="price"><small>PHP</small>6,200.00</span><span class="k" style="color:var(--soft)">Serif numerals · aligned digits</span></div>
+    <div class="body"><div class="top"><span class="num">19</span><h2>Refined prices and numbers</h2></div><span class="where">Site-wide</span><p>Prices and counters in the display serif with aligned (tabular) digits, and a small "PHP" mark: looks more boutique than default sans prices.</p></div></article>
+
+  <article class="card"><div class="mock m20"><div><small>Evening</small><span>oud, amber &amp; smoke</span></div></div>
+    <div class="body"><div class="top"><span class="num">20</span><h2>A dark "evening" section</h2></div><span class="where">Homepage</span><p>One section in near-black for night and oud perfumes, the light palette inverted. Adds drama and rhythm to an otherwise light page.</p></div></article>
+</main>
+</body>
+</html>

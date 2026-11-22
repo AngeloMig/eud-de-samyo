@@ -1,0 +1,220 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Samyó edit: 10 variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--line:rgba(41,37,33,.12);--ivory:#f7f5f0;--stone:#e8e4dc;--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 52px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:84ch;margin:0}
+ nav.jump{max-width:1320px;margin:16px auto 0;padding:0 32px;display:flex;flex-wrap:wrap;gap:6px} nav.jump a{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:inherit;text-decoration:none;background:#fff}
+ main{max-width:1320px;margin:0 auto;padding:24px 32px 80px;display:grid;gap:28px;grid-template-columns:minmax(0,1fr)}
+ .v{background:#fff;scroll-margin-top:16px;min-width:0;overflow:hidden} .v>.cap{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:16px 22px;border-bottom:1px solid var(--line)}
+ .v>.cap h2{font:400 26px/1.1 'Cormorant Garamond',serif;margin:0} .v>.cap h2 b{font-weight:400;font-size:32px;margin-right:10px}
+ .v>.cap p{margin:0;color:var(--soft);font-size:13px;max-width:70ch;text-align:right}
+ .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle;font-family:'Instrument Sans'}
+ .stage{position:relative;overflow:hidden}
+
+ /* shared bits */
+ .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin:0}
+ .brand{font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;margin:0}
+ .name{font:400 clamp(36px,3.6vw,54px)/1 'Cormorant Garamond',serif;margin:.12em 0 0;letter-spacing:-.01em}
+ .desc{font-size:14.5px;line-height:1.6;margin:0;max-width:44ch}
+ .script{font:clamp(26px,2.4vw,38px)/1 'Mrs Saint Delafield',cursive;transform:rotate(-4deg);display:inline-block;padding:.3em .45em;margin:-.3em -.45em}
+ .chips{display:flex;flex-wrap:wrap;gap:6px} .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:3px 12px 3px 3px;font:italic 400 16px 'Cormorant Garamond'} .chip img{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
+ .sizes{display:flex;gap:6px} .sz{border:1px solid rgba(41,37,33,.3);border-radius:999px;font-size:12px;padding:0 14px;height:34px;display:grid;place-items:center} .sz.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+ .buy{display:inline-flex;align-items:center;gap:16px;background:var(--ink);color:#fff;height:38px;padding:0 20px;font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border:0}
+ .buy span{border-left:1px solid rgba(255,255,255,.3);padding-left:14px}
+ .lnk{font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid;padding-bottom:3px}
+ .arrows{display:flex;align-items:center;gap:12px;font:italic 400 18px 'Cormorant Garamond'} .arrows button{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:14px}
+ .arrows i{display:block;width:60px;height:1px;background:currentColor;opacity:.4}
+ .fade{animation:fade .6s var(--ease) both} @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+ .bottle{display:block;object-fit:contain;filter:drop-shadow(0 18px 18px rgba(41,37,33,.14))}
+ button{font:inherit;color:inherit}
+
+ /* 1 one white stage */
+ .v1 .stage{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;padding:48px 56px;background:#fff;min-height:520px;align-items:center}
+ .v1 .info{display:grid;gap:14px;justify-items:start}
+ .v1 .info .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:8px;vertical-align:middle}
+ .v1 .pic{position:relative;display:grid;place-items:center;height:440px}
+ .v1 .pic .bottle{height:340px}
+ .v1 .pic::after{content:'';position:absolute;bottom:52px;width:240px;height:18px;border-radius:50%;background:radial-gradient(closest-side,rgba(41,37,33,.12),transparent)}
+ .v1 .pic .script{position:absolute;bottom:0}
+ .v1 .arrows{position:absolute;right:56px;bottom:36px}
+ .v1 .rule{width:100%;height:1px;background:var(--line)}
+
+ /* 2 ivory + coloured plinth */
+ .v2 .stage{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;padding:48px 56px;background:var(--ivory);min-height:500px;align-items:center}
+ .v2 .info{display:grid;gap:14px;justify-items:start}
+ .v2 .pic{position:relative;height:420px;display:flex;justify-content:center;align-items:flex-end}
+ .v2 .plinth{position:absolute;bottom:20px;width:300px;height:300px;border-radius:50%;background:var(--c);transition:background .6s}
+ .v2 .pic .bottle{position:relative;height:330px;margin-bottom:40px}
+ .v2 .others{display:flex;gap:10px;margin-top:6px} .v2 .others button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--c);cursor:pointer;outline-offset:3px} .v2 .others button.on{outline:1.5px solid var(--ink)}
+
+ /* 3 gallery cards */
+ .v3 .stage{padding:40px 40px 48px;background:var(--ivory)}
+ .v3 .head{display:flex;justify-content:space-between;align-items:end;margin-bottom:22px}
+ .v3 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+ .v3 .card{background:#fff;padding:18px 18px 16px;display:grid;gap:10px;transition:transform .5s var(--ease),box-shadow .5s}
+ .v3 .card:hover{transform:translateY(-6px);box-shadow:0 24px 40px -28px rgba(41,37,33,.35)}
+ .v3 .card .ph{height:220px;display:grid;place-items:center} .v3 .card .bottle{height:190px;transition:transform .7s var(--ease)} .v3 .card:hover .bottle{transform:scale(1.05) rotate(-2deg)}
+ .v3 .card .name{font-size:26px} .v3 .card .notes{display:flex} .v3 .card .notes img{width:26px;height:26px;border-radius:50%;object-fit:cover;border:2px solid #fff;margin-left:-6px} .v3 .card .notes img:first-child{margin-left:0}
+ .v3 .row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding-top:10px;font-size:13px}
+ .v3 .row b{font:600 10px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase}
+
+ /* 4 split with thumbnails */
+ .v4 .stage{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:540px}
+ .v4 .pic{background:#f1efea;display:grid;place-items:center;position:relative} .v4 .pic .bottle{height:380px}
+ .v4 .pic .no{position:absolute;left:28px;top:24px;font:italic 300 64px/1 'Cormorant Garamond';opacity:.25}
+ .v4 .info{padding:56px;display:grid;gap:16px;align-content:center;justify-items:start}
+ .v4 .thumbs{display:flex;gap:8px;margin-top:10px} .v4 .thumbs button{width:72px;height:72px;background:#f1efea;border:1px solid transparent;cursor:pointer;padding:6px} .v4 .thumbs button img{width:100%;height:100%;object-fit:contain} .v4 .thumbs button.on{border-color:var(--ink)}
+
+ /* 5 centred spotlight */
+ .v5 .stage{background:#fff;padding:44px 40px 40px;text-align:center;min-height:560px}
+ .v5 .title{display:grid;gap:6px;justify-items:center}
+ .v5 .title .name{font-size:clamp(44px,5vw,76px);font-weight:300}
+ .v5 .ring{position:relative;width:min(560px,100%);height:330px;margin:14px auto 0}
+ .v5 .ring .bottle{position:absolute;left:50%;top:50%;height:290px;transform:translate(-50%,-50%)}
+ .v5 .note{position:absolute;display:grid;justify-items:center;gap:4px;font:italic 400 16px 'Cormorant Garamond';animation:bob 5s ease-in-out infinite}
+ .v5 .note img{width:62px;height:62px;border-radius:50%;object-fit:cover;box-shadow:0 10px 20px -12px rgba(0,0,0,.4)}
+ .v5 .n1{left:6%;top:10%}.v5 .n2{right:6%;top:6%;animation-delay:-1.2s}.v5 .n3{left:12%;bottom:4%;animation-delay:-2.4s}.v5 .n4{right:10%;bottom:8%;animation-delay:-3.6s}
+ @keyframes bob{50%{transform:translateY(-8px)}}
+ .v5 .act{display:flex;justify-content:center;align-items:center;gap:22px;margin-top:10px}
+ .v5 .dots{display:flex;justify-content:center;gap:8px;margin-top:22px} .v5 .dots button{width:8px;height:8px;border-radius:50%;border:0;background:var(--line);cursor:pointer;padding:0} .v5 .dots button.on{background:var(--ink);width:26px;border-radius:4px}
+
+ /* 6 index list */
+ .v6 .stage{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);background:var(--ivory);min-height:520px}
+ .v6 ol{list-style:none;margin:0;padding:40px 0 40px 56px;align-self:center}
+ .v6 li button{display:grid;grid-template-columns:52px 1fr auto;align-items:baseline;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;cursor:pointer}
+ .v6 li .n{font:italic 300 22px 'Cormorant Garamond';opacity:.45} .v6 li .t{font:400 34px/1.05 'Cormorant Garamond';transition:transform .5s var(--ease),opacity .4s;opacity:.4} .v6 li .b{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+ .v6 li button.on .t,.v6 li button:hover .t{opacity:1;transform:translateX(8px)} .v6 li button.on .t{font-style:italic}
+ .v6 .pic{display:grid;align-content:center;justify-items:center;gap:14px;padding:30px} .v6 .pic .bottle{height:330px}
+ .v6 .pic .mini{display:flex;gap:14px;align-items:center}
+
+ /* 7 notes strip */
+ .v7 .stage{background:#fff;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:0;min-height:520px}
+ .v7 .info{padding:48px 40px 48px 56px;display:grid;gap:14px;align-content:center;justify-items:start}
+ .v7 .right{display:grid;grid-template-rows:1fr auto;border-left:1px solid var(--line)} .v7 .pic{display:grid;place-items:center} .v7 .pic .bottle{height:300px}
+ .v7 .strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+ .v7 .strip figure{margin:0;position:relative;aspect-ratio:1/.7;overflow:hidden} .v7 .strip img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)} .v7 .strip figure:hover img{transform:scale(1.06)}
+ .v7 .strip figcaption{position:absolute;left:10px;bottom:8px;color:#fff;font:italic 18px 'Cormorant Garamond';text-shadow:0 1px 8px rgba(0,0,0,.4)}
+ .v7 .strip figure+figure{border-left:1px solid #fff}
+
+ /* 8 colour aura on hover */
+ .v8 .stage{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px;padding:48px 56px;background:var(--ivory);min-height:500px;align-items:center}
+ .v8 .info{display:grid;gap:14px;justify-items:start}
+ .v8 .pic{position:relative;display:grid;place-items:center;height:420px;cursor:pointer}
+ .v8 .aura{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,var(--c) 0%,color-mix(in srgb,var(--c) 50%,transparent) 40%,transparent 70%);filter:blur(6px);opacity:.25;transform:scale(.7);transition:opacity .8s,transform 1.2s var(--ease)}
+ .v8 .pic:hover .aura{opacity:1;transform:scale(1.1)}
+ .v8 .pic .bottle{position:relative;height:330px;transition:transform 1s var(--ease)} .v8 .pic:hover .bottle{transform:translateY(-6px)}
+ .v8 .hint{position:absolute;bottom:10px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft)}
+
+ /* 9 shelf */
+ .v9 .stage{background:#fff;padding:40px 56px 36px}
+ .v9 .shelf{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:26px;height:330px;border-bottom:1px solid var(--ink)}
+ .v9 .shelf button{background:none;border:0;padding:0;cursor:pointer;display:flex;align-items:flex-end;height:100%;transition:opacity .5s}
+ .v9 .shelf button .bottle{height:var(--h);transition:height .7s var(--ease),filter .5s;filter:grayscale(.6) opacity(.55) drop-shadow(0 10px 10px rgba(0,0,0,.08))}
+ .v9 .shelf button.on .bottle{filter:drop-shadow(0 18px 18px rgba(41,37,33,.18))}
+ .v9 .bar{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,4fr) auto;gap:28px;align-items:center;padding-top:22px}
+
+ /* 10 slim band */
+ .v10 .stage{background:var(--stone);padding:24px 40px}
+ .v10 .band{display:grid;grid-template-columns:150px minmax(0,1.3fr) minmax(0,1.4fr) auto;gap:28px;align-items:center;background:#fff;padding:14px 26px 14px 14px}
+ .v10 .band .ph{height:170px;background:#f3f1ec;display:grid;place-items:center} .v10 .band .bottle{height:140px;filter:none}
+ .v10 .band .name{font-size:34px}
+ .v10 .band .right{display:grid;gap:10px;justify-items:end}
+
+ img[src*="sample-scent"]{object-fit:contain !important;background:#efe3c8;padding:4px}
+ @media (max-width:900px){
+  main,header.top,nav.jump{padding-left:14px;padding-right:14px}
+  .v>.cap{flex-direction:column;align-items:flex-start} .v>.cap p{text-align:left}
+  .v1 .stage,.v2 .stage,.v4 .stage,.v6 .stage,.v7 .stage,.v8 .stage{grid-template-columns:minmax(0,1fr);padding:28px 20px}
+  .v1 .pic,.v2 .pic,.v8 .pic{height:340px;order:-1} .v1 .pic .bottle,.v2 .pic .bottle,.v8 .pic .bottle{height:250px}
+  .v1 .arrows{position:static}
+  .v3 .grid{grid-template-columns:repeat(2,minmax(0,1fr))} .v3 .stage{padding:24px 16px}
+  .v4 .stage{padding:0} .v4 .info{padding:24px 20px} .v4 .pic{height:340px} .v4 .pic .bottle{height:270px}
+  .v6 ol{padding:0} .v6 li .t{font-size:26px} .v6 .pic{order:-1} .v6 .pic .bottle{height:240px}
+  .v7 .info{padding:0 0 20px} .v7 .right{border-left:0} .v7 .strip{grid-template-columns:repeat(2,1fr)}
+  .v9 .stage{padding:24px 16px} .v9 .shelf{gap:2px;height:240px} .v9 .shelf button .bottle{height:calc(var(--h) * .7);max-width:24vw} .v9 .bar{grid-template-columns:minmax(0,1fr)}
+  .v10 .stage{padding:16px} .v10 .band{grid-template-columns:110px minmax(0,1fr);gap:14px} .v10 .band .ph{height:130px} .v10 .band .bottle{height:110px} .v10 .band .mid,.v10 .band .right{grid-column:1/-1;justify-items:start}
+  .v5 .note img{width:44px;height:44px} .v5 .ring{height:300px} .v5 .ring .bottle{height:230px}
+ }
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style></head><body>
+<header class="top"><h1>The Samyó edit: 10 variants</h1><p class="lede">Ten ways to show the featured perfumes, all calmer and more compact than now, most on one background for every perfume (your idea first). They're built with the real copy, notes and bottle photos, and they all work: click the arrows, thumbnails, names or bottles to switch perfume. Prices and stock are the preview's example values.</p></header>
+<nav class="jump" id="jump"></nav>
+<main id="variants"></main>
+<script>
+const N = (id) => `https://images.unsplash.com/${id}?w=240&h=240&fit=crop&q=70&auto=format`;
+const NB = (id) => `https://images.unsplash.com/${id}?w=700&h=500&fit=crop&q=70&auto=format`;
+const NOTE = {
+  bergamot: 'photo-1612253167527-0598073d2979', pepper: 'photo-1652128288742-df890f000a56', lavender: 'photo-1611625105602-42ee06be977e',
+  iris: 'photo-1776372294959-e78a71c2af84', vetiver: 'photo-1563364664-399838d1394c', cedar: 'photo-1515446134809-993c501ca304',
+  grapefruit: 'photo-1787551742228-8af769f282d3', cardamom: 'photo-1763558049571-a6d12a85472e', tobacco: 'photo-1618843916388-29bb8a13b4fd',
+  amber: 'photo-1631624406592-f599694e6b2c', musk: 'photo-1705147293352-3e81c1b8ab5b',
+};
+const LOCAL = { vanilla: '../assets/sample-scent-vanilla.webp', cinnamon: '../assets/sample-scent-cinnamon.webp' };
+const noteImg = (k, big) => LOCAL[k] || (NOTE[k] ? (big ? NB : N)(NOTE[k]) : (big ? NB : N)(NOTE.amber));
+const P = [
+  { brand: 'Dior', name: 'Sauvage', conc: 'Eau de Parfum', img: 'shop-images/samyo-dior-sauvage-edp.webp', c: '#D6DDE5', desc: 'Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.', cap: 'fresh, spicy & smooth', notes: [['Bergamot', 'bergamot'], ['Sichuan pepper', 'pepper'], ['Lavender', 'lavender'], ['Vanilla', 'vanilla']], sizes: ['60 ml', '100 ml'], price: '₱6,200.00' },
+  { brand: 'Dior', name: 'Dior Homme Intense', conc: 'Eau de Parfum', img: 'shop-images/samyo-dior-homme-intense.webp', c: '#DFD9E6', desc: 'Powdery and woody: iris and lavender over vetiver and cedar.', cap: 'powdery iris, dark woods', notes: [['Lavender', 'lavender'], ['Iris', 'iris'], ['Vetiver', 'vetiver'], ['Cedar', 'cedar']], sizes: ['50 ml', '100 ml'], price: '₱6,100.00' },
+  { brand: 'Dolce & Gabbana', name: 'The One', conc: 'Eau de Parfum', img: 'shop-images/samyo-dg-the-one.webp', c: '#EAD8C2', desc: 'Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.', cap: 'warm tobacco & spice', notes: [['Grapefruit', 'grapefruit'], ['Cardamom', 'cardamom'], ['Tobacco', 'tobacco'], ['Amber', 'amber']], sizes: ['50 ml', '100 ml'], price: '₱4,300.00' },
+  { brand: 'Emporio Armani', name: 'Stronger With You Intensely', conc: 'Eau de Parfum', img: 'shop-images/samyo-armani-stronger-with-you-intensely.webp', c: '#F1D2C6', desc: 'Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.', cap: 'cinnamon, vanilla & heat', notes: [['Pink pepper', 'pepper'], ['Cinnamon', 'cinnamon'], ['Vanilla', 'vanilla'], ['Amber', 'amber']], sizes: ['50 ml', '100 ml'], price: '₱5,200.00' },
+];
+const pad = (n) => String(n + 1).padStart(2, '0');
+const chips = (p) => `<div class="chips">${p.notes.map(([l, k]) => `<span class="chip"><img src="${noteImg(k)}" alt="">${l}</span>`).join('')}</div>`;
+const sizes = (p) => `<div class="sizes">${p.sizes.map((s, i) => `<span class="sz${i ? '' : ' on'}">${s}</span>`).join('')}</div>`;
+const buy = (p) => `<button class="buy" type="button">Add to bag <span>${p.price}</span></button>`;
+const arrows = (i) => `<div class="arrows"><button type="button" data-go="-1" aria-label="Previous">‹</button>${pad(i)}<i></i>${pad(P.length - 1)}<button type="button" data-go="1" aria-label="Next">›</button></div>`;
+const head = (p, kicker = true) => `${kicker ? '<p class="k">Featured fragrances</p>' : ''}<div><p class="brand">${p.brand}</p><h3 class="name">${p.name}</h3></div>`;
+
+const V = [
+  { t: 'One white stage', tag: 'Your idea', d: 'Pure white for every perfume, the same calm stage each time. The perfume\'s colour survives only as a tiny dot by the name; a soft floor shadow, notes, sizes and Add to bag. Clean and compact.',
+    r: (p, i) => `<div class="info fade">${head(p)}<p class="desc"><span class="dot" style="--c:${p.c}"></span>${p.desc}</p><div class="rule"></div><p class="k">Smells like</p>${chips(p)}${sizes(p)}<div style="display:flex;gap:22px;align-items:center">${buy(p)}<span class="lnk">Discover the scent</span></div></div><div class="pic"><img class="bottle fade" src="${p.img}" alt="${p.name}"><span class="script">${p.cap}</span></div>${arrows(i)}` },
+  { t: 'Ivory with a coloured plinth', tag: 'Colour, contained', d: 'One ivory background for all; each bottle stands on a round plinth in its own colour, so the colour stays but is contained. Small colour buttons switch perfume.',
+    r: (p, i) => `<div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${chips(p)}${sizes(p)}${buy(p)}<div class="others">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" style="--c:${q.c}" aria-label="${q.name}"></button>`).join('')}</div></div><div class="pic"><span class="plinth" style="--c:${p.c}"></span><img class="bottle fade" src="${p.img}" alt="${p.name}"></div>` },
+  { t: 'Gallery cards', tag: 'Most compact', d: 'No carousel at all: the four perfumes side by side on white cards with their note photos, price and a quick Add. Everything visible at once; the bottle tilts a little on hover.', all: true,
+    r: () => `<div class="head"><div><p class="k">Featured fragrances</p><h3 class="name" style="font-size:40px"><i>The Samyó edit</i></h3></div><span class="lnk">Shop all</span></div><div class="grid">${P.map((p) => `<div class="card"><div class="ph"><img class="bottle" src="${p.img}" alt="${p.name}"></div><p class="brand" style="font-size:10px">${p.brand}</p><h3 class="name">${p.name}</h3><div class="notes">${p.notes.map(([l, k]) => `<img src="${noteImg(k)}" alt="${l}" title="${l}">`).join('')}</div><div class="row"><span>From ${p.price}</span><b>Add +</b></div></div>`).join('')}</div>` },
+  { t: 'Split with thumbnails', tag: 'Shop-like', d: 'Half picture on a light grey square, half text. Thumbnails of all four bottles sit under the text to switch, like a product gallery. Very clear, very compact.',
+    r: (p, i) => `<div class="pic"><span class="no">${pad(i)}</span><img class="bottle fade" src="${p.img}" alt="${p.name}"></div><div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${chips(p)}${sizes(p)}<div style="display:flex;gap:22px;align-items:center">${buy(p)}<span class="lnk">Discover</span></div><div class="thumbs">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" aria-label="${q.name}"><img src="${q.img}" alt=""></button>`).join('')}</div></div>` },
+  { t: 'Centred spotlight', tag: 'Aesthetic', d: 'White, centred and symmetrical: a large light name, the bottle in the middle and its four notes as round photos floating around it. Dots underneath switch perfume.',
+    r: (p, i) => `<div class="title fade"><p class="brand">${p.brand}</p><h3 class="name">${p.name}</h3></div><div class="ring fade"><img class="bottle" src="${p.img}" alt="${p.name}">${p.notes.map(([l, k], j) => `<span class="note n${j + 1}"><img src="${noteImg(k)}" alt="">${l}</span>`).join('')}</div><div class="act">${sizes(p)}${buy(p)}</div><div class="dots">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" aria-label="${q.name}"></button>`).join('')}</div>` },
+  { t: 'Index list', tag: 'Editorial', d: 'A numbered list of the four names on the left; hovering or tapping one swaps the bottle on the right. Reads like a magazine index; one ivory background.', hover: true,
+    r: (p, i) => `<ol>${P.map((q, j) => `<li><button type="button" data-to="${j}" class="${j === i ? 'on' : ''}"><span class="n">${pad(j)}</span><span class="t">${q.name}</span><span class="b">${q.brand}</span></button></li>`).join('')}</ol><div class="pic"><img class="bottle fade" src="${p.img}" alt="${p.name}"><span class="script fade">${p.cap}</span><div class="mini">${sizes(p)}${buy(p)}</div></div>` },
+  { t: 'Notes strip', tag: 'Sensory', d: 'White stage with the bottle, and under it a strip of the four notes as real ingredient photos with their names. You see what it smells like before you read a word.',
+    r: (p, i) => `<div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${sizes(p)}${buy(p)}${arrows(i)}</div><div class="right"><div class="pic"><img class="bottle fade" src="${p.img}" alt="${p.name}"></div><div class="strip">${p.notes.map(([l, k]) => `<figure><img src="${noteImg(k, true)}" alt=""><figcaption>${l}</figcaption></figure>`).join('')}</div></div>` },
+  { t: 'Colour on hover', tag: 'Subtle motion', d: 'Same ivory for every perfume; hover the bottle and a soft cloud of its colour blooms behind it (the scent aura), then fades away. Calm at rest, alive when you look.',
+    r: (p, i) => `<div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${chips(p)}${sizes(p)}${buy(p)}${arrows(i)}</div><div class="pic"><span class="aura" style="--c:${p.c}"></span><img class="bottle fade" src="${p.img}" alt="${p.name}"><span class="hint">Hover the bottle</span></div>` },
+  { t: 'The shelf', tag: 'Boutique', d: 'All four bottles stand together on one fine shelf line, like a boutique counter. The chosen one is full size and in colour, the others smaller and soft. Click a bottle to choose; the details sit in one compact row below.',
+    r: (p, i) => `<div class="shelf">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" aria-label="${q.name}"><img class="bottle" style="--h:${j === i ? 300 : 170}px" src="${q.img}" alt=""></button>`).join('')}</div><div class="bar fade"><div>${head(p, false)}</div><div style="display:grid;gap:10px"><p class="desc">${p.desc}</p>${chips(p)}</div><div style="display:grid;gap:10px;justify-items:end">${sizes(p)}${buy(p)}</div></div>` },
+  { t: 'Slim band', tag: 'Smallest', d: 'A single slim white band (about 200px tall): small bottle, name and notes, sizes and Add to bag in one row, with arrows. Fits between other sections without taking the whole screen.',
+    r: (p, i) => `<div class="band fade"><div class="ph"><img class="bottle" src="${p.img}" alt="${p.name}"></div><div>${head(p, false)}<p class="desc" style="margin-top:8px;font-size:13px">${p.desc}</p></div><div class="mid">${chips(p)}</div><div class="right">${sizes(p)}${buy(p)}${arrows(i)}</div></div>` },
+];
+
+const main = document.getElementById('variants');
+const jump = document.getElementById('jump');
+V.forEach((v, n) => {
+  const sec = document.createElement('section');
+  sec.className = `v v${n + 1}`;
+  sec.id = `v${n + 1}`;
+  sec.innerHTML = `<div class="cap"><h2><b>${n + 1}</b>${v.t}<span class="tag">${v.tag}</span></h2><p>${v.d}</p></div><div class="stage"></div>`;
+  main.append(sec);
+  jump.insertAdjacentHTML('beforeend', `<a href="#v${n + 1}">${n + 1}. ${v.t}</a>`);
+  const stage = sec.querySelector('.stage');
+  let i = n === 0 ? 2 : 0;
+  const draw = () => (stage.innerHTML = v.r(P[i], i));
+  draw();
+  stage.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    const to = e.target.closest('[data-to]');
+    if (go) i = (i + Number(go.dataset.go) + P.length) % P.length;
+    else if (to) i = Number(to.dataset.to);
+    else return;
+    draw();
+  });
+  if (v.hover) stage.addEventListener('mouseover', (e) => {
+    const to = e.target.closest('[data-to]');
+    if (to && Number(to.dataset.to) !== i) { i = Number(to.dataset.to); draw(); }
+  });
+});
+</script>
+</body></html>

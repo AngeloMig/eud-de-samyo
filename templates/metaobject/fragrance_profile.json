@@ -1,0 +1,208 @@
+{
+  "sections": {
+    "hero": {
+      "type": "perfume-fragrance-hero",
+      "settings": {}
+    },
+    "nav": {
+      "type": "perfume-discovery-nav",
+      "blocks": {
+        "l1": {
+          "type": "link",
+          "settings": {
+            "label": "Overview",
+            "anchor": "overview"
+          }
+        },
+        "l2": {
+          "type": "link",
+          "settings": {
+            "label": "Scent DNA",
+            "anchor": "scent-dna"
+          }
+        },
+        "l3": {
+          "type": "link",
+          "settings": {
+            "label": "Notes",
+            "anchor": "notes"
+          }
+        },
+        "l4": {
+          "type": "link",
+          "settings": {
+            "label": "Performance",
+            "anchor": "performance"
+          }
+        },
+        "l5": {
+          "type": "link",
+          "settings": {
+            "label": "Best for",
+            "anchor": "best-for"
+          }
+        },
+        "l7": {
+          "type": "link",
+          "settings": {
+            "label": "Where to buy",
+            "anchor": "where-to-buy"
+          }
+        },
+        "l8": {
+          "type": "link",
+          "settings": {
+            "label": "Similar",
+            "anchor": "similar"
+          }
+        },
+        "l9": {
+          "type": "link",
+          "settings": {
+            "label": "For you",
+            "anchor": "for-you"
+          }
+        },
+        "l10": {
+          "type": "link",
+          "settings": {
+            "label": "Compare",
+            "anchor": "compare"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4",
+        "l5",
+        "l9",
+        "l8",
+        "l10",
+        "l7"
+      ],
+      "settings": {}
+    },
+    "dna": {
+      "type": "perfume-scent-dna",
+      "settings": {}
+    },
+    "journey": {
+      "type": "perfume-journey",
+      "settings": {}
+    },
+    "lab": {
+      "type": "perfume-performance-lab",
+      "settings": {}
+    },
+    "wear": {
+      "type": "perfume-wear-guide",
+      "settings": {}
+    },
+    "where": {
+      "type": "perfume-where-to-buy",
+      "settings": {}
+    },
+    "details": {
+      "type": "perfume-details",
+      "blocks": {
+        "d1": {
+          "type": "row",
+          "settings": {
+            "title": "Our notes on it",
+            "source": "observations",
+            "open": true
+          }
+        },
+        "d2": {
+          "type": "row",
+          "settings": {
+            "title": "Sources",
+            "source": "sources"
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2"
+      ],
+      "settings": {}
+    },
+    "lineup": {
+      "type": "perfume-lineup",
+      "blocks": {
+        "bottle_1": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
+            "label": "Sauvage",
+            "link": "/products/dior-sauvage-eau-de-parfum"
+          }
+        },
+        "bottle_2": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
+            "label": "Dior Homme Intense",
+            "link": "/products/dior-homme-intense"
+          }
+        },
+        "bottle_3": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dg-the-one.webp",
+            "label": "The One",
+            "link": "/products/dolce-gabbana-the-one"
+          }
+        },
+        "bottle_4": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
+            "label": "Stronger With You Intensely",
+            "link": "/products/emporio-armani-stronger-with-you-intensely"
+          }
+        }
+      },
+      "block_order": [
+        "bottle_1",
+        "bottle_2",
+        "bottle_3",
+        "bottle_4"
+      ],
+      "settings": {
+        "heading": "Keep exploring",
+        "script": "one spray at a time",
+        "button_label": "Shop all fragrances",
+        "button_link": "/collections/all"
+      }
+    },
+    "similar": {
+      "type": "perfume-similar",
+      "settings": {}
+    },
+    "fit": {
+      "type": "perfume-fit",
+      "settings": {}
+    },
+    "compare": {
+      "type": "perfume-compare",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "nav",
+    "dna",
+    "journey",
+    "lab",
+    "wear",
+    "fit",
+    "similar",
+    "compare",
+    "where",
+    "details",
+    "lineup"
+  ]
+}

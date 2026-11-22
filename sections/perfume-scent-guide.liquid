@@ -1,0 +1,367 @@
+{%- comment -%}
+  Scent guide ("How to read a perfume"), for a page using templates/page.scent-guide.json.
+  An editorial page in the homepage's look, every text editable:
+  1. Opening: a big serif title and a handwritten line.
+  2. The pyramid: a triangle in three layers (Top, Heart, Base); choosing a layer
+     shows what it is, when you smell it and example notes with their illustrations.
+  3. Concentration: Cologne to Extrait as bars, with typical oil share and wear time.
+  4. Wear words: longevity, projection, sillage… each with a small drawing.
+  5. The scent wheel: the families on a colour wheel; choosing one explains it and
+     links to its collection.
+  6. Wearing perfume in Philippine heat: numbered tips.
+  General knowledge only, worded as "typical"; nothing is claimed about a product.
+
+  Blocks: tier, concentration, term, family, tip. Script: assets/perfume-guide.js.
+  Styles: assets/perfume-guide.css.
+{%- endcomment -%}
+{%- liquid
+  assign gid = 'PerfumeGuide-' | append: section.id
+  assign tiers = section.blocks | where: 'type', 'tier'
+  assign concs = section.blocks | where: 'type', 'concentration'
+  assign terms = section.blocks | where: 'type', 'term'
+  assign families = section.blocks | where: 'type', 'family'
+  assign tips = section.blocks | where: 'type', 'tip'
+-%}
+
+{{ 'perfume-guide.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-guide.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+<perfume-guide id="{{ gid }}" class="pgd">
+  {%- comment -%} 1. Opening {%- endcomment -%}
+  <header class="pgd__open">
+    <p class="pgd__kicker" data-pf-reveal="rise">{{ section.settings.kicker | escape }}</p>
+    <h1 class="pgd__title" data-pf-reveal="rise" style="--i: 1;">{{ section.settings.title | escape }}</h1>
+    {%- if section.settings.script != blank -%}
+      <p class="pgd__script" aria-hidden="true" data-pf-reveal="rise" style="--i: 2;">{{ section.settings.script | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.intro != blank -%}
+      <div class="pgd__intro rte" data-pf-reveal="rise" style="--i: 3;">{{ section.settings.intro }}</div>
+    {%- endif -%}
+    <nav class="pgd__toc" aria-label="On this page" data-pf-reveal="rise" style="--i: 4;">
+      {%- if tiers.size > 0 -%}<a href="#{{ gid }}-pyramid">The pyramid</a>{%- endif -%}
+      {%- if concs.size > 0 -%}<a href="#{{ gid }}-strength">Strength</a>{%- endif -%}
+      {%- if terms.size > 0 -%}<a href="#{{ gid }}-words">Wear words</a>{%- endif -%}
+      {%- if families.size > 0 -%}<a href="#{{ gid }}-wheel">The scent wheel</a>{%- endif -%}
+      {%- if tips.size > 0 -%}<a href="#{{ gid }}-heat">In the heat</a>{%- endif -%}
+    </nav>
+  </header>
+
+  {%- comment -%} 2. The pyramid {%- endcomment -%}
+  {%- if tiers.size > 0 -%}
+    <section class="pgd__part pgd__pyramid-part" id="{{ gid }}-pyramid" aria-labelledby="{{ gid }}-pyramid-h">
+      <div class="pgd__part-head" data-pf-reveal="rise">
+        <p class="pgd__num">01</p>
+        <h2 class="pgd__h" id="{{ gid }}-pyramid-h">{{ section.settings.pyramid_title | escape }}</h2>
+        <p class="pgd__lede">{{ section.settings.pyramid_text | escape }}</p>
+      </div>
+      <div class="pgd__pyramid" data-pgd-tabs>
+        <div class="pgd__tri" role="tablist" aria-label="{{ section.settings.pyramid_title | escape }}">
+          {%- for block in tiers -%}
+            <button
+              type="button"
+              class="pgd__layer"
+              role="tab"
+              id="{{ gid }}-tab-{{ forloop.index }}"
+              aria-controls="{{ gid }}-panel-{{ forloop.index }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              style="--c: {{ block.settings.color }}; --row: {{ forloop.index }};"
+              {{ block.shopify_attributes }}
+            >
+              <span>{{ block.settings.name | escape }}</span>
+            </button>
+          {%- endfor -%}
+        </div>
+        <div class="pgd__panels">
+          {%- for block in tiers -%}
+            <div
+              class="pgd__panel"
+              role="tabpanel"
+              id="{{ gid }}-panel-{{ forloop.index }}"
+              aria-labelledby="{{ gid }}-tab-{{ forloop.index }}"
+              data-pgd-panel
+              style="--c: {{ block.settings.color }};"
+            >
+              <p class="pgd__when">{{ block.settings.when | escape }}</p>
+              <h3 class="pgd__panel-title">
+                {{ block.settings.name | escape }}
+                {%- if block.settings.nickname != blank -%} <em>{{ block.settings.nickname | escape }}</em>{%- endif -%}
+              </h3>
+              <p class="pgd__panel-text">{{ block.settings.text | escape }}</p>
+              {%- assign examples = block.settings.examples | split: ',' -%}
+              {%- if examples.size > 0 -%}
+                <ul class="pgd__examples" role="list">
+                  {%- for ex in examples -%}
+                    {%- assign pair = ex | split: ':' -%}
+                    {%- assign ex_name = pair[0] | strip -%}
+                    {%- assign ex_art = pair[1] | strip | default: ex_name | downcase -%}
+                    <li>
+                      <span class="pgd__ex-art" aria-hidden="true">{%- render 'perfume-note-art', note: ex_art -%}</span>
+                      <span>{{ ex_name | escape }}</span>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} 3. Strength {%- endcomment -%}
+  {%- if concs.size > 0 -%}
+    <section class="pgd__part pgd__part--tint" id="{{ gid }}-strength" aria-labelledby="{{ gid }}-strength-h">
+      <div class="pgd__part-head" data-pf-reveal="rise">
+        <p class="pgd__num">02</p>
+        <h2 class="pgd__h" id="{{ gid }}-strength-h">{{ section.settings.strength_title | escape }}</h2>
+        <p class="pgd__lede">{{ section.settings.strength_text | escape }}</p>
+      </div>
+      <ol class="pgd__scale" role="list" data-pf-reveal="bars">
+        {%- for block in concs -%}
+          <li class="pgd__conc" style="--v: {{ block.settings.strength | divided_by: 100.0 }}; --i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+            <p class="pgd__conc-name">{{ block.settings.name | escape }}</p>
+            <span class="pgd__conc-bar" aria-hidden="true"><span></span></span>
+            <p class="pgd__conc-facts">
+              <span>{{ block.settings.oil | escape }}</span>
+              <span>{{ block.settings.wear | escape }}</span>
+            </p>
+          </li>
+        {%- endfor -%}
+      </ol>
+      {%- if section.settings.strength_note != blank -%}
+        <p class="pgd__note">{{ section.settings.strength_note | escape }}</p>
+      {%- endif -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} 4. Wear words {%- endcomment -%}
+  {%- if terms.size > 0 -%}
+    <section class="pgd__part" id="{{ gid }}-words" aria-labelledby="{{ gid }}-words-h">
+      <div class="pgd__part-head" data-pf-reveal="rise">
+        <p class="pgd__num">03</p>
+        <h2 class="pgd__h" id="{{ gid }}-words-h">{{ section.settings.words_title | escape }}</h2>
+      </div>
+      <dl class="pgd__terms">
+        {%- for block in terms -%}
+          <div class="pgd__term" data-pf-reveal="rise" style="--i: {{ forloop.index0 | modulo: 3 }};" {{ block.shopify_attributes }}>
+            <span class="pgd__icon pgd__icon--{{ block.settings.icon }}" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'clock' -%}<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24"/><path d="M32 18v14l9 6"/></svg>
+                {%- when 'rings' -%}<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="5"/><circle class="r1" cx="32" cy="32" r="14"/><circle class="r2" cx="32" cy="32" r="24"/></svg>
+                {%- when 'trail' -%}<svg viewBox="0 0 64 64"><circle cx="48" cy="22" r="6"/><path class="t" d="M42 26C30 34 34 44 20 46S8 40 6 44"/></svg>
+                {%- when 'drop' -%}<svg viewBox="0 0 64 64"><path d="M32 10c8 11 16 19 16 29a16 16 0 0 1-32 0c0-10 8-18 16-29Z"/><path d="M25 40c0 4 2 7 5 8"/></svg>
+                {%- when 'chord' -%}<svg viewBox="0 0 64 64"><circle cx="24" cy="28" r="12"/><circle cx="40" cy="28" r="12"/><circle cx="32" cy="41" r="12"/></svg>
+                {%- else -%}<svg viewBox="0 0 64 64"><path d="M20 44c0-14 5-24 12-24s12 10 12 24M26 46c0-11 2-19 6-19s6 8 6 19M32 34v14"/></svg>
+              {%- endcase -%}
+            </span>
+            <dt>{{ block.settings.term | escape }}</dt>
+            <dd>{{ block.settings.text | escape }}</dd>
+          </div>
+        {%- endfor -%}
+      </dl>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} 5. The scent wheel {%- endcomment -%}
+  {%- if families.size > 0 -%}
+    {%- liquid
+      assign step = 360.0 | divided_by: families.size
+      capture wheel
+        for block in families
+          assign from = forloop.index0 | times: step
+          assign to = forloop.index | times: step
+          echo block.settings.color | append: ' ' | append: from | append: 'deg ' | append: to | append: 'deg'
+          unless forloop.last
+            echo ', '
+          endunless
+        endfor
+      endcapture
+    -%}
+    <section class="pgd__part pgd__part--tint" id="{{ gid }}-wheel" aria-labelledby="{{ gid }}-wheel-h">
+      <div class="pgd__part-head" data-pf-reveal="rise">
+        <p class="pgd__num">04</p>
+        <h2 class="pgd__h" id="{{ gid }}-wheel-h">{{ section.settings.wheel_title | escape }}</h2>
+        <p class="pgd__lede">{{ section.settings.wheel_text | escape }}</p>
+      </div>
+      <div class="pgd__wheel-wrap" data-pgd-tabs>
+        <div class="pgd__wheel" style="--wheel: conic-gradient({{ wheel }}); --n: {{ families.size }};" data-pf-reveal="spin">
+          <div class="pgd__disc" aria-hidden="true"></div>
+          <div class="pgd__labels" role="tablist" aria-label="{{ section.settings.wheel_title | escape }}">
+            {%- assign half = step | divided_by: 2 -%}
+            {%- for block in families -%}
+              {%- assign mid = forloop.index0 | times: step | plus: half -%}
+              <button
+                type="button"
+                class="pgd__fam"
+                role="tab"
+                id="{{ gid }}-fam-{{ forloop.index }}"
+                aria-controls="{{ gid }}-fampanel-{{ forloop.index }}"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                style="--a: {{ mid }}deg; --c: {{ block.settings.color }};"
+                {{ block.shopify_attributes }}
+              >
+                <span>{{ block.settings.name | escape }}</span>
+              </button>
+            {%- endfor -%}
+          </div>
+          <div class="pgd__hub">
+            {%- for block in families -%}
+              <div class="pgd__fampanel" role="tabpanel" id="{{ gid }}-fampanel-{{ forloop.index }}" aria-labelledby="{{ gid }}-fam-{{ forloop.index }}" data-pgd-panel>
+                <span class="pgd__hub-art" aria-hidden="true">{%- render 'perfume-note-art', note: block.settings.art -%}</span>
+                <p class="pgd__hub-name">{{ block.settings.name | escape }}</p>
+                <p class="pgd__hub-text">{{ block.settings.text | escape }}</p>
+                {%- if block.settings.link != blank -%}
+                  <a class="pf-link" href="{{ block.settings.link }}">Shop {{ block.settings.name | escape }}</a>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} 6. In the heat {%- endcomment -%}
+  {%- if tips.size > 0 -%}
+    <section class="pgd__part" id="{{ gid }}-heat" aria-labelledby="{{ gid }}-heat-h">
+      <div class="pgd__part-head" data-pf-reveal="rise">
+        <p class="pgd__num">05</p>
+        <h2 class="pgd__h" id="{{ gid }}-heat-h">{{ section.settings.heat_title | escape }}</h2>
+        <p class="pgd__lede">{{ section.settings.heat_text | escape }}</p>
+      </div>
+      <ol class="pgd__tips" role="list">
+        {%- for block in tips -%}
+          <li class="pgd__tip" data-pf-reveal="rise" style="--i: {{ forloop.index0 | modulo: 3 }};" {{ block.shopify_attributes }}>
+            <span class="pgd__tip-n" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <h3>{{ block.settings.title | escape }}</h3>
+            <p>{{ block.settings.text | escape }}</p>
+          </li>
+        {%- endfor -%}
+      </ol>
+    </section>
+  {%- endif -%}
+
+  {%- if section.settings.cta_label != blank -%}
+    <div class="pgd__end" data-pf-reveal="rise">
+      <p class="pgd__script" aria-hidden="true">{{ section.settings.cta_script | escape }}</p>
+      <a class="pf-button" href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}">{{ section.settings.cta_label | escape }}</a>
+    </div>
+  {%- endif -%}
+</perfume-guide>
+
+{% schema %}
+{
+  "name": "Scent guide",
+  "tag": "section",
+  "class": "section-perfume-guide",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The Samyó guide" },
+    { "type": "text", "id": "title", "label": "Title", "default": "How to read a perfume" },
+    { "type": "text", "id": "script", "label": "Handwritten line", "default": "notes, strength & the art of wearing it" },
+    { "type": "richtext", "id": "intro", "label": "Intro", "default": "<p>Every perfume tells a short story on your skin: a bright opening, a heart that settles, and a trace that stays. Once you know how to read it, choosing your next bottle gets easy.</p>" },
+    { "type": "header", "content": "01 · The pyramid" },
+    { "type": "text", "id": "pyramid_title", "label": "Title", "default": "The scent pyramid" },
+    { "type": "text", "id": "pyramid_text", "label": "Line", "default": "Perfumers build in three layers that show up one after another. Choose a layer." },
+    { "type": "header", "content": "02 · Strength" },
+    { "type": "text", "id": "strength_title", "label": "Title", "default": "How strong is it?" },
+    { "type": "text", "id": "strength_text", "label": "Line", "default": "The name on the bottle says how much perfume oil is inside, and roughly how long it lasts." },
+    { "type": "text", "id": "strength_note", "label": "Note", "default": "Typical ranges. Every perfume, skin and climate is different." },
+    { "type": "header", "content": "03 · Wear words" },
+    { "type": "text", "id": "words_title", "label": "Title", "default": "Words you'll see on Samyó" },
+    { "type": "header", "content": "04 · The scent wheel" },
+    { "type": "text", "id": "wheel_title", "label": "Title", "default": "The scent wheel" },
+    { "type": "text", "id": "wheel_text", "label": "Line", "default": "Families next to each other usually get along. Choose one to meet it." },
+    { "type": "header", "content": "05 · In the heat" },
+    { "type": "text", "id": "heat_title", "label": "Title", "default": "Wearing perfume in Philippine heat" },
+    { "type": "text", "id": "heat_text", "label": "Line", "default": "Heat and humidity make perfume bloom faster and fade sooner. A few habits help." },
+    { "type": "header", "content": "Ending" },
+    { "type": "text", "id": "cta_script", "label": "Handwritten line", "default": "ready to smell it?" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop by notes" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Pyramid layer",
+      "limit": 3,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Top notes" },
+        { "type": "text", "id": "nickname", "label": "Nickname", "default": "the hello" },
+        { "type": "text", "id": "when", "label": "When", "default": "First 5–15 minutes" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Light, quick notes that greet you on spraying, then fade." },
+        { "type": "text", "id": "examples", "label": "Example notes", "info": "Comma-separated. Name:illustration, e.g. Lemon:lemon, Pink pepper:pepper.", "default": "Lemon:lemon, Bergamot:bergamot, Mint:mint" },
+        { "type": "color", "id": "color", "label": "Colour", "default": "#F2E27E" }
+      ]
+    },
+    {
+      "type": "concentration",
+      "name": "Strength",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Eau de Parfum" },
+        { "type": "text", "id": "oil", "label": "Perfume oil", "default": "15–20% oil" },
+        { "type": "text", "id": "wear", "label": "Typical wear", "default": "about 5–8 hours" },
+        { "type": "range", "id": "strength", "label": "Bar length", "min": 5, "max": 100, "step": 5, "unit": "%", "default": 70 }
+      ]
+    },
+    {
+      "type": "term",
+      "name": "Wear word",
+      "settings": [
+        { "type": "text", "id": "term", "label": "Word", "default": "Longevity" },
+        { "type": "textarea", "id": "text", "label": "Meaning", "default": "How long you can still smell it on your skin." },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Drawing",
+          "options": [
+            { "value": "clock", "label": "Clock" },
+            { "value": "rings", "label": "Rings" },
+            { "value": "trail", "label": "Trail" },
+            { "value": "drop", "label": "Drop" },
+            { "value": "chord", "label": "Three circles" },
+            { "value": "skin", "label": "Skin" }
+          ],
+          "default": "clock"
+        }
+      ]
+    },
+    {
+      "type": "family",
+      "name": "Wheel family",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Family", "default": "Fresh" },
+        { "type": "textarea", "id": "text", "label": "Line", "default": "Clean, airy and green." },
+        { "type": "color", "id": "color", "label": "Colour", "default": "#BFE0D2" },
+        {
+          "type": "select",
+          "id": "art",
+          "label": "Illustration",
+          "options": [
+            { "value": "lemon", "label": "Lemon" }, { "value": "orange", "label": "Orange" }, { "value": "bergamot", "label": "Bergamot" },
+            { "value": "grapefruit", "label": "Grapefruit" }, { "value": "mint", "label": "Mint" }, { "value": "apple", "label": "Apple" },
+            { "value": "lavender", "label": "Lavender" }, { "value": "rose", "label": "Rose" }, { "value": "jasmine", "label": "Jasmine" },
+            { "value": "orange_blossom", "label": "Orange blossom" }, { "value": "iris", "label": "Iris" }, { "value": "vanilla", "label": "Vanilla" },
+            { "value": "cinnamon", "label": "Cinnamon" }, { "value": "pepper", "label": "Pepper" }, { "value": "cardamom", "label": "Cardamom" },
+            { "value": "cedar", "label": "Cedar" }, { "value": "vetiver", "label": "Vetiver" }, { "value": "patchouli", "label": "Patchouli" },
+            { "value": "musk", "label": "Musk" }, { "value": "amber", "label": "Amber" }, { "value": "tonka", "label": "Tonka" },
+            { "value": "mineral", "label": "Mineral" }, { "value": "tobacco", "label": "Tobacco" }
+          ],
+          "default": "mint"
+        },
+        { "type": "url", "id": "link", "label": "Collection link" }
+      ]
+    },
+    {
+      "type": "tip",
+      "name": "Heat tip",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Tip", "default": "Moisturise first" },
+        { "type": "textarea", "id": "text", "label": "Why", "default": "Perfume holds on longer to hydrated skin." }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Scent guide" }]
+}
+{% endschema %}

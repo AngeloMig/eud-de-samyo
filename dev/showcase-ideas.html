@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo product section: ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+  :root { --paper: #f3f0eb; --ink: #26221f; --soft: #6b635b; --line: rgba(38, 34, 31, 0.14); }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font: 15px/1.5 'Instrument Sans', system-ui, sans-serif; margin: 0; }
+  header.top { padding: 40px 40px 8px; max-width: 1560px; margin: 0 auto; }
+  h1 { font: 400 52px/1 'Cormorant Garamond', Georgia, serif; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .lede { color: var(--soft); max-width: 70ch; margin: 0; }
+  main { display: grid; gap: 56px; padding: 32px 40px 80px; max-width: 1560px; margin: 0 auto; }
+  section { border-top: 1px solid var(--line); padding-top: 24px; }
+  .head { display: flex; gap: 16px; align-items: baseline; margin-bottom: 6px; }
+  .num { font: 400 44px/1 'Cormorant Garamond', Georgia, serif; }
+  h2 { font: 400 30px/1.1 'Cormorant Garamond', Georgia, serif; margin: 0; }
+  .what { color: var(--soft); max-width: 80ch; margin: 0 0 16px; }
+  .tag { display: inline-block; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; margin-left: 8px; color: var(--soft); vertical-align: middle; }
+  .row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+  figure { margin: 0; }
+  figcaption { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--soft); margin-bottom: 8px; display: flex; justify-content: space-between; gap: 12px; }
+  .frame { border: 1px solid var(--line); background: #fff; overflow: hidden; position: relative; }
+  .frame iframe { border: 0; transform-origin: 0 0; display: block; }
+  .desk { width: 720px; height: 450px; }
+  .desk iframe { width: 1440px; height: 900px; transform: scale(.5); }
+  .phone { width: 300px; height: 650px; border-radius: 22px; }
+  .phone iframe { width: 390px; height: 845px; transform: scale(.769); }
+  button.replay { font: inherit; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; background: none; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; cursor: pointer; color: var(--ink); }
+  .compare { display: flex; gap: 24px; flex-wrap: wrap; }
+  .tile { width: 300px; height: 396px; display: grid; place-items: center; background: #ead8c2; overflow: hidden; }
+  .tile.b { background: #dcd6e4; }
+  .tile img { height: 92%; width: auto; }
+  .note { font-size: 13px; color: var(--soft); max-width: 300px; margin-top: 8px; }
+  @media (max-width: 800px) { .desk { width: 100%; height: 56vw; } .desk iframe { transform: scale(calc(100vw / 1440px)); } }
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Product section: ideas</h1>
+  <p class="lede">Working prototypes in the Perfume showcase. Each is a theme-editor setting, <strong>off on your homepage</strong> until you pick it. Frames are live pages: click, drag and add to bag inside them. Products and prices are preview demos.</p>
+</header>
+<main>
+  <section>
+    <div class="head"><span class="num">0</span><h2>Now</h2></div>
+    <p class="what">The section as it is on the homepage today.</p>
+    <div class="row">
+      <figure><figcaption>Desktop</figcaption><div class="frame desk"><iframe src="showcase-now.html" loading="lazy" title="Now, desktop"></iframe></div></figure>
+      <figure><figcaption>Phone</figcaption><div class="frame phone"><iframe src="showcase-now.html" loading="lazy" title="Now, phone"></iframe></div></figure>
+    </div>
+  </section>
+  <section>
+    <div class="head"><span class="num">1</span><h2>Star rating from real reviews</h2><span class="tag">example data</span></div>
+    <p class="what">Stars, the score and the review count under the name. It reads Shopify's standard <code>reviews.rating</code> / <code>reviews.rating_count</code> fields that review apps (Judge.me, Shopify Product Reviews…) fill in, and shows nothing when there are no reviews. <strong>The numbers in this frame are examples, not real reviews.</strong> Setting: Show star rating.</p>
+    <div class="row">
+      <figure><figcaption>Desktop</figcaption><div class="frame desk"><iframe src="showcase-idea-1.html" loading="lazy" title="Idea 1"></iframe></div></figure>
+    </div>
+  </section>
+  <section>
+    <div class="head"><span class="num">2</span><h2>Compare notes</h2></div>
+    <p class="what">A "⇄ Compare notes" button under the note chips opens two perfumes side by side (pick the second from a list); notes they share are highlighted. Built from what is already on the page, works with the keyboard and Esc. Opens by itself in these frames. Setting: Show Compare notes.</p>
+    <div class="row">
+      <figure><figcaption>Desktop</figcaption><div class="frame desk"><iframe src="showcase-idea-2.html" loading="lazy" title="Idea 2, desktop"></iframe></div></figure>
+      <figure><figcaption>Phone</figcaption><div class="frame phone"><iframe src="showcase-idea-2.html" loading="lazy" title="Idea 2, phone"></iframe></div></figure>
+    </div>
+  </section>
+  <section>
+    <div class="head"><span class="num">3</span><h2>Mini bag after Add to bag</h2></div>
+    <p class="what">After the spray, a small panel slides in with the bottle, size, price, bag subtotal and item count, plus View bag / Checkout. Closes after 6 s (stays while hovered), on × or Esc. On phones it sits at the bottom. Adds itself in these frames. Setting: After adding → Slide in a mini bag.</p>
+    <div class="row">
+      <figure><figcaption>Desktop</figcaption><div class="frame desk"><iframe src="showcase-idea-3.html" loading="lazy" title="Idea 3, desktop"></iframe></div></figure>
+      <figure><figcaption>Phone</figcaption><div class="frame phone"><iframe src="showcase-idea-3.html" loading="lazy" title="Idea 3, phone"></iframe></div></figure>
+    </div>
+  </section>
+  <section>
+    <div class="head"><span class="num">4</span><h2>"Buy at FragranceX" for perfumes you don't stock</h2></div>
+    <p class="what">A block with a retailer link instead of a product shows "Buy at FragranceX ↗" (opens in a new tab). The disclosure line and <code>rel="sponsored"</code> appear only when the block is ticked as an approved affiliate tracking link. Shown on Stronger With You Intensely here. Settings: per perfume, Sold elsewhere (affiliate).</p>
+    <div class="row">
+      <figure><figcaption>Desktop</figcaption><div class="frame desk"><iframe src="showcase-idea-4.html" loading="lazy" title="Idea 4"></iframe></div></figure>
+    </div>
+  </section>
+  <section>
+    <div class="head"><span class="num">5</span><h2>Sharper bottle photos</h2><span class="tag">content</span></div>
+    <p class="what">The chosen bottle is about 410 px tall on a laptop, so on a sharp screen it needs about 900 px of height. Today: Dior Homme Intense 951 px (sharp), Armani 480 px, Sauvage 447 px, D&amp;G 266 px (soft). Send larger cut-outs and the section stays crisp when bottles come forward.</p>
+  </section>
+  <section>
+    <div class="head"><span class="num">6</span><h2>Link the real products</h2><span class="tag">content</span></div>
+    <p class="what">Pick the Product in each Perfume block once products exist. Sizes, prices, stock (sold-out sizes crossed out) and the in-place Add to bag then come from Shopify; the demo values here disappear.</p>
+  </section>
+</main>
+</body>
+</html>

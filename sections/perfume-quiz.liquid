@@ -1,0 +1,172 @@
+{%- comment -%}
+  Find your scent: a short questionnaire (templates/page.find-your-scent.json) that
+  ends on matching perfumes from a collection.
+
+  One question per screen with a step line on top (after Hermès' checkout steps),
+  big answer pills with note drawings, Back, and a result screen. Matching is plain
+  and visible: every answer carries tags (e.g. "fresh, citrus"); each perfume scores
+  one point per answer whose tag is on the product (product tags, lower case, with or
+  without a "scent:" prefix). The best matches show with the answers they matched.
+  Nothing is invented: a perfume without tags never matches, and with no matches the
+  result says so and links to all perfumes.
+
+  The candidates are rendered in the page (crawlable, no app needed) and only the
+  ordering happens in the browser. Without JavaScript every question shows at once
+  and the collection link still works.
+
+  Blocks: question (text, help line, answers "Label | tags | drawing", one per line).
+  Script: assets/perfume-quiz.js (<perfume-quiz>). Styles: assets/perfume-quiz.css.
+{%- endcomment -%}
+{%- liquid
+  assign qid = 'PerfumeQuiz-' | append: section.id
+  assign questions = section.blocks | where: 'type', 'question'
+  assign pool = section.settings.collection.products
+  if pool == blank or pool.size == 0
+    assign pool = collections.all.products
+  endif
+  assign tints = section.settings.tints | split: ','
+-%}
+
+{{ 'perfume-card.css' | asset_url | stylesheet_tag }}
+{{ 'perfume-quiz.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-card.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-quiz.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ qid }} {
+    --pq-bg: {{ section.settings.background_color }};
+    --pq-ink: {{ section.settings.text_color }};
+  }
+{%- endstyle -%}
+
+<perfume-quiz id="{{ qid }}" class="pq" data-results="{{ section.settings.results }}">
+  <header class="pq__head">
+    <p class="pq__kicker">{{ section.settings.kicker | escape }}</p>
+    <h1 class="pq__title">{{ section.settings.heading | escape }}</h1>
+    {%- if section.settings.script != blank -%}<p class="pq__script" aria-hidden="true">{{ section.settings.script | escape }}</p>{%- endif -%}
+  </header>
+
+  {%- if questions.size > 0 -%}
+    <ol class="pq__steps" aria-hidden="true">
+      {%- for q in questions -%}<li style="--s: {{ forloop.index0 }};"><span></span></li>{%- endfor -%}
+      <li class="pq__steps-end"><span></span></li>
+    </ol>
+    <p class="pq__count" data-pq-count aria-live="polite"></p>
+
+    <form class="pq__form" data-pq-form action="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">
+      {%- for q in questions -%}
+        {%- assign answers = q.settings.answers | newline_to_br | split: '<br />' -%}
+        <fieldset class="pq__q" data-pq-q style="--bg: {{ q.settings.color }};" {{ q.shopify_attributes }}>
+          <legend class="pq__question">{{ q.settings.question | escape }}</legend>
+          {%- if q.settings.help != blank -%}<p class="pq__help">{{ q.settings.help | escape }}</p>{%- endif -%}
+          <div class="pq__answers">
+            {%- for a in answers -%}
+              {%- assign parts = a | split: '|' -%}
+              {%- assign label = parts[0] | strip -%}
+              {%- if label == blank -%}{%- continue -%}{%- endif -%}
+              {%- assign tags = parts[1] | strip | downcase -%}
+              {%- assign art = parts[2] | strip -%}
+              <label class="pq__a">
+                <input type="radio" name="q{{ forloop.parentloop.index }}" value="{{ tags | escape }}" data-label="{{ label | escape }}">
+                <span class="pq__a-box">
+                  {%- if art != blank -%}<span class="pq__a-art" aria-hidden="true">{%- render 'perfume-note-art', note: art -%}</span>{%- endif -%}
+                  <span class="pq__a-label">{{ label | escape }}</span>
+                </span>
+              </label>
+            {%- endfor -%}
+          </div>
+          <div class="pq__nav">
+            {%- unless forloop.first -%}<button type="button" class="pq__back" data-pq-back>← Back</button>{%- endunless -%}
+            <button type="button" class="pq__skip" data-pq-skip>Skip</button>
+          </div>
+        </fieldset>
+      {%- endfor -%}
+    </form>
+
+    <section class="pq__result" data-pq-result hidden aria-labelledby="{{ qid }}-result">
+      <h2 class="pq__result-title" id="{{ qid }}-result" tabindex="-1">{{ section.settings.result_heading | escape }}</h2>
+      <p class="pq__result-text" data-pq-summary></p>
+      <ul class="pq__matches" role="list" data-pq-matches></ul>
+      <div class="pq__none" data-pq-none hidden>
+        <p>{{ section.settings.none_text | escape }}</p>
+      </div>
+      <div class="pq__result-actions">
+        <button type="button" class="pq__back" data-pq-restart>{{ section.settings.restart_label | escape }}</button>
+        <a class="pf-link" href="{{ section.settings.collection.url | default: routes.all_products_collection_url }}">{{ section.settings.all_label | escape }}</a>
+      </div>
+      <p class="pq__method">{{ section.settings.method_note | escape }}</p>
+    </section>
+
+    {%- comment -%} Candidates: every perfume in the pool with its tags; the script orders them. {%- endcomment -%}
+    <ul class="pq__pool" role="list" hidden data-pq-pool>
+      {%- for p in pool limit: 100 -%}
+        {%- liquid
+          assign t_index = forloop.index0 | modulo: tints.size
+          assign t = tints[t_index] | strip
+          assign card_key = section.id | append: '-' | append: forloop.index
+          assign tag_list = p.tags | join: ',' | downcase | replace: 'scent:', ''
+        -%}
+        <li class="pq__match" data-tags="{{ tag_list | escape }}">
+          {%- render 'perfume-product-card', product: p, bg: t, quick_add: true, key: card_key, sizes: '(min-width: 990px) 25vw, 50vw' -%}
+          <p class="pq__why" data-pq-why></p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- elsif request.design_mode -%}
+    <p class="pq__help">Add Question blocks to build the questionnaire.</p>
+  {%- endif -%}
+</perfume-quiz>
+
+{% schema %}
+{
+  "name": "Find your scent quiz",
+  "tag": "section",
+  "class": "section-perfume-quiz",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Find your scent" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Five questions to your perfume" },
+    { "type": "text", "id": "script", "label": "Handwritten line", "default": "no wrong answers" },
+    { "type": "collection", "id": "collection", "label": "Perfumes to choose from", "info": "Falls back to all products. Up to 100 are considered." },
+    { "type": "range", "id": "results", "label": "Matches shown", "min": 1, "max": 8, "step": 1, "default": 3 },
+    { "type": "text", "id": "result_heading", "label": "Result heading", "default": "Your matches" },
+    { "type": "text", "id": "none_text", "label": "No match text", "default": "Nothing matches all of that yet. Try other answers, or browse every perfume." },
+    { "type": "text", "id": "restart_label", "label": "Start again label", "default": "Start again" },
+    { "type": "text", "id": "all_label", "label": "All perfumes label", "default": "See all perfumes" },
+    {
+      "type": "text",
+      "id": "method_note",
+      "label": "How matching works (shown under the result)",
+      "default": "Matched on the scent, time, strength, weather and style tags we give each perfume. A guide, not a promise: skin and weather change every scent."
+    },
+    {
+      "type": "text",
+      "id": "tints",
+      "label": "Card colours",
+      "default": "#D6DDE5, #EAD8C2, #E9D3C9, #DFD9E6"
+    },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Which of these do you love to smell?" },
+        { "type": "text", "id": "help", "label": "Help line" },
+        {
+          "type": "textarea",
+          "id": "answers",
+          "label": "Answers",
+          "info": "One per line: Label | tags | drawing. Tags are comma-separated and must match your product tags (e.g. fresh, citrus). Drawing is optional (lemon, vanilla, cedar…).",
+          "default": "Fresh & citrus | fresh, citrus | lemon\nWarm & spicy | spicy, warm | cinnamon\nSweet & creamy | sweet, gourmand | vanilla\nWoody | woody | cedar"
+        },
+        { "type": "color", "id": "color", "label": "Background while on this question", "default": "#F3F0EB" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Find your scent quiz" }]
+}
+{% endschema %}

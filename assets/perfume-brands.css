@@ -1,0 +1,147 @@
+/* Perfume brands strip (sections/perfume-brands.liquid): a slow marquee of names. */
+.pb {
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  --pb-gutter: var(--pf-gutter, clamp(16px, 4vw, 56px));
+  background: var(--pb-bg);
+  color: var(--pb-ink);
+  overflow: hidden;
+  padding-block: var(--pb-pt) var(--pb-pb);
+}
+
+.pb__head {
+  align-items: baseline;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin: 0 auto 28px;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--pb-gutter);
+}
+
+.pb__kicker {
+  color: color-mix(in srgb, var(--pb-ink) 70%, transparent);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.pb__viewport {
+  border-block: 1px solid color-mix(in srgb, var(--pb-ink) 14%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  padding-block: 22px;
+}
+
+.pb__track {
+  animation: pb-marquee var(--pb-speed) linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.pb__viewport:hover .pb__track,
+.pb__viewport:focus-within .pb__track {
+  animation-play-state: paused;
+}
+
+.pb__tools {
+  align-items: center;
+  display: flex;
+  gap: 20px;
+}
+
+@keyframes pb-marquee {
+  to { transform: translateX(-50%); }
+}
+
+.pb__list {
+  align-items: center;
+  display: flex;
+  flex: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pb__item {
+  align-items: center;
+  display: flex;
+  flex: none;
+}
+
+.pb__link {
+  color: inherit;
+  display: inline-flex;
+  padding: 0 clamp(18px, 2.4vw, 40px);
+  text-decoration: none;
+}
+
+.pb__name {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: var(--pb-size);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+}
+
+.pb__logo {
+  display: block;
+  height: calc(var(--pb-size) * 0.8);
+  width: auto;
+}
+
+a.pb__link:hover .pb__name {
+  font-style: italic;
+}
+
+.pb__list:hover .pb__name {
+  opacity: 0.45;
+}
+
+.pb__list:hover .pb__item:hover .pb__name {
+  opacity: 1;
+}
+
+.pb__link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+.pb__mark {
+  font-size: calc(var(--pb-size) * 0.32);
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 749px) {
+  .pb__name {
+    font-size: var(--pb-size-m);
+  }
+
+  .pb__mark {
+    font-size: calc(var(--pb-size-m) * 0.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+
+  .pb__list {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 12px;
+  }
+
+  .pb__list--copy {
+    display: none;
+  }
+
+  .pb__viewport {
+    mask-image: none;
+  }
+}

@@ -1,0 +1,76 @@
+{%- comment -%}
+  Product card, in the homepage's look: the bottle on a soft tinted tile (the box
+  photo, if the product has a second image, fades in on hover), bold-caps brand,
+  serif name, concentration and price. Optional quick "Add" (first available
+  variant) that adds in place and opens the cart drawer (assets/perfume-card.js).
+  Used by the collection grid and the product rails.
+  Affiliate listings (product.metafields.samyo.affiliate_offers, from the CJ feed)
+  show the retailer's price with "at FragranceX" and no quick Add.
+
+  Accepts:
+  - product: the product
+  - bg: fallback tile colour (the product metafield fragrance.tile_color wins)
+  - quick_add: true to show the Add button
+  - key: a unique string for the quick-add form id (section id + index)
+  - sizes: the image sizes attribute
+{%- endcomment -%}
+{%- liquid
+  assign tint = product.metafields.fragrance.tile_color.value | default: bg | default: '#E9E4DC'
+  assign conc = product.metafields.fragrance.concentration.value
+  assign first_media = product.featured_media
+  assign second_media = product.media[1]
+  assign v = product.selected_or_first_available_variant
+  assign img_sizes = sizes | default: '(min-width: 990px) 25vw, 50vw'
+  assign form_id = 'PerfumeCardAdd-' | append: key | append: '-' | append: product.id
+  assign offers = product.metafields.samyo.affiliate_offers.value
+  assign is_aff = false
+  if offers != blank and offers.size > 0
+    assign is_aff = true
+    assign aff_retailer = product.metafields.samyo.retailer.value | default: 'the retailer'
+  endif
+-%}
+<div class="pcard{% if second_media %} pcard--second{% endif %}" style="--pcard-bg: {{ tint }};">
+  <a class="pcard__media" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if first_media -%}
+      {{ first_media.preview_image | image_url: width: 900 | image_tag: widths: '300, 500, 700, 900', sizes: img_sizes, class: 'pcard__img', alt: '', loading: 'lazy' }}
+    {%- endif -%}
+    {%- if second_media -%}
+      {{ second_media.preview_image | image_url: width: 900 | image_tag: widths: '300, 500, 700, 900', sizes: img_sizes, class: 'pcard__img pcard__img--second', alt: '', loading: 'lazy' }}
+    {%- endif -%}
+    {%- if is_aff -%}
+      <span class="pcard__badge pcard__badge--aff">At {{ aff_retailer | escape }}</span>
+    {%- elsif product.available == false -%}
+      <span class="pcard__badge">Sold out</span>
+    {%- endif -%}
+  </a>
+
+  <div class="pcard__body">
+    {%- if product.vendor != blank -%}
+      <p class="pcard__brand">{{ product.vendor | escape }}</p>
+    {%- endif -%}
+    <a class="pcard__name" href="{{ product.url }}">{{ product.title | escape }}</a>
+    {%- if conc != blank -%}
+      <p class="pcard__meta">{{ conc | escape }}</p>
+    {%- endif -%}
+    <p class="pcard__price">
+      {%- if is_aff -%}
+        {%- if offers.size > 1 -%}<span class="pcard__from">from</span> {% endif -%}
+        {{ offers.first.price | escape }} <span class="pcard__from">at {{ aff_retailer | escape }}</span>
+      {%- else -%}
+        {%- if product.price_varies -%}<span class="pcard__from">from</span> {% endif -%}
+        {{ product.price_min | money }}
+      {%- endif -%}
+    </p>
+  </div>
+
+  {%- if quick_add and product.available and is_aff == false -%}
+    {%- form 'product', product, id: form_id, class: 'pcard__add', data-pcard-add: 'true' -%}
+      <input type="hidden" name="id" value="{{ v.id }}">
+      <input type="hidden" name="quantity" value="1">
+      <button type="submit" class="pcard__add-btn">
+        <span class="pcard__add-label" data-pcard-label>Add</span>
+        <span class="pf-visually-hidden">{{ product.title | escape }}{% if product.has_only_default_variant == false %}, {{ v.title | escape }}{% endif %} to bag</span>
+      </button>
+    {%- endform -%}
+  {%- endif -%}
+</div>

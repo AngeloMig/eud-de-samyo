@@ -1,0 +1,231 @@
+{%- comment -%}
+  Performance lab ("How it wears"): longevity, projection and sillage, explained.
+  - Longevity: a 0–12h scale with the estimated range lit ("about 5–8 hours"),
+    and why it varies.
+  - Projection: a person inside three soft concentric scent rings, labelled
+    Intimate (in a hug), Moderate (arm's length), Strong (across a room). Rings up to
+    this perfume's level are filled and its ring breathes; the buttons preview each
+    level and this perfume's is marked. Drawn, not measured.
+  - Sillage: soft ribbons of scent flow from the wearer and fade into the air:
+    Soft one short ribbon, Moderate two, Heavy three long ones (previewable).
+  Both move gently (rings breathe and ripple out, ribbons flow), pause on hover and
+  keyboard focus, and stay still under reduced motion.
+  - A plain explanation of projection vs sillage.
+  Every metric shows its basis: Brand information, Editorial wear test,
+  Community-reported estimate or Not yet evaluated. Nothing is guessed.
+
+  Data: fragrance_profile longevity_min_h / longevity_max_h / *_basis, projection,
+  sillage (docs/METAFIELDS.md). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign lid = 'PerfumeLab-' | append: section.id
+  assign name = profile.name.value | default: product.title
+  assign na = section.settings.not_evaluated
+  assign lmin = profile.longevity_min_h.value
+  assign lmax = profile.longevity_max_h.value | default: lmin
+  assign lbasis = profile.longevity_basis.value | default: na
+  assign proj = profile.projection.value
+  assign pbasis = profile.projection_basis.value | default: na
+  assign sill = profile.sillage.value
+  assign sbasis = profile.sillage_basis.value | default: na
+  assign proj_level = 0
+  case proj
+    when 'Intimate'
+      assign proj_level = 1
+    when 'Moderate'
+      assign proj_level = 2
+    when 'Strong'
+      assign proj_level = 3
+  endcase
+  assign sill_level = 0
+  case sill
+    when 'Soft'
+      assign sill_level = 1
+    when 'Moderate'
+      assign sill_level = 2
+    when 'Heavy'
+      assign sill_level = 3
+  endcase
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+<section id="{{ lid }}" class="plab" style="--plab-bg: {{ section.settings.background_color }}; --plab-ink: {{ section.settings.text_color }}; --plab-scent: {{ section.settings.scent_color }};" aria-labelledby="{{ lid }}-h">
+  <span class="pd-anchor" id="performance"></span>
+  <div class="pd-head" data-pf-reveal="rise">
+    <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+    <h2 class="pd-h" id="{{ lid }}-h">{{ section.settings.heading | replace: '[name]', name | escape }}</h2>
+  </div>
+
+  <div class="plab__grid">
+    {%- comment -%} Longevity {%- endcomment -%}
+    <article class="plab__card plab__card--wide" data-pf-reveal="lab">
+      <header class="plab__card-head">
+        <h3 class="plab__title">{{ section.settings.longevity_title | escape }}</h3>
+        <span class="pd-chip{% if lmin == blank %} is-muted{% endif %}">{{ lbasis | escape }}</span>
+      </header>
+      {%- if lmin != blank -%}
+        {%- liquid
+          assign left = lmin | at_most: 12 | times: 100.0 | divided_by: 12
+          assign width = lmax | minus: lmin | at_least: 0.5 | times: 100.0 | divided_by: 12
+        -%}
+        <p class="plab__value">{% if lmin == lmax %}About {{ lmin }} hours{% else %}About {{ lmin }}–{{ lmax }} hours{% endif %}</p>
+        <div class="plab__scale" aria-hidden="true">
+          <span class="plab__range" style="--l: {{ left }}%; --w: {{ width }}%;"></span>
+          <ol class="plab__ticks">
+            {%- for h in (0..6) -%}<li>{% if forloop.last %}12h+{% else %}{{ h | times: 2 }}h{% endif %}</li>{%- endfor -%}
+          </ol>
+        </div>
+      {%- else -%}
+        <p class="plab__value is-empty">{{ na | escape }}</p>
+        <div class="plab__scale is-empty" aria-hidden="true"><ol class="plab__ticks">{%- for h in (0..6) -%}<li>{% if forloop.last %}12h+{% else %}{{ h | times: 2 }}h{% endif %}</li>{%- endfor -%}</ol></div>
+      {%- endif -%}
+      <p class="plab__note">{{ section.settings.longevity_note | escape }}</p>
+    </article>
+
+    {%- comment -%} Projection: a person inside three scent rings (Intimate · Moderate · Strong) {%- endcomment -%}
+    <article class="plab__card" data-pf-reveal="lab">
+      <header class="plab__card-head">
+        <h3 class="plab__title">{{ section.settings.projection_title | escape }}</h3>
+        <span class="pd-chip{% if proj == blank %} is-muted{% endif %}">{{ pbasis | escape }}</span>
+      </header>
+      <perfume-projection class="plab__stage" data-level="{{ proj_level }}" data-caption-0="{{ na | escape }}" data-caption-1="{{ section.settings.projection_1 | escape }}" data-caption-2="{{ section.settings.projection_2 | escape }}" data-caption-3="{{ section.settings.projection_3 | escape }}">
+        <svg class="plab__scene plab__scene--rings" viewBox="0 0 360 240" aria-hidden="true" focusable="false">
+          <circle class="ring ring-3" cx="118" cy="124" r="104"/>
+          <circle class="ring ring-2" cx="118" cy="124" r="72"/>
+          <circle class="ring ring-1" cx="118" cy="124" r="40"/>
+          <circle class="ripple" cx="118" cy="124" r="104"/>
+          <g class="wearer" transform="translate(118 188) scale(0.8)"><ellipse cx="0" cy="-144" rx="10.5" ry="12.5"/><rect x="-4.5" y="-134" width="9" height="7"/><path d="M4 -131 10 -128 18 -125 24 -122 28 -117 30 -108 31 -95 31 -82 30 -70 30 -60 31 -54 29 -49 26 -48 24 -51 24 -58 24 -70 23 -84 22 -96 20 -104 18 -100 17 -88 16 -78 17 -68 18 -60 18 -48 17 -38 15 -28 14 -18 12 -8 13 -3 12 0 4 0 3 -6 4 -16 4 -30 3 -44 1 -54 0 -56 -1 -54 -3 -44 -4 -30 -4 -16 -3 -6 -4 0 -12 0 -13 -3 -12 -8 -14 -18 -15 -28 -17 -38 -18 -48 -18 -60 -17 -68 -16 -78 -17 -88 -18 -100 -20 -104 -22 -96 -23 -84 -24 -70 -24 -58 -24 -51 -26 -48 -29 -49 -31 -54 -30 -60 -30 -70 -31 -82 -31 -95 -30 -108 -28 -117 -24 -122 -18 -125 -10 -128 -4 -131Z"/></g>
+          <g class="lab lab-3">
+            <path class="lead" d="M198.4 58H244"/><circle class="tip" cx="198.4" cy="58" r="2.5"/>
+            <text x="250" y="55" class="lab-name">Strong</text>
+            <text x="250" y="71" class="lab-sub">{{ section.settings.projection_label_3 | escape }}</text>
+          </g>
+          <g class="lab lab-2">
+            <path class="lead" d="M187.2 104H244"/><circle class="tip" cx="187.2" cy="104" r="2.5"/>
+            <text x="250" y="101" class="lab-name">Moderate</text>
+            <text x="250" y="117" class="lab-sub">{{ section.settings.projection_label_2 | escape }}</text>
+          </g>
+          <g class="lab lab-1">
+            <path class="lead" d="M148.4 150H244"/><circle class="tip" cx="148.4" cy="150" r="2.5"/>
+            <text x="250" y="147" class="lab-name">Intimate</text>
+            <text x="250" y="163" class="lab-sub">{{ section.settings.projection_label_1 | escape }}</text>
+          </g>
+        </svg>
+        <p class="plab__caption" data-caption aria-live="polite">
+          {%- case proj_level -%}
+            {%- when 1 -%}{{ section.settings.projection_1 | escape }}
+            {%- when 2 -%}{{ section.settings.projection_2 | escape }}
+            {%- when 3 -%}{{ section.settings.projection_3 | escape }}
+            {%- else -%}{{ na | escape }}
+          {%- endcase -%}
+        </p>
+        <div class="plab__levels" role="group" aria-label="Preview {{ section.settings.projection_title | escape }}">
+          {%- assign plabels = 'Intimate,Moderate,Strong' | split: ',' -%}
+          {%- for l in plabels -%}
+            <button type="button" class="plab__level{% if forloop.index == proj_level %} is-actual is-on{% endif %}" data-level="{{ forloop.index }}" aria-pressed="{% if forloop.index == proj_level %}true{% else %}false{% endif %}">
+              {{ l }}{%- if forloop.index == proj_level -%}<small>This perfume</small>{%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      </perfume-projection>
+      <p class="plab__note">{{ section.settings.projection_note | escape }}</p>
+    </article>
+
+    {%- comment -%} Sillage: soft ribbons of scent trailing from the wearer {%- endcomment -%}
+    <article class="plab__card" data-pf-reveal="lab">
+      <header class="plab__card-head">
+        <h3 class="plab__title">{{ section.settings.sillage_title | escape }}</h3>
+        <span class="pd-chip{% if sill == blank %} is-muted{% endif %}">{{ sbasis | escape }}</span>
+      </header>
+      <perfume-sillage class="plab__stage" data-level="{{ sill_level }}" data-caption-0="{{ na | escape }}" data-caption-1="{{ section.settings.sillage_1 | escape }}" data-caption-2="{{ section.settings.sillage_2 | escape }}" data-caption-3="{{ section.settings.sillage_3 | escape }}">
+        <svg class="plab__scene plab__scene--trail" viewBox="0 0 360 240" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="{{ lid }}-fade1" gradientUnits="userSpaceOnUse" x1="98" y1="0" x2="168" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.12" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <mask id="{{ lid }}-m1" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="240"><rect x="0" y="0" width="360" height="240" fill="url(#{{ lid }}-fade1)"/></mask>
+            <linearGradient id="{{ lid }}-fade2" gradientUnits="userSpaceOnUse" x1="98" y1="0" x2="248" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.12" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <mask id="{{ lid }}-m2" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="240"><rect x="0" y="0" width="360" height="240" fill="url(#{{ lid }}-fade2)"/></mask>
+            <linearGradient id="{{ lid }}-fade3" gradientUnits="userSpaceOnUse" x1="98" y1="0" x2="333" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.12" stop-color="#fff" stop-opacity="1"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            <mask id="{{ lid }}-m3" maskUnits="userSpaceOnUse" x="0" y="0" width="360" height="240"><rect x="0" y="0" width="360" height="240" fill="url(#{{ lid }}-fade3)"/></mask>
+          </defs>
+          <g class="set set-1" mask="url(#{{ lid }}-m1)">
+            <g transform="translate(100 118) rotate(-8)"><g class="rib rib-1"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+          </g>
+          <g class="set set-2" mask="url(#{{ lid }}-m2)">
+            <g transform="translate(100 104) rotate(-10)"><g class="rib rib-1"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+            <g transform="translate(100 134) rotate(-6)"><g class="rib rib-2"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+          </g>
+          <g class="set set-3" mask="url(#{{ lid }}-m3)">
+            <g transform="translate(100 96) rotate(-12)"><g class="rib rib-1"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+            <g transform="translate(100 120) rotate(-8)"><g class="rib rib-2"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+            <g transform="translate(100 146) rotate(-5)"><g class="rib rib-3"><path d="M-90 0q22.5 -14 45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0t45 0"/></g></g>
+          </g>
+          <g class="wearer" transform="translate(70 198) scale(0.8)"><ellipse cx="0" cy="-144" rx="10.5" ry="12.5"/><rect x="-4.5" y="-134" width="9" height="7"/><path d="M4 -131 10 -128 18 -125 24 -122 28 -117 30 -108 31 -95 31 -82 30 -70 30 -60 31 -54 29 -49 26 -48 24 -51 24 -58 24 -70 23 -84 22 -96 20 -104 18 -100 17 -88 16 -78 17 -68 18 -60 18 -48 17 -38 15 -28 14 -18 12 -8 13 -3 12 0 4 0 3 -6 4 -16 4 -30 3 -44 1 -54 0 -56 -1 -54 -3 -44 -4 -30 -4 -16 -3 -6 -4 0 -12 0 -13 -3 -12 -8 -14 -18 -15 -28 -17 -38 -18 -48 -18 -60 -17 -68 -16 -78 -17 -88 -18 -100 -20 -104 -22 -96 -23 -84 -24 -70 -24 -58 -24 -51 -26 -48 -29 -49 -31 -54 -30 -60 -30 -70 -31 -82 -31 -95 -30 -108 -28 -117 -24 -122 -18 -125 -10 -128 -4 -131Z"/></g>
+        </svg>
+        <p class="plab__caption" data-caption aria-live="polite">
+          {%- case sill_level -%}
+            {%- when 1 -%}{{ section.settings.sillage_1 | escape }}
+            {%- when 2 -%}{{ section.settings.sillage_2 | escape }}
+            {%- when 3 -%}{{ section.settings.sillage_3 | escape }}
+            {%- else -%}{{ na | escape }}
+          {%- endcase -%}
+        </p>
+        <div class="plab__levels" role="group" aria-label="Preview {{ section.settings.sillage_title | escape }}">
+          {%- assign slabels = 'Soft,Moderate,Heavy' | split: ',' -%}
+          {%- for l in slabels -%}
+            <button type="button" class="plab__level{% if forloop.index == sill_level %} is-actual is-on{% endif %}" data-level="{{ forloop.index }}" aria-pressed="{% if forloop.index == sill_level %}true{% else %}false{% endif %}">
+              {{ l }}{%- if forloop.index == sill_level -%}<small>This perfume</small>{%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      </perfume-sillage>
+      <p class="plab__note">{{ section.settings.sillage_note | escape }}</p>
+    </article>
+  </div>
+
+  <div class="plab__explain" data-pf-reveal="rise">
+    <p><b>{{ section.settings.projection_title | escape }}</b> {{ section.settings.explain_projection | escape }}</p>
+    <p><b>{{ section.settings.sillage_title | escape }}</b> {{ section.settings.explain_sillage | escape }}</p>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Performance lab",
+  "tag": "div",
+  "class": "section-perfume-lab",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "How it wears" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "How long [name] lasts, and how far it carries" },
+    { "type": "text", "id": "not_evaluated", "label": "Not evaluated text", "default": "Not yet evaluated" },
+    { "type": "text", "id": "longevity_title", "label": "Longevity title", "default": "Longevity" },
+    { "type": "text", "id": "longevity_note", "label": "Longevity note", "default": "An estimate, not a promise: skin, how much you spray, heat and humidity all change it." },
+    { "type": "text", "id": "projection_title", "label": "Projection title", "default": "Projection" },
+    { "type": "text", "id": "projection_note", "label": "Projection note", "default": "How noticeable it is to people near you in the first hours. Drawn, not measured." },
+    { "type": "text", "id": "projection_label_1", "label": "Ring label: Intimate", "default": "In a hug" },
+    { "type": "text", "id": "projection_label_2", "label": "Ring label: Moderate", "default": "Arm's length" },
+    { "type": "text", "id": "projection_label_3", "label": "Ring label: Strong", "default": "Across a room" },
+    { "type": "text", "id": "projection_1", "label": "Projection: Intimate", "default": "Noticed only up close, like in a hug." },
+    { "type": "text", "id": "projection_2", "label": "Projection: Moderate", "default": "Noticed at arm's length, in a conversation." },
+    { "type": "text", "id": "projection_3", "label": "Projection: Strong", "default": "Noticed across a room." },
+    { "type": "text", "id": "sillage_title", "label": "Sillage title", "default": "Sillage" },
+    { "type": "text", "id": "sillage_note", "label": "Sillage note", "default": "The trail it leaves when you move through a room." },
+    { "type": "text", "id": "sillage_1", "label": "Sillage: Soft", "default": "A faint trail that fades almost at once." },
+    { "type": "text", "id": "sillage_2", "label": "Sillage: Moderate", "default": "A trail people notice as you pass." },
+    { "type": "text", "id": "sillage_3", "label": "Sillage: Heavy", "default": "A trail that lingers after you leave the room." },
+    { "type": "text", "id": "explain_projection", "label": "Projection explained", "default": "is the bubble around you while you stand still." },
+    { "type": "text", "id": "explain_sillage", "label": "Sillage explained", "default": "is what lingers in the air after you walk past, like the wake of a boat." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "color", "id": "scent_color", "label": "Scent colour", "info": "The rings in Projection and the trail in Sillage.", "default": "#8FBDB6" }
+  ],
+  "presets": [{ "name": "Performance lab" }]
+}
+{% endschema %}

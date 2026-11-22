@@ -1,0 +1,201 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shop by brand: 10 designs + 10 animations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--ivory:#f7f5f0;--line:rgba(41,37,33,.14);--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1320px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:84ch;margin:0}
+ h2.part{max-width:1320px;margin:36px auto 0;padding:0 32px;font:400 34px/1 'Cormorant Garamond',serif}
+ main{max-width:1320px;margin:0 auto;padding:18px 32px 30px;display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+ .v{background:#fff;min-width:0} .cap{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:14px 20px;border-bottom:1px solid var(--line)}
+ .cap h3{font:400 24px/1.1 'Cormorant Garamond',serif;margin:0} .cap h3 b{font-weight:400;font-size:30px;margin-right:8px} .cap p{margin:0;color:var(--soft);font-size:13px;max-width:72ch;text-align:right}
+ .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--ink);border-radius:999px;padding:2px 9px;margin-left:8px;vertical-align:middle;font-family:'Instrument Sans'}
+ .stage{background:var(--ivory);padding:28px;position:relative;overflow:hidden}
+ .replay{position:absolute;right:14px;top:12px;z-index:5;font:600 10px 'Instrument Sans';letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);background:#fff;padding:5px 10px;cursor:pointer}
+ a{color:inherit;text-decoration:none}
+ .nm{font:400 30px/1 'Cormorant Garamond';letter-spacing:-.01em} .sh{font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+ .grp{position:relative;display:flex;justify-content:center;align-items:flex-end;height:100%}
+ .grp img{height:78%;max-width:40%;object-fit:contain;object-position:bottom;margin:0 -4%;filter:drop-shadow(0 10px 10px rgba(41,37,33,.12))} .grp img:nth-child(2){height:100%;max-width:46%;z-index:1}
+
+ /* D1 editorial list with cursor image */
+ .d1 ul{list-style:none;margin:0;padding:0} .d1 li a{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:12px 4px;transition:padding .5s var(--ease)}
+ .d1 li a:hover{padding-left:18px} .d1 .nm{font-size:44px} .d1 li a:hover .nm{font-style:italic}
+ .d1 .float{position:absolute;width:220px;height:180px;pointer-events:none;opacity:0;transform:translate(-50%,-60%) scale(.9);transition:opacity .3s,transform .5s var(--ease);background:var(--t,#e8e4dc);padding:14px;z-index:4}
+ .d1 .float.on{opacity:1;transform:translate(-50%,-60%) scale(1)}
+ /* D2 masonry: brands + scent-note photo tiles, Load more */
+ .d2 .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:150px;grid-auto-flow:dense;gap:10px}
+ .d2 .t{background:var(--t);position:relative;padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;isolation:isolate}
+ .d2 .t .grp{position:absolute;inset:12px 12px 42px;transition:transform .9s var(--ease)} .d2 .t:hover .grp{transform:translateY(-6px)}
+ .d2 .t.big{grid-column:span 2;grid-row:span 2} .d2 .t.big .nm{font-size:46px} .d2 .t.wide{grid-column:span 2} .d2 .t.tall{grid-row:span 2}
+ .d2 .nm{font-size:25px;position:relative} .d2 .sh{position:relative}
+ /* scent-note tiles: a full photo, the note in italic over a soft shade */
+ .d2 .note{color:#fff;background:#3b302a}
+ .d2 .note img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 1.6s var(--ease)}
+ .d2 .note::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(20,16,12,.55),rgba(20,16,12,0) 55%)}
+ .d2 .note:hover img.ph{transform:scale(1.08)}
+ .d2 .note .nm{font-style:italic} .d2 .note .sh{color:rgba(255,255,255,.8)}
+ /* reveal: a curtain wipe from the bottom while the picture settles from a slight zoom, staggered */
+ .d2 .t.in{animation:d2wipe 1.1s var(--ease) both;animation-delay:calc(var(--k,0) * 70ms)}
+ .d2 .t.in > .grp,.d2 .t.in > img.ph{animation:d2zoom 1.5s var(--ease) both;animation-delay:calc(var(--k,0) * 70ms)}
+ @keyframes d2wipe{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+ @keyframes d2zoom{from{transform:scale(1.18)}to{transform:none}}
+ .d2 .t[hidden]{display:none}
+ .d2 .more{display:flex;justify-content:center;margin-top:22px}
+ .d2 .more button{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 26px;border:1px solid var(--ink);background:transparent;color:var(--ink);font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .4s}
+ .d2 .more button::before{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .55s var(--ease);z-index:-1}
+ .d2 .more button:hover{color:#fff} .d2 .more button:hover::before{transform:scaleX(1);transform-origin:left}
+ .d2 .more small{font:400 11px 'Instrument Sans';letter-spacing:0;text-transform:none;opacity:.7}
+ /* D3 medallions */
+ .d3 .row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px 14px} .d3 a{display:grid;justify-items:center;gap:8px;grid-template-columns:minmax(0,1fr)} .d3 .disc{display:block;overflow:hidden;width:150px;max-width:100%;aspect-ratio:1;border-radius:50%;background:var(--t);padding:18px 10px 12px;transition:transform .6s var(--ease)} .d3 a:hover .disc{transform:translateY(-6px)} .d3 .nm{font-size:22px}
+ /* D4 horizontal cards */
+ .d4 .track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none} .d4 .track::-webkit-scrollbar{display:none} .d4 .c{flex:0 0 230px;height:330px;background:var(--t);scroll-snap-align:start;padding:16px;display:flex;flex-direction:column;justify-content:flex-end;position:relative} .d4 .c .grp{position:absolute;inset:20px 14px 70px} .d4 .c .nm{position:relative}
+ /* D5 split hover */
+ .d5 .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;min-height:420px} .d5 ol{list-style:none;margin:0;padding:0;align-self:center} .d5 li button{all:unset;cursor:pointer;display:flex;gap:14px;align-items:baseline;padding:5px 0;width:100%} .d5 li .n{font-size:11px;color:var(--soft);width:22px} .d5 li .nm{font-size:30px;opacity:.35;transition:opacity .3s,transform .5s var(--ease)} .d5 li button.on .nm,.d5 li button:hover .nm{opacity:1;transform:translateX(8px)} .d5 li button.on .nm{font-style:italic}
+ .d5 .big{background:var(--t);transition:background .6s;position:relative;padding:28px} .d5 .big .grp{position:absolute;inset:30px 30px 70px} .d5 .big .lbl{position:absolute;left:24px;bottom:18px}
+ /* D6 name-only, bottle on hover */
+ .d6 .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)} .d6 a{border-right:1px solid var(--line);border-bottom:1px solid var(--line);height:170px;display:flex;align-items:flex-end;padding:14px;position:relative;overflow:hidden;transition:background .5s} .d6 a:hover{background:var(--t)} .d6 .grp{position:absolute;inset:14px 14px 50px;opacity:0;transform:translateY(20px);transition:opacity .4s,transform .7s var(--ease)} .d6 a:hover .grp{opacity:1;transform:none} .d6 .nm{position:relative;font-size:28px}
+ /* D7 A–Z index */
+ .d7 .az{display:grid;grid-template-columns:repeat(4,1fr);gap:22px} .d7 .L{font:italic 400 40px/1 'Cormorant Garamond';color:var(--soft);border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px} .d7 a{display:flex;align-items:center;gap:10px;padding:4px 0} .d7 a img{width:34px;height:34px;object-fit:contain;background:var(--t);border-radius:50%;padding:3px} .d7 .nm{font-size:22px}
+ /* D8 arches */
+ .d8 .row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px} .d8 a{display:grid;gap:8px;justify-items:center;grid-template-columns:minmax(0,1fr)} .d8 .arch{display:block;overflow:hidden;width:100%;aspect-ratio:3/4;border-radius:999px 999px 4px 4px;background:var(--t);padding:26px 10px 14px;transition:border-radius .6s var(--ease)} .d8 a:hover .arch{border-radius:40% 40% 4px 4px} .d8 .nm{font-size:22px}
+ /* D9 two featured + chips */
+ .d9 .feat{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px} .d9 .f{background:var(--t);height:260px;position:relative;padding:20px;display:flex;flex-direction:column;justify-content:flex-end} .d9 .f .grp{position:absolute;inset:16px 16px 70px} .d9 .f .nm{position:relative;font-size:40px}
+ .d9 .chips{display:flex;flex-wrap:wrap;gap:8px} .d9 .chips a{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 4px;background:#fff;transition:background .3s} .d9 .chips a:hover{background:var(--t)} .d9 .chips img{width:30px;height:30px;border-radius:50%;object-fit:contain;background:var(--t)} .d9 .chips .nm{font-size:19px}
+ /* D10 shelf */
+ .d10 .shelf{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid var(--ink);padding:0 10px;height:200px;gap:4px} .d10 .shelf a{display:flex;align-items:flex-end;height:100%;transition:transform .5s var(--ease)} .d10 .shelf a:hover{transform:translateY(-8px)} .d10 .shelf img{height:var(--h);max-width:9vw;object-fit:contain;filter:drop-shadow(0 8px 8px rgba(0,0,0,.12))}
+ .d10 .labels{display:flex;justify-content:space-between;padding:8px 10px 0} .d10 .labels span{font:italic 16px 'Cormorant Garamond';flex:1;text-align:center}
+
+ /* ---------- animations ---------- */
+ .tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px} .tile{background:var(--t);height:200px;position:relative;padding:12px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden} .tile .grp{position:absolute;inset:12px 12px 46px} .tile .nm{position:relative;font-size:24px}
+ /* A1 stagger rise */
+ .a1 .tile{opacity:0;transform:translateY(40px)} .a1.play .tile{animation:rise .9s var(--ease) forwards;animation-delay:calc(var(--i)*.08s)} @keyframes rise{to{opacity:1;transform:none}}
+ /* A2 parallax inside */
+ .a2 .tile .grp{transition:transform .2s linear}
+ /* A3 3D tilt */
+ .a3 .tiles{perspective:900px} .a3 .tile{transition:transform .5s var(--ease)} .a3 .tile .grp{transform:translateZ(40px)}
+ /* A4 marquee */
+ .a4 .mq{overflow:hidden} .a4 .run{display:flex;gap:40px;width:max-content;animation:mq 30s linear infinite} .a4 .mq:hover .run{animation-play-state:paused} @keyframes mq{to{transform:translateX(-50%)}} .a4 .it{display:flex;align-items:center;gap:14px} .a4 .it img{height:70px;object-fit:contain} .a4 .it .nm{font-size:46px;white-space:nowrap} .a4 .it i{font-style:normal;color:var(--soft)}
+ /* A5 cursor reveal (same as D1, list) */
+ /* A6 curtain wipe */
+ .a6 .tile{clip-path:inset(100% 0 0 0)} .a6.play .tile{animation:wipe 1.1s var(--ease) forwards;animation-delay:calc(var(--i)*.07s)} @keyframes wipe{to{clip-path:inset(0 0 0 0)}} .a6.play .tile .grp{animation:zoomin 1.4s var(--ease) both;animation-delay:calc(var(--i)*.07s)} @keyframes zoomin{from{transform:scale(1.25)}to{transform:none}}
+ /* A7 letter stagger */
+ .a7 .tile .nm span{display:inline-block;transition:transform .5s var(--ease),opacity .3s;transition-delay:calc(var(--k)*25ms)} .a7 .tile:hover .nm span{transform:translateY(-6px);font-style:italic}
+ /* A8 scroll-scrubbed horizontal */
+ .a8 .scroller{height:340px;overflow-y:auto;position:relative;border:1px solid var(--line);background:#fff} .a8 .tall{height:1100px} .a8 .pin{position:sticky;top:0;height:340px;overflow:hidden;display:flex;align-items:center;background:var(--ivory)} .a8 .belt{display:flex;gap:12px;padding:0 24px;will-change:transform} .a8 .belt .tile{flex:0 0 200px;height:260px}
+ /* A9 expanding columns */
+ .a9 .cols{display:flex;gap:8px;height:300px} .a9 .col{flex:1;background:var(--t);position:relative;overflow:hidden;transition:flex 0.8s var(--ease);padding:14px;display:flex;flex-direction:column;justify-content:flex-end;min-width:0} .a9 .col:hover{flex:4} .a9 .col .grp{position:absolute;inset:16px 10px 56px;opacity:.35;transition:opacity .5s} .a9 .col:hover .grp{opacity:1} .a9 .col .nm{position:relative;font-size:22px;writing-mode:vertical-rl;transform:rotate(180deg);transition:all .6s var(--ease);white-space:nowrap} .a9 .col:hover .nm{writing-mode:horizontal-tb;transform:none;font-size:34px}
+ /* A10 spotlight */
+ .a10 .tile{transition:opacity .5s,filter .5s,transform .6s var(--ease)} .a10 .tiles:hover .tile{opacity:.45;filter:grayscale(.6)} .a10 .tiles:hover .tile:hover{opacity:1;filter:none;transform:translateY(-8px);box-shadow:0 26px 40px -26px rgba(41,37,33,.5)} .a10 .tile:hover .grp img{transform:translateY(-4px)} .a10 .grp img{transition:transform .6s var(--ease)}
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important} .a1 .tile,.a6 .tile{opacity:1;transform:none;clip-path:none}}
+ @media (max-width:900px){main,header.top,h2.part{padding-left:14px;padding-right:14px} .cap{flex-direction:column} .cap p{text-align:left} .stage{padding:16px}
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))} .d2 .grid{grid-template-columns:repeat(6,minmax(0,1fr))} .d2 .t{grid-column:span 3} .d2 .t.big,.d2 .t.wide{grid-column:span 6} .d2 .t.note,.d2 .t.note.tall,.d2 .t.note.wide{grid-column:span 2;grid-row:span 1;padding:8px} .d2 .t{order:2} .d2 .t.big{order:0} .d2 .t.note{order:1} .d2 .t.note .nm{font-size:17px} .d2 .t.big .nm{font-size:34px} .d3 .row,.d8 .row,.d6 .grid{grid-template-columns:repeat(3,minmax(0,1fr))} .d5 .split{grid-template-columns:1fr} .d7 .az{grid-template-columns:repeat(2,1fr)} .d9 .feat{grid-template-columns:1fr} .d1 .nm{font-size:32px} .d10 .shelf{overflow-x:auto} .a9 .cols{height:240px} .a4 .it .nm{font-size:32px}}
+</style></head><body>
+<header class="top"><h1>Shop by brand: 10 designs + 10 animations</h1><p class="lede">Part 1 shows ten new layouts for "The houses we carry". Part 2 shows ten Webflow-style animations (scroll reveals, hover interactions, marquee, scroll-scrubbing), each working. Any animation can be combined with any layout. They use your brand bottle images; the colours are the tile colours you have now.</p></header>
+<h2 class="part">Part 1 · Ten designs</h2>
+<main id="designs"></main>
+<h2 class="part">Part 2 · Ten Webflow-style animations</h2>
+<main id="anims"></main>
+<script>
+const B = [['Armani','armani','#E9D3C9'],['Chanel','chanel','#EDE6DE'],['Dior','dior','#D6DDE5'],['Dolce & Gabbana','dolce-gabbana','#EAD8C2'],['Hermès','hermes','#F1E3CC'],['Jo Malone','jo-malone','#E3E8E6'],['Tom Ford','tom-ford','#DCD6E4'],['Valentino','valentino','#EBDDDD'],['Versace','versace','#E6E3EC'],['YSL','ysl','#E4E0D8']];
+const img = (s, n = 1) => `shop-images/samyo-brand-${s}-${n}.webp`;
+const grp = (s) => `<span class="grp"><img src="${img(s,1)}" alt=""><img src="${img(s,2)}" alt=""><img src="${img(s,3)}" alt=""></span>`;
+const tile = (b, i) => `<a class="tile" style="--t:${b[2]};--i:${i}">${grp(b[1])}<span class="nm">${b[0]}</span><span class="sh" style="position:relative">Shop</span></a>`;
+
+const N = (id, w = 700) => `https://images.unsplash.com/${id}?w=${w}&h=${w}&fit=crop&q=70&auto=format`;
+const NOTES = { Lavender: 'photo-1611625105602-42ee06be977e', Bergamot: 'photo-1612253167527-0598073d2979', Vanilla: 'photo-1682482198446-4cbf92f85a4b', Rose: 'photo-1585768750637-ada36319a484', Iris: 'photo-1776372294959-e78a71c2af84', Cedar: 'photo-1515446134809-993c501ca304', Cardamom: 'photo-1763558049571-a6d12a85472e', Cinnamon: 'photo-1553499944-e4297a0af1bd', Jasmine: 'photo-1781707533179-9c296c975a04', Vetiver: 'photo-1563364664-399838d1394c' };
+const bt = (name) => B.find((b) => b[0] === name);
+const D2_ITEMS = [
+  ['b', 'Dior', 'big'], ['n', 'Lavender', 'tall'], ['b', 'Chanel', ''], ['b', 'Armani', 'wide'], ['n', 'Bergamot', ''], ['b', 'Hermès', ''], ['n', 'Vanilla', 'wide'], ['b', 'Tom Ford', ''],
+  ['n', 'Rose', 'wide'], ['b', 'Jo Malone', ''], ['b', 'Valentino', 'wide'], ['n', 'Iris', ''], ['b', 'Versace', ''], ['n', 'Cedar', 'wide'], ['b', 'YSL', ''], ['n', 'Cardamom', ''],
+  ['b', 'Dolce & Gabbana', 'wide'], ['n', 'Jasmine', 'wide'], ['n', 'Cinnamon', 'wide'], ['n', 'Vetiver', ''],
+];
+const D2_FIRST = 9, D2_STEP = 6; // batches fill whole rows of the 4-column grid
+function d2() {
+  const tiles = D2_ITEMS.map(([kind, name, size], i) => {
+    const hide = i >= D2_FIRST ? ' hidden' : '';
+    if (kind === 'n') return `<a class="t note ${size}"${hide}><img class="ph" src="${N(NOTES[name])}" alt=""><span class="nm">${name}</span><span class="sh">Scent note</span></a>`;
+    const b = bt(name);
+    return `<a class="t ${size}" style="--t:${b[2]}"${hide}>${grp(b[1])}<span class="nm">${b[0]}</span><span class="sh">Shop</span></a>`;
+  }).join('');
+  return `<div class="grid">${tiles}</div><div class="more"><button type="button" data-d2-more>Load more <small>· ${D2_ITEMS.length - D2_FIRST} brands &amp; notes</small></button></div>`;
+}
+const D = [
+ ['Editorial list','My pick','The names set large in a quiet list; hovering one floats its bottles beside the cursor. Very luxurious, very fast to scan.', () => `<ul>${B.map((b) => `<li><a data-float="${b[1]}" data-t="${b[2]}"><span class="nm">${b[0]}</span><span class="sh">Shop →</span></a></li>`).join('')}</ul><div class="float"></div>`],
+ ['Masonry with scent notes','Your pick','Brands and scent notes together: tiles in mixed sizes, notes as full photos (Lavender, Bergamot, Vanilla…). "Load more" unveils more brands and notes with a staggered curtain wipe.', () => d2()],
+ ['Round medallions','Soft','Each brand in a round tinted disc with its bottles, the name under it. Softer and friendlier than squares.', () => `<div class="row">${B.map((b) => `<a style="--t:${b[2]}"><span class="disc">${grp(b[1])}</span><span class="nm">${b[0]}</span></a>`).join('')}</div>`],
+ ['Swipe row of tall cards','Compact','One row of tall cards you swipe or drag sideways (snaps to each card). Takes half the height of the grid.', () => `<div class="track">${B.map((b) => `<a class="c" style="--t:${b[2]}">${grp(b[1])}<span class="nm">${b[0]}</span><span class="sh" style="position:relative">Shop</span></a>`).join('')}</div>`],
+ ['List + big picture','Editorial','Numbered brand names on the left; hovering one changes the big picture and colour on the right.', () => `<div class="split"><ol>${B.map((b, i) => `<li><button type="button" data-pick="${i}" class="${i ? '' : 'on'}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span class="nm">${b[0]}</span></button></li>`).join('')}</ol><div class="big" style="--t:${B[0][2]}">${grp(B[0][1])}<span class="lbl"><span class="nm" style="font-size:40px">${B[0][0]}</span></span></div></div>`],
+ ['Names first, bottles on hover','Minimal','A fine grid of brand names only; on hover the tile takes the brand colour and the bottles rise in. Calm until you look.', () => `<div class="grid">${B.map((b) => `<a style="--t:${b[2]}">${grp(b[1])}<span class="nm">${b[0]}</span></a>`).join('')}</div>`],
+ ['A–Z index','Scales','Brands grouped under big italic letters, each with a tiny round bottle. Ready for 50+ brands later.', () => { const g = {}; B.forEach((b) => (g[b[0][0]] = g[b[0][0]] || []).push(b)); return `<div class="az">${Object.keys(g).sort().map((L) => `<div><div class="L">${L}</div>${g[L].map((b) => `<a style="--t:${b[2]}"><img src="${img(b[1], 2)}" alt="">${'<span class="nm">' + b[0] + '</span>'}</a>`).join('')}</div>`).join('')}</div>`; }],
+ ['Arched windows','Boutique','Each brand in an arched window, like a shop front; the arch softens on hover.', () => `<div class="row">${B.map((b) => `<a style="--t:${b[2]}"><span class="arch">${grp(b[1])}</span><span class="nm">${b[0]}</span></a>`).join('')}</div>`],
+ ['Two featured + chips','Promote','Two big brands you want to push (e.g. this month), the rest as small round-photo chips underneath.', () => `<div class="feat">${B.slice(2, 4).map((b) => `<a class="f" style="--t:${b[2]}">${grp(b[1])}<span class="nm">${b[0]}</span></a>`).join('')}</div><div class="chips">${B.filter((_, i) => i !== 2 && i !== 3).map((b) => `<a style="--t:${b[2]}"><img src="${img(b[1], 2)}" alt=""><span class="nm">${b[0]}</span></a>`).join('')}</div>`],
+ ['The shelf','Boutique','One bottle per brand standing on a single long shelf, names underneath; hovering lifts a bottle. Like a perfume counter.', () => `<div class="shelf">${B.map((b, i) => `<a style="--h:${[150, 170, 160, 140, 165, 150, 175, 155, 160, 145][i]}px"><img src="${img(b[1], 2)}" alt="${b[0]}"></a>`).join('')}</div><div class="labels">${B.map((b) => `<span>${b[0]}</span>`).join('')}</div>`],
+];
+const A = [
+ ['Staggered rise on scroll','Classic','Tiles rise and fade in one after another as the section scrolls into view (80ms apart). The Webflow staple; smooth and quiet.', true, () => `<div class="tiles">${B.map(tile).join('')}</div>`],
+ ['Parallax bottles','Depth','Move the mouse over the grid: the bottles float slightly against the tiles, giving depth. (On scroll, the same small drift.)', false, () => `<div class="tiles">${B.map(tile).join('')}</div>`],
+ ['3D tilt toward the cursor','Premium','Each tile tilts a few degrees toward the cursor and the bottles pop forward. Desktop only.', false, () => `<div class="tiles">${B.map(tile).join('')}</div>`],
+ ['Endless marquee','Bold','Brand names with a bottle glide endlessly sideways; it pauses on hover. A bold strip between sections.', false, () => { const run = B.map((b) => `<span class="it"><img src="${img(b[1], 2)}" alt=""><span class="nm">${b[0]}</span><i>✦</i></span>`).join(''); return `<div class="mq"><div class="run">${run}${run}</div></div>`; }],
+ ['Image follows the cursor','Editorial','Over a list of names, the hovered brand\'s bottles follow the cursor in a little card (as in design 1).', false, () => `<div class="d1"><ul>${B.slice(0, 6).map((b) => `<li><a data-float="${b[1]}" data-t="${b[2]}"><span class="nm">${b[0]}</span><span class="sh">Shop →</span></a></li>`).join('')}</ul><div class="float"></div></div>`],
+ ['Curtain wipe','Cinematic','Each tile is revealed by a wipe from the bottom while its bottles settle from a slight zoom. Elegant entrance.', true, () => `<div class="tiles">${B.map(tile).join('')}</div>`],
+ ['Letters lift on hover','Detail','Hovering a tile makes the brand name\'s letters lift one after another and turn italic.', false, () => `<div class="tiles">${B.map((b, i) => `<a class="tile" style="--t:${b[2]};--i:${i}">${grp(b[1])}<span class="nm">${[...b[0]].map((ch, k) => `<span style="--k:${k}">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('')}</span></a>`).join('')}</div>`],
+ ['Scroll moves the row sideways','Showpiece','Scroll down inside the box: the section pins and the row of brands slides sideways with your scroll. The famous Webflow horizontal scroll.', false, () => `<div class="scroller"><div class="tall"><div class="pin"><div class="belt">${B.map(tile).join('')}</div></div></div></div>`],
+ ['Columns that open on hover','Interactive','Ten slim columns with vertical names; the hovered one opens wide to show its bottles. Very Webflow, very fun.', false, () => `<div class="cols">${B.map((b) => `<a class="col" style="--t:${b[2]}">${grp(b[1])}<span class="nm">${b[0]}</span></a>`).join('')}</div>`],
+ ['Spotlight','Focus','Hovering one tile lifts it with a soft shadow while the others dim and lose colour. Draws the eye.', false, () => `<div class="tiles">${B.map(tile).join('')}</div>`],
+];
+const build = (root, list, prefix, isAnim) => list.forEach((d, n) => {
+  const sec = document.createElement('section');
+  sec.className = `v ${prefix}${n + 1}`;
+  const body = isAnim ? d[4]() : d[3]();
+  sec.innerHTML = `<div class="cap"><h3><b>${n + 1}</b>${d[0]}<span class="tag">${d[1]}</span></h3><p>${d[2]}</p></div><div class="stage">${isAnim && d[3] ? '<button class="replay" type="button">Replay</button>' : ''}${body}</div>`;
+  root.append(sec);
+});
+build(document.getElementById('designs'), D, 'd', false);
+build(document.getElementById('anims'), A, 'a', true);
+
+// D2: first tiles unveil on scroll; Load more unveils the next ones, staggered
+document.querySelectorAll('.d2').forEach((sec) => {
+  const grid = sec.querySelector('.grid');
+  const btn = sec.querySelector('[data-d2-more]');
+  const reveal = (tiles) => tiles.forEach((t, k) => { t.hidden = false; t.style.setProperty('--k', k); t.classList.remove('in'); void t.offsetWidth; t.classList.add('in'); });
+  const seen = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { reveal([...grid.querySelectorAll('.t:not([hidden])')]); seen.disconnect(); } }), { threshold: 0.2 });
+  seen.observe(grid);
+  btn.addEventListener('click', () => {
+    const next = [...grid.querySelectorAll('.t[hidden]')].slice(0, D2_STEP);
+    reveal(next);
+    const left = grid.querySelectorAll('.t[hidden]').length;
+    if (!left) btn.parentElement.remove();
+    else btn.querySelector('small').textContent = `· ${left} more`;
+  });
+});
+// cursor-follow cards (D1, A5)
+document.querySelectorAll('.d1').forEach((box) => {
+  const fl = box.querySelector('.float'); const stage = box.closest('.stage');
+  box.querySelectorAll('[data-float]').forEach((a) => {
+    a.addEventListener('mouseenter', () => { fl.innerHTML = grp(a.dataset.float); fl.style.setProperty('--t', a.dataset.t); fl.classList.add('on'); });
+    a.addEventListener('mouseleave', () => fl.classList.remove('on'));
+  });
+  box.addEventListener('mousemove', (e) => { const r = stage.getBoundingClientRect(); fl.style.left = `${e.clientX - r.left + 140}px`; fl.style.top = `${e.clientY - r.top}px`; });
+});
+// D5 list + picture
+document.querySelectorAll('.d5').forEach((sec) => {
+  const big = sec.querySelector('.big');
+  sec.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('mouseenter', () => {
+    const x = B[+b.dataset.pick];
+    sec.querySelectorAll('[data-pick]').forEach((o) => o.classList.toggle('on', o === b));
+    big.style.setProperty('--t', x[2]);
+    big.innerHTML = `${grp(x[1])}<span class="lbl"><span class="nm" style="font-size:40px">${x[0]}</span></span>`;
+  }));
+});
+// scroll-triggered (A1, A6) + replay
+const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('play'); io.unobserve(e.target); } }), { threshold: 0.3 });
+document.querySelectorAll('.a1, .a6').forEach((s) => { io.observe(s); s.querySelector('.replay').addEventListener('click', () => { s.classList.remove('play'); void s.offsetWidth; s.classList.add('play'); }); });
+// A2 parallax
+document.querySelectorAll('.a2 .tiles').forEach((g) => { g.addEventListener('mousemove', (e) => { const r = g.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; g.querySelectorAll('.grp').forEach((p, i) => (p.style.transform = `translate(${x * (10 + i % 3 * 6)}px, ${y * (8 + i % 3 * 5)}px)`)); }); g.addEventListener('mouseleave', () => g.querySelectorAll('.grp').forEach((p) => (p.style.transform = ''))); });
+// A3 tilt
+document.querySelectorAll('.a3 .tile').forEach((t) => { t.addEventListener('mousemove', (e) => { const r = t.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; t.style.transform = `rotateY(${x * 14}deg) rotateX(${-y * 12}deg)`; }); t.addEventListener('mouseleave', () => (t.style.transform = '')); });
+// A8 scroll-scrubbed belt
+document.querySelectorAll('.a8 .scroller').forEach((sc) => { const belt = sc.querySelector('.belt'); const upd = () => { const p = sc.scrollTop / (sc.scrollHeight - sc.clientHeight); belt.style.transform = `translateX(${-p * (belt.scrollWidth - sc.clientWidth + 48)}px)`; }; sc.addEventListener('scroll', upd, { passive: true }); upd(); });
+</script>
+</body></html>

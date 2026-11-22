@@ -1,103 +1,322 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "main-product-perfume",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "title": {
+          "type": "title",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "show_stock": true
           }
         },
-        "title": {
-          "type": "title"
+        "rating": {
+          "type": "rating",
+          "settings": {
+            "anchor": "reviews"
+          }
         },
         "price": {
-          "type": "price"
-        },
-        "variant_picker": {
-          "type": "variant_picker",
+          "type": "price",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
-          }
-        },
-        "quantity_selector": {
-          "type": "quantity_selector"
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "note": "Shipping worked out at checkout."
           }
         },
         "description": {
-          "type": "description"
-        },
-        "share": {
-          "type": "share",
+          "type": "description",
           "settings": {
-            "share_label": "Share"
+            "excerpt": true,
+            "words": 30,
+            "more_label": "Read more",
+            "more_anchor": "details"
+          }
+        },
+        "notes": {
+          "type": "notes",
+          "settings": {
+            "label": "Smells like",
+            "limit": 5
+          }
+        },
+        "sizes": {
+          "type": "variant_picker",
+          "settings": {}
+        },
+        "buy": {
+          "type": "buy_buttons",
+          "settings": {
+            "add_label": "Add to bag",
+            "show_quantity": true,
+            "show_dynamic_checkout": false
+          }
+        },
+        "trust": {
+          "type": "text",
+          "settings": {
+            "text": "<p>100% authentic designer fragrances · Secure checkout</p>"
           }
         }
       },
       "block_order": [
-        "vendor",
         "title",
+        "rating",
         "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
         "description",
-        "share"
+        "notes",
+        "sizes",
+        "buy",
+        "trust"
       ],
       "settings": {
-        "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
-        "media_position": "left",
-        "gallery_layout": "stacked",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "show_breadcrumbs": true,
+        "shop_all_label": "Shop all",
+        "background_color": "#DFD9E6",
+        "text_color": "#26221F",
+        "show_big_name": true,
+        "image_scale": 100
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "reviews": {
+      "type": "perfume-testimonials",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "kicker": "Reviews",
+        "heading": "What people say"
       }
     },
-    "related-products": {
-      "type": "related-products",
+    "lineup": {
+      "type": "perfume-lineup",
+      "blocks": {
+        "bottle_1": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
+            "label": "Sauvage",
+            "link": "/products/dior-sauvage-eau-de-parfum"
+          }
+        },
+        "bottle_2": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
+            "label": "Dior Homme Intense",
+            "link": "/products/dior-homme-intense"
+          }
+        },
+        "bottle_3": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-dg-the-one.webp",
+            "label": "The One",
+            "link": "/products/dolce-gabbana-the-one"
+          }
+        },
+        "bottle_4": {
+          "type": "bottle",
+          "settings": {
+            "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
+            "label": "Stronger With You Intensely",
+            "link": "/products/emporio-armani-stronger-with-you-intensely"
+          }
+        }
+      },
+      "block_order": [
+        "bottle_1",
+        "bottle_2",
+        "bottle_3",
+        "bottle_4"
+      ],
       "settings": {
-        "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "heading": "Keep exploring",
+        "script": "one spray at a time",
+        "button_label": "Shop all fragrances",
+        "button_link": "/collections/all",
+        "background_color": "#E8E4DC",
+        "text_color": "#292521",
+        "script_color": "#686A54",
+        "surround_color": "#D8D1C5",
+        "corner_radius": 40,
+        "corner_radius_mobile": 28,
+        "show_shadow": true,
+        "overlap": 5,
+        "padding_bottom": 48
       }
+    },
+    "nav": {
+      "type": "perfume-discovery-nav",
+      "blocks": {
+        "l1": {
+          "type": "link",
+          "settings": {
+            "label": "Overview",
+            "anchor": "overview"
+          }
+        },
+        "l2": {
+          "type": "link",
+          "settings": {
+            "label": "Scent DNA",
+            "anchor": "scent-dna"
+          }
+        },
+        "l3": {
+          "type": "link",
+          "settings": {
+            "label": "Notes",
+            "anchor": "notes"
+          }
+        },
+        "l4": {
+          "type": "link",
+          "settings": {
+            "label": "Performance",
+            "anchor": "performance"
+          }
+        },
+        "l5": {
+          "type": "link",
+          "settings": {
+            "label": "Best for",
+            "anchor": "best-for"
+          }
+        },
+        "l6": {
+          "type": "link",
+          "settings": {
+            "label": "Reviews",
+            "anchor": "reviews"
+          }
+        },
+        "l7": {
+          "type": "link",
+          "settings": {
+            "label": "Where to buy",
+            "anchor": "where-to-buy"
+          }
+        },
+        "l8": {
+          "type": "link",
+          "settings": {
+            "label": "Similar",
+            "anchor": "similar"
+          }
+        },
+        "l9": {
+          "type": "link",
+          "settings": {
+            "label": "For you",
+            "anchor": "for-you"
+          }
+        },
+        "l10": {
+          "type": "link",
+          "settings": {
+            "label": "Compare",
+            "anchor": "compare"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4",
+        "l5",
+        "l9",
+        "l8",
+        "l10",
+        "l6",
+        "l7"
+      ],
+      "settings": {}
+    },
+    "dna": {
+      "type": "perfume-scent-dna",
+      "settings": {}
+    },
+    "journey": {
+      "type": "perfume-journey",
+      "settings": {}
+    },
+    "lab": {
+      "type": "perfume-performance-lab",
+      "settings": {}
+    },
+    "wear": {
+      "type": "perfume-wear-guide",
+      "settings": {}
+    },
+    "where": {
+      "type": "perfume-where-to-buy",
+      "settings": {}
+    },
+    "details": {
+      "type": "perfume-details",
+      "blocks": {
+        "d1": {
+          "type": "row",
+          "settings": {
+            "title": "About this perfume",
+            "source": "description",
+            "open": true
+          }
+        },
+        "d2": {
+          "type": "row",
+          "settings": {
+            "title": "Shipping and delivery",
+            "source": "custom",
+            "content": "<p>Add your shipping details in the theme editor.</p>"
+          }
+        },
+        "d3": {
+          "type": "row",
+          "settings": {
+            "title": "Authenticity",
+            "source": "custom",
+            "content": "<p>Explain where your perfumes come from in the theme editor.</p>"
+          }
+        },
+        "d4": {
+          "type": "row",
+          "settings": {
+            "title": "Sources",
+            "source": "sources"
+          }
+        }
+      },
+      "block_order": [
+        "d1",
+        "d2",
+        "d3",
+        "d4"
+      ],
+      "settings": {}
+    },
+    "similar": {
+      "type": "perfume-similar",
+      "settings": {}
+    },
+    "fit": {
+      "type": "perfume-fit",
+      "settings": {}
+    },
+    "compare": {
+      "type": "perfume-compare",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "disclosures",
-    "related-products"
+    "nav",
+    "dna",
+    "journey",
+    "lab",
+    "wear",
+    "fit",
+    "similar",
+    "compare",
+    "reviews",
+    "where",
+    "details",
+    "lineup"
   ]
 }

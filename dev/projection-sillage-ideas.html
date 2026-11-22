@@ -1,0 +1,263 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo: 10 projection & sillage ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ @property --m { syntax: '<percentage>'; inherits: true; initial-value: 30%; }
+ :root{--paper:#f3f0eb;--ink:#26221f;--soft:#6b635b;--line:rgba(38,34,31,.14);--mist:201,154,110;--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header{max-width:1400px;margin:0 auto;padding:40px 32px 8px} h1{font:400 52px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:82ch;margin:0}
+ .picks{max-width:1400px;margin:18px auto 0;padding:0 32px} .picks div{background:#fff;padding:16px 20px;display:grid;gap:6px;justify-items:start} .picks b{font-weight:600}
+ main{max-width:1400px;margin:0 auto;padding:22px 32px 60px;display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(360px,1fr))}
+ .idea{background:#fff;padding:0 0 18px;display:grid;align-content:start}
+ .idea>*:not(.demo){margin-left:18px;margin-right:18px}
+ .demo{height:270px;position:relative;overflow:hidden;margin-bottom:12px;background:#ece6dc}
+ .idea:nth-child(3n+2) .demo{background:#e6e3ec} .idea:nth-child(3n) .demo{background:#e3e8e6}
+ h2{font:400 24px/1.1 'Cormorant Garamond',serif;margin:6px 0 6px} h2 b{font-weight:400;font-size:32px;margin-right:8px}
+ .idea>p{margin:0;color:var(--soft);font-size:13.5px}
+ .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px} .tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--soft)} .tag.p{background:#efe7dc} .tag.s{background:#e7e4ef}
+ .lv{display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:4px}
+ .lv button,.tabs button{background:none;border:0;border-top:2px solid var(--line);font:inherit;font-size:12px;min-height:40px;color:inherit;opacity:.55;cursor:pointer}
+ .lv button[aria-pressed=true],.tabs button[aria-pressed=true]{opacity:1;font-weight:600;border-color:var(--ink)}
+ button:focus-visible,input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+ .hint{position:absolute;left:14px;top:12px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);z-index:3;pointer-events:none}
+ .cap{position:absolute;left:14px;right:14px;bottom:10px;font:italic 19px/1.2 'Cormorant Garamond',serif;z-index:3;pointer-events:none}
+ .fig{position:absolute;bottom:34px;width:26px;height:74px;color:rgba(38,34,31,.22);transition:color .5s}
+ .fig svg{width:100%;height:100%;display:block;fill:currentColor} .fig.on,.fig.me{color:var(--ink)}
+ .fig::after{content:'';position:absolute;left:3px;top:-14px;width:20px;height:8px;border-top:2px solid rgb(var(--mist));border-radius:50%;opacity:0}
+ .fig.on::after{animation:waft 2.4s ease-out infinite}
+ @keyframes waft{0%{opacity:0;transform:translateY(6px)}35%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+ .ground{position:absolute;left:12px;right:12px;bottom:34px;border-top:1px solid rgba(38,34,31,.18)}
+ .mistball{border-radius:50%;background:radial-gradient(circle,rgba(var(--mist),.5),rgba(var(--mist),.22) 62%,rgba(var(--mist),0) 72%)}
+ .pill{position:absolute;z-index:4;background:var(--ink);color:#fff;border:0;font:600 11px/1 'Instrument Sans';letter-spacing:.14em;text-transform:uppercase;min-height:36px;padding:0 18px;border-radius:999px;cursor:pointer}
+
+ /* 1 spray */
+ .d-spray img{position:absolute;left:22px;bottom:34px;height:150px}
+ .d-spray .cloud{position:absolute;left:86px;top:108px;width:40px;height:40px;margin:-20px 0 0 -20px;transform:scale(0);opacity:0}
+ .idea[data-level='1'] .d-spray{--r:3} .idea[data-level='2'] .d-spray{--r:6.5} .idea[data-level='3'] .d-spray{--r:13}
+ .d-spray.go .cloud{animation:spray 4s var(--ease) forwards}
+ @keyframes spray{0%{transform:scale(.2);opacity:1}30%{transform:scale(var(--r));opacity:1}100%{transform:scale(calc(var(--r) * 1.12));opacity:0}}
+ .d-spray .spray{right:14px;top:12px}
+
+ /* 2 walk-away */
+ .d-walk .bub{position:absolute;left:calc(12% + 13px);bottom:70px;width:calc(var(--rr) * 2);aspect-ratio:1;transform:translate(-50%,50%);transition:width .8s var(--ease)}
+ .idea[data-level='1'] .d-walk{--rr:23%} .idea[data-level='2'] .d-walk{--rr:40%} .idea[data-level='3'] .d-walk{--rr:80%}
+ .d-walk .read{position:absolute;right:14px;top:12px;margin:0;text-align:right;font-size:12px} .d-walk .read b{display:block;font:400 22px/1.1 'Cormorant Garamond',serif}
+ .d-walk .ticks{position:absolute;left:22%;right:12%;bottom:12px;display:flex;justify-content:space-between;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+ .range{display:grid;gap:4px;font-size:12px;color:var(--soft);margin-bottom:6px} .range input{width:100%;accent-color:var(--ink);min-height:30px}
+
+ /* 3 cursor trail, 4 draw path */
+ .d-trail{touch-action:none;cursor:crosshair} .d-trail img{position:absolute;left:50%;bottom:20px;height:200px;transform:translateX(-50%);opacity:.9}
+ .puff{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;pointer-events:none;mix-blend-mode:multiply}
+ .d-room{touch-action:none;cursor:crosshair} .d-room canvas{width:100%;height:100%;display:block}
+ .d-room .count{position:absolute;right:14px;top:10px;font:400 20px/1 'Cormorant Garamond',serif}
+
+ /* 5 scenes */
+ .tabs{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:6px}
+ .d-scene svg{width:100%;height:100%;display:block}
+ .d-scene .res{position:absolute;left:14px;bottom:10px;margin:0;font:italic 19px/1.2 'Cormorant Garamond',serif}
+
+ /* 6 wake, 7 ink, 9 scroll */
+ .photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+ .d-wake .veil{position:absolute;inset:0;background:linear-gradient(250deg,rgba(236,230,220,0) 0%,rgba(236,230,220,0) var(--m),rgba(236,230,220,.92) calc(var(--m) + 18%));transition:--m 1s var(--ease)}
+ .idea[data-level='1'] .d-wake{--m:18%} .idea[data-level='2'] .d-wake{--m:45%} .idea[data-level='3'] .d-wake{--m:85%}
+ .d-ink img{-webkit-mask:radial-gradient(circle at 50% 50%,#000 var(--m),transparent calc(var(--m) + 14%));mask:radial-gradient(circle at 50% 50%,#000 var(--m),transparent calc(var(--m) + 14%));transition:--m 1.2s var(--ease)}
+ .idea[data-level='1'] .d-ink{--m:8%} .idea[data-level='2'] .d-ink{--m:24%} .idea[data-level='3'] .d-ink{--m:62%}
+ .d-ink .dot{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 4px rgba(255,255,255,.7)}
+ .d-wake .cap{top:12px;bottom:auto} .photo .cap{color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.35)} .d-ink .cap{color:var(--ink);text-shadow:none}
+ .d-scroll .trailfx{position:absolute;top:0;bottom:0;left:0;width:var(--tw);background:linear-gradient(90deg,rgba(var(--mist),0),rgba(var(--mist),.55) 70%,rgba(var(--mist),.8));filter:blur(12px);opacity:.85;transform:translateX(var(--tx,0))}
+ .idea[data-level='1'] .d-scroll{--tw:18%} .idea[data-level='2'] .d-scroll{--tw:45%} .idea[data-level='3'] .d-scroll{--tw:85%}
+
+ /* 8 voice */
+ .d-voice .word{position:absolute;left:16%;top:30px;margin:0;font:italic 400 22px/1 'Cormorant Garamond',serif;transform-origin:left;transition:transform .7s var(--ease)}
+ .idea[data-level='2'] .d-voice .word{transform:scale(1.6)} .idea[data-level='3'] .d-voice .word{transform:scale(2.4)}
+ .d-voice .arcs{position:absolute;left:calc(8% + 30px);bottom:78px;display:flex;gap:4px}
+ .d-voice .arcs i{width:12px;height:34px;border:2px solid rgb(var(--mist));border-left:0;border-top-color:transparent;border-bottom-color:transparent;border-radius:0 50% 50% 0;opacity:0;transition:opacity .4s}
+ .idea[data-level='1'] .arcs i:nth-child(-n+1),.idea[data-level='2'] .arcs i:nth-child(-n+3),.idea[data-level='3'] .arcs i{opacity:1;animation:pulse 1.6s ease-in-out infinite}
+ .arcs i:nth-child(2){animation-delay:.2s !important}.arcs i:nth-child(3){animation-delay:.4s !important}.arcs i:nth-child(4){animation-delay:.6s !important}.arcs i:nth-child(5){animation-delay:.8s !important}
+ @keyframes pulse{50%{transform:translateX(4px)}}
+
+ /* 10 footprints */
+ .d-steps svg{width:100%;height:100%;display:block}
+ footer{max-width:1400px;margin:0 auto;padding:0 32px 60px;color:var(--soft);font-size:12px}
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+ @media (max-width:640px){main,header,.picks,footer{padding-left:16px;padding-right:16px} main{grid-template-columns:minmax(0,1fr)} h1{font-size:40px}}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="person" viewBox="-14 -80 28 80"><circle cx="0" cy="-70" r="8"/><path d="M-11-58Q0-63 11-58L13-31 8-31 7 0 1 0 0-26-1 0-7 0-8-31-13-31Z"/></symbol></svg>
+<header><h1>Projection &amp; sillage: 10 ideas</h1><p class="lede">Each card is a working demo: try the buttons, drag, draw, scroll. Projection = the bubble around you while you stand still; sillage = the trail you leave as you move. Every idea only <em>draws</em> the level we've assessed (Intimate · Moderate · Strong / Soft · Moderate · Heavy). None of them claims metres or minutes. Photos are from Unsplash (credits at the bottom); the bottle is our unbranded sample.</p></header>
+<section class="picks"><div><span class="tag">My picks</span><p style="margin:0"><b>Projection:</b> 5, "Would they notice?" with Philippine scenes (elevator, jeepney, office, dinner) is the most useful for shoppers; 2 (walk-away slider) is the most playful. <b>Sillage:</b> 4 (draw your path) or 3 (your cursor is the trail). For a calm editorial look, 6 (boat wake photo) explains sillage in one picture.</p></div></section>
+<main>
+
+<section class="idea" data-kind="p" id="i1"><div class="demo d-spray"><span class="hint">Tap Spray</span><img src="../assets/sample-bottle-clear.webp" alt=""><span class="cloud mistball"></span><span class="ground"></span><i class="fig" style="left:42%"><svg><use href="#person"/></svg></i><i class="fig" style="left:63%"><svg><use href="#person"/></svg></i><i class="fig" style="left:84%"><svg><use href="#person"/></svg></i><button class="pill spray" type="button">Spray</button></div><div class="lv"></div><h2><b>1</b>Tap to spray</h2><p>The product's own bottle "sprays": a mist cloud bursts out and spreads as far as its projection; the people it reaches turn and notice. Uses the product photo, so every perfume gets its own.</p><div class="tags"><span class="tag p">projection</span><span class="tag">product photo</span></div></section>
+
+<section class="idea" data-kind="p" id="i2"><div class="demo d-walk"><span class="bub mistball"></span><span class="ground"></span><i class="fig me" style="left:12%"><svg><use href="#person"/></svg></i><i class="fig you"><svg><use href="#person"/></svg></i><p class="read"><b></b><span></span></p><div class="ticks"><span>Hug</span><span>Arm's length</span><span>Table</span><span>Room</span></div></div><label class="range">Drag yourself closer or further away<input type="range" min="0" max="100" value="35"></label><div class="lv"></div><h2><b>2</b>Walk away from the wearer</h2><p>Drag the slider: you move away from someone wearing it. "You'd notice it here" turns into "Out of its reach" where its projection ends. Distances are bands (hug, arm's length, table, room), never metres.</p><div class="tags"><span class="tag p">projection</span><span class="tag">interactive</span></div></section>
+
+<section class="idea" data-kind="s" id="i3"><div class="demo d-trail"><span class="hint">Move your mouse or finger here</span><img src="../assets/sample-bottle-amber.webp" alt=""></div><div class="lv"></div><h2><b>3</b>You are the trail</h2><p>Your cursor (or finger) becomes the wearer: it leaves mist wherever it goes. Soft vanishes almost at once, Heavy hangs in the air for seconds. Shows sillage before reading a word.</p><div class="tags"><span class="tag s">sillage</span><span class="tag">interactive</span></div></section>
+
+<section class="idea" data-kind="s" id="i4"><div class="demo d-room"><span class="hint">Draw a walk through the room</span><span class="count"></span><canvas></canvas></div><div class="lv"></div><h2><b>4</b>Draw your path through a party</h2><p>A room from above with guests. Draw a path with your finger; it leaves a trail that fades at the perfume's pace, and guests it passes while still fresh light up. If nobody draws, a wearer walks through on their own.</p><div class="tags"><span class="tag s">sillage</span><span class="tag">canvas</span><span class="tag">interactive</span></div></section>
+
+<section class="idea" data-kind="p" id="i5"><div class="demo d-scene"><svg viewBox="0 0 360 230" aria-hidden="true"></svg><p class="res"></p></div><div class="tabs" role="group" aria-label="Place"><button type="button" data-s="elevator">Elevator</button><button type="button" data-s="jeepney">Jeepney</button><button type="button" data-s="office">Office</button><button type="button" data-s="dinner">Dinner</button></div><div class="lv"></div><h2><b>5</b>Would they notice? (in real places)</h2><p>Philippine everyday places seen from above: a full elevator, a jeepney, the office, a family dinner. The bubble shows who'd likely notice, "2 of 15 in the jeepney". Very concrete for gifting and office wear.</p><div class="tags"><span class="tag p">projection</span><span class="tag">local</span><span class="tag">interactive</span></div></section>
+
+<section class="idea" data-kind="s" id="i6"><div class="demo d-wake photo"><img src="https://images.unsplash.com/photo-1552160757-52790c6f4faf?w=900&q=70&auto=format&fit=crop" alt=""><span class="veil"></span><p class="cap">Sillage is the wake you leave.</p></div><div class="lv"></div><h2><b>6</b>The boat wake (photo)</h2><p>One aerial photo of a boat and its wake, the classic image for sillage. The level reveals more or less of the wake. Calm, editorial, explains the word instantly.</p><div class="tags"><span class="tag s">sillage</span><span class="tag">photo</span></div></section>
+
+<section class="idea" data-kind="p" id="i7"><div class="demo d-ink photo"><img src="https://images.unsplash.com/photo-1619963258837-b83f3406cfcd?w=900&q=70&auto=format&fit=crop" alt=""><span class="dot"></span><p class="cap">One drop in the room.</p></div><div class="lv"></div><h2><b>7</b>A drop of ink (photo or video)</h2><p>Ink spreading in water: the dot is you, the cloud is how far it projects. As a 4-second looped video (ink drop, no sound) it blooms on scroll; as a photo the level reveals more of the cloud.</p><div class="tags"><span class="tag p">projection</span><span class="tag">photo / video</span></div></section>
+
+<section class="idea" data-kind="p" id="i8"><div class="demo d-voice"><p class="word"></p><div class="arcs"><i></i><i></i><i></i><i></i><i></i></div><span class="ground"></span><i class="fig me" style="left:8%"><svg><use href="#person"/></svg></i><i class="fig" style="left:30%"><svg><use href="#person"/></svg></i><i class="fig" style="left:56%"><svg><use href="#person"/></svg></i><i class="fig" style="left:84%"><svg><use href="#person"/></svg></i></div><div class="lv"></div><h2><b>8</b>Whisper, talk, call across</h2><p>Projection as a voice everyone understands: Intimate is a whisper, Moderate a normal chat, Strong calling across the room. Pure typography and sound waves, no photo needed.</p><div class="tags"><span class="tag p">projection</span><span class="tag">typographic</span></div></section>
+
+<section class="idea" data-kind="s" id="i9"><div class="demo d-scroll photo"><img src="https://images.unsplash.com/photo-1761035736933-e25a951a57ab?w=900&q=70&auto=format&fit=crop" alt=""><span class="trailfx"></span><p class="cap">Scroll: she walks past.</p></div><div class="lv"></div><h2><b>9</b>Walk-by on scroll (video)</h2><p>A short clip of someone walking past the camera that plays as you scroll; a warm haze follows her and hangs behind for as long as the sillage. Here a motion-blur photo stands in for the video.</p><div class="tags"><span class="tag s">sillage</span><span class="tag">video</span><span class="tag">scroll</span></div></section>
+
+<section class="idea" data-kind="s" id="i10"><div class="demo d-steps"><svg viewBox="0 0 360 230" aria-hidden="true"><g class="prints"></g><g class="walker"><ellipse rx="13" ry="7" fill="#26221f"/><circle r="7" fill="#26221f" cx="2"/></g></svg><p class="cap">Steps fade at the perfume's pace.</p></div><div class="lv"></div><h2><b>10</b>Fading footsteps</h2><p>Seen from above, a wearer crosses a marble floor. Each step leaves a warm mark; Soft fades almost under their feet, Heavy is still there when they've left the frame.</p><div class="tags"><span class="tag s">sillage</span><span class="tag">motion</span></div></section>
+
+</main>
+<footer>Photos: Unsplash (photo-1552160757-52790c6f4faf boat wake, photo-1619963258837-b83f3406cfcd ink in water, photo-1761035736933-e25a951a57ab walking motion blur), linked from images.unsplash.com under the Unsplash licence. Ideas page only: nothing here ships until you pick one.</footer>
+
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const NAMES = { p: ['Intimate', 'Moderate', 'Strong'], s: ['Soft', 'Moderate', 'Heavy'] };
+  const level = (c) => +c.dataset.level;
+  const on = (c, fn) => c.addEventListener('level', fn);
+  const LIFE = { 1: 800, 2: 2400, 3: 6000 };
+
+  document.querySelectorAll('.idea').forEach((card) => {
+    const lv = card.querySelector('.lv');
+    NAMES[card.dataset.kind].forEach((n, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = n; b.dataset.l = i + 1; lv.append(b);
+    });
+    const set = (l) => {
+      card.dataset.level = l;
+      lv.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.l == l));
+      card.dispatchEvent(new CustomEvent('level'));
+    };
+    lv.addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) set(b.dataset.l); });
+    set(2);
+  });
+
+  const puff = (host, x, y, life, size = 1) => {
+    const p = document.createElement('span');
+    p.className = 'puff mistball';
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    host.append(p);
+    p.animate([{ opacity: .9, transform: `scale(${.6 * size})` }, { opacity: 0, transform: `translate(${Math.random() * 10 - 5}px,-14px) scale(${1.8 * size})` }], { duration: life, easing: 'ease-out' }).onfinish = () => p.remove();
+  };
+
+  /* 1 spray */
+  { const c = document.getElementById('i1'), d = c.querySelector('.demo'), figs = [...d.querySelectorAll('.fig')]; let t;
+    const reach = { 1: 0, 2: 1, 3: 3 };
+    d.querySelector('.spray').addEventListener('click', () => {
+      clearTimeout(t); d.classList.remove('go'); figs.forEach((f) => f.classList.remove('on'));
+      void d.offsetWidth; d.classList.add('go');
+      figs.forEach((f, i) => { if (i < reach[level(c)]) setTimeout(() => f.classList.add('on'), 350 + i * 280); });
+      t = setTimeout(() => { d.classList.remove('go'); figs.forEach((f) => f.classList.remove('on')); }, 4300);
+    }); }
+
+  /* 2 walk away */
+  { const c = document.getElementById('i2'), d = c.querySelector('.demo'), you = d.querySelector('.you'), input = c.querySelector('input'), b = d.querySelector('.read b'), s = d.querySelector('.read span');
+    const upd = () => {
+      const v = +input.value;
+      you.style.left = `calc(22% + ${v * 0.66}%)`;
+      const band = v < 20 ? 'In a hug' : v < 45 ? "At arm's length" : v < 70 ? 'Across a table' : 'Across the room';
+      const inside = v < { 1: 20, 2: 45, 3: 101 }[level(c)];
+      b.textContent = inside ? "You'd notice it here" : 'Out of its reach';
+      s.textContent = band;
+      you.classList.toggle('on', inside);
+    };
+    input.addEventListener('input', upd); on(c, upd); upd(); }
+
+  /* 3 cursor trail */
+  { const c = document.getElementById('i3'), d = c.querySelector('.demo'), hint = d.querySelector('.hint'); let last = 0, idle = 0, user = false;
+    d.addEventListener('pointermove', (e) => {
+      user = true; idle = performance.now(); hint.style.opacity = 0;
+      if (e.timeStamp - last < 28) return; last = e.timeStamp;
+      const r = d.getBoundingClientRect(); puff(d, e.clientX - r.left, e.clientY - r.top, LIFE[level(c)]);
+    });
+    if (!reduced) { let t0 = performance.now(), lastAuto = 0;
+      const loop = (t) => {
+        if (t - idle > 2500 && t - lastAuto > 40) { lastAuto = t; const w = d.clientWidth, h = d.clientHeight, a = (t - t0) / 1400;
+          if (!user || t - idle > 2500) puff(d, w / 2 + Math.sin(a) * w * .36, h / 2 + Math.sin(a * 2) * h * .22, LIFE[level(c)]); }
+        requestAnimationFrame(loop); };
+      requestAnimationFrame(loop); } }
+
+  /* 4 draw a path */
+  { const c = document.getElementById('i4'), d = c.querySelector('.demo'), cv = d.querySelector('canvas'), ctx = cv.getContext('2d'), count = d.querySelector('.count');
+    const guests = [[.18, .28], [.42, .2], [.78, .26], [.22, .74], [.55, .78], [.86, .68], [.62, .46]];
+    const furn = [[.32, .38, .2, .22], [.04, .5, .08, .36], [.7, .04, .22, .1]];
+    let pts = [], drawing = false, idle = 0, W = 0, H = 0;
+    const size = () => { const r = d.getBoundingClientRect(), k = devicePixelRatio || 1; W = r.width; H = r.height; cv.width = W * k; cv.height = H * k; ctx.setTransform(k, 0, 0, k, 0, 0); };
+    size(); addEventListener('resize', size);
+    const add = (e) => { const r = d.getBoundingClientRect(); pts.push({ x: e.clientX - r.left, y: e.clientY - r.top, t: performance.now() }); idle = performance.now(); };
+    d.addEventListener('pointerdown', (e) => { drawing = true; d.setPointerCapture(e.pointerId); add(e); d.querySelector('.hint').style.opacity = 0; });
+    d.addEventListener('pointermove', (e) => drawing && add(e));
+    d.addEventListener('pointerup', () => (drawing = false));
+    let t0 = performance.now();
+    const frame = (t) => {
+      const life = LIFE[level(c)] * 1.2;
+      if (!reduced && !drawing && t - idle > 2500) { const a = ((t - t0) % 7000) / 7000; pts.push({ x: W * (.05 + a * .9), y: H * (.5 + Math.sin(a * Math.PI * 3) * .3), t }); }
+      pts = pts.filter((p) => t - p.t < life);
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = 'rgba(38,34,31,.07)'; furn.forEach(([x, y, w, h]) => ctx.fillRect(x * W, y * H, w * W, h * H));
+      pts.forEach((p) => { const a = 1 - (t - p.t) / life; const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 16); g.addColorStop(0, `rgba(201,154,110,${.45 * a})`); g.addColorStop(1, 'rgba(201,154,110,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, 16, 0, 7); ctx.fill(); });
+      let n = 0;
+      guests.forEach(([gx, gy]) => { const x = gx * W, y = gy * H;
+        const lit = pts.some((p) => Math.hypot(p.x - x, p.y - y) < 36 && 1 - (t - p.t) / life > .25); if (lit) n++;
+        ctx.fillStyle = lit ? '#26221f' : 'rgba(38,34,31,.22)'; ctx.beginPath(); ctx.arc(x, y, 8, 0, 7); ctx.fill();
+        if (lit) { ctx.strokeStyle = 'rgba(201,154,110,.9)'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 14, 0, 7); ctx.stroke(); } });
+      count.textContent = `${n} of ${guests.length} guests notice`;
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame); }
+
+  /* 5 scenes */
+  { const c = document.getElementById('i5'), svg = c.querySelector('svg'), res = c.querySelector('.res'), tabs = [...c.querySelectorAll('.tabs button')];
+    const R = { 1: 40, 2: 78, 3: 150 };
+    const ring = (n, cx, cy, r, a0 = 0) => Array.from({ length: n }, (_, i) => [cx + Math.cos(a0 + i * 2 * Math.PI / n) * r, cy + Math.sin(a0 + i * 2 * Math.PI / n) * r]);
+    const jeep = [...[50, 86, 122, 158, 194, 230, 266, 302].map((x) => [x, 82]), ...[50, 86, 122, 158, 194, 230, 266, 302].map((x) => [x, 148])];
+    const dinner = ring(8, 180, 115, 78, Math.PI);
+    const S = {
+      elevator: { name: 'the elevator', shape: '<rect x="115" y="22" width="130" height="180" rx="4" fill="#fff" stroke="rgba(38,34,31,.25)"/><path d="M150 202h60" stroke="#26221f" stroke-width="3"/>', me: [180, 112], others: [[145, 62], [215, 62], [145, 162], [215, 162], [215, 112]] },
+      jeepney: { name: 'the jeepney', shape: '<rect x="22" y="55" width="316" height="120" rx="16" fill="#fff" stroke="rgba(38,34,31,.25)"/><path d="M32 100h296M32 130h296" stroke="rgba(38,34,31,.12)" stroke-width="10"/>', me: jeep[2], others: jeep.filter((_, i) => i !== 2) },
+      office: { name: 'the office', shape: [[60, 125], [120, 125], [60, 35], [120, 35], [200, 125], [200, 35], [280, 80]].map(([x, y]) => `<rect x="${x}" y="${y}" width="56" height="34" fill="#fff" stroke="rgba(38,34,31,.2)"/>`).join(''), me: [88, 175], others: [[148, 175], [88, 85], [148, 85], [228, 175], [228, 85], [308, 130]] },
+      dinner: { name: 'dinner', shape: '<circle cx="180" cy="115" r="52" fill="#fff" stroke="rgba(38,34,31,.25)"/>', me: dinner[0], others: dinner.slice(1) },
+    };
+    let scene = 'jeepney';
+    const draw = () => {
+      const s = S[scene], r = R[level(c)], [mx, my] = s.me;
+      const reached = s.others.filter(([x, y]) => Math.hypot(x - mx, y - my) <= r);
+      svg.innerHTML = `<defs><radialGradient id="b5"><stop offset="0" stop-color="rgb(201,154,110)" stop-opacity=".5"/><stop offset=".75" stop-color="rgb(201,154,110)" stop-opacity=".22"/><stop offset="1" stop-color="rgb(201,154,110)" stop-opacity="0"/></radialGradient></defs>${s.shape}
+        <circle cx="${mx}" cy="${my}" r="${r}" fill="url(#b5)"/><circle cx="${mx}" cy="${my}" r="${r}" fill="none" stroke="rgb(201,154,110)" stroke-dasharray="2 6" stroke-linecap="round"/>
+        ${s.others.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="9" fill="${reached.some((p) => p[0] === x && p[1] === y) ? '#26221f' : 'rgba(38,34,31,.2)'}"/>`).join('')}
+        <circle cx="${mx}" cy="${my}" r="10" fill="#26221f"/><circle cx="${mx}" cy="${my}" r="15" fill="none" stroke="#26221f" stroke-width="1.5"/>`;
+      res.textContent = `${reached.length} of ${s.others.length} people in ${s.name} would likely notice`;
+      tabs.forEach((b) => b.setAttribute('aria-pressed', b.dataset.s === scene));
+    };
+    tabs.forEach((b) => b.addEventListener('click', () => { scene = b.dataset.s; draw(); }));
+    on(c, draw); draw(); }
+
+  /* 8 voice */
+  { const c = document.getElementById('i8'), d = c.querySelector('.demo'), w = d.querySelector('.word'), figs = [...d.querySelectorAll('.fig:not(.me)')];
+    const upd = () => { const l = level(c); w.textContent = { 1: 'a whisper', 2: 'a chat', 3: 'across the room' }[l]; figs.forEach((f, i) => f.classList.toggle('on', i < l)); };
+    on(c, upd); upd(); }
+
+  /* 9 scroll */
+  { const c = document.getElementById('i9'), d = c.querySelector('.demo');
+    const upd = () => { const r = d.getBoundingClientRect(); const p = Math.min(1, Math.max(0, 1 - (r.top + r.height) / (innerHeight + r.height)));
+      d.querySelector('.trailfx').style.transform = `translateX(calc(${(p * 1.6 - .6) * d.clientWidth}px))`; };
+    addEventListener('scroll', upd, { passive: true }); upd(); }
+
+  /* 10 footsteps */
+  { const c = document.getElementById('i10'), g = c.querySelector('.prints'), walker = c.querySelector('.walker'), ns = 'http://www.w3.org/2000/svg'; let x = -20, step = 0;
+    const place = () => {
+      const y = step % 2 ? 104 : 126; step++;
+      const m = document.createElementNS(ns, 'g');
+      m.innerHTML = `<circle cx="${x}" cy="${y}" r="16" fill="rgb(201,154,110)" opacity=".28"/><ellipse cx="${x}" cy="${y}" rx="9" ry="4.5" fill="#26221f" opacity=".55"/>`;
+      g.append(m);
+      walker.setAttribute('transform', `translate(${x + 14} 115)`);
+      if (reduced) return;
+      m.animate([{ opacity: 1 }, { opacity: 0 }], { duration: LIFE[level(c)] * 1.3, easing: 'ease-in' }).onfinish = () => m.remove();
+      x += 22; if (x > 400) x = -20;
+    };
+    if (reduced) { for (x = 20; x < 300; x += 22) place(); } else setInterval(place, 260); }
+})();
+</script>
+</body></html>

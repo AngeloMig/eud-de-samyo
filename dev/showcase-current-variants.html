@@ -1,0 +1,151 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Samyó edit: 5 variants of the current style</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--ivory:#f7f5f0;--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#efebe4;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ header.top{max-width:1360px;margin:0 auto;padding:40px 32px 8px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:84ch;margin:0}
+ main{max-width:1360px;margin:0 auto;padding:24px 32px 80px;display:grid;gap:30px;grid-template-columns:minmax(0,1fr)}
+ .v{min-width:0} .cap{display:flex;gap:16px;justify-content:space-between;align-items:baseline;margin:0 0 10px}
+ .cap h2{font:400 26px/1.1 'Cormorant Garamond',serif;margin:0} .cap h2 b{font-weight:400;font-size:32px;margin-right:10px} .cap p{margin:0;color:var(--soft);font-size:13px;max-width:72ch;text-align:right}
+
+ /* ---------- the current style ---------- */
+ .ps{--bg:var(--c);background:var(--bg);color:var(--t);position:relative;overflow:hidden;transition:background-color .8s var(--ease),color .8s;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);min-height:640px;padding:52px 64px 48px}
+ .ps__info{position:relative;z-index:2;display:grid;align-content:start;gap:14px;max-width:460px}
+ .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:0;opacity:.8}
+ .edit{font:italic 400 32px/1 'Cormorant Garamond';margin:4px 0 0;padding-bottom:18px;border-bottom:1px solid color-mix(in srgb,var(--t) 18%,transparent)}
+ .brand{font-size:13px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;margin:24px 0 0}
+ .name{font:400 54px/1 'Cormorant Garamond';margin:0;letter-spacing:-.01em}
+ .stock{font-size:12.5px;margin:0} .stock i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#3c9a5f;margin-left:6px;vertical-align:middle}
+ .desc{font-size:14.5px;line-height:1.55;margin:0;padding-bottom:18px;border-bottom:1px solid color-mix(in srgb,var(--t) 18%,transparent)}
+ .chips{display:flex;flex-wrap:wrap;gap:6px} .chip{display:inline-flex;align-items:center;gap:7px;background:color-mix(in srgb,#fff 55%,transparent);border-radius:999px;padding:3px 13px 3px 3px;font:italic 400 17px 'Cormorant Garamond'} .chip img{width:28px;height:28px;border-radius:50%;object-fit:cover;display:block}
+ .sizes{display:flex;gap:6px} .sz{border:1px solid color-mix(in srgb,var(--t) 30%,transparent);border-radius:999px;font-size:13px;padding:0 15px;height:36px;display:grid;place-items:center} .sz.on{background:var(--t);color:var(--bg);border-color:var(--t)}
+ .act{display:flex;align-items:center;gap:24px;margin-top:4px}
+ .buy{display:inline-flex;align-items:center;gap:18px;background:var(--t);color:#fff;height:38px;padding:0 22px;font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border:0}
+ .buy span{border-left:1px solid rgba(255,255,255,.35);padding-left:14px}
+ .lnk{font:600 11px 'Instrument Sans';letter-spacing:.16em;text-transform:uppercase;border-bottom:1px solid;padding-bottom:3px}
+ .stage{position:relative}
+ .giant{position:absolute;left:-30%;right:-10%;top:16%;text-align:center;font:400 clamp(160px,17vw,280px)/1 'Cormorant Garamond';white-space:nowrap;color:color-mix(in srgb,var(--t) 9%,transparent);filter:blur(2px);pointer-events:none;z-index:0}
+ .giant{display:none} /* background name removed for review */
+ .main{position:absolute;left:12%;bottom:90px;height:440px;z-index:1;transition:transform .9s var(--ease),opacity .6s}
+ .main img,.next img{height:100%;display:block;filter:drop-shadow(0 22px 20px rgba(41,37,33,.16))}
+ .next{position:absolute;left:62%;bottom:118px;height:260px;z-index:1;opacity:.95;cursor:pointer;transition:transform .9s var(--ease)}
+ .next:hover{transform:translateY(-6px)}
+ .script{position:absolute;left:10%;bottom:30px;z-index:2;font:40px/1 'Mrs Saint Delafield';transform:rotate(-4deg);padding:.3em .45em;margin:-.3em -.45em}
+ .arrows{position:absolute;right:0;bottom:36px;z-index:2;display:flex;align-items:center;gap:12px;font:italic 400 19px 'Cormorant Garamond'}
+ .arrows button{width:38px;height:38px;border-radius:50%;border:0;background:color-mix(in srgb,#fff 65%,transparent);cursor:pointer;font-size:15px;color:inherit}
+ .arrows i{display:block;width:64px;height:1px;background:currentColor;opacity:.5}
+ .swap{animation:swap .8s var(--ease) both} @keyframes swap{from{opacity:0;translate:40px 0}to{opacity:1;translate:0 0}}
+ .rise{animation:rise .7s var(--ease) both} @keyframes rise{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+
+ /* ---------- 1: one ivory for all, colour as a soft halo behind the bottle ---------- */
+ .v1 .ps{--bg:var(--ivory)}
+ .v1 .halo{position:absolute;left:0;bottom:10px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 82%,var(--t)) 0%,var(--c) 38%,color-mix(in srgb,var(--c) 40%,transparent) 55%,transparent 70%);z-index:0}
+ .v1 .chip{background:#fff}
+
+ /* ---------- 2: white, colour lives in the giant name ---------- */
+ .v2 .ps{--bg:#fff}
+ .v2 .giant{color:var(--c);filter:none;opacity:.95}
+ .v2 .chip{background:#f4f1ec}
+ .v2 .arrows button{background:#f4f1ec}
+
+ /* ---------- 3: compact (about 30% shorter) ---------- */
+ .v3 .ps{min-height:470px;padding:36px 56px 34px;grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+ .v3 .edit{font-size:26px;padding-bottom:12px} .v3 .brand{margin-top:12px} .v3 .name{font-size:42px}
+ .v3 .ps__info{gap:10px} .v3 .desc{padding-bottom:12px;font-size:14px}
+ .v3 .main{height:330px;bottom:62px} .v3 .next{height:190px;bottom:82px} .v3 .giant{font-size:clamp(130px,13vw,210px);top:12%}
+ .v3 .script{font-size:32px;bottom:18px} .v3 .arrows{bottom:22px}
+
+ /* ---------- 4: centred stage, details in one row below ---------- */
+ .v4 .ps{grid-template-columns:minmax(0,1fr);padding:40px 64px 36px;min-height:0}
+ .v4 .head{display:flex;justify-content:space-between;align-items:end;gap:20px}
+ .v4 .edit{border:0;padding:0}
+ .v4 .stage{height:430px}
+ .v4 .giant{left:0;right:0;top:10%}
+ .v4 .main{left:50%;transform:translateX(-50%);bottom:56px;height:340px}
+ .v4 .prev,.v4 .next{position:absolute;bottom:80px;height:200px;opacity:.55;z-index:2;cursor:pointer;transition:opacity .4s}
+ .v4 .prev{left:12%} .v4 .next{left:auto;right:12%} .v4 .prev:hover,.v4 .next:hover{opacity:1}
+ .v4 .prev img{height:100%;display:block;filter:drop-shadow(0 16px 16px rgba(41,37,33,.12))}
+ .v4 .script{left:50%;transform:translateX(-50%) rotate(-4deg);bottom:6px}
+ .v4 .row{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.3fr) auto;gap:32px;align-items:center;border-top:1px solid color-mix(in srgb,var(--t) 18%,transparent);padding-top:22px}
+ .v4 .row .name{font-size:42px} .v4 .row .brand{margin:0} .v4 .row .desc{border:0;padding:0}
+ .v4 .row .right{display:grid;gap:10px;justify-items:end}
+ .v4 .arrows{position:static}
+
+ /* ---------- 5: the same colours, softened, framed in a rounded card ---------- */
+ .v5 .wrap{background:var(--ivory);padding:28px}
+ .v5 .ps{--bg:color-mix(in srgb,var(--c) 55%,#fff);border-radius:28px}
+ .v5 .ps::before{content:'';position:absolute;inset:14px;border:1px solid color-mix(in srgb,var(--t) 12%,transparent);border-radius:18px;pointer-events:none}
+ .v5 .chip{background:#fff}
+
+ @media (max-width:900px){
+  main,header.top{padding-left:14px;padding-right:14px}
+  .cap{flex-direction:column} .cap p{text-align:left}
+  .ps{grid-template-columns:minmax(0,1fr);padding:28px 20px 24px;min-height:0}
+  .stage{height:380px;order:-1}
+  .main{left:8%;bottom:70px;height:270px} .next{left:62%;bottom:86px;height:150px}
+  .giant{font-size:120px;left:-20%;right:-20%;top:12%}
+  .script{font-size:30px;bottom:16px;left:6%} .arrows{bottom:14px}
+  .name{font-size:40px}
+  .v1 .halo{width:300px;height:300px;left:0;bottom:40px}
+  .v3 .stage{height:320px} .v3 .main{height:220px;bottom:58px} .v3 .next{height:120px;bottom:70px}
+  .v4 .ps,.v3 .ps{padding:28px 20px 24px} .v4 .stage{height:330px} .v4 .main{height:230px;bottom:52px} .v4 .prev,.v4 .next{height:90px;bottom:70px;opacity:.4} .v4 .prev{left:-4%} .v4 .next{right:-4%}
+  .script{white-space:nowrap}
+  .v4 .row{grid-template-columns:minmax(0,1fr)} .v4 .row .right{justify-items:start} .v4 .head{flex-direction:column;align-items:flex-start} .v4 .stage{order:0}
+  .v5 .wrap{padding:10px} .v5 .ps{border-radius:20px}
+ }
+ @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style></head><body>
+<header class="top"><h1>The Samyó edit: 5 variants</h1><p class="lede">Five takes on the current section: same layout, typefaces, giant name, script caption, notes, sizes and the next bottle peeking in, each with one change. Use the arrows or click the next bottle to switch perfume. Prices and stock are preview values.</p></header>
+<main id="variants"></main>
+<script>
+const N = (id) => `https://images.unsplash.com/${id}?w=240&h=240&fit=crop&q=70&auto=format`;
+const NOTE = { bergamot: 'photo-1612253167527-0598073d2979', pepper: 'photo-1652128288742-df890f000a56', lavender: 'photo-1611625105602-42ee06be977e', iris: 'photo-1776372294959-e78a71c2af84', vetiver: 'photo-1563364664-399838d1394c', cedar: 'photo-1515446134809-993c501ca304', grapefruit: 'photo-1787551742228-8af769f282d3', cardamom: 'photo-1763558049571-a6d12a85472e', tobacco: 'photo-1618843916388-29bb8a13b4fd', amber: 'photo-1631624406592-f599694e6b2c' };
+const LOCAL = { vanilla: '../assets/sample-scent-vanilla.webp', cinnamon: '../assets/sample-scent-cinnamon.webp' };
+const img = (k) => LOCAL[k] || N(NOTE[k] || NOTE.amber);
+const P = [
+  { brand: 'Dior', name: 'Sauvage', img: 'shop-images/samyo-dior-sauvage-edp.webp', c: '#D6DDE5', t: '#1F2A36', desc: 'Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.', cap: 'fresh, spicy & smooth', notes: [['Bergamot', 'bergamot'], ['Sichuan pepper', 'pepper'], ['Lavender', 'lavender'], ['Vanilla', 'vanilla']], sizes: ['60 ml', '100 ml'], price: '₱6,200.00' },
+  { brand: 'Dior', name: 'Dior Homme Intense', img: 'shop-images/samyo-dior-homme-intense.webp', c: '#DFD9E6', t: '#2A2233', desc: 'Powdery and woody: iris and lavender over vetiver and cedar.', cap: 'powdery iris, dark woods', notes: [['Lavender', 'lavender'], ['Iris', 'iris'], ['Vetiver', 'vetiver'], ['Cedar', 'cedar']], sizes: ['50 ml', '100 ml'], price: '₱6,100.00' },
+  { brand: 'Dolce & Gabbana', name: 'The One', img: 'shop-images/samyo-dg-the-one.webp', c: '#EAD8C2', t: '#3A2618', desc: 'Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.', cap: 'warm tobacco & spice', notes: [['Grapefruit', 'grapefruit'], ['Cardamom', 'cardamom'], ['Tobacco', 'tobacco'], ['Amber', 'amber']], sizes: ['50 ml', '100 ml'], price: '₱4,300.00' },
+  { brand: 'Emporio Armani', name: 'Stronger With You Intensely', img: 'shop-images/samyo-armani-stronger-with-you-intensely.webp', c: '#F1D2C6', t: '#3B1A14', desc: 'Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.', cap: 'cinnamon, vanilla & heat', notes: [['Pink pepper', 'pepper'], ['Cinnamon', 'cinnamon'], ['Vanilla', 'vanilla'], ['Amber', 'amber']], sizes: ['50 ml', '100 ml'], price: '₱5,200.00' },
+];
+const pad = (n) => String(n + 1).padStart(2, '0');
+const at = (i) => P[(i + P.length) % P.length];
+const info = (p) => `<p class="brand rise">${p.brand}</p><h3 class="name rise">${p.name}</h3><p class="stock">In stock<i></i></p><p class="desc rise">${p.desc}</p><p class="k">Smells like</p><div class="chips rise">${p.notes.map(([l, k]) => `<span class="chip"><img src="${img(k)}" alt="">${l}</span>`).join('')}</div><p class="k">Size</p><div class="sizes">${p.sizes.map((s, j) => `<span class="sz${j ? '' : ' on'}">${s}</span>`).join('')}</div><div class="act"><button class="buy" type="button">Add to bag <span>${p.price}</span></button><span class="lnk">Discover the scent</span></div>`;
+const arrows = (i) => `<div class="arrows"><button type="button" data-go="-1" aria-label="Previous">‹</button>${pad(i)}<i></i>${pad(P.length - 1)}<button type="button" data-go="1" aria-label="Next">›</button></div>`;
+const stage = (p, i, extra = '') => `<div class="stage">${extra}<div class="giant">${p.name}</div><div class="main swap"><img src="${p.img}" alt="${p.name}"></div><div class="next" data-go="1" title="Next: ${at(i + 1).name}"><img src="${at(i + 1).img}" alt=""></div><span class="script rise">${p.cap}</span>${arrows(i)}</div>`;
+const std = (p, i, extra) => `<div class="ps__info"><p class="k">Featured fragrances</p><p class="edit">The Samyó edit</p>${info(p)}</div>${stage(p, i, extra)}`;
+
+const V = [
+  { t: 'One colour for all, with a halo', d: 'Every perfume on the same ivory (your idea), but each keeps a soft halo of its own colour behind the bottle, so the switch still feels alive.', r: (p, i) => std(p, i, '<span class="halo"></span>') },
+  { t: 'White, colour moves into the giant name', d: 'A clean white background for all; the big name behind the bottle takes the perfume\'s colour instead, so colour becomes typography.', r: (p, i) => std(p, i) },
+  { t: 'Compact', d: 'Exactly the current look, about 30% shorter: a smaller bottle and name, tighter spacing, everything above the fold on a laptop.', r: (p, i) => std(p, i) },
+  { t: 'Centred stage', d: 'The bottle moves to the centre with the previous and next bottles faded on either side; the details sit in one compact row below. Same colours and type.', r: (p, i) => `<div class="head"><div><p class="k">Featured fragrances</p><p class="edit">The Samyó edit</p></div>${arrows(i)}</div><div class="stage"><div class="giant">${p.name}</div><div class="prev" data-go="-1"><img src="${at(i - 1).img}" alt=""></div><div class="main swap"><img src="${p.img}" alt="${p.name}"></div><div class="next" data-go="1"><img src="${at(i + 1).img}" alt=""></div><span class="script rise">${p.cap}</span></div><div class="row"><div><p class="brand rise">${p.brand}</p><h3 class="name rise">${p.name}</h3><p class="stock">In stock<i></i></p></div><div style="display:grid;gap:10px"><p class="desc rise">${p.desc}</p><div class="chips rise">${p.notes.map(([l, k]) => `<span class="chip"><img src="${img(k)}" alt="">${l}</span>`).join('')}</div></div><div class="right"><div class="sizes">${p.sizes.map((s, j) => `<span class="sz${j ? '' : ' on'}">${s}</span>`).join('')}</div><button class="buy" type="button">Add to bag <span>${p.price}</span></button><span class="lnk">Discover the scent</span></div></div>` },
+  { t: 'Softer colours in a rounded card', d: 'The colour per perfume stays, but lighter (half strength) and inside a rounded card with a fine inner frame, sitting on the ivory page. Calmer, more boutique.', wrap: true, r: (p, i) => std(p, i) },
+];
+
+const main = document.getElementById('variants');
+V.forEach((v, n) => {
+  const sec = document.createElement('section');
+  sec.className = `v v${n + 1}`;
+  sec.innerHTML = `<div class="cap"><h2><b>${n + 1}</b>${v.t}</h2><p>${v.d}</p></div>${v.wrap ? '<div class="wrap"><div class="ps"></div></div>' : '<div class="ps"></div>'}`;
+  main.append(sec);
+  const ps = sec.querySelector('.ps');
+  let i = 2;
+  const draw = () => {
+    const p = P[i];
+    ps.style.setProperty('--c', p.c);
+    ps.style.setProperty('--t', p.t);
+    ps.innerHTML = v.r(p, i);
+  };
+  draw();
+  ps.addEventListener('click', (e) => {
+    const go = e.target.closest('[data-go]');
+    if (!go) return;
+    i = (i + Number(go.dataset.go) + P.length) % P.length;
+    draw();
+  });
+});
+</script>
+</body></html>

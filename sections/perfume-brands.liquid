@@ -1,0 +1,113 @@
+{%- comment -%}
+  Perfume brands strip: the houses the store carries, as a slow marquee of names
+  (set in the display serif, divided by a small mark), each optionally linking to
+  its collection. A brand can show an uploaded logo instead of its name, only if the
+  store is allowed to use it. Pauses on hover and focus; reduced motion shows a
+  static, wrapping list.
+
+  Styles: assets/perfume-brands.css. CSS-only motion (the list is rendered twice,
+  the copy hidden from assistive tech, and the track moves by exactly one copy).
+{%- endcomment -%}
+{%- liquid
+  assign bid = 'PerfumeBrands-' | append: section.id
+  assign brands = section.blocks | where: 'type', 'brand'
+-%}
+
+{{ 'perfume-brands.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  #{{ bid }} {
+    --pb-bg: {{ section.settings.background_color }};
+    --pb-ink: {{ section.settings.text_color }};
+    --pb-size: {{ section.settings.name_size }}px;
+    --pb-size-m: {{ section.settings.name_size_mobile }}px;
+    --pb-speed: {{ section.settings.speed }}s;
+    --pb-pt: {{ section.settings.padding_top }}px;
+    --pb-pb: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+{%- capture list_html -%}
+  {%- for block in brands -%}
+    <li class="pb__item" {{ block.shopify_attributes }}>
+      {%- if block.settings.link != blank -%}<a class="pb__link" href="{{ block.settings.link }}">{%- else -%}<span class="pb__link">{%- endif -%}
+        {%- if block.settings.logo != blank -%}
+          {%- assign logo_alt = block.settings.name | default: block.settings.logo.alt -%}
+          {{ block.settings.logo | image_url: height: 120 | image_tag: class: 'pb__logo', loading: 'lazy', alt: logo_alt, heights: '60, 120' }}
+        {%- else -%}
+          <span class="pb__name">{{ block.settings.name | escape }}</span>
+        {%- endif -%}
+      {%- if block.settings.link != blank -%}</a>{%- else -%}</span>{%- endif -%}
+      <span class="pb__mark" aria-hidden="true">✦</span>
+    </li>
+  {%- endfor -%}
+{%- endcapture -%}
+
+<section id="{{ bid }}" class="pb" aria-labelledby="{{ bid }}-heading">
+  <div class="pb__head">
+    {%- if section.settings.kicker != blank -%}
+      <p class="pb__kicker pf-kicker" id="{{ bid }}-heading">{{ section.settings.kicker | escape }}</p>
+    {%- else -%}
+      <p class="pf-visually-hidden" id="{{ bid }}-heading">Brands</p>
+    {%- endif -%}
+    <div class="pb__tools">
+      {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+        <a class="pf-link pb__all" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="pb__viewport">
+    <div class="pb__track">
+      <ul class="pb__list" role="list">{{ list_html }}</ul>
+      <ul class="pb__list pb__list--copy" role="list" aria-hidden="true" inert>{{ list_html }}</ul>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Perfume brands strip",
+  "tag": "div",
+  "class": "section-perfume-brands",
+  "max_blocks": 24,
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The houses we carry" },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "All brands" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "range", "id": "name_size", "label": "Name size, desktop", "min": 24, "max": 96, "step": 2, "unit": "px", "default": 56 },
+    { "type": "range", "id": "name_size_mobile", "label": "Name size, mobile", "min": 20, "max": 64, "step": 2, "unit": "px", "default": 34 },
+    { "type": "range", "id": "speed", "label": "One loop takes", "min": 15, "max": 90, "step": 5, "unit": "s", "default": 45 },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F1EEE9" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Brand" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Usually the brand's collection." },
+        { "type": "image_picker", "id": "logo", "label": "Logo (optional)", "info": "Only if you are allowed to use the brand's logo. Otherwise the name is set in type." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume brands strip",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "Dior" } },
+        { "type": "brand", "settings": { "name": "Chanel" } },
+        { "type": "brand", "settings": { "name": "Hermès" } },
+        { "type": "brand", "settings": { "name": "Yves Saint Laurent" } },
+        { "type": "brand", "settings": { "name": "Emporio Armani" } },
+        { "type": "brand", "settings": { "name": "Dolce & Gabbana" } },
+        { "type": "brand", "settings": { "name": "Versace" } },
+        { "type": "brand", "settings": { "name": "Prada" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

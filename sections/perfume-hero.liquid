@@ -1,0 +1,637 @@
+{%- comment -%}
+  Perfume hero (NOHO-style split hero).
+
+  Left half: paper background, an oversized heading (one line per line of the text
+  box), an optional handwritten accent, and a small slogan at the bottom.
+  Right half: stone background with up to seven tiles in a staggered 2-3-2 grid that
+  runs off the right edge. Each tile is a coloured field with a cut-out image: a
+  perfume bottle or a scent (lemon, cinnamon, vanilla…). A tile can show a label and
+  link somewhere.
+
+  Intro (optional, once per browser session for the preloader): a paper cover with a
+  charcoal bar rising from the bottom, which then lifts away; the heading lines slide
+  up out of masks one after another; the tiles wipe in from the bottom one by one with
+  their image settling from a slight zoom; the slogan and header fade in.
+  A dot cursor follows the pointer over the hero and grows over linked tiles (mouse
+  only). Reduced motion: no intro, no cursor.
+
+  Script: assets/perfume-hero.js (<perfume-hero>). Styles: assets/perfume-hero.css.
+{%- endcomment -%}
+{%- liquid
+  assign sid = 'PerfumeHero-' | append: section.id
+  assign tiles = section.blocks | where: 'type', 'tile'
+  assign heading_lines = section.settings.heading | newline_to_br | split: '<br />'
+-%}
+
+{{ 'perfume-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-hero.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ sid }} {
+    --phh-left: {{ section.settings.left_background }};
+    --phh-right: {{ section.settings.right_background }};
+    --phh-ink: {{ section.settings.text_color }};
+    --phh-h: {{ section.settings.heading_size }}px;
+    --phh-h-m: {{ section.settings.heading_size_mobile }}px;
+    --phh-loader: {{ section.settings.preloader_color }};
+  }
+{%- endstyle -%}
+
+<perfume-hero
+  id="{{ sid }}"
+  class="phh{% if section.settings.labels_on_touch %} phh--labels-touch{% endif %}{% if section.settings.intro_speed == 'fast' %} phh--fast{% endif %}"
+  data-speed="{{ section.settings.intro_speed }}"
+  data-intro="{{ section.settings.animate_intro }}"
+  data-preloader="{{ section.settings.show_preloader }}"
+  data-cursor="{{ section.settings.show_cursor }}"
+>
+  {%- if section.settings.show_preloader and section.settings.animate_intro -%}
+    <div class="phh-loader" data-phh-loader hidden aria-hidden="true">
+      <div class="phh-loader__fill"></div>
+    </div>
+  {%- endif -%}
+
+  <div class="phh__left">
+    <{{ section.settings.heading_tag }} class="phh__heading">
+      {%- for line in heading_lines -%}
+        {%- assign clean_line = line | strip_newlines | strip -%}
+        {%- if clean_line != blank -%}
+          <span class="phh__line" style="--i: {{ forloop.index0 }};"><span>{{ clean_line | escape }}</span></span>
+          {%- unless forloop.last %} {% endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </{{ section.settings.heading_tag }}>
+
+    {%- if section.settings.accent != blank -%}
+      <p class="phh__accent" aria-hidden="true">{{ section.settings.accent | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank or section.settings.button2_label != blank -%}
+      <div class="phh__actions">
+        {%- if section.settings.button_label != blank -%}
+          {%- assign b1 = section.settings.button_link | default: routes.all_products_collection_url -%}
+          <a class="pf-button phh__button" href="{{ b1 }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button2_label != blank -%}
+          {%- assign b2 = section.settings.button2_link | default: routes.all_products_collection_url -%}
+          <a class="pf-link phh__link" href="{{ b2 }}">{{ section.settings.button2_label | escape }}</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="phh__foot">
+      {%- if section.settings.slogan != blank -%}
+        <p class="phh__slogan">{{ section.settings.slogan | escape }}</p>
+      {%- endif -%}
+      {%- assign trust_lines = section.settings.trust_points | newline_to_br | split: '<br />' -%}
+      {%- capture trust_html -%}
+        {%- for line in trust_lines -%}
+          {%- assign t = line | strip_newlines | strip -%}
+          {%- if t != blank -%}<li>{{ t | escape }}</li>{%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      {%- if trust_html != blank -%}
+        <ul class="phh__trust" role="list">{{ trust_html }}</ul>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="phh__right">
+    <ul class="phh__grid" role="list">
+      {%- for block in tiles limit: 7 -%}
+        {%- liquid
+          assign label = block.settings.label | escape
+          assign has_link = false
+          if block.settings.link != blank
+            assign has_link = true
+          endif
+          assign img_loading = 'lazy'
+          if forloop.index <= 3
+            assign img_loading = 'eager'
+          endif
+          assign img_alt = block.settings.label
+        -%}
+        <li
+          class="phh-tile phh-tile--{{ block.settings.image_fit }} phh-tile--{{ block.settings.image_position }}"
+          style="--i: {{ forloop.index0 }}; --tile-bg: {{ block.settings.background_color }}; --tile-scale: {{ block.settings.image_scale | divided_by: 100.0 }}; --tilt: {{ block.settings.image_tilt }}deg;"
+          {{ block.shopify_attributes }}
+        >
+          {%- comment -%} The cursor grows into "View" only over tiles that open a product; scent tiles keep the dot. {%- endcomment -%}
+          {%- if has_link -%}<a class="phh-tile__inner" href="{{ block.settings.link }}"{% if block.settings.link contains 'products' %} data-phh-hover{% endif %}>{%- else -%}<div class="phh-tile__inner">{%- endif -%}
+            <span class="phh-tile__media"><span class="phh-tile__pose">
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 800
+                  | image_tag: widths: '300, 500, 800', sizes: '(min-width: 750px) 14vw, 42vw', loading: img_loading, alt: img_alt
+                }}
+              {%- else -%}
+                {%- render 'perfume-sample-image', key: block.settings.sample, alt: img_alt, loading: img_loading -%}
+              {%- endif -%}
+            </span></span>
+            {%- if section.settings.label_style == 'spine' -%}
+              {%- liquid
+                assign spine = block.settings.spine_text
+                if spine == blank
+                  if block.settings.kicker != blank and label != blank
+                    assign spine = block.settings.kicker | append: ' · ' | append: block.settings.label
+                  else
+                    assign spine = block.settings.label | default: block.settings.kicker
+                  endif
+                endif
+                # Label colour: a deep shade of the tile's own colour (or a light one on a dark tile).
+                assign tile_brightness = block.settings.background_color | color_brightness
+                if tile_brightness < 120
+                  assign spine_color = block.settings.background_color | color_lighten: 62
+                else
+                  assign spine_color = block.settings.background_color | color_darken: 58
+                endif
+              -%}
+              {%- if spine != blank -%}
+                <span class="phh-tile__spine" style="--spine: {{ spine_color }};">{{ spine | escape }}</span>
+              {%- endif -%}
+            {%- elsif label != blank -%}
+              <span class="phh-tile__label">
+                {%- if block.settings.kicker != blank -%}<span class="phh-tile__kicker">{{ block.settings.kicker | escape }}</span>{%- endif -%}
+                <span class="phh-tile__name">{{ label }}</span>
+              </span>
+            {%- endif -%}
+          {%- if has_link -%}</a>{%- else -%}</div>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+
+  {%- if section.settings.show_cursor -%}
+    <div class="phh-cursor" data-phh-cursor aria-hidden="true">
+      <span class="phh-cursor__label">{{ section.settings.cursor_label | escape }}</span>
+    </div>
+  {%- endif -%}
+</perfume-hero>
+{%- if section.settings.animate_intro -%}
+  <script>
+    (function () {
+      var hero = document.getElementById('{{ sid }}');
+      if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      hero.classList.add('is-pre');
+      document.documentElement.classList.add('pf-intro-pre');
+      var loader = hero.querySelector('[data-phh-loader]');
+      try {
+        if (loader && !sessionStorage.getItem('pf-intro-seen')) loader.hidden = false;
+      } catch (e) {}
+      // Never leave the hero hidden if the script fails to load.
+      setTimeout(function () {
+        hero.classList.remove('is-pre');
+        document.documentElement.classList.remove('pf-intro-pre');
+        if (loader) loader.hidden = true;
+      }, 4000);
+    })();
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Perfume hero",
+  "tag": "section",
+  "class": "section-perfume-hero",
+  "max_blocks": 7,
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Each line of this box becomes one line of the heading (and slides in on its own).",
+      "default": "Authentic designer\nfragrances, picked\nby how they smell"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "text",
+      "id": "accent",
+      "label": "Handwritten accent",
+      "default": "lemon, cinnamon & a little musk"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop fragrances"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Falls back to all products."
+    },
+    {
+      "type": "text",
+      "id": "button2_label",
+      "label": "Second link label",
+      "default": "Find your scent"
+    },
+    {
+      "type": "url",
+      "id": "button2_link",
+      "label": "Second link"
+    },
+    {
+      "type": "text",
+      "id": "slogan",
+      "label": "Slogan",
+      "default": "Delivered across the Philippines"
+    },
+    {
+      "type": "textarea",
+      "id": "trust_points",
+      "label": "Trust points",
+      "info": "One per line, shown under the slogan with a check mark. Only claims that are true for your store (e.g. authenticity, payment, delivery)."
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size, desktop",
+      "min": 40,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "default": 84
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading size, mobile",
+      "min": 32,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 52
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "left_background",
+      "label": "Left background",
+      "default": "#F7F5F0"
+    },
+    {
+      "type": "color",
+      "id": "right_background",
+      "label": "Right background",
+      "default": "#E8E4DC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#292521"
+    },
+    {
+      "type": "header",
+      "content": "Motion"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate_intro",
+      "label": "Animate on load",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_preloader",
+      "label": "Show preloader (first visit per session)",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "preloader_color",
+      "label": "Preloader bar",
+      "default": "#3C3C3C"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cursor",
+      "label": "Dot cursor (mouse only)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cursor_label",
+      "label": "Cursor label over linked tiles",
+      "default": "View"
+    },
+    {
+      "type": "select",
+      "id": "intro_speed",
+      "label": "Intro speed",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "fast",
+          "label": "Fast (about 40% shorter)"
+        }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "label_style",
+      "label": "Tile labels",
+      "options": [
+        {
+          "value": "spine",
+          "label": "Vertical, on the tile's right edge (colour matched to each tile)"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom-left over the image"
+        }
+      ],
+      "default": "spine"
+    },
+    {
+      "type": "checkbox",
+      "id": "labels_on_touch",
+      "label": "Bottom labels: always show on phones and touch screens",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Transparent PNG (bottle or ingredient cut-out), about 1200px tall."
+        },
+        {
+          "type": "select",
+          "id": "sample",
+          "label": "Sample image (until an image is set)",
+          "options": [
+            {
+              "value": "none",
+              "label": "None"
+            },
+            {
+              "value": "bottle-amber",
+              "label": "Amber bottle"
+            },
+            {
+              "value": "bottle-clear",
+              "label": "Clear bottle"
+            },
+            {
+              "value": "bottle-blue",
+              "label": "Blue bottle"
+            },
+            {
+              "value": "bottle-red",
+              "label": "Red bottle"
+            },
+            {
+              "value": "scent-lemon",
+              "label": "Lemon"
+            },
+            {
+              "value": "scent-cinnamon",
+              "label": "Cinnamon"
+            },
+            {
+              "value": "scent-vanilla",
+              "label": "Vanilla"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "select",
+          "id": "image_fit",
+          "label": "Image fit",
+          "options": [
+            {
+              "value": "contain",
+              "label": "Whole image (bottles)"
+            },
+            {
+              "value": "cover",
+              "label": "Fill the tile (ingredients)"
+            }
+          ],
+          "default": "contain"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image position",
+          "options": [
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "bottom-left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom-right",
+              "label": "Bottom right"
+            },
+            {
+              "value": "top-left",
+              "label": "Top left"
+            },
+            {
+              "value": "top-right",
+              "label": "Top right"
+            },
+            {
+              "value": "half-bottom",
+              "label": "Half, rising from the bottom edge"
+            },
+            {
+              "value": "half-left",
+              "label": "Half, peeking in from the left"
+            },
+            {
+              "value": "half-right",
+              "label": "Half, peeking in from the right"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "range",
+          "id": "image_scale",
+          "label": "Image size",
+          "min": 40,
+          "max": 200,
+          "step": 5,
+          "unit": "%",
+          "default": 80,
+          "info": "Over 100% crops the image at the tile edge. With Fill the tile it zooms in (close-up)."
+        },
+        {
+          "type": "range",
+          "id": "image_tilt",
+          "label": "Image tilt",
+          "min": -15,
+          "max": 15,
+          "step": 1,
+          "unit": "deg",
+          "default": 0
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background",
+          "default": "#E3CFA8"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small label",
+          "info": "For example: Top note"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "info": "Shown on hover (desktop). Also the image's alt text."
+        },
+        {
+          "type": "text",
+          "id": "spine_text",
+          "label": "Vertical label",
+          "info": "Short text for the vertical label, e.g. Dior · Sauvage. Empty: small label · label."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Perfume hero",
+      "blocks": [
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "bottle-amber",
+            "background_color": "#E3CFA8",
+            "label": "Amber & oud",
+            "kicker": "Perfume",
+            "image_scale": 85,
+            "image_position": "bottom-left",
+            "image_tilt": -6
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "scent-lemon",
+            "background_color": "#F2E27E",
+            "label": "Lemon",
+            "kicker": "Top note",
+            "image_fit": "cover",
+            "image_scale": 100
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "bottle-blue",
+            "background_color": "#C9C3E6",
+            "label": "Blue fougère",
+            "kicker": "Perfume",
+            "image_scale": 80,
+            "image_position": "center",
+            "image_tilt": 5
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "scent-cinnamon",
+            "background_color": "#E2A07E",
+            "label": "Cinnamon",
+            "kicker": "Heart note",
+            "image_fit": "cover",
+            "image_scale": 100
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "bottle-red",
+            "background_color": "#F0B9A8",
+            "label": "Red spice",
+            "kicker": "Perfume",
+            "image_scale": 90,
+            "image_position": "top-right",
+            "image_tilt": -4
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "scent-vanilla",
+            "background_color": "#EFE6D2",
+            "label": "Vanilla & musk",
+            "kicker": "Base note",
+            "image_fit": "cover",
+            "image_scale": 110
+          }
+        },
+        {
+          "type": "tile",
+          "settings": {
+            "sample": "bottle-clear",
+            "background_color": "#B9C9A3",
+            "label": "Clean musk",
+            "kicker": "Perfume",
+            "image_scale": 80,
+            "image_position": "bottom-right",
+            "image_tilt": 7
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

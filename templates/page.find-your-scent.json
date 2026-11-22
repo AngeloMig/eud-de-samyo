@@ -1,0 +1,65 @@
+{
+  "sections": {
+    "quiz": {
+      "type": "perfume-quiz",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Which of these do you love to smell?",
+            "help": "Pick the one you'd stop for.",
+            "answers": "Fresh & citrus | fresh, citrus | lemon\nWarm & spicy | spicy, warm | cinnamon\nSweet & creamy | sweet, gourmand | vanilla\nWoody & earthy | woody | cedar\nFloral & powdery | floral, powdery | iris\nHerbal & aromatic | aromatic | lavender",
+            "color": "#F6EFC9"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "When will you wear it most?",
+            "help": "",
+            "answers": "Daytime | day\nEvenings & nights out | night\nBoth | day, night",
+            "color": "#E3E2F0"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "How noticeable should it be?",
+            "help": "",
+            "answers": "Close to the skin | soft\nNoticed when people come near | moderate\nFills the room | strong",
+            "color": "#EAD8C2"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Where will you wear it?",
+            "help": "Philippine weather changes how perfume behaves.",
+            "answers": "Hot, humid days outside | hot\nAir-conditioned rooms and cool evenings | cool\nA bit of everything | hot, cool",
+            "color": "#D6E4DD"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Which style feels like you?",
+            "help": "",
+            "answers": "Masculine | men\nFeminine | women\nNo preference | men, women, unisex",
+            "color": "#E9D3C9"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "quiz"
+  ]
+}

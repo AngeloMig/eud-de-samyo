@@ -1,0 +1,307 @@
+{%- comment -%}
+  "The scent story": everything about how the perfume smells and wears, under the
+  product. Reads only real data (docs/METAFIELDS.md); anything missing says
+  "Not assessed yet" instead of guessing.
+
+  1. The wear timeline: first spray (top notes) -> the heart -> the dry-down (base),
+     each stage with its notes, their illustrations and descriptions. A line draws
+     across as it scrolls into view. The times are the usual ones for perfume in
+     general, and say so.
+  2. How it wears: longevity, projection, sillage and how it does in Philippine heat
+     as segmented meters, with their source (community or Samyo wear test).
+  3. Its character: accord bars from the scent profile, with their source.
+  4. When to wear: seasons and occasions, and "Our take" (labelled as opinion).
+  5. Details: accordion blocks (description, shipping, authenticity…).
+
+  Styles: assets/perfume-product.css (.ppn). Reveal: assets/perfume-reveal.js.
+{%- endcomment -%}
+{%- liquid
+  assign sid = 'PerfumeNotes-' | append: section.id
+  assign top_notes = product.metafields.fragrance.top_notes.value
+  assign heart_notes = product.metafields.fragrance.middle_notes.value
+  assign base_notes = product.metafields.fragrance.base_notes.value
+  assign perf = product.metafields.fragrance.performance.value
+  assign profile = product.metafields.fragrance.scent_profile.value
+  assign seasons = product.metafields.fragrance.best_seasons.value
+  assign occasions = product.metafields.fragrance.best_occasions.value
+  assign our_take = product.metafields.fragrance.our_take.value
+  assign heading = section.settings.heading | replace: '[title]', product.title
+  assign na = section.settings.not_assessed | default: 'Not assessed yet'
+-%}
+
+{{ 'perfume-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ sid }} {
+    --ppn-bg: {{ section.settings.background_color }};
+    --ppn-ink: {{ section.settings.text_color }};
+    --ppn-pt: {{ section.settings.padding_top }}px;
+    --ppn-pb: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section id="{{ sid }}" class="ppn" aria-labelledby="{{ sid }}-heading">
+  <div class="ppn__inner">
+    <div class="ppn__head" data-pf-reveal="rise">
+      {%- if section.settings.kicker != blank -%}
+        <p class="ppn__kicker">{{ section.settings.kicker | escape }}</p>
+      {%- endif -%}
+      <h2 class="ppn__heading" id="{{ sid }}-heading">{{ heading | escape }}</h2>
+    </div>
+
+    {%- comment -%} 1. The wear timeline {%- endcomment -%}
+    <div class="ppn__journey" data-pf-reveal="line">
+      <div class="ppn__line" aria-hidden="true"><span></span></div>
+      <ol class="ppn__stages" role="list">
+        {%- for tier in (1..3) -%}
+          {%- liquid
+            case tier
+              when 1
+                assign group = top_notes
+                assign tier_name = section.settings.top_label
+                assign tier_when = section.settings.top_time
+                assign tier_text = section.settings.top_text
+              when 2
+                assign group = heart_notes
+                assign tier_name = section.settings.heart_label
+                assign tier_when = section.settings.heart_time
+                assign tier_text = section.settings.heart_text
+              else
+                assign group = base_notes
+                assign tier_name = section.settings.base_label
+                assign tier_when = section.settings.base_time
+                assign tier_text = section.settings.base_text
+            endcase
+          -%}
+          <li class="ppn__stage" style="--t: {{ tier }};">
+            <span class="ppn__dot" aria-hidden="true"></span>
+            <p class="ppn__when">{{ tier_when | escape }}</p>
+            <h3 class="ppn__stage-name">{{ tier_name | escape }}</h3>
+            {%- if tier_text != blank -%}<p class="ppn__stage-text">{{ tier_text | escape }}</p>{%- endif -%}
+            {%- if group != blank and group.size > 0 -%}
+              <ul class="ppn__notes" role="list">
+                {%- for note in group -%}
+                  {%- assign note_name = note.name.value -%}
+                  {%- assign note_art = note.art.value -%}
+                  {%- assign note_desc = note.description.value -%}
+                  <li class="ppn__note">
+                    <span class="ppn__note-art" aria-hidden="true">
+                      {%- if note.image.value != blank -%}
+                        {{ note.image.value | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+                      {%- else -%}
+                        {%- render 'perfume-note-art', note: note_art -%}
+                      {%- endif -%}
+                    </span>
+                    <span>
+                      <span class="ppn__note-name">{{ note_name | escape }}</span>
+                      {%- if note_desc != blank -%}<span class="ppn__note-desc">{{ note_desc | escape }}</span>{%- endif -%}
+                    </span>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <p class="ppn__empty">{{ na | escape }}</p>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+      {%- if section.settings.time_note != blank -%}
+        <p class="ppn__source">{{ section.settings.time_note | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="ppn__facts">
+      {%- comment -%} 2. How it wears {%- endcomment -%}
+      <div class="ppn__box" data-pf-reveal="rise">
+        <h3 class="ppn__box-title">{{ section.settings.wear_title | escape }}</h3>
+        {%- liquid
+          assign longevity = perf.longevity.value
+          assign projection = perf.projection.value
+          assign sillage = perf.sillage.value
+          assign heat = perf.humid_weather.value
+          assign perf_source = perf.source.value
+          assign tested_on = perf.tested_on.value
+        -%}
+        <dl class="ppn__meters">
+          {%- for m in (1..4) -%}
+            {%- liquid
+              case m
+                when 1
+                  assign m_label = 'Longevity'
+                  assign m_value = longevity
+                  assign m_scale = 'Weak (<2h)|Moderate (2–4h)|Long (4–8h)|Very long (8h+)' | split: '|'
+                when 2
+                  assign m_label = 'Projection'
+                  assign m_value = projection
+                  assign m_scale = 'Intimate|Moderate|Strong' | split: '|'
+                when 3
+                  assign m_label = 'Sillage (trail)'
+                  assign m_value = sillage
+                  assign m_scale = 'Soft|Moderate|Heavy' | split: '|'
+                else
+                  assign m_label = 'In Philippine heat'
+                  assign m_value = heat
+                  assign m_scale = 'Better for cool evenings|OK|Great' | split: '|'
+              endcase
+              assign m_level = 0
+              for s in m_scale
+                if s == m_value
+                  assign m_level = forloop.index
+                endif
+              endfor
+            -%}
+            <div class="ppn__meter">
+              <dt>{{ m_label }}</dt>
+              <dd>
+                <span class="ppn__segs" aria-hidden="true" style="--n: {{ m_scale.size }};">
+                  {%- for s in m_scale -%}<i{% if forloop.index <= m_level %} class="on"{% endif %}></i>{%- endfor -%}
+                </span>
+                <span class="ppn__meter-value{% if m_value == blank %} is-empty{% endif %}">{{ m_value | default: na | escape }}</span>
+              </dd>
+            </div>
+          {%- endfor -%}
+        </dl>
+        {%- if perf_source != blank -%}
+          <p class="ppn__source">Source: {{ perf_source | escape }}{% if tested_on != blank %} · tested {{ tested_on | date: '%B %Y' }}{% endif %}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} 3. Its character {%- endcomment -%}
+      <div class="ppn__box" data-pf-reveal="rise">
+        <h3 class="ppn__box-title">{{ section.settings.character_title | escape }}</h3>
+        {%- liquid
+          assign accords = 'citrus,fresh,aromatic,floral,spicy,sweet,woody,amber,musky' | split: ','
+          assign shown = 0
+        -%}
+        {%- capture bars -%}
+          {%- for a in accords -%}
+            {%- assign raw = profile[a].value -%}
+            {%- assign v = raw | plus: 0 -%}
+            {%- if v > 0 -%}
+              {%- assign shown = shown | plus: 1 -%}
+              <li class="ppn__bar" style="--v: {{ v | divided_by: 5.0 }};">
+                <span>{{ a | capitalize }}</span><i aria-hidden="true"></i><span class="pf-visually-hidden">{{ v }} out of 5</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endcapture -%}
+        {%- if shown > 0 -%}
+          <ul class="ppn__bars" role="list">{{ bars }}</ul>
+          {%- assign p_source = profile.source.value -%}
+          {%- if p_source != blank -%}<p class="ppn__source">Source: {{ p_source | escape }}</p>{%- endif -%}
+        {%- else -%}
+          <p class="ppn__empty">{{ na | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} 4. When to wear {%- endcomment -%}
+      <div class="ppn__box ppn__box--wide" data-pf-reveal="rise">
+        <h3 class="ppn__box-title">{{ section.settings.when_title | escape }}</h3>
+        {%- if seasons != blank or occasions != blank -%}
+          <div class="ppn__tags">
+            {%- for s in seasons -%}<span>{{ s | escape }}</span>{%- endfor -%}
+            {%- for o in occasions -%}<span>{{ o | escape }}</span>{%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="ppn__empty">{{ na | escape }}</p>
+        {%- endif -%}
+        {%- if our_take != blank -%}
+          <figure class="ppn__take">
+            <figcaption class="ppn__kicker">{{ section.settings.take_label | escape }}</figcaption>
+            <blockquote>{{ our_take | escape }}</blockquote>
+          </figure>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} 5. Details {%- endcomment -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="ppn__details" id="details">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign body = block.settings.content
+            if block.settings.source == 'description'
+              assign body = product.description
+            elsif block.settings.page != blank
+              assign body = block.settings.page.content
+            endif
+          -%}
+          {%- if body != blank -%}
+            <details class="ppn__acc" {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+              <summary>{{ block.settings.title | escape }}</summary>
+              <div class="ppn__acc-body rte">{{ body }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Scent story",
+  "tag": "div",
+  "class": "section-perfume-notes",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "The scent story" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[title] becomes the product name.", "default": "[title], from first spray to the last trace" },
+    { "type": "text", "id": "not_assessed", "label": "Text for missing data", "default": "Not assessed yet" },
+    { "type": "header", "content": "Wear timeline" },
+    { "type": "text", "id": "top_label", "label": "Top notes title", "default": "Top notes" },
+    { "type": "text", "id": "top_time", "label": "Top notes time", "default": "On spraying" },
+    { "type": "text", "id": "top_text", "label": "Top notes line", "default": "The first impression: bright and quick to fade." },
+    { "type": "text", "id": "heart_label", "label": "Heart notes title", "default": "Heart notes" },
+    { "type": "text", "id": "heart_time", "label": "Heart notes time", "default": "After about 15 minutes" },
+    { "type": "text", "id": "heart_text", "label": "Heart notes line", "default": "The character of the perfume, once it settles." },
+    { "type": "text", "id": "base_label", "label": "Base notes title", "default": "Base notes" },
+    { "type": "text", "id": "base_time", "label": "Base notes time", "default": "From a few hours on" },
+    { "type": "text", "id": "base_text", "label": "Base notes line", "default": "The dry-down that stays on skin and clothes." },
+    { "type": "text", "id": "time_note", "label": "Note under the timeline", "default": "Times are typical for most perfumes; skin, heat and how much you spray change them." },
+    { "type": "header", "content": "Panels" },
+    { "type": "text", "id": "wear_title", "label": "How it wears title", "default": "How it wears" },
+    { "type": "text", "id": "character_title", "label": "Character title", "default": "Its character" },
+    { "type": "text", "id": "when_title", "label": "When to wear title", "default": "When to wear it" },
+    { "type": "text", "id": "take_label", "label": "Our take label", "default": "Our take (opinion)" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Details row",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Details" },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Content",
+          "options": [
+            { "value": "description", "label": "Product description" },
+            { "value": "custom", "label": "Text below or a page" }
+          ],
+          "default": "custom"
+        },
+        { "type": "richtext", "id": "content", "label": "Text" },
+        { "type": "page", "id": "page", "label": "Or a page", "info": "Its content replaces the text." },
+        { "type": "checkbox", "id": "open", "label": "Open at first", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scent story",
+      "blocks": [
+        { "type": "accordion", "settings": { "title": "About this perfume", "source": "description", "open": true } },
+        { "type": "accordion", "settings": { "title": "Shipping and delivery", "content": "<p>Add your shipping details in the theme editor.</p>" } },
+        { "type": "accordion", "settings": { "title": "Authenticity", "content": "<p>Explain where your perfumes come from in the theme editor.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,130 @@
+{%- comment -%}
+  Built-in scent illustrations, drawn for this theme: a fine ink line drawing with a
+  soft colour fill on a pale disc in the note's own tint (48 x 48 grid, so they stay
+  crisp at the 30px chip size). Decorative only (aria-hidden): the note's name is
+  always written out in text next to it.
+
+  Usage: {% render 'perfume-note-art', note: 'lemon' %}
+  Notes: lemon, orange, bergamot, grapefruit, mint, apple, lavender, rose, jasmine, orange_blossom, iris, vanilla, cinnamon, pepper, cardamom, cedar, vetiver, patchouli, musk, amber, tonka, mineral, tobacco.
+  Anything else renders nothing. Preview: dev/note-icons.html.
+{%- endcomment -%}
+{%- comment -%}
+  Real photos win over drawings ("no icons"):
+  - a transparent cut-out in assets/ (lemon) on a disc in the note's colour;
+  - Unsplash photos (free Unsplash licence, linked from Unsplash's image CDN as its
+    guidelines ask; list in docs/CREDITS.md), cropped round.
+  Patchouli and tonka have no suitable free photo yet (2026-11-22: Unsplash only
+  had unrelated cakes/leaves): they keep the drawing.
+  A fragrance_note metaobject's own image still wins where the section passes it.
+  Pass style: 'drawing' to force the drawing.
+{%- endcomment -%}
+{%- liquid
+  assign photo_file = ''
+  assign photo_url = ''
+  assign photo_tint = ''
+  unless style == 'drawing'
+    case note
+      when 'lemon'
+        assign photo_file = 'sample-scent-lemon.webp'
+        assign photo_tint = '#FBF1C4'
+      when 'cinnamon'
+        assign photo_url = 'https://images.unsplash.com/photo-1553499944-e4297a0af1bd?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'vanilla'
+        assign photo_url = 'https://images.unsplash.com/photo-1682482198446-4cbf92f85a4b?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'lavender'
+        assign photo_url = 'https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'iris'
+        assign photo_url = 'https://images.unsplash.com/photo-1776372294959-e78a71c2af84?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'vetiver'
+        assign photo_url = 'https://images.unsplash.com/photo-1563364664-399838d1394c?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'cedar'
+        assign photo_url = 'https://images.unsplash.com/photo-1515446134809-993c501ca304?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'bergamot'
+        assign photo_url = 'https://images.unsplash.com/photo-1612253167527-0598073d2979?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'pepper'
+        assign photo_url = 'https://images.unsplash.com/photo-1652128288742-df890f000a56?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'rose'
+        assign photo_url = 'https://images.unsplash.com/photo-1585768750637-ada36319a484?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'jasmine'
+        assign photo_url = 'https://images.unsplash.com/photo-1781707533179-9c296c975a04?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'orange_blossom'
+        assign photo_url = 'https://images.unsplash.com/photo-1651057280467-6fb1f9001c78?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'cardamom'
+        assign photo_url = 'https://images.unsplash.com/photo-1763558049571-a6d12a85472e?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'mint'
+        assign photo_url = 'https://images.unsplash.com/photo-1618130070080-91f4d55a2383?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'orange'
+        assign photo_url = 'https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'grapefruit'
+        assign photo_url = 'https://images.unsplash.com/photo-1787551742228-8af769f282d3?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'apple'
+        assign photo_url = 'https://images.unsplash.com/photo-1678942946279-c83e37f32304?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'musk'
+        assign photo_url = 'https://images.unsplash.com/photo-1705147293352-3e81c1b8ab5b?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'amber'
+        assign photo_url = 'https://images.unsplash.com/photo-1631624406592-f599694e6b2c?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'mineral'
+        assign photo_url = 'https://images.unsplash.com/photo-1614759258004-39da973d3268?w=240&h=240&fit=crop&q=70&auto=format'
+      when 'tobacco'
+        assign photo_url = 'https://images.unsplash.com/photo-1618843916388-29bb8a13b4fd?w=240&h=240&fit=crop&q=70&auto=format'
+    endcase
+  endunless
+-%}
+{%- if photo_url != blank -%}
+  <span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+    <img src="{{ photo_url }}" alt="" loading="lazy" width="240" height="240">
+  </span>
+{%- elsif photo_file != blank -%}
+  <span class="pf-note-art pf-note-photo" style="--tint: {{ photo_tint }};" aria-hidden="true">
+    <img src="{{ photo_file | asset_url }}" alt="" loading="lazy" width="160" height="160">
+  </span>
+{%- else -%}
+{%- case note -%}
+  {%- when 'lemon' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#FBF1C4"/><g fill="none" stroke="#8A6A10" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M13.5 32.5C9.5 27 12 18 19.5 14.5 26 11.5 32.5 12.5 35.5 15.5 38.5 20 36.5 29 29 33 22.5 36.5 16.5 35.5 13.5 32.5Z" fill="#F5D451"/><path d="M13.5 32.5 11 35M35.5 15.5 38 13"/><path d="M18 25.5c.8-3 2.8-5.5 6-7" stroke="#FFF8D6"/><path d="M30.5 13.5c1.5-3.5 5-5 8.5-4.5-.8 3.5-4.2 5.4-8.5 4.5Z" fill="#9DB548"/></g></svg>
+  {%- when 'orange' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#FDE3CC"/><g fill="none" stroke="#A9531A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><circle cx="24" cy="26.5" r="11.5" fill="#F39A3D"/><path d="M24 15v-2.5"/><path d="M24 13.5c2-3 5.5-4 8.5-3-1 3-4.5 4.5-8.5 3Z" fill="#7FA046"/><path d="M17.5 24.5c.7-2.6 2.5-4.4 4.8-5.2" stroke="#FFD9AE"/><g fill="#A9531A" stroke="none"><circle cx="28" cy="23" r=".8"/><circle cx="21" cy="30" r=".8"/><circle cx="29" cy="30" r=".8"/><circle cx="25" cy="34" r=".8"/></g></g></svg>
+  {%- when 'bergamot' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EEF1C9"/><g fill="none" stroke="#5E6E1E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><circle cx="24" cy="24" r="12.5" fill="#C9D35A"/><circle cx="24" cy="24" r="9.6" fill="#F3F5D2"/><path d="M24 22.3V15.7M24 25.7v6.6M22.3 24h-6.6M25.7 24h6.6M22.8 22.8l-4.7-4.7M25.2 25.2l4.7 4.7M25.2 22.8l4.7-4.7M22.8 25.2l-4.7 4.7" stroke-width="1.3"/></g></svg>
+  {%- when 'grapefruit' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#FBD9D2"/><g fill="none" stroke="#B44A3C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M9.5 19.5h29a14.5 14.5 0 0 1-29 0Z" fill="#EE8A78"/><path d="M12.8 19.5a11.2 11.2 0 0 0 22.4 0" stroke="#FFE3DC" stroke-width="1.2"/><path d="M24 19.5l8 4.6M24 19.5l4.6 8M24 19.5v9.2M24 19.5l-4.6 8M24 19.5l-8 4.6" stroke="#FFE3DC" stroke-width="1.2"/></g></svg>
+  {%- when 'mint' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#D7EEDF"/><g fill="none" stroke="#2F6B47" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 39V13"/><path d="M24 14c-3-2-3-6 0-8.5 3 2.5 3 6.5 0 8.5Z" fill="#7CC39A"/><path d="M23.6 23.5c-4.2 0-8.2-2-9.4-6.2 4.2-.9 8.2 1.3 9.4 6.2ZM24.4 23.5c4.2 0 8.2-2 9.4-6.2-4.2-.9-8.2 1.3-9.4 6.2Z" fill="#8FD0A9"/><path d="M23.6 32c-4 0-7.6-2.4-8.6-6 4-.6 7.6 1.4 8.6 6ZM24.4 32c4 0 7.6-2.4 8.6-6-4-.6-7.6 1.4-8.6 6Z" fill="#6BB58A"/><path d="M18 19.5l3.5 2.6M30 19.5l-3.5 2.6" stroke-width="1"/></g></svg>
+  {%- when 'apple' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#F6D6D2"/><g fill="none" stroke="#A0392F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 17.5c-2-1.5-5-2-7.5-1-4 1.8-5.5 6-4.5 11 1 5 4.5 10 8.5 10 1.5 0 2.3-.8 3.5-.8s2 .8 3.5.8c4 0 7.5-5 8.5-10 1-5-.5-9.2-4.5-11-2.5-1-5.5-.5-7.5 1Z" fill="#E1665A"/><path d="M24 17.5c0-2.5.5-4.5 2-6.5"/><path d="M25.5 13.5c2-2.5 5.5-3 8-2-1.5 2.5-5 3.5-8 2Z" fill="#8DB25A"/><path d="M16 24c.4-2.4 1.6-4 3.4-4.8" stroke="#FBD3CE"/></g></svg>
+  {%- when 'lavender' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#E6DDF2"/><g fill="none" stroke="#5B4A8B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 40V12"/><path d="M24 35c-3-.8-5.2-3-5.8-6.2 3.1.4 5.3 2.6 5.8 6.2Z" fill="#9DB59A"/><ellipse cx="24" cy="10.5" rx="1.6" ry="2.4" transform="rotate(0 24 10.5)" fill="#8D79C2" stroke="none"/><ellipse cx="22.1" cy="14.6" rx="1.5" ry="2.5" transform="rotate(-28 22.1 14.6)" fill="#8D79C2" stroke="none"/><ellipse cx="25.9" cy="14.6" rx="1.5" ry="2.5" transform="rotate(28 25.9 14.6)" fill="#8D79C2" stroke="none"/><ellipse cx="22.1" cy="18.8" rx="1.5" ry="2.5" transform="rotate(-28 22.1 18.8)" fill="#8D79C2" stroke="none"/><ellipse cx="25.9" cy="18.8" rx="1.5" ry="2.5" transform="rotate(28 25.9 18.8)" fill="#8D79C2" stroke="none"/><ellipse cx="22.1" cy="23" rx="1.5" ry="2.5" transform="rotate(-28 22.1 23)" fill="#8D79C2" stroke="none"/><ellipse cx="25.9" cy="23" rx="1.5" ry="2.5" transform="rotate(28 25.9 23)" fill="#8D79C2" stroke="none"/><ellipse cx="22.1" cy="27.2" rx="1.5" ry="2.5" transform="rotate(-28 22.1 27.2)" fill="#8D79C2" stroke="none"/><ellipse cx="25.9" cy="27.2" rx="1.5" ry="2.5" transform="rotate(28 25.9 27.2)" fill="#8D79C2" stroke="none"/></g></svg>
+  {%- when 'rose' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#F7D9DE"/><g fill="none" stroke="#A3354E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M14.5 18.5c-1 5.5 1.8 11.5 9.5 12 7.7-.5 10.5-6.5 9.5-12-3 1.6-6.3 1.2-9.5-1.6-3.2 2.8-6.5 3.2-9.5 1.6Z" fill="#E7869A"/><path d="M24 23c-1.5 0-2.5-1-2.5-2.3 0-1.8 1.6-3 3.5-3 2.5 0 4.2 2 4.2 4.4 0 3.2-2.7 5.4-5.8 5.4-3.6 0-6.4-2.8-6.6-6.4" fill="none"/><path d="M24 30.5V41"/><path d="M24 36.5c2.5-3 6-3.5 8.5-2.5-2 2.8-5.5 3.5-8.5 2.5Z" fill="#8DB25A"/></g></svg>
+  {%- when 'jasmine' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EEF0DE"/><g fill="none" stroke="#6E6A3A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 22.2c-2.4-2.4-3-6.6 0-10.2 3 3.6 2.4 7.8 0 10.2Z" fill="#FFFFFF" transform="rotate(0 24 24)"/><path d="M24 22.2c-2.4-2.4-3-6.6 0-10.2 3 3.6 2.4 7.8 0 10.2Z" fill="#FFFFFF" transform="rotate(72 24 24)"/><path d="M24 22.2c-2.4-2.4-3-6.6 0-10.2 3 3.6 2.4 7.8 0 10.2Z" fill="#FFFFFF" transform="rotate(144 24 24)"/><path d="M24 22.2c-2.4-2.4-3-6.6 0-10.2 3 3.6 2.4 7.8 0 10.2Z" fill="#FFFFFF" transform="rotate(216 24 24)"/><path d="M24 22.2c-2.4-2.4-3-6.6 0-10.2 3 3.6 2.4 7.8 0 10.2Z" fill="#FFFFFF" transform="rotate(288 24 24)"/><circle cx="24" cy="24" r="1.8" fill="#E8D36A"/></g></svg>
+  {%- when 'orange_blossom' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#FBEBD8"/><g fill="none" stroke="#9C6B2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 21.8c-3.2-1.4-4.8-5-3.2-8 1.6-1.9 4.8-1.9 6.4 0 1.6 3 0 6.6-3.2 8Z" fill="#FFFDF7" transform="rotate(18 24 24)"/><path d="M24 21.8c-3.2-1.4-4.8-5-3.2-8 1.6-1.9 4.8-1.9 6.4 0 1.6 3 0 6.6-3.2 8Z" fill="#FFFDF7" transform="rotate(90 24 24)"/><path d="M24 21.8c-3.2-1.4-4.8-5-3.2-8 1.6-1.9 4.8-1.9 6.4 0 1.6 3 0 6.6-3.2 8Z" fill="#FFFDF7" transform="rotate(162 24 24)"/><path d="M24 21.8c-3.2-1.4-4.8-5-3.2-8 1.6-1.9 4.8-1.9 6.4 0 1.6 3 0 6.6-3.2 8Z" fill="#FFFDF7" transform="rotate(234 24 24)"/><path d="M24 21.8c-3.2-1.4-4.8-5-3.2-8 1.6-1.9 4.8-1.9 6.4 0 1.6 3 0 6.6-3.2 8Z" fill="#FFFDF7" transform="rotate(306 24 24)"/><g stroke-width="1"><path d="M24 24l-2.6-3.6M24 24l3-3.2M24 24l-3.4 1.8M24 24l3.6 1.4M24 24v3.8"/></g><g fill="#E59B3A" stroke="none"><circle cx="21.2" cy="20.1" r="1"/><circle cx="27.2" cy="20.5" r="1"/><circle cx="20.4" cy="26" r="1"/><circle cx="27.8" cy="25.6" r="1"/><circle cx="24" cy="28" r="1"/></g></g></svg>
+  {%- when 'iris' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#E3E2F3"/><g fill="none" stroke="#4B4A8F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 27v13M24 40c-3-4-4.2-8-3.6-11.5"/><path d="M24 23.5c-3-3-3.5-8 0-12 3.5 4 3 9 0 12Z" fill="#B7B2EA"/><path d="M22.6 23c-2.6-2-5.1-6-3.6-9.6 2.6 1.6 3.9 5.3 3.6 9.6ZM25.4 23c2.6-2 5.1-6 3.6-9.6-2.6 1.6-3.9 5.3-3.6 9.6Z" fill="#CFCBF2"/><path d="M23 25c-4 0-8.5 1.5-10 5.2 3.6 1.5 8.2 0 10-5.2ZM25 25c4 0 8.5 1.5 10 5.2-3.6 1.5-8.2 0-10-5.2Z" fill="#8F88D9"/><path d="M16.5 28.3l3 .4M31.5 28.3l-3 .4" stroke="#F2D46A" stroke-width="1.4"/></g></svg>
+  {%- when 'vanilla' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#F4EBD8"/><g fill="none" stroke="#5A3B22" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M11 36.5C17 27 25 18.5 35.5 12c.8-.5 1.6.4 1 1.1C29 21 21 29.5 12.4 37.6c-.7.6-1.9-.3-1.4-1.1Z" fill="#6B4528" stroke-width="1.1"/><path d="M15.5 39.5C22 30.5 29.5 23 39 17.5c.8-.4 1.5.5.9 1.1-7.4 7-14.9 14.5-22 22-.7.7-1.9-.2-1.4-1.1Z" fill="#87603F" stroke-width="1.1"/><g stroke-width="1.1"><path d="M16 13.6c-1.4-1.4-1.7-3.8 0-5.8 1.7 2 1.4 4.4 0 5.8Z" fill="#FFF8E6" transform="rotate(0 16 15.5)"/><path d="M16 13.6c-1.4-1.4-1.7-3.8 0-5.8 1.7 2 1.4 4.4 0 5.8Z" fill="#FFF8E6" transform="rotate(72 16 15.5)"/><path d="M16 13.6c-1.4-1.4-1.7-3.8 0-5.8 1.7 2 1.4 4.4 0 5.8Z" fill="#FFF8E6" transform="rotate(144 16 15.5)"/><path d="M16 13.6c-1.4-1.4-1.7-3.8 0-5.8 1.7 2 1.4 4.4 0 5.8Z" fill="#FFF8E6" transform="rotate(216 16 15.5)"/><path d="M16 13.6c-1.4-1.4-1.7-3.8 0-5.8 1.7 2 1.4 4.4 0 5.8Z" fill="#FFF8E6" transform="rotate(288 16 15.5)"/></g><circle cx="16" cy="15.5" r="1.3" fill="#E9C46A" stroke="none"/></g></svg>
+  {%- when 'cinnamon' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#F1DCCB"/><g fill="none" stroke="#7A3E1C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><g transform="rotate(-22 24 24)"><rect x="13" y="15" width="24" height="5" rx="2.5" fill="#C77A44"/><circle cx="15.5" cy="17.5" r="2.5" fill="#E5A06B"/><path d="M15.5 17.5m-1 0a1 1 0 1 1 1 1" stroke-width="1"/><rect x="11" y="21.5" width="25" height="5" rx="2.5" fill="#B5683A"/><circle cx="13.5" cy="24" r="2.5" fill="#E5A06B"/><path d="M13.5 24m-1 0a1 1 0 1 1 1 1" stroke-width="1"/><rect x="14" y="28" width="23" height="5" rx="2.5" fill="#C77A44"/><circle cx="16.5" cy="30.5" r="2.5" fill="#E5A06B"/><path d="M16.5 30.5m-1 0a1 1 0 1 1 1 1" stroke-width="1"/></g></g></svg>
+  {%- when 'pepper' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EDE3DA"/><g fill="none" stroke="#2E2622" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M13 13c4 2.5 9 3.5 14 3M21 15.7c-1 1.2-1.5 2.4-1.6 3.6M27 16c.6 1 .9 2 .9 2.6" stroke-width="1.2"/><g fill="#3B302A"><circle cx="19" cy="22.5" r="4.2"/><circle cx="28.5" cy="21.5" r="4"/><circle cx="23.5" cy="30.5" r="4.4"/><circle cx="32.5" cy="29.5" r="3.8"/><circle cx="15.5" cy="31.5" r="3.6"/></g><g stroke="#9C8B7E" stroke-width="1"><path d="M17 21c.5-1 1.3-1.6 2.3-1.8M26.6 20c.5-1 1.3-1.5 2.2-1.6M21.4 29c.5-1 1.3-1.6 2.4-1.8M30.8 28.2c.4-.8 1.1-1.3 2-1.4M13.9 30.3c.4-.8 1-1.3 1.9-1.4"/></g></g></svg>
+  {%- when 'cardamom' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#E1EBCF"/><g fill="none" stroke="#4E6A2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><g transform="rotate(-25 19 23)"><ellipse cx="19" cy="23" rx="5.5" ry="9.5" fill="#B8CC8A"/><path d="M19 13.5c-1.6 5-1.6 14 0 19M16 15.8c-1.4 4.4-1.2 10.4.4 14.6M22 15.8c1.4 4.4 1.2 10.4-.4 14.6" stroke-width="1"/><path d="M19 13.5v-2"/></g><g transform="rotate(22 30 25)"><ellipse cx="30" cy="25" rx="5" ry="8.8" fill="#A6BD74"/><path d="M30 16.2c-1.5 4.8-1.5 12.8 0 17.6M27.3 18.4c-1.2 4-1 9.2.4 13.2M32.7 18.4c1.2 4 1 9.2-.4 13.2" stroke-width="1"/><path d="M30 16.2v-2"/></g><g fill="#3B302A" stroke="none"><circle cx="22" cy="37.2" r="1.3"/><circle cx="25.6" cy="38.2" r="1.3"/><circle cx="29" cy="37.4" r="1.3"/></g></g></svg>
+  {%- when 'cedar' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#E9DDCB"/><g fill="none" stroke="#6B4A2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><circle cx="24" cy="24" r="12.5" fill="#E1B98A"/><circle cx="24" cy="24" r="9" stroke-width="1.2"/><circle cx="24.6" cy="23.6" r="5.6" stroke-width="1.2"/><circle cx="25" cy="23.4" r="2.2" stroke-width="1.2"/><path d="M24 11.5v6.5" /></g></svg>
+  {%- when 'vetiver' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#E4E3C8"/><path d="M.5 27.5h47A24 24 0 0 1 .5 27.5Z" fill="#DDCFAE"/><g fill="none" stroke="#5C5A2A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M11 26.5h26" stroke="#8A6A3A"/><g stroke="#6F8F3A"><path d="M24 26.5c0-5 1-10 3.2-14.5M22 26.5c-1-4-3-8-6.2-11M26 26.5c2-3.2 5-6 9-7.2M20.5 26.5c-2.2-2-5-3-8.2-3"/></g><g stroke="#8A6A3A" stroke-width="1.3"><path d="M24 26.5c0 4-1 8 0 12M22 26.5c-2 3-4 5-7 7M26 26.5c2 3 4 6 4 10M23 30c-2 1-3 3-3 5M27.5 30.5c1.8.4 3.5 1.6 4.5 3.2"/></g></g></svg>
+  {%- when 'patchouli' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#DCE6CF"/><g fill="none" stroke="#3F5A2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M13.5 36c-4-9-1-20 8-24 6-2.5 12.5-2 16.5-1-.5 5-1 11-5 17-4 6-11.5 9-19.5 8Z" fill="#9FBF83"/><path d="M13.5 36C20 28 27 20 37.5 11.5"/><path d="M19 30c0-4 1-7 2-9.5M22.5 27c2.6.2 5.4 0 8.5-1.2M25 23.4c0-3.4.8-6 2-8M28.4 20.4c2 .1 4-.3 6-1.4" stroke-width="1.1"/></g></svg>
+  {%- when 'musk' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#ECE6E1"/><g fill="none" stroke="#6F625A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M15.5 31c-3 0-5.5-2.2-5.5-5.2 0-3 2.4-5.2 5.2-5.2.6-4 4.2-7.1 8.5-7.1 3.6 0 6.7 2.3 7.8 5.6 3.6-.4 7 2.3 7 6 0 3.3-2.6 5.9-5.8 5.9Z" fill="#FFFFFF"/><path d="M19 23.5c.8-2.2 2.8-3.7 5.2-3.9" stroke="#C8BDB4"/><g stroke-width="2.4"><path d="M17 36.5h.01M24 38h.01M31 36.5h.01"/></g></g></svg>
+  {%- when 'amber' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#F8E2BE"/><g fill="none" stroke="#8A5A12" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 9.5c5 7 10.5 12.5 10.5 19a10.5 10.5 0 0 1-21 0C13.5 22 19 16.5 24 9.5Z" fill="#E9A93A"/><path d="M19 27.5c0 2.6 1.3 4.7 3.2 5.8" stroke="#FFF2CF" stroke-width="1.8"/><path d="M24 16c2 2.8 4 5 5 7.4" stroke="#F6C76A" stroke-width="1.2"/></g></svg>
+  {%- when 'tonka' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EADBCB"/><g fill="none" stroke="#3E271B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M11.5 25.5c-1-5 3-8.8 9-9.8 7-1.1 13 .9 14 4.9.9 3.9-4 6.9-11 7.9-6 .9-11.2 0-12-3Z" fill="#5A3A26"/><path d="M15.5 22.2c3-.9 6-1 9 0M17.5 25.3c3 .1 7-.4 10-1.9M21.8 19.3c3 0 6 .5 8 1.5" stroke="#A07A5E" stroke-width="1"/><path d="M22.5 34.5c0-3 3-5 7-5 4 0 6.5 1.5 6.5 3.5s-3 3.6-7 3.6c-3.5 0-6.5-.5-6.5-2.1Z" fill="#6E4A32"/><path d="M25.5 33c2-.6 4.5-.8 7-.2" stroke="#A07A5E" stroke-width="1"/></g></svg>
+  {%- when 'mineral' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#DCE8EE"/><g fill="none" stroke="#3E5C6E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 9.5l5.5 6.5-5.5 8.5-5.5-8.5Z" fill="#C3D9E4"/><path d="M18.5 16h11M24 9.5l-2.2 6.5 2.2 8.5 2.2-8.5Z" stroke-width="1"/><path d="M10 30c3.2-3 6.3-3 9.3 0s6.2 3 9.3 0 6.2-3 9.4 0M10 35.5c3.2-3 6.3-3 9.3 0s6.2 3 9.3 0 6.2-3 9.4 0"/></g></svg>
+  {%- when 'tobacco' -%}
+    <svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EAD6BC"/><g fill="none" stroke="#6B4423" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M24 40.5c-8-5-12-14-10-22 2-6 6-8.5 10-9.5 4 1 8 3.5 10 9.5 2 8-2 17-10 22Z" fill="#C08A4E"/><path d="M24 40.5V12.5"/><path d="M24 20l-5-3M24 20l5-3M24 26l-6.2-3M24 26l6.2-3M24 32l-5-2.5M24 32l5-2.5" stroke-width="1.1"/></g></svg>
+{%- endcase -%}
+{%- endif -%}

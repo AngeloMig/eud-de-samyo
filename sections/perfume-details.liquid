@@ -1,0 +1,93 @@
+{%- comment -%}
+  Details: fold-out rows (anchor #details) under a fragrance page: the full
+  description, shipping, authenticity, sources… Each row is a block: the product
+  description, a page, or text. Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+-%}
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+
+<section class="pdet" style="--pdet-bg: {{ section.settings.background_color }}; --pdet-ink: {{ section.settings.text_color }};">
+  <span class="pd-anchor" id="details"></span>
+  <div class="pdet__inner">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign body = block.settings.content
+        case block.settings.source
+          when 'description'
+            assign body = product.description
+            if body == blank
+              assign body = profile.observations | metafield_tag
+            endif
+          when 'observations'
+            assign body = profile.observations | metafield_tag
+          when 'sources'
+            capture body
+              for s in profile.sources.value
+                echo '<p><a href="' | append: s.url.value | append: '" target="_blank" rel="nofollow noopener">' | append: s.title.value | append: '</a> · ' | append: s.type.value | append: '</p>'
+              endfor
+            endcapture
+        endcase
+        if block.settings.page != blank
+          assign body = block.settings.page.content
+        endif
+      -%}
+      {%- if body != blank -%}
+        <details class="pdet__row" {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+          <summary>{{ block.settings.title | escape }}</summary>
+          <div class="pdet__body rte">{{ body }}</div>
+        </details>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fragrance details",
+  "tag": "div",
+  "class": "section-perfume-details",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Details" },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Content",
+          "options": [
+            { "value": "description", "label": "Product description" },
+            { "value": "observations", "label": "Editorial observations (profile)" },
+            { "value": "sources", "label": "Sources (profile)" },
+            { "value": "custom", "label": "Text below or a page" }
+          ],
+          "default": "custom"
+        },
+        { "type": "richtext", "id": "content", "label": "Text" },
+        { "type": "page", "id": "page", "label": "Or a page" },
+        { "type": "checkbox", "id": "open", "label": "Open at first", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fragrance details",
+      "blocks": [
+        { "type": "row", "settings": { "title": "About this perfume", "source": "description", "open": true } },
+        { "type": "row", "settings": { "title": "Sources", "source": "sources" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

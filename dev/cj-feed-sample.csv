@@ -1,0 +1,7 @@
+PROGRAM_NAME,NAME,KEYWORDS,DESCRIPTION,SKU,MANUFACTURER,UPC,CURRENCY,PRICE,SALEPRICE,BUYURL,IMAGEURL,INSTOCK
+SAMPLE ONLY,Sample Scent One by Example House Eau De Parfum Spray 1.7 oz (Men),sample,"FAKE TEST ROW. Not a real product description; it only checks the converter.",SAMPLE-1001,Example House,000000000001,USD,59.00,49.99,https://example.com/click?sku=SAMPLE-1001,https://example.com/img/sample-1001.jpg,yes
+SAMPLE ONLY,Sample Scent One by Example House Eau De Parfum Spray 3.4 oz (Men),sample,"FAKE TEST ROW. Not a real product description; it only checks the converter.",SAMPLE-1002,Example House,000000000002,USD,89.00,79.99,https://example.com/click?sku=SAMPLE-1002,https://example.com/img/sample-1002.jpg,yes
+SAMPLE ONLY,Sample Scent One by Example House Eau De Parfum Spray (Tester) 3.4 oz (Men),sample,"FAKE TEST ROW. Tester: skipped by default.",SAMPLE-1003,Example House,000000000003,USD,69.00,,https://example.com/click?sku=SAMPLE-1003,https://example.com/img/sample-1003.jpg,yes
+SAMPLE ONLY,Sample Bloom by Other Atelier Eau De Toilette Spray 100 ml (Women),sample,"FAKE TEST ROW, with ""quotes"", a comma, and
+a line break inside the description.",SAMPLE-2001,Other Atelier,000000000004,USD,45.00,,https://example.com/click?sku=SAMPLE-2001,https://example.com/img/sample-2001.jpg,no
+SAMPLE ONLY,Sample Gift Set by Other Atelier 3 Piece Set (Women),sample,"FAKE TEST ROW. Gift set: skipped by default.",SAMPLE-2002,Other Atelier,000000000005,USD,99.00,,https://example.com/click?sku=SAMPLE-2002,https://example.com/img/sample-2002.jpg,yes

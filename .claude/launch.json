@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "samyo-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4320", "--bind", "127.0.0.1", "--directory", "/Users/angelomiguel/GitHub/samyo-theme"],
+      "port": 4320
+    }
+  ]
+}

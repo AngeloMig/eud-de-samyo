@@ -1,0 +1,118 @@
+{%- comment -%}
+  Cart drawer (rendered by sections/perfume-header.liquid when "Cart drawer" is on).
+
+  A white panel that slides in from the right edge, floating with the same gap as the
+  header boxes. Opens from the header Bag and after Add to bag (showcase, product page,
+  quick Add). Lists the bag from /cart.js with quantity steppers, Remove, the subtotal
+  and Checkout. Without JavaScript the Bag link simply goes to the cart page.
+
+  Touches taken from Hermès' cart: a free-delivery progress line under the title
+  (a dot travels along it to the goal), small spaced capitals, a gift message
+  (saved as the order note), a row of three reassurances and a help line, and an
+  empty state with a bag drawing and a dark Continue shopping button.
+
+  Script: assets/perfume-cart-drawer.js (<perfume-cart-drawer>). Styles: assets/perfume-cart-drawer.css.
+
+  Accepts:
+  - title, note, empty_text, empty_label, empty_url: strings from the header settings.
+  - ship_threshold: free-delivery goal in the store currency (0 hides the bar);
+    ship_text ([amount] is replaced), ship_done.
+  - gift_label: the gift-message toggle (blank hides it).
+  - trust: up to three reassurances, one per line; help: a line under them.
+{%- endcomment -%}
+{{ 'perfume-cart-drawer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-cart-drawer.js' | asset_url }}" defer="defer"></script>
+
+<perfume-cart-drawer
+  class="pcd"
+  id="PerfumeCartDrawer"
+  data-cart-url="{{ routes.cart_url }}"
+  data-change-url="{{ routes.cart_change_url }}"
+  data-update-url="{{ routes.cart_update_url }}"
+  data-ship-threshold="{{ ship_threshold | default: 0 }}"
+  data-ship-text="{{ ship_text | default: '[amount] away from free delivery' | escape }}"
+  data-ship-done="{{ ship_done | default: 'Free delivery unlocked' | escape }}"
+  inert
+>
+  <div class="pcd__scrim" data-pcd-close></div>
+  <div class="pcd__panel" role="dialog" aria-modal="true" aria-labelledby="PerfumeCartDrawerTitle" tabindex="-1" data-pcd-panel>
+    <div class="pcd__head">
+      <h2 class="pcd__title" id="PerfumeCartDrawerTitle">
+        {{ title | default: 'Your bag' | escape }}
+        <span class="pcd__count" data-pcd-count>{{ cart.item_count }}</span>
+      </h2>
+      <button type="button" class="pcd__close" data-pcd-close aria-label="Close bag">
+        <span aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+
+    {%- if ship_threshold > 0 -%}
+      <div class="pcd__ship" data-pcd-ship hidden>
+        <p class="pcd__ship-text" data-pcd-ship-text aria-live="polite"></p>
+        <div class="pcd__ship-line" aria-hidden="true">
+          <span class="pcd__ship-fill" data-pcd-ship-fill></span>
+          <span class="pcd__ship-dot" data-pcd-ship-dot></span>
+          <span class="pcd__ship-goal">
+            <svg viewBox="0 0 20 20"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg>
+          </span>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="pcd__body" data-pcd-body>
+      <ul class="pcd__items" role="list" data-pcd-items></ul>
+      <div class="pcd__empty" data-pcd-empty hidden>
+        <svg class="pcd__empty-bag" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16h28l-2 26H12z"/><path d="M18 16v-3a6 6 0 0 1 12 0v3"/></svg>
+        <p class="pcd__empty-text">{{ empty_text | default: 'Your bag is empty' | escape }}</p>
+        <a class="pf-button pcd__empty-btn" href="{{ empty_url | default: routes.all_products_collection_url }}">{{ empty_label | default: 'Continue shopping' | escape }}</a>
+      </div>
+    </div>
+
+    <div class="pcd__foot" data-pcd-foot hidden>
+      <p class="pcd__row">
+        <span class="pcd__row-label">Subtotal</span>
+        <span class="pcd__subtotal" data-pcd-subtotal></span>
+      </p>
+      {%- if note != blank -%}
+        <p class="pcd__note">{{ note | escape }}</p>
+      {%- endif -%}
+      {%- if gift_label != blank -%}
+        <details class="pcd__gift" data-pcd-gift>
+          <summary>{{ gift_label | escape }}</summary>
+          <label class="pf-visually-hidden" for="PerfumeCartGift">Gift message</label>
+          <textarea id="PerfumeCartGift" class="pcd__gift-text" rows="3" maxlength="300" placeholder="Write a short message for the card" data-pcd-note>{{ cart.note }}</textarea>
+          <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
+        </details>
+      {%- endif -%}
+      <form action="{{ routes.cart_url }}" method="post" class="pcd__form">
+        <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+      </form>
+      <a class="pcd__view pf-link" href="{{ routes.cart_url }}">View bag</a>
+    </div>
+
+    {%- assign trust_lines = trust | newline_to_br | split: '<br />' -%}
+    {%- if trust != blank or help != blank -%}
+      <div class="pcd__trust">
+        {%- if trust != blank -%}
+          <ul class="pcd__trust-row" role="list">
+            {%- for line in trust_lines limit: 3 -%}
+              {%- assign t = line | strip -%}
+              {%- if t == blank -%}{%- continue -%}{%- endif -%}
+              <li>
+                {%- case forloop.index -%}
+                  {%- when 1 -%}<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg>
+                  {%- when 2 -%}<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l6 2.5V9c0 4-2.6 7-6 9-3.4-2-6-5-6-9V4.5z"/><path d="M7 10l2 2 4-4"/></svg>
+                  {%- else -%}<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg>
+                {%- endcase -%}
+                <span>{{ t | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if help != blank -%}<p class="pcd__help">{{ help | escape }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <p class="pf-visually-hidden" role="status" data-pcd-status></p>
+  </div>
+</perfume-cart-drawer>

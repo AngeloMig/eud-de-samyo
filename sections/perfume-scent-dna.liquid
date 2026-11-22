@@ -1,0 +1,205 @@
+{%- comment -%}
+  Scent DNA: the perfume's personality.
+  Left, a "scent aura": one soft, blurred colour cloud per characteristic
+  (fragrance_profile.characteristics → scent_score), bigger for a higher score,
+  drifting slowly and blending like the perfume's colour. Right, an editorial list,
+  strongest first: the name, its score in words ("4 of 5 · prominent") and a colour
+  bar. Choosing a row opens what it adds and the notes behind it (real photos) and
+  brightens its cloud. The score basis is always shown, never as a %.
+
+  No scores yet: the family and the notes as descriptive tags, and "not scored yet".
+  Everything is HTML (crawlable); JS only switches the highlighted characteristic.
+
+  Script: assets/perfume-discovery.js (<perfume-dna>). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{%- liquid
+  assign profile = metaobject
+  if profile == blank
+    assign profile = product.metafields.fragrance.profile.value
+  endif
+  assign did = 'PerfumeDNA-' | append: section.id
+  assign traits = profile.characteristics.value
+  assign basis = profile.characteristics_basis.value | default: section.settings.default_basis
+  assign name = profile.name.value | default: product.title
+  assign n = traits.size | default: 0
+-%}
+
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+
+<section id="{{ did }}" class="pdna" style="--pdna-bg: {{ section.settings.background_color }}; --pdna-ink: {{ section.settings.text_color }};" aria-labelledby="{{ did }}-h">
+  <span class="pd-anchor" id="scent-dna"></span>
+  <div class="pd-head" data-pf-reveal="rise">
+    <p class="pd-kicker">{{ section.settings.kicker | escape }}</p>
+    <h2 class="pd-h" id="{{ did }}-h">{{ section.settings.heading | replace: '[name]', name | escape }}</h2>
+    {%- if section.settings.intro != blank -%}<p class="pd-lede">{{ section.settings.intro | escape }}</p>{%- endif -%}
+  </div>
+
+  {%- if n > 0 -%}
+    {%- comment -%} Orb positions in the aura (as % of its box), then the accord colours. {%- endcomment -%}
+    {%- assign px = '50,30,70,28,72,50,36,64' | split: ',' -%}
+    {%- assign py = '46,30,32,64,66,74,50,52' | split: ',' -%}
+    <perfume-dna class="pdna__wrap" data-pf-reveal="dna">
+      <div class="pdna__aura" aria-hidden="true">
+        {%- for t in traits -%}
+          {%- liquid
+            assign s = t.score.value | default: 1 | at_least: 1 | at_most: 5
+            assign i = forloop.index0 | modulo: 8
+            assign size = s | times: 9 | plus: 22
+            case t.accord.value
+              when 'Citrus'
+                assign col = '#F2D95B'
+              when 'Fresh'
+                assign col = '#8FCDB6'
+              when 'Aromatic'
+                assign col = '#AE9BD8'
+              when 'Floral'
+                assign col = '#EBA2B9'
+              when 'Powdery'
+                assign col = '#D9BFDB'
+              when 'Fruity'
+                assign col = '#F09A82'
+              when 'Green'
+                assign col = '#A9CF86'
+              when 'Aquatic'
+                assign col = '#94C2DE'
+              when 'Spicy'
+                assign col = '#DE8358'
+              when 'Sweet'
+                assign col = '#F0CC92'
+              when 'Gourmand'
+                assign col = '#DDAA74'
+              when 'Amber'
+                assign col = '#E39D3E'
+              when 'Woody'
+                assign col = '#B59570'
+              when 'Musky'
+                assign col = '#D2C4B8'
+              when 'Leather'
+                assign col = '#8E674C'
+              else
+                assign col = '#C9C0B6'
+            endcase
+          -%}
+          <span class="pdna__orb" data-i="{{ forloop.index0 }}" style="--c: {{ col }}; --s: {{ size }}%; --x: {{ px[i] }}%; --y: {{ py[i] }}%; --d: {{ forloop.index0 | times: 1.7 }}s;"></span>
+        {%- endfor -%}
+        <p class="pdna__aura-name">{{ name | escape }}</p>
+      </div>
+
+      <div class="pdna__side">
+        <ol class="pdna__rows" role="list">
+          {%- for t in traits -%}
+            {%- liquid
+              assign s = t.score.value | default: 1 | at_least: 1 | at_most: 5
+              case s
+                when 1
+                  assign s_word = 'a trace'
+                when 2
+                  assign s_word = 'noticeable'
+                when 3
+                  assign s_word = 'clear'
+                when 4
+                  assign s_word = 'prominent'
+                else
+                  assign s_word = 'dominant'
+              endcase
+              case t.accord.value
+                when 'Citrus'
+                  assign col = '#F2D95B'
+                when 'Fresh'
+                  assign col = '#8FCDB6'
+                when 'Aromatic'
+                  assign col = '#AE9BD8'
+                when 'Floral'
+                  assign col = '#EBA2B9'
+                when 'Powdery'
+                  assign col = '#D9BFDB'
+                when 'Fruity'
+                  assign col = '#F09A82'
+                when 'Green'
+                  assign col = '#A9CF86'
+                when 'Aquatic'
+                  assign col = '#94C2DE'
+                when 'Spicy'
+                  assign col = '#DE8358'
+                when 'Sweet'
+                  assign col = '#F0CC92'
+                when 'Gourmand'
+                  assign col = '#DDAA74'
+                when 'Amber'
+                  assign col = '#E39D3E'
+                when 'Woody'
+                  assign col = '#B59570'
+                when 'Musky'
+                  assign col = '#D2C4B8'
+                when 'Leather'
+                  assign col = '#8E674C'
+                else
+                  assign col = '#C9C0B6'
+              endcase
+            -%}
+            <li class="pdna__row" data-i="{{ forloop.index0 }}" data-score="{{ s }}" style="--c: {{ col }}; --v: {{ s | divided_by: 5.0 }};">
+              <button type="button" class="pdna__item" aria-expanded="false" aria-controls="{{ did }}-p{{ forloop.index0 }}">
+                <span class="pdna__item-name">{{ t.accord.value | escape }}</span>
+                <span class="pdna__item-score">{{ s }} of 5 · {{ s_word }}</span>
+                <span class="pdna__bar" aria-hidden="true"><span></span></span>
+              </button>
+              <div class="pdna__panel" id="{{ did }}-p{{ forloop.index0 }}" data-pdna-panel>
+                {%- if t.explanation.value != blank -%}<p class="pdna__panel-text">{{ t.explanation.value | escape }}</p>{%- endif -%}
+                {%- assign t_notes = t.notes.value -%}
+                {%- if t_notes != blank and t_notes.size > 0 -%}
+                  <ul class="pd-notes" role="list">
+                    {%- for nn in t_notes -%}
+                      <li><span class="pd-notes__art" aria-hidden="true">{%- if nn.image.value != blank -%}{{ nn.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}{%- else -%}{%- render 'perfume-note-art', note: nn.art.value -%}{%- endif -%}</span>{{ nn.name.value | escape }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            </li>
+          {%- endfor -%}
+        </ol>
+
+        <p class="pd-basis">
+          <b>Scale</b> 1 a trace · 2 noticeable · 3 clear · 4 prominent · 5 dominant.
+          {%- if basis != blank %} <b>Basis</b> {{ basis | escape }}.{% endif %}
+        </p>
+      </div>
+    </perfume-dna>
+  {%- else -%}
+    {%- liquid
+      assign tag_notes = profile.top_notes.value | default: product.metafields.fragrance.top_notes.value
+      assign mid_notes = profile.middle_notes.value | default: product.metafields.fragrance.middle_notes.value
+      assign low_notes = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
+      assign family = profile.family.value | default: product.metafields.fragrance.fragrance_family.value
+    -%}
+    <div class="pdna__empty" data-pf-reveal="rise">
+      <ul class="pd-tags" role="list">
+        {%- if family != blank -%}<li class="is-strong">{{ family | escape }}</li>{%- endif -%}
+        {%- for nn in tag_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
+        {%- for nn in mid_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
+        {%- for nn in low_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
+      </ul>
+      <p class="pd-basis">{{ section.settings.empty_text | escape }}</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Scent DNA",
+  "tag": "div",
+  "class": "section-perfume-scent-dna",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Scent DNA" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "What [name] smells like" },
+    { "type": "text", "id": "intro", "label": "Intro", "default": "Each colour is one side of its character; the stronger it is, the bigger it glows. Choose one to learn what it adds." },
+    { "type": "text", "id": "default_basis", "label": "Basis when the profile doesn't say", "default": "Samyó editorial assessment" },
+    { "type": "text", "id": "empty_text", "label": "Text when not scored yet", "default": "Not scored yet: these are its family and notes." },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" }
+  ],
+  "presets": [{ "name": "Scent DNA" }]
+}
+{% endschema %}

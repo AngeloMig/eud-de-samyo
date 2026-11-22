@@ -1,0 +1,319 @@
+/* Shop by scent family (sections/perfume-families.liquid). */
+.pfa {
+  font-family: var(--pf-font-sans, 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif);
+  --pfa-gutter: var(--pf-gutter, clamp(16px, 4vw, 56px));
+  background: var(--pfa-bg);
+  color: var(--pfa-ink);
+  padding-block: var(--pfa-pt) var(--pfa-pb);
+}
+
+.pfa *,
+.pfa *::before,
+.pfa *::after {
+  box-sizing: border-box;
+}
+
+.pfa__head,
+.pfa__grid {
+  margin-inline: auto;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--pfa-gutter);
+}
+
+.pfa__head {
+  align-items: end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+
+.pfa__kicker {
+  color: color-mix(in srgb, var(--pfa-ink) 70%, transparent);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.pfa__heading {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: var(--pf-display-md, clamp(40px, 26px + 3vw, 72px));
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  margin: 0;
+  max-width: 14ch;
+}
+
+.pfa__grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin-block: 0;
+}
+
+.pfa-tile__link {
+  background: var(--tile-bg);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: clamp(380px, 32vw, 520px);
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+}
+
+.pfa-tile__link:focus-visible {
+  outline: 2px solid var(--pfa-ink);
+  outline-offset: 3px;
+}
+
+.pfa-tile__media {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.pfa-tile__media img {
+  display: block;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  transform: scale(1.12);
+  transition: transform 1.2s var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  width: 100%;
+}
+
+.pfa-tile__link:hover .pfa-tile__media img,
+.pfa-tile__link:focus-visible .pfa-tile__media img {
+  transform: scale(1.2) rotate(-2deg);
+}
+
+/* The image settles from a zoom as the tile wipes in. */
+.pf-js .pfa-tile:not(.is-in) .pfa-tile__media img {
+  transform: scale(1.35);
+}
+
+.pfa-tile__body {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px 22px;
+}
+
+.pfa-tile__title {
+  font-family: var(--pf-font-serif, 'Cormorant Garamond', Georgia, serif);
+  font-size: clamp(26px, 2.2vw, 34px);
+  line-height: 1;
+}
+
+.pfa-tile__text {
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 30ch;
+}
+
+/* Find your scent */
+.pfa-tile--cta .pfa-tile__link {
+  color: var(--pf-paper, #f3f0eb);
+}
+
+.pfa-tile__body--cta {
+  align-content: end;
+  flex: 1;
+  padding: 28px 24px;
+}
+
+.pfa-tile__script {
+  font-family: var(--pf-font-script, 'Mrs Saint Delafield', cursive);
+  font-size: clamp(44px, 4vw, 64px);
+  line-height: 1;
+  margin-bottom: 8px;
+  transform: rotate(-5deg);
+  transform-origin: left;
+}
+
+.pfa-tile__cta {
+  border-bottom: 1px solid currentColor;
+  font-size: 12px;
+  font-weight: 600;
+  justify-self: start;
+  letter-spacing: 0.16em;
+  margin-top: 14px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.pfa-tile__cta span {
+  display: inline-block;
+  transition: transform 0.4s var(--pf-ease-out, ease);
+}
+
+.pfa-tile__link:hover .pfa-tile__cta span {
+  transform: translateX(6px);
+}
+
+@media screen and (max-width: 989px) {
+  .pfa__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+perfume-families {
+  display: block;
+}
+
+/* Carousel controls: only shown (by JS) when the row scrolls sideways */
+.pfa__controls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin: 18px auto 0;
+  max-width: var(--pf-max-width, 1680px);
+  padding-inline: var(--pfa-gutter);
+}
+
+.pfa__controls[hidden] {
+  display: none;
+}
+
+.pfa__dots {
+  display: flex;
+}
+
+.pfa__dot {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  display: grid;
+  height: 44px;
+  padding: 0;
+  place-items: center;
+  width: 28px;
+}
+
+.pfa__dot span {
+  background: var(--pfa-ink);
+  border-radius: 999px;
+  display: block;
+  height: 6px;
+  opacity: 0.25;
+  transform-origin: left center;
+  transition: opacity 0.3s ease, transform 0.45s var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  width: 6px;
+}
+
+.pfa__dot[aria-current='true'] span {
+  opacity: 1;
+  transform: scaleX(3);
+}
+
+.pfa__dot[aria-current='true'] {
+  width: 40px;
+}
+
+.pfa__arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.pfa__arrow {
+  align-items: center;
+  background: color-mix(in srgb, #fff 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pfa-ink) 18%, transparent);
+  border-radius: 50%;
+  color: var(--pfa-ink);
+  cursor: pointer;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  transition: opacity 0.25s ease;
+  width: 36px;
+}
+
+.pfa__arrow::after {
+  content: '';
+  inset: -4px;
+  position: absolute;
+}
+
+.pfa__arrow:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.pfa__arrow svg {
+  fill: none;
+  height: 16px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  width: 16px;
+}
+
+.pfa__dot:focus-visible,
+.pfa__arrow:focus-visible {
+  outline: 2px solid var(--pfa-ink);
+  outline-offset: 2px;
+}
+
+@media screen and (max-width: 749px) {
+  .pfa__grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-behavior: smooth;
+    scroll-padding-inline: var(--pfa-gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .pfa__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mouse drag (JS): snapping waits until the drag ends. */
+  .pfa__grid.is-dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
+  .pfa__grid.is-dragging a {
+    pointer-events: none;
+  }
+
+  .pfa__grid.is-draggable {
+    cursor: grab;
+  }
+
+  .pfa-tile {
+    flex: 0 0 78%;
+    scroll-snap-align: start;
+  }
+
+  .pfa-tile__link {
+    min-height: 420px;
+  }
+
+  .pfa-tile img {
+    -webkit-user-drag: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pfa__grid {
+    scroll-behavior: auto;
+  }
+}

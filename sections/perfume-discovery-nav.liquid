@@ -1,0 +1,69 @@
+{%- comment -%}
+  Sticky section nav for fragrance pages: Overview · Scent DNA · Notes · Performance ·
+  Where to buy… Sticks under the header, scrolls smoothly to each section, underlines
+  the one on screen, and hides links whose section isn't on the page. When the links
+  don't fit it becomes a small carousel: the edges fade, an arrow shows on each side
+  that has more links (mouse users), it can be dragged or swiped, and the current
+  link is kept in view.
+
+  Blocks: one per link (label + the section's anchor). Script: assets/perfume-discovery.js
+  (<perfume-discovery-nav>). Styles: assets/perfume-discovery.css.
+{%- endcomment -%}
+{{ 'perfume-discovery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-discovery.js' | asset_url }}" defer="defer"></script>
+
+<perfume-discovery-nav class="pdn" style="--pdn-bg: {{ section.settings.background_color }};">
+  <div class="pdn__bar">
+    <button type="button" class="pdn__arrow pdn__arrow--prev" tabindex="-1" aria-hidden="true" data-pdn-prev>
+      <svg viewBox="0 0 16 16" focusable="false"><path d="M10 3 5 8l5 5"/></svg>
+    </button>
+    <nav class="pdn__inner" aria-label="{{ section.settings.label | escape }}" data-pdn-row>
+      <ul class="pdn__list" role="list">
+        {%- for block in section.blocks -%}
+          {%- assign anchor = block.settings.anchor | remove: '#' | strip -%}
+          <li {{ block.shopify_attributes }}>
+            <a class="pdn__link" href="#{{ anchor }}" data-pdn-link>{{ block.settings.label | escape }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <button type="button" class="pdn__arrow pdn__arrow--next" tabindex="-1" aria-hidden="true" data-pdn-next>
+      <svg viewBox="0 0 16 16" focusable="false"><path d="m6 3 5 5-5 5"/></svg>
+    </button>
+  </div>
+</perfume-discovery-nav>
+
+{% schema %}
+{
+  "name": "Fragrance section nav",
+  "tag": "div",
+  "class": "section-perfume-discovery-nav",
+  "disabled_on": { "groups": ["header", "footer"] },
+  "settings": [
+    { "type": "text", "id": "label", "label": "Name for screen readers", "default": "On this page" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F3F0EB" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Scent DNA" },
+        { "type": "text", "id": "anchor", "label": "Section anchor", "info": "overview, scent-dna, notes, performance, reviews, where-to-buy, details", "default": "scent-dna" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fragrance section nav",
+      "blocks": [
+        { "type": "link", "settings": { "label": "Overview", "anchor": "overview" } },
+        { "type": "link", "settings": { "label": "Scent DNA", "anchor": "scent-dna" } },
+        { "type": "link", "settings": { "label": "Notes", "anchor": "notes" } },
+        { "type": "link", "settings": { "label": "Performance", "anchor": "performance" } },
+        { "type": "link", "settings": { "label": "Where to buy", "anchor": "where-to-buy" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

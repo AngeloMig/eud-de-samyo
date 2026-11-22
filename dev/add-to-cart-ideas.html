@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samyo add-to-bag: 10 ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
+<style>
+  :root { --paper: #f3f0eb; --ink: #26221f; --soft: #6b635b; --line: rgba(38,34,31,.14); --juice: #c9873a; --ease: cubic-bezier(.2,0,0,1); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 'Instrument Sans', system-ui, sans-serif; }
+  header { max-width: 1400px; margin: 0 auto; padding: 40px 32px 8px; }
+  h1 { font: 400 52px/1 'Cormorant Garamond', serif; margin: 0 0 10px; letter-spacing: -.02em; }
+  .lede { color: var(--soft); max-width: 72ch; margin: 0; }
+  main { max-width: 1400px; margin: 0 auto; padding: 28px 32px 80px; display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .card { background: #e8e3db; padding: 22px; display: grid; gap: 14px; align-content: start; position: relative; overflow: visible; min-height: 330px; }
+  .card:nth-child(3n+2) { background: #dfd9e6; } .card:nth-child(3n) { background: #ead8c2; }
+  .num { font: 400 38px/1 'Cormorant Garamond', serif; }
+  h2 { font: 400 26px/1.1 'Cormorant Garamond', serif; margin: 0; }
+  p { margin: 0; color: var(--soft); font-size: 14px; }
+  .stage { display: flex; align-items: center; gap: 14px; margin-top: auto; position: relative; min-height: 70px; }
+  .bag { margin-left: auto; position: relative; width: 38px; height: 38px; display: grid; place-items: center; background: #fff; border-radius: 50%; font-size: 12px; font-weight: 600; }
+  .bag b { position: absolute; top: -4px; right: -4px; background: var(--ink); color: #fff; border-radius: 999px; min-width: 18px; height: 18px; font-size: 10px; display: grid; place-items: center; }
+  .btn { position: relative; isolation: isolate; border: 0; background: var(--ink); color: var(--paper); font: 600 12px/1 'Instrument Sans', sans-serif; letter-spacing: .16em; text-transform: uppercase; min-height: 52px; padding: 0 22px; cursor: pointer; display: inline-flex; align-items: center; gap: 12px; overflow: visible; }
+  .btn .price { border-left: 1px solid rgba(243,240,235,.35); padding-left: 12px; }
+  .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .btn .lbl { position: relative; z-index: 2; display: inline-flex; gap: 12px; align-items: center; }
+  .again { font-size: 11px; color: var(--soft); }
+  @keyframes bump { 0%,100% { transform: scale(1); } 40% { transform: scale(1.25); } }
+  .bag.bump { animation: bump .45s var(--ease); }
+
+  /* 1 spritz */
+  .mist { position: absolute; left: 16px; top: 50%; width: 0; height: 0; pointer-events: none; z-index: 3; }
+  .mist i { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2); border-radius: 50%; background: #fff; box-shadow: 0 0 4px #fff; filter: blur(var(--b)); opacity: 0; animation: spritz var(--d) cubic-bezier(.12,.75,.3,1) var(--dl) forwards; }
+  @keyframes spritz { 0% { opacity: .95; transform: translate(0,0) scale(.3); } 100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.9); } }
+
+  /* 2 bottle to bag */
+  .fly { position: fixed; width: 26px; height: 40px; border-radius: 4px 4px 6px 6px; background: linear-gradient(90deg,#1f2a36,#6f8aa6 50%,#1f2a36); z-index: 50; pointer-events: none; }
+  .fly::before { content: ''; position: absolute; left: 7px; top: -8px; width: 12px; height: 9px; background: #111; border-radius: 2px; }
+
+  /* 3 fill with juice */
+  .b3::before { content: ''; position: absolute; inset: 0; background: var(--juice); transform: scaleX(0); transform-origin: left; z-index: 1; }
+  .b3.go::before { transition: transform 1s cubic-bezier(.65,0,.35,1); transform: scaleX(1); }
+  .b3::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 100%; background: radial-gradient(circle at 20% 0, rgba(255,255,255,.35) 0 3px, transparent 4px) 0 0/22px 12px; opacity: 0; z-index: 1; }
+  .b3.go::after { opacity: 1; animation: bubbles 1s linear; }
+  @keyframes bubbles { to { background-position: 0 -36px; } }
+
+  /* 4 bloom */
+  .b4 { overflow: hidden; }
+  .bloom { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #c45a72; transform: translate(-50%,-50%) scale(0); z-index: 1; animation: bloom .8s var(--ease) forwards; }
+  @keyframes bloom { to { transform: translate(-50%,-50%) scale(60); } }
+
+  /* 5 scent trail (handwritten word) */
+  .trail { position: absolute; left: 10px; bottom: 56px; font: 46px/1 'Mrs Saint Delafield', cursive; color: var(--ink); pointer-events: none; white-space: nowrap; clip-path: inset(0 100% 0 0); animation: write 1.4s ease forwards, drift 2.2s ease-in 1.2s forwards; }
+  @keyframes write { to { clip-path: inset(0 0 0 0); } }
+  @keyframes drift { to { opacity: 0; transform: translate(30px,-26px) rotate(-6deg); filter: blur(3px); } }
+
+  /* 6 morph to circle */
+  .b6 { transition: width .45s var(--ease), padding .45s var(--ease), border-radius .45s var(--ease); width: 230px; justify-content: center; }
+  .b6.go { width: 52px; padding: 0; border-radius: 50%; }
+  .b6.go .lbl { opacity: 0; }
+  .b6 .ring { position: absolute; inset: 8px; border-radius: 50%; border: 1.5px solid rgba(243,240,235,.25); border-top-color: var(--paper); opacity: 0; }
+  .b6.go .ring { opacity: 1; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(1turn); } }
+  .b6.done { width: 230px; padding: 0 22px; border-radius: 0; background: #3f6b4a; }
+
+  /* 7 note confetti */
+  .petal { position: fixed; z-index: 50; font-size: 20px; pointer-events: none; animation: petal 1.6s cubic-bezier(.2,.6,.3,1) forwards; }
+  @keyframes petal { 0% { transform: translate(0,0) rotate(0) scale(.4); opacity: 1; } 60% { opacity: 1; } 100% { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1); opacity: 0; } }
+
+  /* 8 cap twist */
+  .mini { width: 16px; height: 22px; position: relative; display: inline-block; }
+  .mini::after { content: ''; position: absolute; inset: 6px 1px 0; background: var(--juice); border-radius: 2px; }
+  .mini i { position: absolute; left: 3px; top: 0; width: 10px; height: 6px; background: var(--paper); border-radius: 1px; transform-origin: 50% 100%; }
+  .b8.go .mini i { animation: twist .45s ease-in-out 2; }
+  @keyframes twist { 0%,100% { transform: rotate(0) translateY(0); } 50% { transform: rotate(-35deg) translateY(-6px); } }
+
+  /* 9 roll counter */
+  .roll { display: inline-block; height: 1.2em; overflow: hidden; vertical-align: middle; }
+  .roll > span { display: grid; transition: transform .5s var(--ease); }
+  .roll > span > span { height: 1.2em; line-height: 1.2em; }
+  .b9.s1 .roll > span { transform: translateY(-1.2em); }
+  .b9.s2 .roll > span { transform: translateY(-2.4em); }
+
+  /* 10 shimmer + press */
+  .b10 { overflow: hidden; transition: transform .15s ease; }
+  .b10:active { transform: scale(.97); }
+  .b10::after { content: ''; position: absolute; top: 0; bottom: 0; width: 40%; left: -50%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent); z-index: 1; }
+  .b10.go::after { animation: shimmer .9s ease-in-out 2; }
+  @keyframes shimmer { to { left: 120%; } }
+  .b10.done { animation: spring .6s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes spring { 0% { transform: scale(.94); } 100% { transform: scale(1); } }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Add to bag: 10 animation ideas</h1>
+  <p class="lede">Click each button. Every one runs the same story: adding (about 0.9 s), then added (2 s), then back. Each respects "reduce motion" (no movement, just the label change). Today's showcase uses idea 1.</p>
+</header>
+<main>
+  <article class="card"><span class="num">1</span><h2>Spritz <small style="font-size:14px">(current)</small></h2><p>A cone of fine droplets and a mist cloud puff from the atomizer side, pulsing while adding, a bigger burst when added.</p>
+    <div class="stage"><button class="btn b1" data-demo="1"><span class="mist"></span><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">2</span><h2>Bottle to bag</h2><p>A tiny bottle lifts off the button and arcs into the Bag in the header; the Bag bumps and its count goes up. Tells people where it went.</p>
+    <div class="stage"><button class="btn b2" data-demo="2"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">3</span><h2>Juice fills the button</h2><p>The button fills left to right with the perfume's own colour, with tiny rising bubbles, like a bottle being filled; then "Added".</p>
+    <div class="stage"><button class="btn b3" data-demo="3"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">4</span><h2>Colour bloom</h2><p>A bloom of the perfume's accent colour spreads from where you tapped, filling the button; calm and premium.</p>
+    <div class="stage"><button class="btn b4" data-demo="4"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">5</span><h2>Scent trail</h2><p>A handwritten word of its main note ("lavender") writes itself above the button and drifts away like a trail of scent.</p>
+    <div class="stage"><button class="btn b5" data-demo="5"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">6</span><h2>Morph to a ring</h2><p>The button shrinks into a circle with a thin spinning ring while adding, then opens back out, green, as "Added".</p>
+    <div class="stage"><button class="btn b6" data-demo="6"><span class="ring"></span><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">7</span><h2>Note petals</h2><p>The perfume's notes (lemon, pepper, lavender, vanilla) burst out as little petals and float down. Playful; best for gifting moments.</p>
+    <div class="stage"><button class="btn b7" data-demo="7"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">8</span><h2>Cap twist</h2><p>A tiny bottle inside the button twists its cap off and on while adding: a small, crafted detail, quiet enough to use everywhere.</p>
+    <div class="stage"><button class="btn b8" data-demo="8"><span class="lbl"><span class="mini"><i></i></span><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">9</span><h2>Rolling label</h2><p>The label rolls up through "Adding…" to "Added ✓", like the header's link hover. The most minimal and NOHO-like.</p>
+    <div class="stage"><button class="btn b9" data-demo="9"><span class="lbl"><span class="roll"><span><span>Add to bag</span><span>Adding…</span><span>Added ✓</span></span></span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+
+  <article class="card"><span class="num">10</span><h2>Shimmer + spring</h2><p>The button presses in, a soft shimmer sweeps across while adding, and it springs back when added. On phones it gives a tiny vibration too.</p>
+    <div class="stage"><button class="btn b10" data-demo="10"><span class="lbl"><span data-l>Add to bag</span><span class="price">₱6,200</span></span></button><span class="bag">Bag<b>2</b></span></div></article>
+</main>
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  const NOTES = ['🍋', '🌶️', '🪻', '🍦', '🌿'];
+
+  function spray(btn, k = 1) {
+    const layer = btn.querySelector('.mist');
+    for (let i = 0; i < 18 * k; i++) {
+      const d = document.createElement('i');
+      const a = ((-26 + Math.random() * 34) * Math.PI) / 180, dist = (90 + Math.random() * 180) * Math.min(k, 1.4);
+      d.style.cssText = `--dx:${Math.cos(a) * dist}px;--dy:${Math.sin(a) * dist}px;--s:${2 + Math.random() * 6}px;--b:${Math.random() * 1.6}px;--d:${700 + Math.random() * 600}ms;--dl:${Math.random() * 120}ms`;
+      d.addEventListener('animationend', () => d.remove());
+      layer.append(d);
+    }
+  }
+
+  function flyToBag(btn, bag) {
+    const a = btn.getBoundingClientRect(), b = bag.getBoundingClientRect();
+    const el = document.createElement('div');
+    el.className = 'fly';
+    document.body.append(el);
+    const x0 = a.left + 24, y0 = a.top + 6, x1 = b.left + b.width / 2 - 13, y1 = b.top + 2;
+    el.animate(
+      [
+        { transform: `translate(${x0}px, ${y0}px) scale(1) rotate(0deg)` },
+        { transform: `translate(${(x0 + x1) / 2}px, ${Math.min(y0, y1) - 90}px) scale(.9) rotate(-20deg)`, offset: 0.5 },
+        { transform: `translate(${x1}px, ${y1}px) scale(.4) rotate(10deg)`, opacity: 0.2 },
+      ],
+      { duration: 800, easing: 'cubic-bezier(.4,0,.2,1)' }
+    ).onfinish = () => el.remove();
+    el.style.left = '0'; el.style.top = '0';
+  }
+
+  function petals(btn) {
+    const r = btn.getBoundingClientRect();
+    for (let i = 0; i < 14; i++) {
+      const p = document.createElement('span');
+      p.className = 'petal';
+      p.textContent = NOTES[i % NOTES.length];
+      p.style.left = `${r.left + r.width / 2}px`;
+      p.style.top = `${r.top}px`;
+      p.style.setProperty('--x', `${(Math.random() - 0.5) * 260}px`);
+      p.style.setProperty('--y', `${-60 - Math.random() * 120 + Math.random() * 160}px`);
+      p.style.setProperty('--r', `${(Math.random() - 0.5) * 220}deg`);
+      p.addEventListener('animationend', () => p.remove());
+      document.body.append(p);
+    }
+  }
+
+  document.querySelectorAll('[data-demo]').forEach((btn) => {
+    const label = btn.querySelector('[data-l]');
+    const bag = btn.parentElement.querySelector('.bag');
+    const count = bag.querySelector('b');
+    let busy = false;
+    const set = (t) => label && (label.textContent = t);
+    btn.addEventListener('click', async (e) => {
+      if (busy) return;
+      busy = true;
+      const n = btn.dataset.demo;
+      set('Adding…');
+      if (!reduced) {
+        if (n === '1') { spray(btn, 1); setTimeout(() => spray(btn, .8), 420); }
+        if (n === '2') flyToBag(btn, bag);
+        if (n === '3') btn.classList.add('go');
+        if (n === '4') { const r = btn.getBoundingClientRect(); const s = document.createElement('span'); s.className = 'bloom'; s.style.left = `${(e.clientX || r.left + 20) - r.left}px`; s.style.top = `${(e.clientY || r.top + 26) - r.top}px`; btn.append(s); }
+        if (n === '5') { const t = document.createElement('span'); t.className = 'trail'; t.textContent = 'lavender'; btn.parentElement.append(t); setTimeout(() => t.remove(), 3500); }
+        if (n === '6') btn.classList.add('go');
+        if (n === '7') petals(btn);
+        if (n === '8') btn.classList.add('go');
+        if (n === '9') btn.classList.add('s1');
+        if (n === '10') { btn.classList.add('go'); navigator.vibrate?.(12); }
+      } else if (n === '9') btn.classList.add('s1');
+      await wait(900);
+      count.textContent = Number(count.textContent) + 1;
+      if (!reduced) bag.classList.add('bump');
+      setTimeout(() => bag.classList.remove('bump'), 500);
+      set('Added ✓');
+      if (!reduced && n === '1') spray(btn, 1.6);
+      if (n === '6') { btn.classList.remove('go'); btn.classList.add('done'); }
+      if (n === '9') { btn.classList.remove('s1'); btn.classList.add('s2'); }
+      if (n === '10') { btn.classList.remove('go'); btn.classList.add('done'); }
+      await wait(2000);
+      set('Add to bag');
+      btn.classList.remove('go', 'done', 's1', 's2');
+      btn.querySelectorAll('.bloom').forEach((b) => b.remove());
+      busy = false;
+    });
+  });
+})();
+</script>
+</body>
+</html>

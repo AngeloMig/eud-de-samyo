@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "guide": {
+      "type": "perfume-scent-guide",
+      "blocks": {
+        "top": { "type": "tier", "settings": { "name": "Top notes", "nickname": "the hello", "when": "First 5–15 minutes", "text": "Light, quick notes that greet you on spraying, then fade. They're why a perfume smells so bright on the test strip.", "examples": "Lemon:lemon, Bergamot:bergamot, Grapefruit:grapefruit, Mint:mint", "color": "#F2E27E" } },
+        "heart": { "type": "tier", "settings": { "name": "Heart notes", "nickname": "the personality", "when": "From about 15 minutes, for a few hours", "text": "The character of the perfume once it settles: florals, spices and fruit. This is what people around you notice most.", "examples": "Lavender:lavender, Rose:rose, Iris:iris, Cinnamon:cinnamon", "color": "#E7B9C6" } },
+        "base": { "type": "tier", "settings": { "name": "Base notes", "nickname": "the memory", "when": "From a few hours on", "text": "Rich, slow notes that anchor everything and stay longest on skin and clothes: the dry-down.", "examples": "Cedar:cedar, Vanilla:vanilla, Amber:amber, Musk:musk", "color": "#C9B59A" } },
+        "c1": { "type": "concentration", "settings": { "name": "Eau de Cologne", "oil": "2–5% oil", "wear": "about 2 hours", "strength": 20 } },
+        "c2": { "type": "concentration", "settings": { "name": "Eau de Toilette", "oil": "5–15% oil", "wear": "about 3–5 hours", "strength": 45 } },
+        "c3": { "type": "concentration", "settings": { "name": "Eau de Parfum", "oil": "15–20% oil", "wear": "about 5–8 hours", "strength": 70 } },
+        "c4": { "type": "concentration", "settings": { "name": "Parfum / Extrait", "oil": "20–30% oil or more", "wear": "8 hours and more", "strength": 95 } },
+        "w1": { "type": "term", "settings": { "term": "Longevity", "text": "How long you can still smell it on your own skin.", "icon": "clock" } },
+        "w2": { "type": "term", "settings": { "term": "Projection", "text": "How far the scent reaches from you in the first hours: close to the skin, or across a room.", "icon": "rings" } },
+        "w3": { "type": "term", "settings": { "term": "Sillage", "text": "The trail you leave behind when you walk past. French for the wake of a boat.", "icon": "trail" } },
+        "w4": { "type": "term", "settings": { "term": "Dry-down", "text": "How a perfume smells once the top notes are gone: the part you live with all day.", "icon": "drop" } },
+        "w5": { "type": "term", "settings": { "term": "Accord", "text": "A few notes blended so they read as one new smell, like a chord in music.", "icon": "chord" } },
+        "w6": { "type": "term", "settings": { "term": "Skin chemistry", "text": "Why the same perfume smells a little different on you than on a friend.", "icon": "skin" } },
+        "f1": { "type": "family", "settings": { "name": "Citrus", "text": "Zesty, sunny and quick to lift a mood.", "color": "#F2E27E", "art": "lemon" } },
+        "f2": { "type": "family", "settings": { "name": "Fresh", "text": "Clean, airy and green, like cool water or crushed leaves.", "color": "#BFE0D2", "art": "mint" } },
+        "f3": { "type": "family", "settings": { "name": "Aromatic", "text": "Herbs like lavender and sage: crisp and classic.", "color": "#CFC3E6", "art": "lavender" } },
+        "f4": { "type": "family", "settings": { "name": "Floral", "text": "Petals and blossoms, from soft and powdery to bold.", "color": "#F0C7D2", "art": "rose" } },
+        "f5": { "type": "family", "settings": { "name": "Spicy", "text": "Pepper, cinnamon and cardamom: warm and lively.", "color": "#E2A07E", "art": "cinnamon" } },
+        "f6": { "type": "family", "settings": { "name": "Gourmand", "text": "Sweet and edible: vanilla, tonka, caramel.", "color": "#EFE0C4", "art": "vanilla" } },
+        "f7": { "type": "family", "settings": { "name": "Amber", "text": "Resins and warmth that glow on skin.", "color": "#E5B26A", "art": "amber" } },
+        "f8": { "type": "family", "settings": { "name": "Woody", "text": "Cedar, vetiver and sandalwood: dry and grounding.", "color": "#C9B59A", "art": "cedar" } },
+        "t1": { "type": "tip", "settings": { "title": "Moisturise first", "text": "Perfume holds on longer to hydrated skin; an unscented lotion helps." } },
+        "t2": { "type": "tip", "settings": { "title": "Spray, don't rub", "text": "Rubbing your wrists together warms and breaks up the top notes." } },
+        "t3": { "type": "tip", "settings": { "title": "Aim for pulse points", "text": "Neck, inner elbows and behind the knees warm the scent gently." } },
+        "t4": { "type": "tip", "settings": { "title": "Go lighter by day", "text": "In humid heat, fresh and citrus scents feel easier; save rich ones for cool evenings." } },
+        "t5": { "type": "tip", "settings": { "title": "Mist your clothes too", "text": "Fabric holds scent longer than skin in the heat (test on a hidden spot first)." } },
+        "t6": { "type": "tip", "settings": { "title": "Keep it cool and dark", "text": "Heat and sunlight spoil perfume: never leave a bottle in the car." } }
+      },
+      "block_order": ["top", "heart", "base", "c1", "c2", "c3", "c4", "w1", "w2", "w3", "w4", "w5", "w6", "f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "t1", "t2", "t3", "t4", "t5", "t6"],
+      "settings": {}
+    }
+  },
+  "order": ["guide"]
+}

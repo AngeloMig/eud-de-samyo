@@ -1,0 +1,7 @@
+# Samyo theme check config.
+# MatchingTranslations is off: Dawn v16.2.0's own locale files report ~35,000
+# mismatches with the current CLI (identical on the untouched Dawn baseline commit).
+# Samyo adds no translation keys. Turn it back on if you add locale strings.
+extends: theme-check:recommended
+MatchingTranslations:
+  enabled: false
