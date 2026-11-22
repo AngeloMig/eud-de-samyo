@@ -160,3 +160,20 @@ Originals in `dev/source-photos/notes/`; background removed with `dev/tools/cuto
 | `sample-scent-iris.webp` | photo-1778170914884-4d3fda87aea6 |
 | `sample-scent-cardamom.webp` | photo-1642255486695-a52c59347cfa |
 
+
+## Decant vials (Unsplash License, downloaded with the owner's OK, 2026-11-22)
+
+Originals in `dev/source-photos/decants/`; cut out with `dev/tools/cutout.m`, cropped,
+edges trimmed 2px, WebP at max 700px in `assets/`. Used in `dev/decant-bundles.html`.
+All containers are unbranded.
+
+| Asset | Shows | Photographer | Unsplash |
+|---|---|---|---|
+| sample-decant-square.webp | Small square vial, black cap (shown as 1 ml) | Rae Wallis | https://unsplash.com/photos/clear-glass-bottle-with-orange-liquid-6uNdAlvwf98 |
+| sample-decant-clear.webp | Clear glass spray vial (shown as 2 ml) | Fulvio Ciccolo | https://unsplash.com/photos/clear-glass-bottle-on-white-surface-Ecwk9RM_304 |
+| sample-decant-amber.webp | Amber glass spray vial (shown as 5 and 10 ml) | Cristina Pop | https://unsplash.com/photos/orange-and-black-pen-on-white-table-MY6pHpbFnUk |
+| sample-decant-set.webp | A fan of amber spray vials | Cristina Pop | https://unsplash.com/photos/black-and-brown-pen-on-white-table-XGjh-flFZ3o |
+
+Downloaded but not used: the 10 ml travel atomizer by Macro.jr
+(https://unsplash.com/photos/a-close-up-of-a-bottle-b0-MJ8wCQZ8): a lime slice covers it
+and it carries an embossed brand name.

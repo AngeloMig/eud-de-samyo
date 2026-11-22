@@ -1,0 +1,199 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decant bundles plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--paper:#efe9df;--line:rgba(41,37,33,.14);--amber:#d9b46a;--ease:cubic-bezier(.16,1,.3,1);--good:#4f7a5a;--bad:#a14b3c}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.55 'Instrument Sans',system-ui,sans-serif}
+ .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+ header.top{padding:40px 0 10px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:90ch;margin:0}
+ h2.sec{font:400 34px/1.05 'Cormorant Garamond';margin:44px 0 6px} .sub{color:var(--soft);margin:0 0 18px;max-width:86ch}
+ .card{background:#fff;padding:24px 26px;margin-bottom:18px}
+ .k{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+ .peso::before{content:'₱'}
+
+ /* ---- 1. the section mock-up ---- */
+ .mock{background:var(--page);padding:56px 48px;border:1px solid var(--line)}
+ .mock .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:30px}
+ .mock h3{font:400 52px/1 'Cormorant Garamond';margin:8px 0 0;letter-spacing:-.02em} .mock h3 i{font-style:italic}
+ .mock .note{max-width:40ch;color:var(--soft);margin:0}
+ .sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ .size{position:relative;background:#fff;padding:20px 18px 18px;display:grid;grid-template-rows:250px auto;cursor:pointer;transition:translate .5s var(--ease),box-shadow .5s;border:1px solid transparent}
+ .size:hover{translate:0 -4px;box-shadow:0 22px 30px -22px rgba(41,37,33,.45)}
+ .size.on{border-color:var(--ink)}
+ .size svg{height:100%;width:100%}
+ .vimg{display:flex;align-items:flex-end;justify-content:center;height:100%} .vimg img{width:auto;max-width:70%;object-fit:contain;filter:drop-shadow(0 12px 12px rgba(41,37,33,.16));transition:translate .6s var(--ease)} .size:hover .vimg img{translate:0 -6px}
+ .mock .hero-set{width:220px;align-self:center;filter:drop-shadow(0 18px 18px rgba(41,37,33,.15))}
+ .size b{font:400 34px/1 'Cormorant Garamond';display:block} .size small{color:var(--soft);display:block;margin-top:4px;font-size:12px}
+ .size .from{position:absolute;top:14px;right:14px;font:600 11px/1 'Instrument Sans';letter-spacing:.08em;background:var(--paper);padding:6px 9px;border-radius:99px}
+ .bundles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+ .bundle{background:var(--ink);color:#f3ede4;padding:20px 20px 18px;display:grid;gap:6px;position:relative;overflow:hidden}
+ .bundle.light{background:#fff;color:var(--ink)}
+ .bundle .nm{font:400 26px/1 'Cormorant Garamond'} .bundle .nm i{font-style:italic}
+ .bundle .what{font-size:13px;opacity:.75}
+ .bundle .pr{font:400 30px/1 'Cormorant Garamond';margin-top:6px} .bundle .pr s{font-size:15px;opacity:.5;margin-left:8px}
+ .bundle .save{position:absolute;top:16px;right:16px;font:600 10px/1 'Instrument Sans';letter-spacing:.14em;text-transform:uppercase;background:var(--amber);color:var(--ink);padding:6px 9px;border-radius:99px}
+ .bundle .btn{justify-self:start;margin-top:8px;display:inline-flex;gap:8px;align-items:center;min-height:38px;padding:10px 16px;border-radius:99px;background:#f3ede4;color:var(--ink);font:500 13px/1 'Instrument Sans'}
+ .bundle.light .btn{background:var(--ink);color:#f3ede4}
+ .partner{margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px;font-size:13px;color:var(--soft)}
+ .partner a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+ /* ---- 2. flow ---- */
+ .flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;counter-reset:s}
+ .step{background:#fff;padding:18px 16px;position:relative;counter-increment:s}
+ .step::before{content:counter(s,decimal-leading-zero);font:400 30px/1 'Cormorant Garamond';color:var(--amber);display:block;margin-bottom:8px}
+ .step b{display:block;font-weight:600;margin-bottom:4px} .step p{margin:0;font-size:13px;color:var(--soft)}
+ .ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+ .rung{background:var(--paper);padding:14px 16px} .rung b{font:400 24px/1 'Cormorant Garamond';display:block} .rung span{font-size:12.5px;color:var(--soft)}
+
+ /* ---- 3. ideas ---- */
+ .ideas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .idea{background:#fff;padding:18px 20px} .idea b{font:400 22px/1.1 'Cormorant Garamond';display:block;margin-bottom:4px} .idea p{margin:0;font-size:13.5px;color:var(--soft)}
+
+ /* ---- 4. calculator ---- */
+ .inputs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 18px}
+ label.f{display:grid;gap:4px;font-size:12px;color:var(--soft)} label.f input{font:500 15px/1 'Instrument Sans';padding:10px 10px;border:1px solid var(--line);background:#fbfaf7;color:var(--ink);width:100%;min-height:44px}
+ .quick{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px} .quick button{border:1px solid var(--ink);background:#fff;font:500 13px/1 'Instrument Sans';padding:10px 14px;border-radius:99px;cursor:pointer;min-height:40px} .quick button.on{background:var(--ink);color:#fff}
+ table{width:100%;border-collapse:collapse;font-size:14px;margin-top:14px} th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap} th{font:600 10px/1.2 'Instrument Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--soft)} th:first-child,td:first-child{text-align:left}
+ td input{width:90px;font:500 14px/1 'Instrument Sans';padding:8px;border:1px solid var(--line);text-align:right;min-height:38px}
+ .pos{color:var(--good);font-weight:600} .neg{color:var(--bad);font-weight:600}
+ .tablewrap{overflow-x:auto}
+ .combos{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:12px} .combo{background:var(--paper);padding:14px} .combo b{font:400 30px/1 'Cormorant Garamond';display:block} .combo span{font-size:12px;color:var(--soft)}
+ .warn{background:#fff7e6;border-left:3px solid var(--amber);padding:12px 16px;font-size:13.5px;margin-top:14px}
+ footer{padding:40px 0 70px;color:var(--soft);font-size:13px}
+ @media (max-width:900px){.wrap{padding:0 16px}.mock{padding:32px 18px}.mock h3{font-size:38px}.sizes{grid-template-columns:1fr 1fr}.bundles{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.ladder{grid-template-columns:1fr 1fr}.ideas{grid-template-columns:1fr}.inputs{grid-template-columns:1fr 1fr}.combos{grid-template-columns:repeat(3,1fr)}}
+ @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+<div class="wrap">
+<header class="top"><h1>Decants: try before the full bottle</h1>
+<p class="lede">The idea: sell small decants (1, 2, 5 and 10 ml, poured from authentic full bottles) of 5–10 fragrances in bundles, and send people who fall in love to the full bottle through a partner (affiliate) link. Below: (1) how the homepage section could look, (2) how a customer flows through it, (3) ways to sell it, (4) the numbers: a live calculator with your costs, profit per bundle, and how many scent combinations each bundle allows. The vial photos are free Unsplash photos, cut out (see docs/CREDITS.md); later, photos of your own labelled vials will look best.</p></header>
+
+<h2 class="sec">1 · The homepage section</h2>
+<p class="sub">One section, two rows: pick a size (all four vials side by side), then the bundle deals for that size. Under it, a clearly labelled partner link for the full bottle.</p>
+<div class="mock">
+ <div class="head"><div><p class="k">Decants</p><h3>Try it before <i>the full bottle</i></h3></div><p class="note">Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p><img class="hero-set" src="../assets/sample-decant-set.webp" alt=""></div>
+ <div class="sizes" id="sizes"></div>
+ <div class="bundles" id="bundles"></div>
+ <div class="partner"><span>Fell in love? Get the full 100 ml bottle from our partner. <a href="#" rel="sponsored">See the full bottle →</a></span><span class="k">Partner link · we may earn a commission</span></div>
+</div>
+
+<h2 class="sec">2 · How it flows</h2>
+<p class="sub">From "I don't know what to buy" to a full bottle, with you earning at every step: the decant sale, then either a 10 ml from you or the partner's commission on the full bottle.</p>
+<div class="flow">
+ <div class="step"><b>Discover</b><p>Homepage section, a TikTok/Reel, or the "Find your scent" quiz suggests 3 scents.</p></div>
+ <div class="step"><b>Pick a set</b><p>Choose a size and bundle; pick the scents (any mix of the 5–10 on offer).</p></div>
+ <div class="step"><b>Unbox</b><p>Vials in a Samyó envelope with a scent card each: notes, how to wear it, QR to the full bottle.</p></div>
+ <div class="step"><b>Wear a week</b><p>Day 7 email/SMS: "Which one did you love?" One tap to vote.</p></div>
+ <div class="step"><b>Upgrade</b><p>Their favourite as a 10 ml from you, with the set's price as credit (for example ₱150 off).</p></div>
+ <div class="step"><b>Own it</b><p>Or the full bottle via the partner link (labelled; you earn a commission).</p></div>
+</div>
+<div class="ladder">
+ <div class="rung"><b>Try</b><span>3 × 1 ml · the cheapest way in</span></div>
+ <div class="rung"><b>Explore</b><span>6 × 1 ml or 3 × 2 ml · more scents, or longer wear</span></div>
+ <div class="rung"><b>Commit</b><span>2 × 5 ml or 6 × 2 ml · real wearing amounts</span></div>
+ <div class="rung"><b>Carry / Own</b><span>10 ml travel size from you · or the full bottle via partner</span></div>
+</div>
+
+<h2 class="sec">3 · How to sell it</h2>
+<div class="ideas">
+ <div class="idea"><b>Credit toward the next step</b><p>Every set comes with a voucher worth part of its price toward a 10 ml. It makes the first purchase feel risk-free and brings people back to you instead of to a big retailer.</p></div>
+ <div class="idea"><b>Themed sets, not just sizes</b><p>"Fresh for the heat", "Date night", "Office safe", "Under ₱600 for gifts". People buy a story more easily than "3 × 1 ml". Same vials, different names.</p></div>
+ <div class="idea"><b>Scent of the month</b><p>A monthly 3 × 1 ml subscription (pick or surprise). Predictable income and you pour in batches. Start with a pre-order list before you commit.</p></div>
+ <div class="idea"><b>Short videos</b><p>TikTok / Reels: "I tried 3 Dior samples for ₱590", blind smell tests, "which one would you wear to work?". Decants are perfect for this; link to the exact set.</p></div>
+ <div class="idea"><b>Marketplaces for reach</b><p>List the Try set on Shopee / Lazada too (COD is expected in the Philippines); put the card with your site and voucher inside, so the second order comes to you.</p></div>
+ <div class="idea"><b>Gifting season</b><p>A boxed 6 × 1 ml "discovery box" for Christmas, Valentine's, graduation. Higher price, same pouring work, nice unboxing.</p></div>
+ <div class="idea"><b>Build-your-own 6</b><p>The best price per ml goes to the biggest bundle; show "you save X%" against single vials so people trade up from 3 to 6.</p></div>
+ <div class="idea"><b>Trust first</b><p>Show it's poured from authentic bottles (photos of the bottles you pour from, batch number on every label), and say clearly you're not affiliated with the brands.</p></div>
+</div>
+
+<h2 class="sec">4 · The numbers</h2>
+<p class="sub">Change any yellow box: your bottle price, vial costs, packaging. Prices in the table are editable too. Profit = price − (perfume + vials + labels + packaging) − payment fee. Shipping is assumed paid by the customer.</p>
+<div class="card">
+ <div class="quick" id="quick"><span class="k" style="align-self:center;margin-right:6px">Bottle price (100 ml):</span><button data-b="6000">₱6,000 designer</button><button data-b="8000">₱8,000</button><button data-b="10000" class="on">₱10,000 prestige (worst case)</button></div>
+ <div class="inputs">
+  <label class="f">Full bottle price ₱<input id="bp" type="number" value="10000"></label>
+  <label class="f">Bottle size (ml)<input id="bs" type="number" value="100"></label>
+  <label class="f">Loss when pouring (%)<input id="loss" type="number" value="5"></label>
+  <label class="f">Payment fee (%)<input id="fee" type="number" value="3.5" step=".1"></label>
+  <label class="f">1 ml vial ₱<input id="v1" type="number" value="8"></label>
+  <label class="f">2 ml spray vial ₱<input id="v2" type="number" value="15"></label>
+  <label class="f">5 ml atomizer ₱<input id="v5" type="number" value="35"></label>
+  <label class="f">10 ml atomizer ₱<input id="v10" type="number" value="55"></label>
+  <label class="f">Label per vial ₱<input id="lab" type="number" value="4"></label>
+  <label class="f">Packaging per order ₱<input id="pack" type="number" value="40"></label>
+  <label class="f">Target margin (%)<input id="tm" type="number" value="30"></label>
+  <label class="f">Fragrances on offer<input id="nf" type="number" value="10" min="2" max="20"></label>
+ </div>
+ <div class="tablewrap"><table id="tbl"><thead><tr><th>Bundle</th><th>Your price</th><th>Per ml</th><th>Cost</th><th>Fee</th><th>Profit</th><th>Margin</th><th>Break-even</th><th>Price for target</th></tr></thead><tbody></tbody></table></div>
+ <div class="warn" id="warn"></div>
+</div>
+<div class="card">
+ <p class="k">Scent combinations a customer can pick</p>
+ <p class="sub" style="margin:6px 0 0" id="combo-sub"></p>
+ <div class="combos" id="combos"></div>
+</div>
+
+<footer>Vial and packaging costs are typical bulk prices in the Philippines and only a starting point: replace them with your supplier's prices. Selling decants of branded perfumes: say they're decanted from authentic bottles, don't use the brands' logos or photos as your own, and state you're not affiliated with the brands. Partner links must be labelled (rel="sponsored") and disclosed. Not legal or financial advice; check with your accountant.</footer>
+</div>
+
+<script>
+// ---------- vials (drawn) ----------
+function vial(ml){
+  const H={1:62,2:84,5:110,10:150}[ml], W={1:16,2:18,5:28,10:32}[ml], base=190, x=60-W/2, top=base-H;
+  const capH={1:20,2:22,5:26,10:30}[ml], spray=ml>1;
+  const liq=top+capH+H*0.18;
+  return `<svg viewBox="0 0 120 200" aria-hidden="true"><defs>
+   <linearGradient id="g${ml}" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset=".35" stop-color="#fff" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".7"/></linearGradient>
+   <linearGradient id="a${ml}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7c98a"/><stop offset="1" stop-color="#c79a4a"/></linearGradient>
+   <linearGradient id="m${ml}" x1="0" x2="1"><stop offset="0" stop-color="#9a9590"/><stop offset=".45" stop-color="#f1efec"/><stop offset="1" stop-color="#8f8a84"/></linearGradient></defs>
+   <ellipse cx="60" cy="${base+3}" rx="${W*0.9}" ry="3" fill="#000" opacity=".12"/>
+   <rect x="${x}" y="${top+capH}" width="${W}" height="${H-capH}" rx="${ml>=5?6:4}" fill="#f6f1e8" stroke="rgba(41,37,33,.25)"/>
+   <rect x="${x+1}" y="${liq}" width="${W-2}" height="${base-liq-1}" rx="${ml>=5?5:3}" fill="url(#a${ml})" opacity=".9"/>
+   <rect x="${x}" y="${top+capH}" width="${W}" height="${H-capH}" rx="${ml>=5?6:4}" fill="url(#g${ml})"/>
+   ${ml>=5?`<rect x="${x}" y="${top+capH+H*0.42}" width="${W}" height="${H*0.22}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/><text x="60" y="${top+capH+H*0.55}" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="${ml>=10?9:8}" fill="#292521">samyó</text>`:`<rect x="${x}" y="${top+capH+H*0.45}" width="${W}" height="${Math.max(10,H*0.18)}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/>`}
+   ${spray?`<rect x="${60-W*0.32}" y="${top+capH-6}" width="${W*0.64}" height="7" fill="url(#m${ml})"/><rect x="${60-W*0.42}" y="${top}" width="${W*0.84}" height="${capH-6}" rx="3" fill="${ml>=5?'#292521':'url(#m'+ml+')'}"/>`:`<rect x="${60-W*0.45}" y="${top}" width="${W*0.9}" height="${capH}" rx="2" fill="#292521"/>`}
+  </svg>`;
+}
+// photos (Unsplash, cut out): 1 ml square mini vial, 2 ml clear spray, 5 & 10 ml amber spray
+const IMG={1:['sample-decant-square.webp',.42],2:['sample-decant-clear.webp',.62],5:['sample-decant-amber.webp',.82],10:['sample-decant-amber.webp',1]};
+const vialImg=ml=>`<span class="vimg"><img src="../assets/${IMG[ml][0]}" alt="" style="height:${IMG[ml][1]*100}%"></span>`;
+// ---------- bundles ----------
+const BUNDLES=[ // [id, name, count, ml, suggested price, light?]
+ ['t1','Try <i>trio</i>',3,1,590,false],['s1','Discovery <i>six</i>',6,1,1090,true],
+ ['t2','Wear <i>trio</i>',3,2,1090,false],['s2','Wardrobe <i>six</i>',6,2,1990,true],
+ ['d5','Signature <i>duo</i>',2,5,1690,false],['x10','Travel <i>ten</i>',1,10,1690,true]];
+const SINGLE={1:220,2:390,5:890,10:1690}; // single-vial prices to compare savings
+const sizesEl=document.getElementById('sizes'), bundlesEl=document.getElementById('bundles');
+let sel=1;
+const fmt=n=>Math.round(n).toLocaleString('en-PH');
+function renderMock(){
+  sizesEl.innerHTML=[1,2,5,10].map(ml=>`<div class="size${ml===sel?' on':''}" data-ml="${ml}" tabindex="0" role="button" aria-pressed="${ml===sel}"><span class="from">from ₱${fmt(Math.min(...prices().filter(b=>b.ml===ml).map(b=>b.price/b.n)))}</span>${vialImg(ml)}<div><b>${ml} ml</b><small>${{1:'≈ 10–15 sprays · try',2:'≈ 25–30 sprays · a week',5:'≈ 70 sprays · a month',10:'≈ 150 sprays · travel size'}[ml]}</small></div></div>`).join('');
+  bundlesEl.innerHTML=prices().filter(b=>b.ml===sel).map(b=>{const full=SINGLE[b.ml]*b.n, save=Math.round((1-b.price/full)*100);return `<div class="bundle${b.light?' light':''}">${save>0?`<span class="save">save ${save}%</span>`:''}<span class="nm">${b.name}</span><span class="what">${b.n} × ${b.ml} ml · pick any ${b.n===1?'one':b.n} of our scents</span><span class="pr">₱${fmt(b.price)}${save>0?`<s>₱${fmt(full)}</s>`:''}</span><span class="btn">Pick your scents →</span></div>`}).join('') || '';
+  if(sel===5||sel===10){} // one bundle per size is fine
+  sizesEl.querySelectorAll('.size').forEach(s=>{const go=()=>{sel=+s.dataset.ml;renderMock()};s.onclick=go;s.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+}
+// ---------- calculator ----------
+const $=id=>document.getElementById(id), num=id=>parseFloat($(id).value)||0;
+const priceInputs={};
+function prices(){return BUNDLES.map(([id,name,n,ml,p,light])=>({id,name,n,ml,light,price:priceInputs[id]??p}))}
+function comb(n,k){if(k<0||k>n)return 0;let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return Math.round(r)}
+function calc(){
+  const perMl=num('bp')/Math.max(1,num('bs'))*(1+num('loss')/100), fee=num('fee')/100, tm=num('tm')/100;
+  const vialCost={1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')}, lab=num('lab'), pack=num('pack');
+  const tb=$('tbl').querySelector('tbody'); let worst=null;
+  tb.innerHTML=prices().map(b=>{
+    const cost=b.n*(b.ml*perMl+vialCost[b.ml]+lab)+pack, f=b.price*fee, profit=b.price-cost-f, m=profit/b.price;
+    const be=cost/(1-fee), tgt=cost/Math.max(.01,1-fee-tm);
+    if(!worst||m<worst.m)worst={m,b};
+    return `<tr><td>${b.n} × ${b.ml} ml <span class="k" style="margin-left:6px">${b.name.replace(/<[^>]+>/g,'')}</span></td><td><input data-id="${b.id}" type="number" value="${b.price}"></td><td>₱${fmt(b.price/(b.n*b.ml))}</td><td>₱${fmt(cost)}</td><td>₱${fmt(f)}</td><td class="${profit>=0?'pos':'neg'}">₱${fmt(profit)}</td><td class="${m>=tm-0.005?'pos':m<0?'neg':''}">${Math.round(m*100)}%</td><td>₱${fmt(be)}</td><td>₱${fmt(Math.ceil(tgt/10)*10)}</td></tr>`}).join('');
+  tb.querySelectorAll('input').forEach(i=>i.oninput=()=>{priceInputs[i.dataset.id]=parseFloat(i.value)||0;calc();renderMock()});
+  $('warn').innerHTML=`Perfume costs you <b>₱${perMl.toFixed(0)} per ml</b> after pouring loss. ${worst.m<tm?`Lowest margin: <b>${worst.b.n} × ${worst.b.ml} ml at ${Math.round(worst.m*100)}%</b>; the "Price for target" column shows what it should cost to reach ${Math.round(tm*100)}%.`:`Every bundle reaches your ${Math.round(tm*100)}% target.`} Your first idea (3 × 1 ml for ₱500) makes ${Math.round(((500-(3*(perMl+vialCost[1]+lab)+pack)-500*fee)/500)*100)}% at this bottle price.`;
+  const N=Math.max(2,Math.round(num('nf')));
+  $('combo-sub').textContent=`With ${N} fragrances on offer: how many different sets a customer could build. "Different" = all scents different; "with repeats" = the same scent may appear twice.`;
+  $('combos').innerHTML=[[3,'3 × 1 ml / 3 × 2 ml'],[6,'6 × 1 ml / 6 × 2 ml'],[2,'2 × 5 ml'],[1,'1 × 10 ml']].map(([k,l])=>`<div class="combo"><span class="k">${l}</span><b>${fmt(comb(N,k))}</b><span>different · ${fmt(comb(N+k-1,k))} with repeats</span></div>`).join('');
+}
+document.querySelectorAll('.inputs input').forEach(i=>i.oninput=()=>{calc();renderMock()});
+document.querySelectorAll('#quick button').forEach(b=>b.onclick=()=>{$('bp').value=b.dataset.b;document.querySelectorAll('#quick button').forEach(x=>x.classList.toggle('on',x===b));calc();renderMock()});
+calc(); renderMock();
+</script>
+</body></html>
