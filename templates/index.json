@@ -501,6 +501,7 @@
           "settings": {
             "name": "Lavender",
             "sample": "lavender",
+            "stem": true,
             "size": "tall"
           }
         },
@@ -525,6 +526,7 @@
           "settings": {
             "name": "Iris",
             "sample": "iris",
+            "stem": true,
             "size": "tall"
           }
         },

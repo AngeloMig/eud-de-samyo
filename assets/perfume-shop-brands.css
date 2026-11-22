@@ -338,6 +338,24 @@
   width: auto;
 }
 
+/* Cut flowers: the stem runs down to the tile's bottom edge (behind the name) and
+   its straight cut fades out there, so it reads as rooted rather than chopped. */
+.psb__note--stem .psb__note-art {
+  bottom: 0;
+}
+
+.psb__note--stem .psb__note-art img {
+  height: 118%;
+  -webkit-mask-image: linear-gradient(to top, transparent 0, #000 9%);
+  mask-image: linear-gradient(to top, transparent 0, #000 9%);
+}
+
+/* The flowers now sit behind the name: a soft halo in the section colour keeps it legible. */
+.psb__note--stem .psb__name,
+.psb__note--stem .psb__count {
+  text-shadow: 0 0 6px var(--psb-bg, #f3f0eb), 0 0 14px var(--psb-bg, #f3f0eb), 0 0 24px var(--psb-bg, #f3f0eb);
+}
+
 .psb__note:hover .psb__note-art,
 .psb__note:focus-visible .psb__note-art {
   transform: translateY(-8px) rotate(-2deg);
@@ -521,6 +539,17 @@
 
   .psb--masonry .psb__note-art {
     inset: -8px -6px 34px;
+  }
+
+  .psb--masonry .psb__note--stem .psb__note-art {
+    bottom: 0;
+    top: 4px;
+  }
+
+  /* Small tiles: no upscale, so a tall flower doesn't climb into the tile above. */
+  .psb--masonry .psb__note--stem .psb__note-art img {
+    height: 100%;
+    max-width: 100%;
   }
 
   .psb--masonry .psb__name--note {
