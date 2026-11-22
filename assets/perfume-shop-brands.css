@@ -632,7 +632,7 @@
   min-height: 36px;
   padding: 9px 14px 9px 16px;
   position: relative;
-  transition: transform 0.45s var(--pf-ease-out, ease), box-shadow 0.45s ease;
+  transition: transform 0.45s var(--pf-ease-out, ease), box-shadow 0.45s ease, background-color 0.4s ease, color 0.4s ease;
   z-index: 2;
 }
 
@@ -678,6 +678,100 @@
 
 .psb--masonry .psb__item--big .psb__wm {
   font-size: min(168px, calc((100cqw - 20px) / (var(--len, 6) * 0.46)));
+}
+
+/* Hover (pill style): the box lifts on a soft shadow and its tint deepens, the side
+   bottles fan out while the middle one steps forward, the watermark glides and darkens,
+   and the pill turns ink-dark and grows a "Shop" in front of the name.
+   `translate` is used where the reveal animation already owns `transform`. */
+.psb--pills .psb__item:not(.psb__item--note) {
+  transition: translate 0.6s var(--pf-ease-out, ease);
+}
+
+.psb--pills .psb__item:not(.psb__item--note)::before {
+  box-shadow: 0 24px 36px -22px rgba(41, 37, 33, 0.5);
+  content: '';
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.6s ease;
+}
+
+.psb--pills .psb__item:not(.psb__item--note):hover,
+.psb--pills .psb__item:not(.psb__item--note):focus-within {
+  translate: 0 -6px;
+}
+
+.psb--pills .psb__item:not(.psb__item--note):hover::before,
+.psb--pills .psb__item:not(.psb__item--note):focus-within::before {
+  opacity: 1;
+}
+
+.psb--pills .psb__tile--group .psb__media {
+  transition: translate 0.7s var(--pf-ease-out, ease);
+}
+
+.psb--pills .psb__tile--group .psb__media img {
+  transform-origin: 50% 100%;
+  transition: transform 0.7s var(--pf-ease-out, ease);
+}
+
+.psb--pills .psb__tile--group:hover .psb__media,
+.psb--pills .psb__tile--group:focus-visible .psb__media {
+  translate: 0 -6px;
+}
+
+.psb--pills .psb__tile--group:hover .psb__media img:nth-child(1),
+.psb--pills .psb__tile--group:focus-visible .psb__media img:nth-child(1) {
+  transform: translateX(-12%) rotate(-8deg);
+}
+
+.psb--pills .psb__tile--group:hover .psb__media img:nth-child(2),
+.psb--pills .psb__tile--group:focus-visible .psb__media img:nth-child(2) {
+  transform: translateY(-4px) scale(1.04);
+}
+
+.psb--pills .psb__tile--group:hover .psb__media img:nth-child(3),
+.psb--pills .psb__tile--group:focus-visible .psb__media img:nth-child(3) {
+  transform: translateX(12%) rotate(8deg);
+}
+
+.psb__wm {
+  transition: transform 0.9s var(--pf-ease-out, ease), opacity 0.6s ease;
+}
+
+.psb__tile:hover .psb__wm,
+.psb__tile:focus-visible .psb__wm {
+  opacity: 0.26;
+  transform: translateX(-12%);
+}
+
+.psb__pill-shop {
+  margin-right: -8px;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-width 0.5s var(--pf-ease-out, ease), opacity 0.4s ease, margin 0.5s var(--pf-ease-out, ease);
+  white-space: nowrap;
+}
+
+.psb__tile:hover .psb__pill,
+.psb__tile:focus-visible .psb__pill {
+  background: var(--psb-ink, #26221f);
+  color: var(--psb-bg, #f3f0eb);
+}
+
+.psb__tile:hover .psb__pill-arrow,
+.psb__tile:focus-visible .psb__pill-arrow {
+  opacity: 1;
+}
+
+.psb__tile:hover .psb__pill-shop,
+.psb__tile:focus-visible .psb__pill-shop {
+  margin-right: -3px;
+  max-width: 80px;
+  opacity: 1;
 }
 
 /* Notes: only the name, small and vertical on the right edge. */
@@ -733,7 +827,18 @@
 
 @media (prefers-reduced-motion: reduce) {
   .psb__pill,
-  .psb__pill-arrow {
+  .psb__pill-arrow,
+  .psb__pill-shop,
+  .psb__wm,
+  .psb--pills .psb__item,
+  .psb--pills .psb__item::before,
+  .psb--pills .psb__tile--group .psb__media,
+  .psb--pills .psb__tile--group .psb__media img {
     transition: none;
+  }
+
+  .psb--pills .psb__item:not(.psb__item--note):hover,
+  .psb--pills .psb__item:not(.psb__item--note):focus-within {
+    translate: none;
   }
 }

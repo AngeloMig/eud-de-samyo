@@ -167,7 +167,7 @@
             <span class="psb__count">{{ section.settings.shop_label | escape }}</span>
           {%- endif -%}
           {%- if section.settings.label_style == 'pill' -%}
-            <span class="psb__pill">{{ b_name | escape }} <span class="psb__pill-arrow" aria-hidden="true">→</span></span>
+            <span class="psb__pill">{%- if section.settings.shop_label != blank -%}<span class="psb__pill-shop">{{ section.settings.shop_label | escape }}</span>{%- endif -%}<span>{{ b_name | escape }}</span><span class="psb__pill-arrow" aria-hidden="true">→</span></span>
             <span class="psb__wm" aria-hidden="true" style="--len: {{ b_name.size }};">{{ b_name | escape }}</span>
           {%- endif -%}
         </a>
