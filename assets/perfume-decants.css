@@ -261,6 +261,213 @@
   opacity: 0.6;
 }
 
+/* Featured layout: one large dark set card, the others beside it, a "Build your
+   own" tile last (snippets/perfume-decant-card.liquid). */
+.pdf {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.25fr repeat(3, minmax(0, 1fr));
+}
+
+.pdf__card,
+.pdf__own {
+  align-content: center;
+  background: var(--pdc-card, #fff);
+  color: inherit;
+  display: grid;
+  gap: 3px;
+  justify-items: center;
+  min-height: 220px;
+  padding: 22px 14px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: translate 0.5s var(--pf-ease-out, ease), box-shadow 0.5s ease, background-color 0.4s ease;
+}
+
+a.pdf__card:hover,
+a.pdf__own:hover {
+  box-shadow: 0 24px 32px -24px rgba(41, 37, 33, 0.45);
+  translate: 0 -4px;
+}
+
+a.pdf__card:focus-visible,
+a.pdf__own:focus-visible {
+  outline: 2px solid var(--pdc-ink, #292521);
+  outline-offset: 3px;
+}
+
+.pdf__card--feature {
+  background: var(--pdc-ink, #292521);
+  color: var(--pdc-bg, #f7f5f0);
+  grid-row: span 2;
+  padding: 36px 30px;
+}
+
+.pdf__badge {
+  right: 12px;
+  top: 12px;
+}
+
+.pdf__vials {
+  align-items: flex-end;
+  display: flex;
+  height: 96px;
+  justify-content: center;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.pdf__card--feature .pdf__vials {
+  height: 220px;
+  margin-bottom: 18px;
+}
+
+.pdf__vials img {
+  filter: drop-shadow(0 10px 8px rgba(41, 37, 33, 0.22));
+  height: var(--vh, 60%);
+  object-fit: contain;
+  transition: translate 0.5s var(--pf-ease-out, ease);
+  transition-delay: calc(var(--j, 0) * 45ms);
+  width: auto;
+}
+
+.pdf__card--feature .pdf__vials img {
+  filter: drop-shadow(0 16px 16px rgba(0, 0, 0, 0.5)) brightness(1.06);
+}
+
+.pdf__vials[data-n='2'] img + img {
+  margin-left: 8px;
+}
+
+.pdf__vials[data-n='3'] img + img,
+.pdf__vials[data-n='6'] img + img {
+  margin-left: 2px;
+}
+
+a.pdf__card:hover .pdf__vials img {
+  translate: 0 -7px;
+}
+
+.pdf__name {
+  font-family: var(--pf-font-serif);
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.pdf__card--feature .pdf__name {
+  font-size: 40px;
+}
+
+.pdf__name em {
+  font-style: italic;
+}
+
+.pdf__what {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.pdf__price {
+  font-family: var(--pf-font-serif);
+  font-size: 20px;
+  line-height: 1;
+  margin-top: 10px;
+  white-space: nowrap;
+}
+
+.pdf__card--feature .pdf__price {
+  font-size: 30px;
+  margin-top: 14px;
+}
+
+.pdf__to {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.pdf__why {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 16px;
+  max-width: 32ch;
+  opacity: 0.85;
+}
+
+.pdf__own {
+  background: transparent;
+  border: 1px solid var(--pdc-ink, #292521);
+}
+
+a.pdf__own:hover {
+  background: var(--pdc-card, #fff);
+}
+
+.pdf__own .pdf__what span {
+  display: inline-block;
+  transition: translate 0.4s var(--pf-ease-out, ease);
+}
+
+a.pdf__own:hover .pdf__what span {
+  translate: 4px 0;
+}
+
+@media screen and (max-width: 989px) {
+  .pdf {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pdf__card--feature {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .pdf {
+    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdf__card,
+  .pdf__own {
+    min-height: 190px;
+    padding: 16px 8px;
+  }
+
+  .pdf__card--feature {
+    padding: 28px 18px;
+  }
+
+  .pdf__card--feature .pdf__vials {
+    height: 160px;
+  }
+
+  .pdf__card--feature .pdf__name {
+    font-size: 32px;
+  }
+
+  .pdf__name {
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pdf__card,
+  .pdf__own,
+  .pdf__vials img,
+  .pdf__own .pdf__what span {
+    transition: none;
+  }
+
+  a.pdf__card:hover,
+  a.pdf__own:hover,
+  a.pdf__card:hover .pdf__vials img,
+  a.pdf__own:hover .pdf__what span {
+    translate: none;
+  }
+}
+
 /* Set cards (layout "sets"): the vial picker's look, on the homepage */
 .pdc__sets {
   display: grid;

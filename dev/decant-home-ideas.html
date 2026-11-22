@@ -1,0 +1,225 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homepage decants ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--paper:#efe9df;--line:rgba(41,37,33,.14);--gold:#d9b46a;--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#e6e1d8;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ .wrap{max-width:1280px;margin:0 auto;padding:0 32px 60px}
+ header.top{padding:40px 0 6px} header.top h1{font:400 48px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:92ch;margin:0}
+ nav.jump{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0} nav.jump a{font-size:12.5px;color:var(--ink);background:#fff;padding:8px 12px;border-radius:99px;text-decoration:none}
+ .idea{margin-top:44px} .idea>h2{font:400 30px/1.05 'Cormorant Garamond';margin:0 0 4px} .idea>h2 span{color:var(--gold);margin-right:10px} .idea>p{color:var(--soft);margin:0 0 12px;max-width:92ch}
+ .stage{background:var(--page);padding:56px 48px;position:relative;overflow:hidden}
+ .k{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+ .h{font:400 52px/1 'Cormorant Garamond';margin:10px 0 0;letter-spacing:-.02em} .h i{font-style:italic}
+ .sub{color:var(--soft);max-width:44ch;margin:12px 0 0}
+ .serif{font-family:'Cormorant Garamond',serif}
+ a{color:inherit}
+ .cta{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:var(--page);border-radius:99px;min-height:48px;padding:12px 22px;text-decoration:none;font-weight:500;font-size:14px}
+ .cta.light{background:var(--page);color:var(--ink)}
+ .badge{display:inline-block;background:var(--gold);color:var(--ink);border-radius:99px;font:600 9px/1 'Instrument Sans';letter-spacing:.12em;text-transform:uppercase;padding:5px 7px}
+ .vials{display:flex;align-items:flex-end;justify-content:center;gap:3px}
+ .vials img{width:auto;filter:drop-shadow(0 10px 8px rgba(41,37,33,.22));transition:translate .5s var(--ease)}
+ :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+ .demo{position:absolute;right:12px;bottom:8px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);opacity:.7}
+
+ /* 1 Featured + rest */
+ .f1{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;grid-template-rows:auto auto;gap:10px;margin-top:30px}
+ .f1 a{background:#fff;text-decoration:none;display:grid;justify-items:center;text-align:center;padding:20px 12px;gap:2px;position:relative;transition:translate .5s var(--ease),box-shadow .5s}
+ .f1 a:hover{translate:0 -4px;box-shadow:0 24px 30px -24px rgba(41,37,33,.45)} .f1 a:hover img{translate:0 -6px}
+ .f1 .big{grid-row:span 2;background:var(--ink);color:var(--page);align-content:center;padding:30px}
+ .f1 .big .vials{height:220px}
+ .f1 .vials{height:96px;margin-bottom:8px}
+ .f1 .nm{font:400 22px/1 'Cormorant Garamond'} .f1 .big .nm{font-size:38px} .f1 i{font-style:italic}
+ .f1 .pr{font:400 20px/1 'Cormorant Garamond';margin-top:6px} .f1 .big .pr{font-size:30px}
+ .f1 small{font-size:11.5px;opacity:.65}
+ .f1 .badge{position:absolute;top:12px;right:12px}
+ .f1 .why{font-size:13px;opacity:.75;max-width:30ch;margin:10px auto 0}
+
+ /* 2 How it works strip + cards */
+ .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:28px 0 12px;counter-reset:st}
+ .steps div{counter-increment:st;display:flex;gap:14px;align-items:center;border-top:1px solid var(--ink);padding-top:14px}
+ .steps div::before{content:counter(st);font:400 40px/1 'Cormorant Garamond';color:var(--gold)}
+ .steps b{display:block;font-weight:600} .steps span{font-size:13px;color:var(--soft)}
+ .row6{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+ .row6 a{background:#fff;text-decoration:none;display:grid;justify-items:center;text-align:center;padding:16px 8px;gap:2px;position:relative}
+ .row6 .vials{height:84px;margin-bottom:8px} .row6 .nm{font:400 19px/1 'Cormorant Garamond'} .row6 i{font-style:italic} .row6 .pr{font:400 18px/1 'Cormorant Garamond';margin-top:6px} .row6 small{font-size:11px;opacity:.6}
+ .row6 .badge{position:absolute;top:8px;right:8px}
+ .row6 a:hover img{translate:0 -5px}
+
+ /* 3 Dark spotlight */
+ .s3{background:#1c1916;color:#f3ede4}
+ .s3 .sub{color:#bfb5a7}
+ .spot{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;margin-top:34px}
+ .spot a{text-decoration:none;display:grid;justify-items:center;text-align:center;padding:28px 8px 22px;gap:3px;background:radial-gradient(60% 45% at 50% 34%,rgba(217,180,106,.22),transparent 70%);position:relative;transition:background .5s}
+ .spot a:hover{background:radial-gradient(70% 55% at 50% 34%,rgba(217,180,106,.38),transparent 72%)}
+ .spot .vials{height:130px;margin-bottom:14px} .spot .vials img{filter:drop-shadow(0 14px 14px rgba(0,0,0,.6)) brightness(1.08)}
+ .spot .nm{font:400 22px/1 'Cormorant Garamond'} .spot i{font-style:italic} .spot .pr{font:400 20px/1 'Cormorant Garamond';color:var(--gold);margin-top:8px} .spot small{font-size:11px;opacity:.6}
+ .spot .badge{position:absolute;top:10px;right:10px}
+ .spot a:hover img{translate:0 -8px}
+
+ /* 4 Split: image + price list */
+ .split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+ .split .art{background:linear-gradient(160deg,#efe6d6,#e2d5bf);aspect-ratio:1;display:grid;place-items:center;position:relative}
+ .split .art img{width:62%;filter:drop-shadow(0 30px 30px rgba(41,37,33,.25))}
+ .plist a{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+ .plist .nm{font:400 24px/1 'Cormorant Garamond'} .plist i{font-style:italic} .plist small{font-size:12px;color:var(--soft);grid-column:1}
+ .plist .pr{grid-row:1/3;grid-column:2;align-self:center;font:400 22px/1 'Cormorant Garamond';text-align:right} .plist .pr small{display:block;font:500 11px 'Instrument Sans';margin-top:4px}
+ .plist a:hover .nm{font-style:italic}
+
+ /* 5 Tabs by size with one big vial */
+ .tabs5{display:grid;grid-template-columns:280px 1fr;gap:40px;align-items:center;margin-top:30px}
+ .bigvial{height:320px;display:flex;align-items:flex-end;justify-content:center;background:#fff;padding:20px}
+ .bigvial img{height:var(--h);width:auto;transition:height .7s var(--ease);filter:drop-shadow(0 18px 18px rgba(41,37,33,.25))}
+ .seg{display:inline-flex;background:#fff;border-radius:99px;padding:4px;gap:2px}
+ .seg button{border:0;background:none;border-radius:99px;padding:10px 18px;min-height:44px;font:500 14px 'Instrument Sans';cursor:pointer;color:var(--ink)}
+ .seg button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .opts5{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:16px}
+ .opts5 a{background:#fff;padding:20px;text-decoration:none;display:grid;gap:4px;position:relative}
+ .opts5 .nm{font:400 28px/1 'Cormorant Garamond'} .opts5 i{font-style:italic} .opts5 .pr{font:400 24px/1 'Cormorant Garamond';margin-top:6px} .opts5 small{font-size:12px;color:var(--soft)}
+ .opts5 .badge{position:absolute;top:16px;right:16px}
+ .ml5{font:400 90px/1 'Cormorant Garamond';margin:14px 0 0} .ml5 small{font-size:28px}
+
+ /* 6 Carousel */
+ .car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:30px 0 10px;scrollbar-width:thin}
+ .car a{flex:0 0 260px;scroll-snap-align:start;background:#fff;text-decoration:none;padding:24px;display:grid;gap:4px;min-height:340px;position:relative}
+ .car .vials{height:150px;justify-content:flex-start;margin-bottom:14px}
+ .car .nm{font:400 32px/1 'Cormorant Garamond'} .car i{font-style:italic} .car small{font-size:12px;color:var(--soft)} .car .pr{margin-top:auto;font:400 28px/1 'Cormorant Garamond'}
+ .car .badge{position:absolute;top:18px;right:18px}
+ .car a:hover img{translate:0 -6px}
+ .arrows{display:flex;gap:8px}
+ .arrows button{width:48px;height:48px;border-radius:50%;border:1px solid var(--ink);background:none;cursor:pointer;font-size:18px}
+ .h6row{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+
+ /* 7 Value comparison */
+ .cmp{width:100%;border-collapse:collapse;margin-top:30px;background:#fff}
+ .cmp th,.cmp td{padding:14px 12px;text-align:center;border-bottom:1px solid var(--line);font-size:13px}
+ .cmp th{font:400 22px/1.1 'Cormorant Garamond'} .cmp th i{font-style:italic} .cmp th .vials{height:70px;margin-bottom:10px}
+ .cmp td:first-child{text-align:left;color:var(--soft);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+ .cmp .big{font:400 22px/1 'Cormorant Garamond'}
+ .cmp a{font-weight:600;font-size:12.5px}
+
+ /* 8 Scents behind */
+ .s8{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+ .bottles{position:relative;height:360px}
+ .bottles img{position:absolute;bottom:0;height:var(--h);left:var(--x);filter:drop-shadow(0 20px 20px rgba(41,37,33,.25));transition:translate .6s var(--ease)}
+ .bottles:hover img{translate:0 -6px}
+ .bottles .v{z-index:3}
+ .chips8{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0}
+ .chips8 a{background:#fff;border-radius:99px;padding:10px 14px;text-decoration:none;font-size:13px;min-height:44px;display:inline-flex;gap:8px;align-items:center}
+ .chips8 a b{font:400 17px/1 'Cormorant Garamond';font-weight:400}
+
+ /* 9 Gift boxes */
+ .boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:30px}
+ .box{text-decoration:none;display:grid;gap:10px}
+ .tray9{background:radial-gradient(120% 90% at 50% 40%,#2f4a3d,#16261e);border-radius:10px;box-shadow:inset 0 0 0 6px #c3a46c,inset 0 0 0 7px #8e7444;height:150px;display:flex;align-items:center;justify-content:center;gap:8px;padding:18px;transition:translate .5s var(--ease)}
+ .tray9 img{height:var(--h);width:auto;filter:drop-shadow(0 8px 6px rgba(0,0,0,.55)) brightness(1.05)}
+ .tray9{align-items:flex-end;padding-bottom:22px}
+ .box:hover .tray9{translate:0 -5px}
+ .box .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+ .box .nm{font:400 24px/1 'Cormorant Garamond'} .box i{font-style:italic} .box .pr{font:400 20px/1 'Cormorant Garamond'} .box small{font-size:12px;color:var(--soft)}
+
+ /* 10 Editorial grid with photo tile */
+ .ed{display:grid;grid-template-columns:1.25fr 1fr 1fr;grid-auto-rows:minmax(150px,auto);gap:10px;margin-top:30px}
+ .ed .photo{grid-row:span 3;background:url(../assets/sample-decant-set.webp) center 70%/56% no-repeat,linear-gradient(160deg,#efe6d6,#e0d1b8);min-height:480px;padding:28px;display:flex;flex-direction:column;justify-content:space-between}
+ .ed .photo p{margin:0;font:400 32px/1.1 'Cormorant Garamond';max-width:14ch}
+ .ed .photo .cta{align-self:flex-start;background:var(--ink);color:var(--page);display:inline-flex;grid-template-columns:none;padding:12px 22px}
+ .ed a{background:#fff;text-decoration:none;padding:16px 18px;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto auto 1fr;gap:2px 12px;position:relative}
+ .ed .vials{grid-column:2;grid-row:1/4;height:110px;align-self:end}
+ .ed .nm{font:400 24px/1 'Cormorant Garamond';grid-column:1} .ed i{font-style:italic} .ed small{font-size:11.5px;color:var(--soft);grid-column:1} .ed .pr{font:400 20px/1 'Cormorant Garamond';grid-column:1;align-self:end}
+ .ed .badge{position:absolute;top:10px;right:10px;z-index:1}
+ .ed a:hover img{translate:0 -5px}
+
+ @media (max-width:989px){.f1{grid-template-columns:1fr 1fr}.f1 .big{grid-column:span 2;grid-row:auto}.row6,.spot{grid-template-columns:repeat(3,minmax(0,1fr))}.split,.tabs5,.s8{grid-template-columns:1fr}.boxes{grid-template-columns:1fr 1fr}.ed{grid-template-columns:1fr 1fr}.ed .photo{grid-column:span 2;grid-row:auto;min-height:320px}.steps{grid-template-columns:1fr}.cmpwrap{overflow-x:auto}}
+ @media (max-width:640px){.wrap{padding:0 16px 40px}.stage{padding:32px 16px}.h{font-size:38px}.row6,.spot{grid-template-columns:repeat(2,minmax(0,1fr))}.boxes,.ed{grid-template-columns:1fr}.ed .photo{grid-column:auto;min-height:280px}}
+ @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap">
+<header class="top">
+ <h1>Ten ways to show decants on the homepage</h1>
+ <p class="lede">Ten directions for the homepage Decants section. Each uses the real set prices and vial photos, and every set links to the vial picker with that set chosen. Hover the cards; idea 5 and 6 are interactive.</p>
+ <nav class="jump"><a href="#i1">1 Featured set</a><a href="#i2">2 How it works</a><a href="#i3">3 Dark spotlight</a><a href="#i4">4 Photo + price list</a><a href="#i5">5 One vial, four sizes</a><a href="#i6">6 Swipe row</a><a href="#i7">7 Value table</a><a href="#i8">8 Scents behind</a><a href="#i9">9 Gift trays</a><a href="#i10">10 Editorial grid</a></nav>
+</header>
+
+<section class="idea" id="i1"><h2><span>01</span>Featured set</h2><p>One set gets the spotlight (Discovery six: big, dark, marked “Our pick”, with why it’s the best start), the other five sit in a tidy grid beside it. Gives the section a focal point instead of six equal boxes.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3><div class="f1" id="f1"></div><span class="demo">demo · real prices</span></div></section>
+
+<section class="idea" id="i2"><h2><span>02</span>How it works, then the sets</h2><p>Three numbered steps (choose a set, pick scents, we pour by hand) above a compact row of sets. Answers “what is a decant?” before asking for a click.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3><div class="steps"><div><p style="margin:0"><b>Choose a set</b><span>3 or 6 small vials, or one 5 or 10 ml</span></p></div><div><p style="margin:0"><b>Pick your scents</b><span>Any of our perfumes, each one once</span></p></div><div><p style="margin:0"><b>Poured by hand</b><span>From authentic full bottles, labelled for you</span></p></div></div><div class="row6" id="r2"></div></div></section>
+
+<section class="idea" id="i3"><h2><span>03</span>Dark spotlight</h2><p>The section turns night-dark, each set lit by a warm pool of light that grows on hover; prices in gold. The amber vials glow. A strong contrast break in the homepage.</p>
+<div class="stage s3"><span class="k" style="color:var(--gold)">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3><p class="sub">Poured from authentic full bottles, labelled by hand.</p><div class="spot" id="sp"></div><p style="margin:26px 0 0"><a class="cta light" href="#i3">Build your own set →</a></p></div></section>
+
+<section class="idea" id="i4"><h2><span>04</span>Photo and price list</h2><p>Half the section is one big still life of the vials; the other half is a clean price list (name, size, from–to). Calm and premium, like a parfumerie window.</p>
+<div class="stage"><div class="split"><div class="art"><img src="../assets/sample-decant-set.webp" alt=""></div><div><span class="k">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3><div class="plist" id="pl" style="margin-top:20px"></div><p style="margin:22px 0 0"><a class="cta" href="#i4">Build your own set →</a></p></div></div></div></section>
+
+<section class="idea" id="i5"><h2><span>05</span>One vial, four sizes</h2><p>A single big vial that grows as you switch size (1 → 10 ml), with that size’s sets beside it. Teaches the sizes visually, then sells the set.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">How much do <i>you need?</i></h3><div class="tabs5"><div class="bigvial"><img id="bv" src="../assets/sample-decant-square.webp" alt="" style="--h:42%"></div><div><div class="seg" id="seg5"></div><p class="ml5" id="ml5"></p><p class="sub" id="note5" style="margin-top:4px"></p><div class="opts5" id="o5"></div></div></div></div></section>
+
+<section class="idea" id="i6"><h2><span>06</span>Swipe row</h2><p>Larger cards in a row that scrolls sideways (arrows on desktop, swipe on phones), the next card peeking in. More room per set and big vials, without a tall grid.</p>
+<div class="stage"><div class="h6row"><div><span class="k">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3></div><div class="arrows"><button type="button" aria-label="Previous sets" data-car="-1">←</button><button type="button" aria-label="Next sets" data-car="1">→</button></div></div><div class="car" id="car"></div></div></section>
+
+<section class="idea" id="i7"><h2><span>07</span>Value table</h2><p>The sets side by side with what you get: sprays, how long it lasts, lowest price, price per vial. Good for buyers who compare before they commit.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">Compare <i>the sets</i></h3><div class="cmpwrap"><table class="cmp" id="cmp"></table></div></div></section>
+
+<section class="idea" id="i8"><h2><span>08</span>The scents behind the vials</h2><p>Real perfume bottles stand behind a decant vial, so it’s clear what goes inside; the sets are quick chips beside it. Connects the decants to the brands people know.</p>
+<div class="stage"><div class="s8"><div class="bottles" id="bt"></div><div><span class="k">Decants</span><h3 class="h">Dior, Hermès, Tom Ford, <i>by the vial</i></h3><p class="sub">Ten perfumes, poured from authentic full bottles. Choose a set:</p><div class="chips8" id="ch8"></div><a class="cta" href="#i8">Build your own set →</a></div></div></div></section>
+
+<section class="idea" id="i9"><h2><span>09</span>Gift trays</h2><p>Each set shown as a green velvet tray with gold trim, its vials standing inside. Looks like a gift, which most decant sets are.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">A set <i>to give, or keep</i></h3><div class="boxes" id="bx"></div></div></section>
+
+<section class="idea" id="i10"><h2><span>10</span>Editorial grid</h2><p>A tall photo tile with a short line and the main button, beside the six sets in a neat 2 × 3 grid (text left, vials right). Magazine layout; fills the width with no empty space.</p>
+<div class="stage"><span class="k">Decants</span><h3 class="h">Try it before <i>the full bottle</i></h3><div class="ed" id="ed"></div></div></section>
+</div>
+<script>
+const SETS=[
+ {id:'3x1',a:'Try',b:'trio',n:3,ml:1,lo:350,hi:825,note:'≈ 10–15 sprays · to try',last:'a few days each'},
+ {id:'6x1',a:'Discovery',b:'six',n:6,ml:1,lo:814.5,hi:1273.5,d:10,note:'≈ 10–15 sprays · to try',last:'a few days each'},
+ {id:'3x2',a:'Wear',b:'trio',n:3,ml:2,lo:595,hi:1550,note:'≈ 25–30 sprays · a week',last:'about a week each'},
+ {id:'6x2',a:'Wardrobe',b:'six',n:6,ml:2,lo:1444.5,hi:2362.5,d:10,note:'≈ 25–30 sprays · a week',last:'about a week each'},
+ {id:'2x5',a:'Signature',b:'duo',n:2,ml:5,lo:905,hi:2770,note:'≈ 70 sprays · a month',last:'about a month each'},
+ {id:'1x10',a:'Travel',b:'ten',n:1,ml:10,lo:865,hi:3510,note:'≈ 150 sprays · travel size',last:'two months or more'}];
+const IMG={1:['sample-decant-square.webp',.44],2:['sample-decant-clear.webp',.62],5:['sample-decant-amber.webp',.82],10:['sample-decant-amber.webp',1]};
+const P=n=>'₱'+n.toLocaleString('en-PH',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const nm=s=>`${s.a} <i>${s.b}</i>`;
+const badge=s=>s.d?`<span class="badge">${s.d}% off</span>`:'';
+const url=s=>`vial-picker.html?set=${s.id}`;
+const vials=(s,h,max=6)=>`<span class="vials" style="height:${h}px">${Array.from({length:Math.min(s.n,max)},()=>`<img src="../assets/${IMG[s.ml][0]}" alt="" style="height:${Math.round(h*IMG[s.ml][1])}px">`).join('')}</span>`;
+const $=id=>document.getElementById(id);
+
+// 1
+const feat=SETS[1];
+$('f1').innerHTML=`<a class="big" href="${url(feat)}"><span class="badge" style="top:16px;right:16px">Our pick</span>${vials(feat,220)}<span class="nm">${nm(feat)}</span><small>${feat.n} × ${feat.ml} ml · ${feat.d}% off</small><span class="pr">from ${P(feat.lo)}</span><small>up to ${P(feat.hi)}</small><p class="why">Six different perfumes, a few days each: the easiest way to find your signature scent.</p></a>`+SETS.filter(s=>s!==feat).map(s=>`<a href="${url(s)}">${badge(s)}${vials(s,96)}<span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml</small><span class="pr">from ${P(s.lo)}</span></a>`).join('')+`<a href="vial-picker.html" style="background:transparent;border:1px solid var(--ink);align-content:center"><span class="nm">Build your <i>own</i></span><small>Mix any scents →</small></a>`;
+// 2
+$('r2').innerHTML=SETS.map(s=>`<a href="${url(s)}">${badge(s)}${vials(s,84)}<span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml</small><span class="pr">from ${P(s.lo)}</span></a>`).join('');
+// 3
+$('sp').innerHTML=SETS.map(s=>`<a href="${url(s)}">${badge(s)}${vials(s,130)}<span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml</small><span class="pr">from ${P(s.lo)}</span></a>`).join('');
+// 4
+$('pl').innerHTML=SETS.map(s=>`<a href="${url(s)}"><span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml · ${s.note}</small><span class="pr">from ${P(s.lo)}<small>up to ${P(s.hi)}${s.d?` · ${s.d}% off`:''}</small></span></a>`).join('');
+// 5
+let z5=1;
+function d5(){const sz=[1,2,5,10];$('seg5').innerHTML=sz.map(z=>`<button type="button" data-z="${z}" aria-pressed="${z===z5}">${z} ml</button>`).join('');$('seg5').querySelectorAll('button').forEach(b=>b.onclick=()=>{z5=+b.dataset.z;d5()});
+ const bv=$('bv');bv.src='../assets/'+IMG[z5][0];bv.style.setProperty('--h',(IMG[z5][1]*100)+'%');
+ const list=SETS.filter(s=>s.ml===z5);$('ml5').innerHTML=`${z5}<small> ml</small>`;$('note5').textContent=list[0].note;
+ $('o5').innerHTML=list.map(s=>`<a href="${url(s)}">${badge(s)}<span class="nm">${nm(s)}</span><small>${s.n} vial${s.n>1?'s':''} · pick ${s.n>1?'any '+s.n:'one'} of our scents</small><span class="pr">from ${P(s.lo)}</span><small>up to ${P(s.hi)}</small></a>`).join('')}
+d5();
+// 6
+$('car').innerHTML=SETS.map(s=>`<a href="${url(s)}">${badge(s)}${vials(s,150)}<span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml · ${s.note}</small><span class="pr">from ${P(s.lo)}</span><small>up to ${P(s.hi)}</small></a>`).join('');
+document.querySelectorAll('[data-car]').forEach(b=>b.onclick=()=>$('car').scrollBy({left:+b.dataset.car*272,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+// 7
+$('cmp').innerHTML=`<thead><tr><th></th>${SETS.map(s=>`<th>${vials(s,70)}<br>${nm(s)}</th>`).join('')}</tr></thead><tbody>
+<tr><td>You get</td>${SETS.map(s=>`<td>${s.n} × ${s.ml} ml</td>`).join('')}</tr>
+<tr><td>Sprays per vial</td>${SETS.map(s=>`<td>${s.note.split(' · ')[0]}</td>`).join('')}</tr>
+<tr><td>Lasts</td>${SETS.map(s=>`<td>${s.last}</td>`).join('')}</tr>
+<tr><td>From</td>${SETS.map(s=>`<td class="big">${P(s.lo)}${s.d?`<br><span class="badge" style="margin-top:6px">${s.d}% off</span>`:''}</td>`).join('')}</tr>
+<tr><td>Per vial, from</td>${SETS.map(s=>`<td>${P(Math.round(s.lo/s.n))}</td>`).join('')}</tr>
+<tr><td></td>${SETS.map(s=>`<td><a href="${url(s)}">Choose →</a></td>`).join('')}</tr></tbody>`;
+// 8
+const B=[['samyo-brand-tom-ford-3.webp',300,'4%'],['samyo-dior-sauvage-edp.webp',330,'22%'],['samyo-brand-hermes-1.webp',290,'44%'],['samyo-dg-the-one.webp',280,'64%']];
+$('bt').innerHTML=B.map(([f,h,x])=>`<img src="../dev/shop-images/${f}" alt="" style="--h:${h}px;--x:${x}">`).join('')+`<img class="v" src="../assets/sample-decant-amber.webp" alt="" style="--h:220px;--x:50%;translate:-50% 0;filter:drop-shadow(0 22px 18px rgba(0,0,0,.35))">`;
+$('ch8').innerHTML=SETS.map(s=>`<a href="${url(s)}"><b>${nm(s)}</b>from ${P(s.lo)}</a>`).join('');
+// 9
+$('bx').innerHTML=SETS.map(s=>{const h=Math.round(110*IMG[s.ml][1]);return `<a class="box" href="${url(s)}"><span class="tray9">${Array.from({length:s.n},()=>`<img src="../assets/${IMG[s.ml][0]}" alt="" style="--h:${h}px">`).join('')}</span><span class="row"><span class="nm">${nm(s)}</span><span class="pr">from ${P(s.lo)}</span></span><small>${s.n} × ${s.ml} ml${s.d?` · ${s.d}% off`:''} · ${s.note}</small></a>`}).join('');
+// 10
+$('ed').innerHTML=`<div class="photo"><p>Six ways to try a perfume before the full bottle.</p><a class="cta" href="vial-picker.html">Build your own set →</a></div>`+SETS.map(s=>`<a href="${url(s)}">${badge(s)}${vials(s,90)}<span class="nm">${nm(s)}</span><small>${s.n} × ${s.ml} ml</small><span class="pr">from ${P(s.lo)}</span></a>`).join('');
+</script>
+</body></html>

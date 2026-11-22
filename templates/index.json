@@ -649,6 +649,8 @@
         "bundle_2": {
           "type": "bundle",
           "settings": {
+            "featured": true,
+            "badge": "10% off",
             "title": "Discovery",
             "title_italic": "six",
             "size": "1",
@@ -675,6 +677,7 @@
         "bundle_4": {
           "type": "bundle",
           "settings": {
+            "badge": "10% off",
             "title": "Wardrobe",
             "title_italic": "six",
             "size": "2",
@@ -725,6 +728,7 @@
         "bundle_6"
       ],
       "settings": {
+        "layout": "featured",
         "kicker": "Decants",
         "heading": "Try it before",
         "heading_italic": "the full bottle",

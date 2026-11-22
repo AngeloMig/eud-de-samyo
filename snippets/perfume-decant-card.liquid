@@ -1,0 +1,78 @@
+{%- comment -%}
+  One decant set as a vial card (sections/perfume-decants.liquid, layout "featured").
+
+  The vials are drawn at their real relative size (one per vial, six at most), with
+  the set name, its size, and its lowest price; the featured card adds the highest
+  price, a label and a line of text. The card opens the vial picker with this set
+  chosen (?set=<count>x<size>), or the block's own link.
+
+  Accepts:
+  - block: a "bundle" block of perfume-decants.
+  - picker_url: the vial picker page URL (may be blank).
+  - featured: true for the large dark card.
+  - featured_label: the label on the featured card (e.g. "Our pick").
+  - from_label, to_label: "from [price]", "up to [price]".
+  - soon_label: shown when there is nowhere to link to.
+{%- endcomment -%}
+{%- liquid
+  assign bs = block.settings.size
+  assign bp = block.settings.product
+  case bs
+    when '1'
+      assign v_img = 'sample-decant-square.webp'
+      assign v_h = 44
+    when '2'
+      assign v_img = 'sample-decant-clear.webp'
+      assign v_h = 62
+    when '5'
+      assign v_img = 'sample-decant-amber.webp'
+      assign v_h = 82
+    else
+      assign v_img = 'sample-decant-amber.webp'
+      assign v_h = 100
+  endcase
+  assign v_shown = block.settings.count | at_most: 6
+  if bp != blank
+    assign p_lo = bp.price_min | money
+    assign p_hi = ''
+    if bp.price_varies
+      assign p_hi = bp.price_max | money
+    endif
+  else
+    assign p_lo = block.settings.price | split: '–' | first | strip
+    assign p_hi = block.settings.price | split: '–' | last | strip
+    if p_hi == p_lo
+      assign p_hi = ''
+    endif
+  endif
+  assign b_url = block.settings.link
+  if b_url == blank and picker_url != blank
+    assign b_url = picker_url | append: '?set=' | append: block.settings.count | append: 'x' | append: bs
+  endif
+  assign from_txt = from_label | default: 'from [price]' | replace: '[price]', p_lo
+  assign to_txt = to_label | default: 'up to [price]' | replace: '[price]', p_hi
+  assign tag = 'div'
+  if b_url != blank
+    assign tag = 'a'
+  endif
+-%}
+<{{ tag }} class="pdf__card{% if featured %} pdf__card--feature{% endif %}"{% if b_url != blank %} href="{{ b_url }}"{% endif %} {{ block.shopify_attributes }}>
+  {%- if featured and featured_label != blank -%}
+    <span class="pdc__badge pdf__badge">{{ featured_label | escape }}</span>
+  {%- elsif featured != true and block.settings.badge != blank -%}
+    <span class="pdc__badge pdf__badge">{{ block.settings.badge | escape }}</span>
+  {%- endif -%}
+  <span class="pdf__vials" style="--vh: {{ v_h }}%;" data-n="{{ v_shown }}" aria-hidden="true">
+    {%- for i in (1..v_shown) -%}
+      <img src="{{ v_img | asset_url }}" alt="" width="40" height="160" loading="lazy" style="--j: {{ forloop.index0 }};">
+    {%- endfor -%}
+  </span>
+  <span class="pdf__name">{{ block.settings.title | escape }}{% if block.settings.title_italic != blank %} <em>{{ block.settings.title_italic | escape }}</em>{% endif %}</span>
+  <span class="pdf__what">{{ block.settings.count }} × {{ bs }} ml{% if featured and block.settings.badge != blank %} · {{ block.settings.badge | escape }}{% endif %}</span>
+  <span class="pdf__price">{{ from_txt | escape }}</span>
+  {%- if featured -%}
+    {%- if p_hi != blank -%}<span class="pdf__to">{{ to_txt | escape }}</span>{%- endif -%}
+    {%- if block.settings.featured_text != blank -%}<span class="pdf__why">{{ block.settings.featured_text | escape }}</span>{%- endif -%}
+  {%- endif -%}
+  {%- if b_url == blank -%}<span class="pdf__to">{{ soon_label | escape }}</span>{%- endif -%}
+</{{ tag }}>

@@ -59,7 +59,39 @@
         assign picker_url = pages['build-your-set'].url
       endif
     -%}
-    {%- if section.settings.layout == 'sets' -%}
+    {%- if section.settings.layout == 'featured' -%}
+      {%- comment -%}
+        One featured set (bundle block with "Feature this set", else the first) as a
+        large dark card, the others as vial cards beside it, then a "Build your own"
+        tile. Cards: snippets/perfume-decant-card.liquid.
+      {%- endcomment -%}
+      {%- liquid
+        assign feat = bundles.first
+        assign feat_i = 1
+        for b in bundles
+          if b.settings.featured
+            assign feat = b
+            assign feat_i = forloop.index
+            break
+          endif
+        endfor
+      -%}
+      {%- if bundles.size > 0 -%}
+        <div class="pdf">
+          {%- render 'perfume-decant-card', block: feat, picker_url: picker_url, featured: true, featured_label: section.settings.featured_label, from_label: section.settings.set_from_label, to_label: section.settings.set_to_label, soon_label: section.settings.soon_label -%}
+          {%- for block in bundles -%}
+            {%- if forloop.index == feat_i -%}{%- continue -%}{%- endif -%}
+            {%- render 'perfume-decant-card', block: block, picker_url: picker_url, featured: false, from_label: section.settings.set_from_label, to_label: section.settings.set_to_label, soon_label: section.settings.soon_label -%}
+          {%- endfor -%}
+          {%- if picker_url != blank and section.settings.cta_label != blank -%}
+            <a class="pdf__own" href="{{ picker_url }}">
+              <span class="pdf__name">{{ section.settings.cta_label | escape }}</span>
+              {%- if section.settings.cta_note != blank -%}<span class="pdf__what">{{ section.settings.cta_note | escape }} <span aria-hidden="true">→</span></span>{%- endif -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- elsif section.settings.layout == 'sets' -%}
       {%- comment -%}
         Sets as vial cards (same look as the vial picker): each set shows its vials at
         their real relative size, its price range and opens the picker with that set.
@@ -271,11 +303,13 @@
       "id": "layout",
       "label": "Layout",
       "options": [
+        { "value": "featured", "label": "One featured set, the rest beside it" },
         { "value": "sets", "label": "Set cards that open the vial picker" },
         { "value": "sizes", "label": "Sizes, then bundles" }
       ],
-      "default": "sets"
+      "default": "featured"
     },
+    { "type": "text", "id": "featured_label", "label": "Label on the featured set", "info": "Featured layout. Choose the set in its block (Feature this set).", "default": "Our pick" },
     { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Set cards open it with that set chosen. Empty: the page with the handle build-your-set." },
     { "type": "text", "id": "set_from_label", "label": "Set cards: lowest price", "info": "[price] = the bundle's first price.", "default": "from [price]" },
     { "type": "text", "id": "set_to_label", "label": "Set cards: highest price", "info": "[price] = the bundle's second price (after the –).", "default": "up to [price]" },
@@ -337,6 +371,8 @@
       "settings": [
         { "type": "text", "id": "title", "label": "Name", "default": "Try" },
         { "type": "text", "id": "title_italic", "label": "Name, italic part", "default": "trio" },
+        { "type": "checkbox", "id": "featured", "label": "Feature this set", "info": "Featured layout: the large dark card. Only the first one ticked is used.", "default": false },
+        { "type": "textarea", "id": "featured_text", "label": "Line on the featured card", "default": "Six different perfumes, a few days each: the easiest way to find your signature scent." },
         {
           "type": "select",
           "id": "size",
