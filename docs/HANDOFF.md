@@ -1,5 +1,113 @@
 # Handoff: Samyo perfume theme
 
+## Update 2026-11-23: Basic plan and reload persistence
+
+- Calculator now defaults the monthly Shopify Basic cost to ₱1,550, from
+  https://www.shopify.com/ph/pricing checked 2026-11-23. Annual billing is shown
+  as ₱1,350/month equivalent / ₱16,200 yearly; no subscription was purchased.
+  Existing nonblank plan costs are preserved. Cost remains editable for invoice
+  taxes/charges; the existing 2% third-party Shopify fee stays separate.
+- Fixed-overhead section shows the plan's own cost per order even while apps
+  and other fixed costs remain unknown. Unknown overhead still blocks full
+  operating profit; enter 0 explicitly if a cost does not apply.
+- Local storage now restores the selected set and scent IDs as well as existing
+  costs, confirmed flags, tester choice, destination and discount settings.
+  Query-string versions of the same page share this browser/origin's saved data.
+  A status line reports successful saving or storage failure. No cloud sync.
+- Validation: syntax and default-cost migration checks pass; browser reloads
+  restore a selected trio, chosen scents, peso/percentage discount, destination
+  and edited costs across query-string variants, including `?v=delivery`.
+  Existing input values were restored after the persistence check. Basic cost
+  displays ₱1,550 / 40 orders = ₱38.75 per order; unknown app/other overhead
+  stays unset and is not silently treated as zero.
+
+## Update 2026-11-23: clearer expense labels
+
+- Selected-set breakdown now separates Payment processing fee (percentage plus
+  fixed payment fee), Shopify transaction fee, Refund & replacement reserve,
+  Delivery we cover, and Item protection (estimate). Fee descriptions show their
+  bases; both payment percentages include customer-paid delivery. Delivery we
+  cover includes the optional extra subsidy, separately from protection.
+- Delivery example also separates customer delivery, merchant delivery and
+  protection. Cost input labels use matching plain language. Calculations,
+  default rates and profit stay unchanged; this is a presentation breakdown.
+- Updated calculation notes to explain payment totals, refund reserves,
+  merchant delivery and protection separately. Expense rows reconcile with the
+  existing cost calculation across 36 scenarios (discounts, threshold boundaries,
+  zero totals and extra subsidies). Syntax/whitespace checks pass. Desktop and
+  390px browser checks show the new rows with unchanged profit and no breakdown
+  overflow; delivery example shows ₱85 delivery / ₱95 protection separately at
+  the NCR ₱10,000 threshold.
+
+## Update 2026-11-23: customer-paid delivery display
+
+- Removed the customer delivery charge row from the selected-set profit/cost
+  breakdown in `dev/decant-pricing.html`; it remains in the customer's payment
+  summary. Customer-paid courier delivery below ₱10,000 was already excluded
+  from merchant costs, so contribution calculations stay unchanged. Merchant
+  protection, payment fees on shipping and seller-funded delivery still apply.
+- Owner requested no cash labour charge: filling and packing default to ₱0,
+  including a one-time migration of existing saved labour inputs. Later manual
+  edits remain editable/persistent. Zero labour is omitted from the materials
+  breakdown labels; vials, labels and box costs remain. Recommendations re-solve
+  using the lower costs, so recommended prices can fall as well as costs.
+
+## Update 2026-11-22: selected-set discount simulator
+
+- `dev/decant-pricing.html#try-set` now has a saved additional-discount value
+  and Percentage / Fixed amount (₱) selector beside Try a set. Default is 0.
+  Applies after the existing set discount, rounds to cents, caps at the item
+  total and recalculates fees, protection, delivery eligibility, contribution,
+  margin and contribution after ads for the selected example only. Recommended
+  vial prices and the other comparison tables remain the baseline.
+- The tray separates item revenue, buyer delivery and total before tax. Profit
+  breakdown compares contribution before/after the extra discount. Invalid
+  entries show an error and preserve scent choices; zero item revenue shows an
+  undefined margin and a loss, while retaining the parcel's delivery charge.
+- Verified percentage/fixed discounts, stacking, unchanged perfume costs,
+  free-delivery threshold crossing, oversized discounts and zero totals with
+  calculation checks; browser checked 10%, ₱50, negative and >100% inputs,
+  persisted settings and 390px controls (44px high). No live discount created.
+
+## Update 2026-11-22: delivery policy and calculator
+
+- Local implementation: buyer pays standard delivery below ₱10,000; free standard
+  delivery from **₱10,000 after discounts**, before shipping/tax. Affiliate
+  retailer purchases are excluded. No commit, push or live checkout change made.
+- New global **Samyó delivery** settings control the origin, threshold, four
+  estimated rates and explanatory copy. Working assumption: Metro Manila origin;
+  owner has not confirmed dispatch city. Rates: NCR ₱85, Other Luzon ₱178,
+  Visayas ₱212, Mindanao ₱234, based on GoGo Xpress's small-pouch pricing plus fuel.
+  Confirm route, parcel size and perfume-decant acceptance with the courier.
+- `snippets/perfume-delivery-rates.liquid` / `assets/perfume-shipping.css` show
+  the policy in the cart drawer, homepage FAQ and product delivery disclosure.
+  Minimal Dawn change: one render in `sections/main-cart-footer.liquid`.
+  Header announcement and Why copy match; drawer progress uses discounted
+  `cart.total_price` and only shows the PHP goal for PHP carts.
+- `assets/perfume-shipping.js` supplies cent-based quote calculations to
+  `dev/decant-pricing.html`. The calculator has editable rates, destination,
+  threshold and item-protection assumptions. Merchant pays estimated protection
+  on all orders (1% of value above ₱500); buyer-paid delivery is a pass-through,
+  with payment fees on it still expensed. At ₱10,000 the estimated merchant
+  delivery/protection expense is ₱180 / ₱273 / ₱307 / ₱329 respectively.
+  Protection guidance differs between courier pages: verify the final quote.
+- Recommendations and order margins include these expenses already; never
+  subtract them twice. The separate ₱10,000 example illustrates a 45–50% margin
+  **before** delivery costs. Ads, fixed overhead and taxes remain separate.
+  Blank/invalid required inputs now hide dependent figures instead of using zero.
+  Existing per-bottle estimates still allocate costs across fractional orders;
+  do not treat them as a whole-bottle cash-flow forecast.
+- Theme settings and calculator inputs are separate editable settings: update
+  both when rates change. Actual checkout rates must also be configured in
+  Shopify Shipping and delivery; theme copy cannot enforce them. PHP store
+  currency must be correct. See `docs/prompts/delivery-rates-claude.md` for the
+  complete implementation/admin handoff and sources.
+- Validation: renderer and schema checks pass, theme check retains 14 baseline
+  findings. Quote checks cover all regions around the exact threshold, empty
+  carts and invalid input. Browser checked NCR/Mindanao at ₱10,000, paid delivery
+  at ₱9,999.99, invalid order count hiding results and restoring them, all priced
+  set combinations inside 45–50%, homepage FAQ and cart delivery display.
+
 Last updated 2026-11-21, from a Claude Code session. Paths are from the repo root (the theme). Continue from "Next tasks".
 
 ## The brief, in short

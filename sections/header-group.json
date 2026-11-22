@@ -44,7 +44,10 @@
         "blend": true,
         "announcement_bg": "#292521",
         "announcement_ink": "#F7F5F0",
-        "adapt_dark": false
+        "adapt_dark": false,
+        "drawer_ship_text": "[amount] away from free standard delivery after discounts",
+        "drawer_ship_done": "Free standard delivery unlocked after discounts",
+        "announcement": "Authentic designer fragrances\nFree standard delivery on ₱10,000+ after discounts\nScent notes for every perfume, before you buy"
       }
     }
   },

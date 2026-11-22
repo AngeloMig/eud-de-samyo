@@ -66,6 +66,7 @@ engine.registerFilter('color_brightness', (hex) => {
 engine.registerFilter('color_darken', (hex, amt) => { const [h, s, l] = hexToHsl(hex); return hslToHex(h, s, Math.max(0, l - amt)); });
 engine.registerFilter('color_lighten', (hex, amt) => { const [h, s, l] = hexToHsl(hex); return hslToHex(h, s, Math.min(100, l + amt)); });
 engine.registerFilter('money', (cents) => `₱${(Number(cents) / 100).toLocaleString('en-PH', { minimumFractionDigits: 2 })}`);
+engine.registerFilter('money_without_currency', (cents) => (Number(cents) / 100).toLocaleString('en-PH', { minimumFractionDigits: 2 }));
 
 // {% style %} -> <style>, {% schema %} -> nothing
 engine.registerTag('style', {
@@ -162,7 +163,10 @@ const DEMO_ARTICLES = [
 }));
 const DEMO_BLOG = { title: 'Journal', handle: 'journal', url: '/blogs/journal', articles: DEMO_ARTICLES, articles_count: DEMO_ARTICLES.length, all_tags: ['Basics', 'Guides', 'Weather'] };
 
+const globalSettingsData = JSON.parse(readFileSync(join(root, 'config/settings_data.json'), 'utf8'));
+const globalSettings = typeof globalSettingsData.current === 'object' ? globalSettingsData.current : globalSettingsData.presets[globalSettingsData.current];
 const globals = {
+  settings: globalSettings,
   blogs: { journal: DEMO_BLOG },
   // PREVIEW ONLY: the vial picker page, so links to it (homepage set cards, product pages) work.
   pages: { 'build-your-set': { url: 'vial-picker.html' } },

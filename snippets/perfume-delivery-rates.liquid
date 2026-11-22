@@ -1,0 +1,25 @@
+{%- comment -%}Display policy only: Shopify shipping profiles control checkout charges.{%- endcomment -%}
+{%- if settings.pf_shipping_show -%}
+  {%- liquid
+    assign delivery_threshold = settings.pf_shipping_threshold | default: 10000 | times: 100
+    assign delivery_regions = 'NCR,Other Luzon,Visayas,Mindanao' | split: ','
+    assign delivery_keys = 'pf_shipping_ncr,pf_shipping_luzon,pf_shipping_visayas,pf_shipping_mindanao' | split: ','
+  -%}
+  {{ 'perfume-shipping.css' | asset_url | stylesheet_tag }}
+  <details class="pf-delivery"{% if expanded %} open{% endif %}>
+    <summary>Standard delivery rates</summary>
+    <div class="pf-delivery__body">
+      <p><strong>Free standard delivery on Samyó orders of ₱{{ delivery_threshold | money_without_currency }} and above after discounts.</strong></p>
+      <p>For smaller orders, customers pay delivery. Estimated small-parcel rates from {{ settings.pf_shipping_origin | escape }}:</p>
+      <table><caption class="pf-visually-hidden">Estimated delivery fees below the free-delivery threshold</caption><tbody>
+        {%- for region in delivery_regions -%}
+          {%- assign delivery_key = delivery_keys[forloop.index0] -%}
+          {%- assign delivery_fee = settings[delivery_key] | times: 100 -%}
+          <tr><th scope="row">{{ region }}</th><td>₱{{ delivery_fee | money_without_currency }}</td></tr>
+        {%- endfor -%}
+      </tbody></table>
+      <p class="pf-delivery__note">{{ settings.pf_shipping_note | escape }}</p>
+      <p class="pf-delivery__note">Partner full-bottle purchases follow the retailer’s delivery policy and do not count toward Samyó’s free-delivery threshold.</p>
+    </div>
+  </details>
+{%- endif -%}

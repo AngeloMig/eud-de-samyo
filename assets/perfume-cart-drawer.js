@@ -28,6 +28,8 @@
     }
   };
 
+  // Remove icon (a bin); the button carries the accessible name.
+  const TRASH = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h8a1.5 1.5 0 0 0 1.5-1.5l1-12.5M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/></svg>';
   const sized = (src, width) => {
     if (!src) return '';
     try {
@@ -199,44 +201,54 @@
         </div>
         <div class="pcd__side">
           <p class="pcd__price">${money(item.final_line_price, cart.currency)}</p>
-          <button type="button" class="pcd__remove" data-pcd-remove>Remove<span class="pf-visually-hidden"> ${esc(item.product_title)}</span></button>
+          <button type="button" class="pcd__remove" data-pcd-remove aria-label="Remove ${esc(item.product_title)}">${TRASH}</button>
         </div>
       </li>`;
     }
 
-    // One decant set: its vials, the set price (and savings), one Remove.
+    // One decant set: small vials of its size, the saving on top, the vials at full
+    // width, then the set price and a Remove-set icon on one quiet row.
     setCard(g, i, cart) {
       const name = g.set.split('|')[0].replace(/\s*\([a-z0-9]+\)\s*$/i, '');
       const total = g.lines.reduce((a, l) => a + l.final_line_price, 0);
       const before = g.lines.reduce((a, l) => a + l.original_line_price, 0);
       const isNew = this.newVariant && g.lines.some((l) => Number(l.variant_id) === Number(this.newVariant));
-      const imgs = g.lines.slice(0, 3).map((l) => sized(l.image || l.featured_image?.url, 160)).filter(Boolean);
+      const count = g.lines.reduce((a, l) => a + l.quantity, 0);
+      const size = parseFloat(g.lines[0]?.variant_title) || 0;
+      const vialSrc = this.dataset[`vial-${size}`] || this.dataset['vial-5'] || ''; // data-vial-1 stays 'vial-1' (digit after the dash)
+      const vialH = { 1: 46, 2: 64, 5: 84 }[size] || 84;
+      const shown = Math.min(count, 6);
+      const media = vialSrc
+        ? `<span class="pcd__media pcd__set-media" style="--vh:${vialH}%" data-n="${shown}" aria-hidden="true">${Array.from({ length: shown }, () => `<img src="${esc(vialSrc)}" alt="" loading="lazy" width="40" height="160">`).join('')}</span>`
+        : '<span class="pcd__media" aria-hidden="true"></span>';
       const vials = g.lines
         .map((l) => {
-          const size = l.variant_title && l.variant_title !== 'Default Title' ? ` · ${esc(l.variant_title)}` : '';
           const qty = l.quantity > 1 ? ` × ${l.quantity}` : '';
-          return `<li><span>${esc(l.product_title)}${size}${qty}</span><span>${money(l.original_line_price, cart.currency)}</span></li>`;
+          return `<li><span>${esc(l.product_title)}${qty}</span><span>${money(l.original_line_price, cart.currency)}</span></li>`;
         })
         .join('');
       return `<li class="pcd__item pcd__set${isNew ? ' is-new' : ''}" style="--i:${i}" data-set="${esc(g.set)}" data-keys="${esc(g.lines.map((l) => l.key).join(','))}">
-        <span class="pcd__media pcd__set-media" aria-hidden="true">${imgs.map((src) => `<img src="${esc(src)}" alt="" loading="lazy" width="56" height="70">`).join('')}</span>
+        ${media}
         <div class="pcd__info">
-          <p class="pcd__brand">Decant set</p>
+          <div class="pcd__set-top">
+            <p class="pcd__brand">Decant set</p>
+            ${before > total ? `<p class="pcd__save">You save ${money(before - total, cart.currency)}</p>` : ''}
+          </div>
           <p class="pcd__name">${esc(name)}</p>
           <ul class="pcd__set-vials" role="list">${vials}</ul>
-        </div>
-        <div class="pcd__side">
-          <p class="pcd__price">${before > total ? `<s>${money(before, cart.currency)}</s> ` : ''}${money(total, cart.currency)}</p>
-          ${before > total ? `<p class="pcd__save">You save ${money(before - total, cart.currency)}</p>` : ''}
-          <button type="button" class="pcd__remove" data-pcd-remove-set>Remove set<span class="pf-visually-hidden"> ${esc(name)}</span></button>
+          <div class="pcd__set-foot">
+            <p class="pcd__price">${before > total ? `<s>${money(before, cart.currency)}</s> ` : ''}${money(total, cart.currency)}</p>
+            <button type="button" class="pcd__remove" data-pcd-remove-set aria-label="Remove set: ${esc(name)}">${TRASH}</button>
+          </div>
         </div>
       </li>`;
     }
 
     renderShip(cart) {
       if (!this.ship) return;
-      const rate = Number(window.Shopify?.currency?.rate) || 1;
-      const goal = Math.round(Number(this.dataset.shipThreshold || 0) * 100 * rate);
+      // The policy is denominated in PHP. Other presentment currencies are quoted
+      // at checkout rather than incorrectly treating ₱10,000 as another currency.
+      const goal = cart.currency === 'PHP' ? Math.round(Number(this.dataset.shipThreshold || 0) * 100) : 0;
       const items = (cart.items || []).length;
       this.ship.hidden = !goal || !items;
       if (!goal || !items) return;

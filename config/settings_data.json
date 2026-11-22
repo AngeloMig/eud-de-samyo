@@ -190,7 +190,15 @@
             "color_scheme": "scheme-1"
           }
         }
-      }
+      },
+      "pf_shipping_show": true,
+      "pf_shipping_origin": "Pulilan, Bulacan",
+      "pf_shipping_threshold": 10000,
+      "pf_shipping_ncr": 85,
+      "pf_shipping_luzon": 178,
+      "pf_shipping_visayas": 212,
+      "pf_shipping_mindanao": 234,
+      "pf_shipping_note": "Small-parcel estimates; final delivery fees and available services are shown at checkout. Same-day services and larger parcels are quoted separately."
     }
   }
 }

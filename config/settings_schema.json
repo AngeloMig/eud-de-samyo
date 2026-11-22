@@ -1466,5 +1466,62 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Samyó delivery",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Display policy only. Configure matching PHP checkout rates in Shopify Settings > Shipping and delivery. Rates are estimates from Metro Manila; confirm courier acceptance and final charges."
+      },
+      {
+        "type": "checkbox",
+        "id": "pf_shipping_show",
+        "label": "Show delivery policy and rates",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "pf_shipping_origin",
+        "label": "Shipping origin",
+        "default": "Metro Manila"
+      },
+      {
+        "type": "number",
+        "id": "pf_shipping_threshold",
+        "label": "Free delivery threshold (PHP)",
+        "default": 10000
+      },
+      {
+        "type": "number",
+        "id": "pf_shipping_ncr",
+        "label": "NCR standard delivery (PHP)",
+        "default": 85
+      },
+      {
+        "type": "number",
+        "id": "pf_shipping_luzon",
+        "label": "Other Luzon standard delivery (PHP)",
+        "default": 178
+      },
+      {
+        "type": "number",
+        "id": "pf_shipping_visayas",
+        "label": "Visayas standard delivery (PHP)",
+        "default": 212
+      },
+      {
+        "type": "number",
+        "id": "pf_shipping_mindanao",
+        "label": "Mindanao standard delivery (PHP)",
+        "default": 234
+      },
+      {
+        "type": "textarea",
+        "id": "pf_shipping_note",
+        "label": "Rate note",
+        "default": "Small-parcel estimates; final delivery fees and available services are shown at checkout. Same-day services and larger parcels are quoted separately."
+      }
+    ]
   }
 ]

@@ -366,7 +366,7 @@
     assign d_empty = section.settings.drawer_empty
     assign d_empty_label = section.settings.drawer_empty_label
     assign d_empty_url = section.settings.drawer_empty_link
-    assign d_ship = section.settings.drawer_ship_threshold | default: 0
+    assign d_ship = settings.pf_shipping_threshold | default: section.settings.drawer_ship_threshold | default: 0
     assign d_ship_text = section.settings.drawer_ship_text
     assign d_ship_done = section.settings.drawer_ship_done
     assign d_gift = section.settings.drawer_gift_label
@@ -438,7 +438,7 @@
       "id": "announcement",
       "label": "Messages",
       "info": "One per line; several roll through. Only what is true for your store.",
-      "default": "Authentic designer fragrances\nFree delivery on orders over ₱10,000\nScent notes for every perfume, before you buy"
+      "default": "Authentic designer fragrances\nFree standard delivery on ₱10,000+ after discounts\nScent notes for every perfume, before you buy"
     },
     { "type": "url", "id": "announcement_link", "label": "Link (optional)" },
     { "type": "color", "id": "announcement_bg", "label": "Background", "default": "#292521" },

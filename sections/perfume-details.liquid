@@ -40,6 +40,7 @@
         <details class="pdet__row" {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
           <summary>{{ block.settings.title | escape }}</summary>
           <div class="pdet__body rte">{{ body }}</div>
+          {%- if block.settings.delivery_rates -%}<div class="pdet__body">{% render 'perfume-delivery-rates', expanded: true %}</div>{%- endif -%}
         </details>
       {%- endif -%}
     {%- endfor -%}
@@ -76,6 +77,7 @@
         },
         { "type": "richtext", "id": "content", "label": "Text" },
         { "type": "page", "id": "page", "label": "Or a page" },
+        { "type": "checkbox", "id": "delivery_rates", "label": "Show Samyó delivery rates", "default": false },
         { "type": "checkbox", "id": "open", "label": "Open at first", "default": false }
       ]
     }

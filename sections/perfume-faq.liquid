@@ -47,6 +47,7 @@
             <span class="pfq__icon" aria-hidden="true"></span>
           </summary>
           <div class="pfq__a rte">{{ block.settings.answer }}</div>
+          {%- if block.settings.delivery_rates -%}<div class="pfq__a">{% render 'perfume-delivery-rates', expanded: true %}</div>{%- endif -%}
         </details>
       {%- endfor -%}
     </div>
@@ -99,7 +100,8 @@
       "name": "Question",
       "settings": [
         { "type": "text", "id": "question", "label": "Question", "default": "Are your perfumes authentic?" },
-        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Yes. We sell authentic designer fragrances only.</p>" }
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Yes. We sell authentic designer fragrances only.</p>" },
+        { "type": "checkbox", "id": "delivery_rates", "label": "Show Samyó delivery rates", "default": false }
       ]
     }
   ],
@@ -108,7 +110,7 @@
       "name": "FAQ",
       "blocks": [
         { "type": "question", "settings": { "question": "Are your perfumes authentic?", "answer": "<p>Yes. We sell authentic designer fragrances only.</p>" } },
-        { "type": "question", "settings": { "question": "How much is delivery?", "answer": "<p>Delivery is free on orders over ₱10,000. For smaller orders, the fee and the delivery options for your address show at checkout.</p>" } },
+        { "type": "question", "settings": { "question": "How much is delivery?", "answer": "<p>Standard delivery is free on Samyó orders of ₱10,000 and above after discounts. For smaller orders, customers pay the delivery fee shown at checkout.</p>" } },
         { "type": "question", "settings": { "question": "How do I choose a perfume I've never smelled?", "answer": "<p>Every perfume page shows its top, heart and base notes, how it wears and when to wear it. Not sure where to start? Take the <a href=\"/pages/find-your-scent\">Find your scent</a> quiz: four questions point you to a scent.</p>" } },
         { "type": "question", "settings": { "question": "What's the difference between Eau de Parfum and Eau de Toilette?", "answer": "<p>Eau de Parfum has a higher concentration of perfume oils than Eau de Toilette, so it usually smells richer and lasts longer. How long any perfume lasts still depends on the perfume, your skin and the weather.</p>" } },
         { "type": "question", "settings": { "question": "Can I return a perfume?", "answer": "<p>Please see our <a href=\"/policies/refund-policy\">refund policy</a> for what can be returned and how.</p>" } },

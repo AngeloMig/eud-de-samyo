@@ -36,6 +36,9 @@
   data-ship-threshold="{{ ship_threshold | default: 0 }}"
   data-ship-text="{{ ship_text | default: '[amount] away from free delivery' | escape }}"
   data-ship-done="{{ ship_done | default: 'Free delivery unlocked' | escape }}"
+  data-vial-1="{{ 'sample-decant-square.webp' | asset_url }}"
+  data-vial-2="{{ 'sample-decant-clear.webp' | asset_url }}"
+  data-vial-5="{{ 'sample-decant-amber.webp' | asset_url }}"
   inert
 >
   <div class="pcd__scrim" data-pcd-close></div>
@@ -80,6 +83,7 @@
       {%- if note != blank -%}
         <p class="pcd__note">{{ note | escape }}</p>
       {%- endif -%}
+      {%- render 'perfume-delivery-rates' -%}
       {%- if gift_label != blank -%}
         <details class="pcd__gift" data-pcd-gift>
           <summary>{{ gift_label | escape }}</summary>

@@ -82,14 +82,20 @@
 <header>
  <h1>Decant pricing: contribution before ads and fixed overhead</h1>
  <p class="lede">Target: a <b>45–50% fully costed contribution margin</b> on every in-house decant set, after the set discount, for every possible mix of scents. Margin = (selling price − all variable order costs) ÷ selling price. Advertising (a monthly budget spread over your orders), the Shopify plan, apps and other fixed costs are kept separate. Full-bottle affiliate earnings are calculated on their own (section 8). Bottle prices: FragranceX in pesos, 22 Nov 2026 (100 ml tester where listed). Nothing here changes the live store.</p>
+ <p id="save-status" class="sub" role="status" style="font-size:12px;margin:12px 0 0">Changes save automatically in this browser.</p>
 </header>
 
 <div id="banner" class="banner"></div>
+<p id="calculation-error" class="banner" role="alert" hidden></p>
 
 <h2>1 · Variable costs per order</h2>
-<p class="sub">Every cost that grows with each order. Tick “Confirmed” once a number comes from your supplier, courier, payment provider or Shopify plan; until then it is an estimate and the results say so.</p>
+<p class="sub">Every cost that grows with each order. Filling and packing labour are set to ₱0 because you handle them yourself. Tick “Confirmed” once a number comes from your supplier, courier, payment provider or Shopify plan; until then it is an estimate.</p>
 <div class="card"><div class="inp" id="inputs"></div>
 <label class="tester" style="margin-top:14px"><input type="checkbox" id="usetester"> Use the 100 ml tester price where FragranceX lists one (Terre d’Hermès ₱4,336.30, Eros ₱4,027.84, The One ₱4,071.21).</label></div>
+
+<h2>Delivery and the ₱10,000 threshold</h2>
+<p class="sub">Customers pay standard delivery below the free-delivery threshold. At or above it after discounts, we cover delivery. We pay item protection in both cases, calculated only on the item value above the exempt amount below. These are editable small-parcel estimates from Metro Manila. Affiliate purchases follow the retailer’s policy.</p>
+<div class="card"><div class="inp" id="shipping-inputs"></div><div id="shipping-example" class="sheet" style="margin-top:18px" aria-live="polite"></div></div>
 
 <h2>2 · Targets</h2>
 <div class="card"><div class="inp" id="targets"></div></div>
@@ -97,6 +103,11 @@
 <h2>3 · Price of each vial: current and recommended</h2>
 <p class="sub">One price per perfume and size, used everywhere (picker, sets, Shopify). Recommended prices are searched so that every set and every scent combination lands inside the target band after the set discount, then rounded up to ₱5 and checked again. Grey line: variable cost of that vial (perfume, vial, label, filling labour), before the order’s box, packing, fees and allowance.</p>
 <div class="card tablewrap"><table id="t-vial"></table></div>
+<div class="card bt csv">
+  <p class="sub" style="margin:0 0 10px">Update Shopify by spreadsheet: download a CSV, change the <b>Variant Price</b> column in Excel or Google Sheets if you like, save it as CSV, then in Shopify go to <b>Products → Import</b>, choose the file and tick <b>“Overwrite products with matching handles”</b>. Only the columns in the file change. Export your products first as a backup.</p>
+  <button type="button" id="csv-rec">Download CSV · recommended prices</button>
+  <button type="button" id="csv-cur">Download CSV · current prices</button>
+</div>
 
 <h2>3b · Profit per bottle</h2>
 <p class="sub">What one full bottle earns if you pour all of it into one size and sell it in that size’s set (1 and 2 ml as trios, 5 ml as duos, 10 ml on its own), at the recommended prices. Usable ml = bottle ml × (1 − transfer loss); leftover ml that doesn’t fill a whole vial is not counted. <span class="label-contrib">Contribution before ads and fixed overhead</span>, then after your ad spend per order. “Return” = profit ÷ what the bottle cost you (incl. shipping & import).</p>
@@ -107,8 +118,13 @@
 <div class="card tablewrap"><table id="t-sets"></table></div>
 <div id="conflicts"></div>
 
-<h2>5 · Try a set</h2>
+<h2 id="try-set">5 · Try a set</h2>
 <p class="sub">Choose a set and tap scents. Uses the recommended prices; every cost line is shown.</p>
+<div class="card">
+ <div class="inp" id="discount-inputs"></div>
+ <p class="sub" style="margin:12px 0 0">Try an additional order discount after the bundle discount. This applies only to the set below; recommended prices and the other tables stay at their base settings. Delivery eligibility uses the discounted item total.</p>
+ <p id="discount-error" role="alert" class="low" hidden></p>
+</div>
 <div class="card pick">
  <div>
   <span class="k">Set</span>
@@ -120,8 +136,9 @@
 </div>
 <div class="card" id="sheet" style="font-variant-numeric:tabular-nums"></div>
 
-<h2>6 · Fixed overhead (kept separate)</h2>
-<p class="sub">Monthly costs that don’t grow with each order. Spread over your expected orders per month to see operating profit per order. Empty = not set yet (not treated as zero).</p>
+<h2 id="fixed-overhead">6 · Fixed overhead (kept separate)</h2>
+<p class="sub">Monthly costs that don’t grow with each order. Spread over your expected orders per month to see operating profit per order. Enter 0 if you have no app or other fixed costs; blank means not set yet.</p>
+<p class="sub">Shopify Basic starts at ₱1,550/month on monthly billing. Yearly billing is ₱1,350/month equivalent (₱16,200 per year). The calculator uses the regular monthly price, not a trial offer. Edit the plan cost to match your invoice, including any taxes or additional charges. <a href="https://www.shopify.com/ph/pricing" target="_blank" rel="noopener">Shopify Philippines pricing</a> · checked 23 Nov 2026.</p>
 <div class="card"><div class="inp" id="fixed"></div><div id="opprofit" style="margin-top:14px"></div></div>
 
 <h2>7 · Operating profit per order (example)</h2>
@@ -132,10 +149,15 @@
 <div class="card"><div class="inp" id="aff-in"></div><div class="tablewrap" style="margin-top:12px"><table id="t-aff"></table></div></div>
 
 <footer>
- How every number is made. Usable ml = bottle ml × (1 − transfer loss). Perfume cost per ml = (bottle price × (1 + inbound shipping & import)) ÷ usable ml. Variable cost of an order = Σ per vial (ml × perfume cost per ml + vial + label + filling labour) + box & packing materials + packing labour + payment fixed fee + seller-funded delivery + price × (payment % + Shopify transaction fee % + leakage/refund allowance %). Price = vials added up, minus the set discount. Contribution = price − variable cost; margin = contribution ÷ price. Recommended vial price = (variable vial cost + order-cost share) ÷ (1 − percentage costs − target), rounded up to ₱5; the share and target are searched per size so that every combination fits. Not tax advice: VAT and income tax are not included.
+ <p>How the calculator works. Item total = vial prices minus the bundle discount, then any additional discount in “Try a set.” Payment total = discounted items + delivery paid by the customer.</p>
+ <p>Perfume cost per usable ml = bottle cost including inbound shipping and import ÷ (bottle ml × usable percentage after transfer loss). Order costs include the perfume used, vials, labels, packing materials and any labour entered. Filling and packing labour currently default to ₱0.</p>
+ <p>Payment processing fee = payment total × processing rate + the payment fee per order. Shopify transaction fee = payment total × Shopify rate. Refund & replacement reserve = discounted item total × reserve rate. The reserve is money set aside for problems.</p>
+ <p>Delivery we cover = the courier fee when the discounted item total reaches the free-delivery threshold, plus any extra delivery support entered. Item protection is separate. Customer-paid delivery covers the courier fee and is excluded from our delivery expense; payment fees on that money are included in the payment rows.</p>
+ <p>Contribution = discounted item total − all order costs. Margin = contribution ÷ discounted item total. Ads and fixed overhead are deducted separately. Recommended vial prices are rounded up to ₱5 and checked against the target margin after the bundle discount; the additional discount only affects your selected-set example. VAT and income tax are not included.</p>
 </footer>
 </div>
 
+<script src="../assets/perfume-shipping.js"></script>
 <script>
 const FX='https://www.fragrancex.com/products/';
 const PERFUMES=[ // [id, brand, name, bottle ₱, bottle ml, source note, source url, tester ₱ (same size, if FragranceX lists one)]
@@ -152,7 +174,7 @@ const PERFUMES=[ // [id, brand, name, bottle ₱, bottle ml, source note, source
  ['one','Dolce & Gabbana','The One for Men EDP',4903.34,100,'FragranceX · 100 ml EDP',FX+'dolce-and-gabbana/the-one-cologne',4071.21],
  ['swy','Emporio Armani','Stronger With You Intensely',8318.61,100,'FragranceX · 100 ml EDP',FX+'giorgio-armani/stronger-with-you-intensely-cologne']];
 // Live store prices before this review (per vial: 1 / 2 / 5 / 10 ml), set 22 Nov 2026.
-const CURRENT={sauvage:[220,410,985,1935],homme:[225,415,1000,1965],terre:[120,205,475,920],oud:[380,725,1770,3510],roma:[175,320,765,1495],eros:[115,195,450,865],y:[210,385,925,1815],wss:[190,345,820,1605],one:[115,195,455,875],swy:[190,345,820,1610]};
+const CURRENT={sauvage:[360,670,1555,3065],homme:[365,680,1575,3110],terre:[190,335,745,1450],oud:[615,1180,2800,5560],roma:[285,525,1205,2365],eros:[185,320,705,1365],y:[340,630,1455,2870],wss:[305,560,1290,2540],one:[185,320,710,1375],swy:[305,560,1295,2545]}; // live since 23 Nov 2026 (the recommended prices at that date)
 const SETS=[ // [id, name, count, ml, discount key]
  ['t1','Try trio',3,1,null],['s1','Discovery six',6,1,'d6'],['t2','Wear trio',3,2,null],
  ['s2','Wardrobe six',6,2,'d6'],['d5','Signature duo',2,5,null],['x10','Travel ten',1,10,null]];
@@ -161,7 +183,7 @@ const KEY='samyo-decant-contribution-v1';
 const $=id=>document.getElementById(id);
 const peso=(n,dec)=>'₱'+n.toLocaleString('en-PH',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0});
 const p2=n=>peso(n,true);
-const pct=m=>(m*100).toFixed(1)+'%';
+const pct=m=>m==null||!Number.isFinite(m)?'—':(m*100).toFixed(1)+'%';
 
 // [id, label, default, step, group, unit]  — every cost starts as an estimate.
 const COSTS=[
@@ -170,30 +192,43 @@ const COSTS=[
  ['v1','1 ml vial ₱',8,0.5,'₱'],['v2','2 ml spray vial ₱',15,0.5,'₱'],['v5','5 ml atomizer ₱',35,0.5,'₱'],['v10','10 ml atomizer ₱',55,0.5,'₱'],
  ['lab','Label per vial ₱',4,0.5,'₱'],
  ['box','Box & packing materials per order ₱',40,1,'₱'],
- ['fill','Filling labour per vial ₱',10,1,'₱'],
- ['packl','Packing labour per order ₱',20,1,'₱'],
- ['fee','Payment processing %',3.5,0.1,'%'],
- ['ffee','Payment fixed fee per order ₱',15,1,'₱'],
- ['shop','Shopify transaction fee %',2,0.1,'%'],
- ['allow','Leakage, replacements & refunds, % of price',2,0.5,'%'],
- ['deliv','Seller-funded delivery per order ₱',0,1,'₱']];
+ ['fill','Filling labour per vial ₱',0,1,'₱'],
+ ['packl','Packing labour per order ₱',0,1,'₱'],
+ ['fee','Payment processing rate %',3.5,0.1,'%'],
+ ['ffee','Payment fee per order ₱',15,1,'₱'],
+ ['shop','Shopify transaction rate %',2,0.1,'%'],
+ ['allow','Refund & replacement reserve %',2,0.5,'%'],
+ ['deliv','Extra delivery we cover per order ₱',0,1,'₱']];
+const SHIPPING=[['threshold','Free standard delivery from ₱',10000,1],['ncr','NCR standard delivery ₱',85,1],['luzon','Other Luzon standard delivery ₱',178,1],['visayas','Visayas standard delivery ₱',212,1],['mindanao','Mindanao standard delivery ₱',234,1],['protection','Item protection rate %',1,0.1],['protectionExcess','Value exempt from item protection ₱',500,1]];
 const TARGETS=[['tlo','Lowest margin %',45,1],['thi','Highest margin %',50,1],['d6','Six-vial set discount %',10,1],['ads','Ad spend per month ₱',6000,500],['orders','Expected orders per month',40,1]];
-const FIXED=[['plan','Shopify plan per month ₱'],['apps','Apps per month ₱'],['other','Other fixed costs per month ₱ (not ads)']];
+const FIXED=[['plan','Shopify Basic per month ₱',1550],['apps','Apps per month ₱'],['other','Other fixed costs per month ₱ (not ads)']];
 const AFF=[['rate','CJ commission rate % (from your CJ account)']];
 
 let saved={};
-try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+try{const parsed=JSON.parse(localStorage.getItem(KEY)||'{}');if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))saved=parsed}catch(e){saved={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(saved));$('save-status').textContent='Saved in this browser. Your inputs, discount, set and scents restore on reload.'}catch(e){$('save-status').textContent='This browser could not save your changes. Keep this page open to retain them.'}}
+// Owner handles filling and packing without a cash labour charge. Apply this
+// choice once to existing saved inputs; preserve later manual edits.
+if(!saved.ownerLabourZero){for(const id of ['fill','packl']){saved['in:'+id]=0;saved['ok:'+id]=true}saved.ownerLabourZero=true;save()}
+if(!saved.basicPlanAdded){if(saved['in:plan']==null||saved['in:plan']==='')saved['in:plan']=1550;saved.basicPlanAdded=true;save()}
 function field(id,label,def,step,withConfirm){
   const v=saved['in:'+id]!=null?saved['in:'+id]:(def==null?'':def);
   const conf=!!saved['ok:'+id];
   return `<label class="f">${label}<input id="${id}" type="number" step="${step||1}" value="${v}" ${def==null?'placeholder="not set"':''}>${withConfirm?`<span class="st"><input type="checkbox" data-ok="${id}" ${conf?'checked':''}> <span class="${conf?'conf':'est'}">${conf?'Confirmed':'Estimate, not confirmed'}</span></span>`:''}</label>`;
 }
 $('inputs').innerHTML=COSTS.map(c=>field(c[0],c[1],c[2],c[3],true)).join('');
+$('shipping-inputs').innerHTML=SHIPPING.map(c=>field('delivery_'+c[0],c[1],c[2],c[3],true)).join('')+`<label class="f">Destination for order calculations<select id="delivery_zone"><option value="ncr">NCR</option><option value="luzon">Other Luzon</option><option value="visayas">Visayas</option><option value="mindanao">Mindanao</option></select></label>`+field('delivery_example','Example item subtotal after discounts ₱',10000,1,false);
+$('delivery_zone').value=saved.deliveryZone||'ncr';
+$('delivery_zone').addEventListener('change',()=>{saved.deliveryZone=$('delivery_zone').value;save();render()});
 $('targets').innerHTML=TARGETS.map(c=>field(c[0],c[1],c[2],c[3],c[0]==='ads'||c[0]==='orders')).join('')+`<p class="sub" id="cacline" style="grid-column:1/-1;margin:4px 0 0"></p>`;
-$('fixed').innerHTML=FIXED.map(c=>field(c[0],c[1],null,1,false)).join('');
+$('fixed').innerHTML=FIXED.map(c=>field(c[0],c[1],c[2],1,false)).join('');
 $('aff-in').innerHTML=AFF.map(c=>field(c[0],c[1],null,0.1,false)).join('');
-document.querySelectorAll('input[type=number]').forEach(el=>{if(el.closest('#t-vial'))return;el.addEventListener('input',()=>{saved['in:'+el.id]=el.value;save();render()})});
+$('discount-inputs').innerHTML=`<label class="f">Discount type<select id="discount_type"><option value="percent">Percentage (%)</option><option value="amount">Fixed amount (₱)</option></select></label>`+field('discount_value','Additional order discount',0,0.01,false);
+$('discount_type').value=saved.discountType==='amount'?'amount':'percent';
+function discountLimits(){const input=$('discount_value');input.min='0';if($('discount_type').value==='percent')input.max='100';else input.removeAttribute('max')}
+discountLimits();
+$('discount_type').addEventListener('change',()=>{saved.discountType=$('discount_type').value;save();discountLimits();render()});
+document.querySelectorAll('input[type=number]').forEach(el=>{if(el.closest('#t-vial'))return;el.addEventListener('input',()=>{saved['in:'+el.id]=el.value;if(saved['ok:'+el.id]){saved['ok:'+el.id]=false;const check=document.querySelector(`[data-ok="${el.id}"]`);if(check){check.checked=false;check.nextElementSibling.textContent='Estimate, not confirmed';check.nextElementSibling.className='est'}}save();render()})});
 document.querySelectorAll('[data-ok]').forEach(el=>el.addEventListener('change',()=>{saved['ok:'+el.dataset.ok]=el.checked;save();const t=el.nextElementSibling;t.textContent=el.checked?'Confirmed':'Estimate, not confirmed';t.className=el.checked?'conf':'est';render()}));
 let useTester=saved.useTester!=null?!!saved.useTester:true;
 const ut=$('usetester');ut.checked=useTester;ut.addEventListener('change',()=>{useTester=ut.checked;saved.useTester=useTester;save();render()});
@@ -201,7 +236,7 @@ const bottle=p=>(useTester&&p[7]?p[7]:p[3]);
 const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0};
 const opt=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:null};
 
-function S(){return{ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),box:num('box'),fill:num('fill'),packl:num('packl'),
+function S(){return{delivery:Object.fromEntries(SHIPPING.map(c=>[c[0],num('delivery_'+c[0])])),zone:$('delivery_zone').value,ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),box:num('box'),fill:num('fill'),packl:num('packl'),
   fee:num('fee')/100,ffee:num('ffee'),shop:num('shop')/100,allow:num('allow')/100,deliv:num('deliv'),tlo:num('tlo')/100,thi:num('thi')/100,d6:num('d6')/100,ads:num('ads'),orders:num('orders'),cac:num('orders')>0?num('ads')/num('orders'):0}}
 const pctCosts=s=>s.fee+s.shop+s.allow;                       // charged on the selling price
 const orderCost=s=>s.box+s.packl+s.ffee+s.deliv;               // once per order
@@ -211,11 +246,28 @@ const priced=s=>PERFUMES.map(p=>({p,pm:perMl(p,s)})).filter(x=>x.pm!=null&&CURRE
 const discOf=(set,s)=>set[4]==='d6'?s.d6:0;
 const ceil5=x=>Math.ceil(x/5-1e-9)*5;
 // One order: the vials' prices, less the set discount; every variable cost.
-function order(set,vials,prices,s){
-  const sub=prices.reduce((a,b)=>a+b,0), off=Math.round(sub*discOf(set,s)*100)/100, price=sub-off;
+function order(set,vials,prices,s,promotion={type:'percent',value:0}){
+  const sub=prices.reduce((a,b)=>a+b,0), off=Math.round(sub*discOf(set,s)*100)/100;
+  const setPrice=Math.round((sub-off)*100)/100;
+  const promoOff=Math.min(setPrice,Math.round((promotion.type==='amount'?promotion.value:setPrice*promotion.value/100)*100)/100);
+  const price=Math.round((setPrice-promoOff)*100)/100;
   const perVial=vials.reduce((a,x)=>a+vialCost(x.pm,set[3],s),0), pc=price*pctCosts(s), oc=orderCost(s);
-  const cost=perVial+oc+pc, contrib=price-cost;
-  return{sub,off,price,perVial,oc,pc,cost,contrib,m:price>0?contrib/price:0};
+  const delivery=SamyoShipping.quote(Math.round(price*100),s.zone,s.delivery);
+  // Free items still form a parcel; the shared helper treats a zero subtotal as an empty cart.
+  if(price===0&&vials.length){delivery.carrier=SamyoShipping.quote(1,s.zone,s.delivery).carrier;delivery.customer=delivery.free?0:delivery.carrier;delivery.seller=(delivery.free?delivery.carrier:0)+delivery.protection}
+  const shippingCost=delivery.seller/100, shippingPayment=delivery.customer/100*(s.fee+s.shop);
+  const cost=perVial+oc+pc+shippingCost+shippingPayment, contrib=price-cost;
+  const paymentTotal=price+delivery.customer/100;
+  const charges={processing:paymentTotal*s.fee+s.ffee,shopify:paymentTotal*s.shop,reserve:price*s.allow,
+    delivery:(delivery.seller-delivery.protection)/100+s.deliv,protection:delivery.protection/100};
+  return{sub,off,setPrice,promoOff,price,perVial,oc,pc,cost,contrib,delivery,shippingCost,shippingPayment,paymentTotal,charges,m:price>0?contrib/price:null};
+}
+function renderShipping(s){
+  const subtotal=opt('delivery_example');
+  const q=subtotal==null?null:SamyoShipping.quote(Math.round(subtotal*100),s.zone,s.delivery);
+  if(!q){$('shipping-example').textContent='Enter a valid after-discount subtotal and delivery costs.';return}
+  const money=c=>p2(c/100), before45=subtotal*.45,before50=subtotal*.50;
+  $('shipping-example').innerHTML=`<div class="ln"><span>Items after discounts</span><b>${p2(subtotal)}</b></div><div class="ln"><span>Standard delivery · ${SamyoShipping.zones[s.zone]}</span><b>${money(q.carrier)}</b></div><div class="ln"><span>Delivery the customer pays${q.free?' · free delivery unlocked':''}</span><b>${money(q.customer)}</b></div><div class="ln"><span>Delivery we cover</span><b>${money(q.seller-q.protection)}</b></div><div class="ln"><span>Item protection (estimate)</span><b>${money(q.protection)}</b></div><div class="ln tot"><span>Total we cover</span><b>${money(q.seller)}</b></div><p>If the item margin was 45–50% <b>before</b> these delivery/protection costs, ${p2(before45-q.seller/100)}–${p2(before50-q.seller/100)} remains before ads and fixed overhead. The order calculations below already include these costs; do not subtract them again.</p><p class="sub" style="margin:0">The customer-paid fee offsets courier delivery below the threshold; payment fees on that charge remain an order expense. Final courier charges, parcel-size limits and perfume-decant acceptance must be confirmed. Item protection remains an estimate.</p>`;
 }
 function combos(n,k){const out=[];const rec=(st,a)=>{if(a.length===k){out.push(a.slice());return}for(let i=st;i<n;i++){a.push(i);rec(i+1,a);a.pop()}};rec(0,[]);return out}
 
@@ -248,7 +300,7 @@ function maxSixDiscount(ml,L,prices,s){
 
 let REC={}, SOLVE={};
 function renderBanner(){
-  const un=COSTS.filter(c=>!saved['ok:'+c[0]]).map(c=>c[1].split(/,| ₱| %/)[0]);
+  const un=[...COSTS,...SHIPPING.map(c=>['delivery_'+c[0],c[1]])].filter(c=>!saved['ok:'+c[0]]).map(c=>c[1].split(/,| ₱| %/)[0]);
   const cacUn=!saved['ok:ads']||!saved['ok:orders'];
   const b=$('banner');
   if(un.length||cacUn){b.className='banner';b.innerHTML=`<b>${un.length+(cacUn?1:0)} cost inputs are estimates, not confirmed:</b> ${un.concat(cacUn?['Ad spend / orders per month']:[]).join(', ')}. Recommended prices below are only as good as these numbers.`}
@@ -317,31 +369,46 @@ function renderSets(s,L){
 }
 
 // Try a set (recommended prices)
-let cur='t1', picks=[];
+let cur=SETS.some(x=>x[0]===saved.selectedSet)?saved.selectedSet:'t1';
+let picks=Array.isArray(saved.pickedScents)?saved.pickedScents.map(id=>({p:PERFUMES.find(p=>p[0]===id)})).filter(x=>x.p):[];
 function renderPicker(s,L){
   const set=SETS.find(x=>x[0]===cur), ml=set[3];
   picks=picks.map(x=>L.find(y=>y.p===x.p)).filter(Boolean).slice(0,set[2]);
+  saved.selectedSet=cur;saved.pickedScents=picks.map(x=>x.p[0]);save();
   $('set-btns').innerHTML=SETS.map(x=>`<button type="button" data-set="${x[0]}" class="${x[0]===cur?'on':''}" aria-pressed="${x[0]===cur}">${x[1]}<small>${x[2]} × ${x[3]} ml</small></button>`).join('');
   const full=picks.length>=set[2];
   $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${peso(REC[x.p[0]][SI[ml]])} per ${ml} ml</small></button>`}).join('');
-  const prices=picks.map(x=>REC[x.p[0]][SI[ml]]), r=order(set,picks,prices,s);
+  const promotion={type:$('discount_type').value,value:opt('discount_value')};
+  const invalid=promotion.value==null||promotion.value<0||(promotion.type==='percent'&&promotion.value>100);
+  const error=$('discount-error');error.hidden=!invalid;error.textContent=invalid?(promotion.type==='percent'?'Enter a discount from 0 to 100%.':'Enter a peso discount of 0 or more.'):'';
+  $('discount_value').setAttribute('aria-invalid',String(invalid));$('discount_value').setAttribute('aria-describedby','discount-error');
+  if(invalid){$('tray').textContent='Enter a valid discount to calculate your set.';$('sheet').textContent='Your set choices are kept while you correct the discount.';return}
+  const prices=picks.map(x=>REC[x.p[0]][SI[ml]]), base=order(set,picks,prices,s), r=order(set,picks,prices,s,promotion);
   let h=`<span class="k">${set[1]} · ${set[2]} × ${ml} ml</span><div style="margin-top:10px">`;
   for(let i=0;i<set[2];i++){const x=picks[i];h+=x?`<div class="slot full"><span class="n">${i+1}</span><span>${x.p[2]}</span><span>${peso(prices[i])}</span><button type="button" data-rm="${i}" aria-label="Remove ${x.p[2]}">×</button></div>`:`<div class="slot"><span class="n">${i+1}</span><span class="e">Empty</span><span></span><span></span></div>`}
   h+=`</div><div class="tline"><span class="s">Vials added up</span><span>${p2(r.sub)}</span></div>`;
   if(r.off)h+=`<div class="tline"><span class="s">Set discount (${Math.round(discOf(set,s)*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
-  h+=`<div class="tline tot"><span>Customer pays</span><span>${p2(r.price)}</span></div>`;
+  if(r.promoOff)h+=`<div class="tline"><span class="s">Additional order discount${promotion.type==='percent'?' ('+promotion.value+'%)':''}</span><span>− ${p2(r.promoOff)}</span></div>`;
+  h+=`<div class="tline tot"><span>Items after discounts</span><span>${p2(r.price)}</span></div>`;
+  if(picks.length)h+=`<div class="tline"><span class="s">Standard delivery${r.delivery.free?' · free':''}</span><span>${p2(r.delivery.customer/100)}</span></div><div class="tline tot"><span>Customer pays before tax</span><span>${p2(r.price+r.delivery.customer/100)}</span></div>`;
+  if(picks.length&&promotion.type==='amount'&&promotion.value>r.setPrice)h+='<p class="sub" style="margin:8px 0 0">The discount is capped at the item total.</p>';
   $('tray').innerHTML=h;
   if(!picks.length){$('sheet').innerHTML='<p class="sub" style="margin:0">Pick scents to see the sum.</p>';return}
   let t=`<span class="label-contrib">Contribution before ads and fixed overhead</span><div class="sheet" style="margin-top:10px">`;
   picks.forEach(x=>{t+=`<div class="ln"><span>${x.p[2]}: ${ml} ml × ${p2(x.pm)}/usable ml<small>${p2(+bottle(x.p))} × ${(1+s.ship).toFixed(2)} (shipping & import) ÷ (${x.p[4]} ml × ${(1-s.loss).toFixed(3)} usable)</small></span><span>${p2(ml*x.pm)}</span></div>`});
-  t+=`<div class="ln"><span>Vials, labels, filling: ${picks.length} × (${p2(s.vial[ml])} + ${p2(s.lab)} + ${p2(s.fill)})</span><span>${p2(picks.length*(s.vial[ml]+s.lab+s.fill))}</span></div>`;
-  t+=`<div class="ln"><span>Box & packing materials + packing labour (one order)</span><span>${p2(s.box+s.packl)}</span></div>`;
-  t+=`<div class="ln"><span>Payment fixed fee + seller-funded delivery</span><span>${p2(s.ffee+s.deliv)}</span></div>`;
-  t+=`<div class="ln"><span>Percentage costs on ${p2(r.price)}<small>payment ${(s.fee*100).toFixed(1)}% · Shopify ${(s.shop*100).toFixed(1)}% · leakage/refunds ${(s.allow*100).toFixed(1)}%</small></span><span>${p2(r.pc)}</span></div>`;
+  t+=`<div class="ln"><span>Vials, labels${s.fill?' and filling labour':''}: ${picks.length} × (${p2(s.vial[ml])} + ${p2(s.lab)}${s.fill?' + '+p2(s.fill):''})</span><span>${p2(picks.length*(s.vial[ml]+s.lab+s.fill))}</span></div>`;
+  t+=`<div class="ln"><span>Box & packing materials${s.packl?' + packing labour':''} (one order)</span><span>${p2(s.box+s.packl)}</span></div>`;
+  t+=`<div class="ln"><span>Payment processing fee<small>${pct(s.fee)} of ${p2(r.paymentTotal)} (items + customer-paid delivery), plus ${p2(s.ffee)} per order</small></span><span>${p2(r.charges.processing)}</span></div>`;
+  t+=`<div class="ln"><span>Shopify transaction fee<small>${pct(s.shop)} of ${p2(r.paymentTotal)} (items + customer-paid delivery)</small></span><span>${p2(r.charges.shopify)}</span></div>`;
+  t+=`<div class="ln"><span>Refund & replacement reserve<small>${pct(s.allow)} of the ${p2(r.price)} item total; money set aside for leaks, refunds or replacements</small></span><span>${p2(r.charges.reserve)}</span></div>`;
+  t+=`<div class="ln"><span>Delivery we cover<small>${r.delivery.free?'Free-delivery threshold reached after discounts.':'Customer pays standard delivery below the threshold.'}${s.deliv?' Includes '+p2(s.deliv)+' extra delivery support.':''}</small></span><span>${p2(r.charges.delivery)}</span></div>`;
+  t+=`<div class="ln"><span>Item protection (estimate)<small>Parcel cover paid by Samyó, separate from delivery</small></span><span>${p2(r.charges.protection)}</span></div>`;
   t+=`<div class="ln tot"><span>All variable costs</span><span>${p2(r.cost)}</span></div>`;
   t+=`<p class="big">${p2(r.contrib)}</p><span class="k">contribution · ${pct(r.m)} of the price</span>`;
+  if(r.promoOff)t+=`<div class="ln"><span>Contribution before the additional discount</span><span>${p2(base.contrib)} · ${pct(base.m)}</span></div><div class="ln"><span>Contribution change</span><span>${p2(r.contrib-base.contrib)}</span></div>`;
+  if(r.price===0)t+='<p class="sub">Margin is undefined when the item total is zero; the negative contribution shows the order cost you cover.</p>';
   t+=`<div class="ln" style="margin-top:12px"><span>After ads (${p2(s.ads)} a month ÷ ${s.orders} orders = ${p2(s.cac)} per order)</span><span>${p2(r.contrib-s.cac)}</span></div>`;
-  if(full){const b=band(r.m,s);t+=`<p class="verdict ${b==='ok'?'ok':'low'}">${b==='ok'?`Inside ${pct(s.tlo)} – ${pct(s.thi)}.`:b==='low'?`Below ${pct(s.tlo)}.`:`Above ${pct(s.thi)}.`}</p>`}
+  if(full){const b=band(r.m,s);t+=`<p class="verdict ${b==='ok'?'ok':'low'}">${r.m==null?'Zero item revenue: this order makes a loss.':b==='ok'?`Inside ${pct(s.tlo)} – ${pct(s.thi)}.`:b==='low'?`Below ${pct(s.tlo)}.`:`Above ${pct(s.thi)}.`}</p>`}
   $('sheet').innerHTML=t+'</div>';
 }
 document.addEventListener('click',e=>{
@@ -354,7 +421,8 @@ function renderOverhead(s,L){
   const plan=opt('plan'),apps=opt('apps'),other=opt('other'),orders=opt('orders');
   const missing=[['Shopify plan',plan],['Apps',apps],['Other fixed costs',other],['Expected orders',orders]].filter(x=>x[1]==null).map(x=>x[0]);
   const perOrder=missing.length?null:(plan+apps+other)/Math.max(1,orders);
-  $('opprofit').innerHTML=missing.length?`<p class="sub" style="margin:0"><span class="est">Not set:</span> ${missing.join(', ')}. Operating profit is shown once these are filled in.</p>`:`<p class="sub" style="margin:0">Fixed overhead per order: <b>${p2(perOrder)}</b> (${p2(plan+apps+other)} a month ÷ ${orders} orders).</p>`;
+  const planShare=plan!=null&&orders>0?`<p class="sub" style="margin:0 0 8px">Shopify plan alone: <b>${p2(plan)} ÷ ${orders} orders = ${p2(plan/orders)} per order.</b></p>`:'';
+  $('opprofit').innerHTML=planShare+(missing.length?`<p class="sub" style="margin:0"><span class="est">Not set:</span> ${missing.join(', ')}. Operating profit is shown once these are filled in.</p>`:`<p class="sub" style="margin:0">Fixed overhead per order: <b>${p2(perOrder)}</b> (${p2(plan+apps+other)} a month ÷ ${orders} orders).</p>`);
   const rec=(id,ml)=>REC[id][SI[ml]];
   $('t-op').innerHTML=`<thead><tr><th>Example order (recommended prices)</th><th>Price</th><th>Contribution</th><th>− Ads</th><th>− Fixed overhead</th><th>Operating profit</th></tr></thead><tbody>${SETS.filter(x=>L.length>=x[2]).map(set=>{
     const v=L.slice(0,set[2]), r=order(set,v,v.map(x=>rec(x.p[0],set[3])),s), op=perOrder==null?null:r.contrib-s.cac-perOrder;
@@ -365,7 +433,34 @@ function renderAffiliate(){
   $('t-aff').innerHTML=`<thead><tr><th>Full bottle at FragranceX</th><th>FragranceX price</th><th>Your earnings per sale</th></tr></thead><tbody>${PERFUMES.map(p=>{const pr=parseFloat(p[3]);
     return `<tr><td><span class="brand">${p[1]}</span>${p[2]}<span class="c">${p[5]}</span></td><td>${pr>0?p2(pr):'<span class="na">sold out</span>'}</td><td>${rate==null?'<span class="est">enter your CJ rate</span>':pr>0?p2(pr*rate/100):'—'}</td></tr>`}).join('')}</tbody>`;
 }
-function render(){const s=S(), L=priced(s); renderBanner(); renderAds(s,L); renderVials(s,L); renderBottle(s,L); renderSets(s,L); renderPicker(s,L); renderOverhead(s,L); renderAffiliate();}
+function render(){
+  const fields=[...COSTS,...TARGETS,...SHIPPING.map(c=>['delivery_'+c[0],c[1]])];
+  const missing=fields.filter(c=>opt(c[0])==null||opt(c[0])<0).map(c=>c[1]);
+  const s=S();
+  if(s.loss>=1)missing.push('Transfer loss must be below 100%');
+  if(s.orders<=0||!Number.isInteger(s.orders))missing.push('Expected orders must be a positive whole number');
+  if(s.d6>=1)missing.push('Set discount must be below 100%');
+  if(s.tlo>s.thi||s.thi+pctCosts(s)>=1)missing.push('Check margin targets and percentage costs');
+  const error=$('calculation-error');error.hidden=missing.length===0;error.textContent=missing.length?'Calculation incomplete: '+missing.join('; '):'';
+  document.querySelectorAll('#t-vial,#t-bottle,#t-sets,#conflicts,.pick,#sheet,#opprofit,#t-op,#shipping-example').forEach(el=>{el.hidden=missing.length>0});
+  if(missing.length)return;
+  const L=priced(s); renderBanner(); renderShipping(s); renderAds(s,L); renderVials(s,L); renderBottle(s,L); renderSets(s,L); renderPicker(s,L); renderOverhead(s,L); renderAffiliate();
+}
 render();
+
+// Shopify product CSV (Products → Import → Overwrite products with matching handles).
+const SHOP={sauvage:['dior-sauvage-eau-de-parfum','Sauvage Eau de Parfum'],homme:['dior-homme-intense','Dior Homme Intense'],terre:['hermes-terre-d-hermes-eau-de-toilette',"Terre d'Hermès Eau de Toilette"],oud:['oud-wood-eau-de-parfum','Oud Wood Eau de Parfum'],roma:['uomo-born-in-roma-eau-de-toilette','Uomo Born in Roma Eau de Toilette'],eros:['eros-eau-de-toilette','Eros Eau de Toilette'],y:['y-eau-de-parfum','Y Eau de Parfum'],wss:['wood-sage-sea-salt-cologne','Wood Sage & Sea Salt Cologne'],one:['dolce-gabbana-the-one','The One for Men Eau de Parfum'],swy:['emporio-armani-stronger-with-you-intensely','Stronger With You Intensely']};
+function shopifyCsv(useRec){
+  const q=v=>/[",\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':String(v);
+  const rows=[['Handle','Title','Option1 Name','Option1 Value','Variant Price']];
+  Object.entries(SHOP).forEach(([id,[handle,title]])=>{
+    const prices=useRec?REC[id]:CURRENT[id]; if(!prices)return;
+    SIZES.forEach((z,i)=>{const v=prices[SI[z]]; if(v>0) rows.push(i===0?[handle,title,'Size',z+' ml',v.toFixed(2)]:[handle,'','',z+' ml',v.toFixed(2)])});
+  });
+  const blob=new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`samyo-decant-prices-${useRec?'recommended':'current'}.csv`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+$('csv-rec').addEventListener('click',()=>shopifyCsv(true));
+$('csv-cur').addEventListener('click',()=>shopifyCsv(false));
 </script>
 </body></html>

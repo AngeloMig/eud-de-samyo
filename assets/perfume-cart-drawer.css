@@ -279,26 +279,63 @@
   text-align: center;
 }
 
-/* Decant set: one card for its vials */
+/* Decant set: one card for its vials. The saving sits on top next to the label,
+   the vial names get the whole width, and the set price and a Remove-set icon share
+   a quiet row at the bottom. */
+.pcd__item.pcd__set {
+  grid-template-columns: 84px minmax(0, 1fr);
+}
+
+.pcd__set .pcd__info {
+  min-width: 0;
+}
+
+.pcd__set-top {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.pcd__set-top .pcd__brand {
+  margin: 0;
+}
+
+.pcd__set .pcd__save {
+  background: var(--pcd-tint);
+  border-radius: 999px;
+  color: var(--pcd-ink);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  margin: 0;
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+/* The set's vials, drawn at their size (one per vial, six at most) */
 .pcd__set-media {
-  display: grid;
-  gap: 4px;
-  grid-template-columns: repeat(2, 1fr);
-  align-content: start;
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  padding: 0 6px 10%;
 }
 
 .pcd__set-media img {
-  aspect-ratio: 4 / 5;
-  height: auto;
-  object-fit: cover;
-  width: 100%;
+  flex: 0 1 16px;
+  height: var(--vh, 64%);
+  left: auto;
+  min-width: 0;
+  object-fit: contain;
+  position: static;
+  top: auto;
+  width: auto;
 }
 
 .pcd__set-vials {
   display: grid;
-  gap: 3px;
+  gap: 6px;
   list-style: none;
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   padding: 0;
 }
 
@@ -306,13 +343,39 @@
   color: var(--pcd-soft);
   display: flex;
   font-size: 12px;
-  gap: 10px;
+  gap: 12px;
   justify-content: space-between;
+  line-height: 1.35;
+}
+
+.pcd__set-vials li span:first-child {
+  min-width: 0;
 }
 
 .pcd__set-vials li span:last-child {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.pcd__set-foot {
+  align-items: center;
+  border-top: 1px dashed var(--pcd-line);
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+}
+
+.pcd__set-foot .pcd__price {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pcd__set-foot .pcd__price s {
+  font-size: 11px;
+  font-weight: 400;
+  margin-right: 2px;
 }
 
 .pcd__price s {
@@ -341,18 +404,23 @@
 }
 
 .pcd__remove {
+  align-items: center;
   background: none;
   border: 0;
+  border-radius: 50%;
   color: var(--pcd-soft);
   cursor: pointer;
-  font: inherit;
-  font-size: 12px;
-  padding: 6px 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  margin-right: -9px;
+  padding: 0;
+  transition: background-color 0.2s, color 0.2s;
+  width: 36px;
 }
 
 .pcd__remove:hover {
+  background: var(--pcd-tint);
   color: var(--pcd-ink);
 }
 
@@ -659,6 +727,17 @@
   }
 
   .pcd__qty button {
+    width: 44px;
+  }
+
+  .pcd__item.pcd__set {
+    gap: 12px;
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+
+  .pcd__remove {
+    height: 44px;
+    margin-right: -13px;
     width: 44px;
   }
 }

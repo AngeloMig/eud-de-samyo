@@ -1,0 +1,12 @@
+.pf-delivery { border-top: 1px solid currentColor; color: inherit; font: 400 13px/1.6 var(--pf-font-sans, 'Instrument Sans', sans-serif); margin: 16px 0; text-align: left; }
+.pf-delivery summary { align-items: center; cursor: pointer; display: flex; justify-content: space-between; list-style: none; min-height: 44px; padding: 8px 0; }
+.pf-delivery summary::-webkit-details-marker { display: none; }
+.pf-delivery summary::after { content: '+'; font-size: 20px; }
+.pf-delivery[open] summary::after { content: '−'; }
+.pf-delivery summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.pf-delivery__body p { margin: 0 0 12px; }
+.pf-delivery table { border: 0; border-collapse: collapse; box-shadow: none; margin: 12px 0; width: 100%; }
+.pf-delivery th, .pf-delivery td { border: 0; border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); padding: 7px 0; }
+.pf-delivery th { font-weight: 400; text-align: left; }
+.pf-delivery td { font-variant-numeric: tabular-nums; text-align: right; }
+.pf-delivery__body .pf-delivery__note { font-size: 12px; }
