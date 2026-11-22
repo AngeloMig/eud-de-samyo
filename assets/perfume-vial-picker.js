@@ -1,0 +1,317 @@
+/* Vial picker (sections/perfume-vial-picker.liquid): choose a set, fill its vials
+   with scents, add it to the bag. Each perfume has its own price per vial size (its
+   size variants); the set costs the vials picked, added up. */
+(() => {
+  const SET_ID = () => Math.random().toString(36).slice(2, 6);
+
+  function init(root) {
+    if (root.dataset.pvpInit) return;
+    root.dataset.pvpInit = '1';
+    root.classList.add('pvp-ready');
+
+    const t = (k) => root.dataset['t' + k] || '';
+    const repeats = root.dataset.repeats === 'true';
+    const currency = root.dataset.currency || 'PHP';
+    let fmt;
+    try {
+      fmt = new Intl.NumberFormat(document.documentElement.lang || 'en-PH', { style: 'currency', currency });
+    } catch (e) {
+      fmt = { format: (n) => n.toFixed(2) };
+    }
+    let fmt0;
+    try {
+      fmt0 = new Intl.NumberFormat(document.documentElement.lang || 'en-PH', { style: 'currency', currency, minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    } catch (e) {
+      fmt0 = fmt;
+    }
+    // Whole pesos without ".00"; centavos only when there are some (e.g. ₱814.50).
+    const money = (cents) => (Math.round(cents) % 100 === 0 ? fmt0 : fmt).format(cents / 100);
+
+    const setInputs = [...root.querySelectorAll('.pvp__set input')];
+    const list = root.querySelector('[data-scents]');
+    const scents = [...root.querySelectorAll('[data-scent]')];
+    const slotsEl = root.querySelector('[data-slots]');
+    const statusEl = root.querySelector('[data-status]');
+    const setNameEl = root.querySelector('[data-set-name]');
+    const totalEl = root.querySelector('[data-total]');
+    const submit = root.querySelector('[data-submit]');
+    const form = root.querySelector('[data-form]');
+    if (!setInputs.length || !slotsEl) return;
+
+    // Each scent's vials: { "1": { id, price, available }, ... }
+    scents.forEach((li) => {
+      li._vials = {};
+      (li.dataset.vials || '').split(';').forEach((entry) => {
+        const [size, id, price, available] = entry.split(':');
+        if (size && id) li._vials[size] = { id: Number(id), price: Number(price), available: available === 'true' };
+      });
+    });
+    const vialOf = (li, size) => {
+      const v = li._vials[size];
+      return v && v.available ? v : null;
+    };
+
+    // picks: [{ li, name }]
+    let picks = [];
+    const current = () => setInputs.find((i) => i.checked) || setInputs[0];
+
+    // ?set=3x1 opens with that set chosen.
+    const wanted = new URLSearchParams(location.search).get('set');
+    const match = wanted && setInputs.find((i) => i.value === wanted);
+    if (match) match.checked = true;
+
+    const discountOf = (input) => (parseInt(input.dataset.discount, 10) || 0) / 100;
+    const afterDiscount = (cents, input) => cents - Math.round(cents * discountOf(input));
+    // Total of a set of vial prices, the way it is shown: cheapest/dearest different
+    // scents (or one scent repeated when repeats are allowed).
+    function setRange(input) {
+      const size = input.dataset.size;
+      const count = parseInt(input.dataset.count, 10) || 1;
+      const prices = scents.map((li) => vialOf(li, size)).filter(Boolean).map((v) => v.price).sort((a, b) => a - b);
+      if (!prices.length) return null;
+      const pick = (list) => Array.from({ length: count }, (_, i) => list[i % list.length]).reduce((a, b) => a + b, 0);
+      const lo = repeats ? prices[0] * count : pick(prices);
+      const hi = repeats ? prices[prices.length - 1] * count : pick(prices.slice().reverse());
+      return [afterDiscount(lo, input), afterDiscount(hi, input)];
+    }
+
+    // Set cards: the lowest and highest price for that set.
+    setInputs.forEach((input) => {
+      const card = input.closest('.pvp__set');
+      const lo = card.querySelector('[data-range-lo]');
+      const hi = card.querySelector('[data-range-hi]');
+      const r = setRange(input);
+      if (!lo || !r) return;
+      lo.textContent = (t('From') || '[price]').replace('[price]', money(r[0]));
+      if (hi) {
+        hi.hidden = r[0] === r[1];
+        hi.textContent = (t('To') || '[price]').replace('[price]', money(r[1]));
+      }
+    });
+
+    // Fill empty vials with the cheapest scents not yet picked, so a fresh set shows
+    // its lowest price (the one on the set card).
+    function prefill() {
+      const set = current();
+      const count = parseInt(set.dataset.count, 10) || 1;
+      const size = set.dataset.size;
+      picks = picks.filter((p) => vialOf(p.li, size)).slice(0, count);
+      const free = scents
+        .filter((li) => vialOf(li, size) && (repeats || !picks.some((p) => p.li === li)))
+        .sort((a, b) => vialOf(a, size).price - vialOf(b, size).price);
+      for (let i = 0; picks.length < count && free.length; i++) {
+        const li = free[repeats ? 0 : i];
+        if (!li) break;
+        picks.push({ li, name: li.dataset.scent });
+      }
+    }
+
+    function draw(focusSlot) {
+      const set = current();
+      const count = parseInt(set.dataset.count, 10) || 1;
+      const size = set.dataset.size;
+      // Drop picks this size doesn't offer, and extras beyond the set.
+      picks = picks.filter((p) => vialOf(p.li, size)).slice(0, count);
+      const vialImg = root.getAttribute('data-vial-' + size);
+
+      setNameEl.textContent = `${set.dataset.title} · ${count} × ${size} ml`;
+      slotsEl.innerHTML = '';
+      for (let i = 0; i < count; i++) {
+        const li = document.createElement('li');
+        const pick = picks[i];
+        li.className = 'pvp__slot' + (pick ? ' is-full' : '');
+        li.innerHTML = `<span class="pvp__slot-vial"><img src="${vialImg}" alt="" width="40" height="160" loading="lazy"></span>
+          <span class="pvp__slot-text"><span class="pvp__slot-n">${i + 1}</span><span class="pvp__slot-name"></span><span class="pvp__slot-up"></span></span>`;
+        li.querySelector('.pvp__slot-name').textContent = pick ? pick.name : t('Empty');
+        if (pick) {
+          li.querySelector('.pvp__slot-up').textContent = money(vialOf(pick.li, size).price);
+          const rm = document.createElement('button');
+          rm.type = 'button';
+          rm.className = 'pvp__remove';
+          rm.setAttribute('aria-label', `${t('Remove')}: ${pick.name}`);
+          rm.textContent = '×';
+          rm.addEventListener('click', () => {
+            picks.splice(i, 1);
+            draw(i);
+          });
+          li.appendChild(rm);
+        }
+        slotsEl.appendChild(li);
+      }
+
+      const full = picks.length >= count;
+      statusEl.textContent = full
+        ? t('Full')
+        : t('Picked').replace('[n]', picks.length).replace('[total]', count);
+      const removeLabel = t('Remove');
+      const addLabel = root.dataset.tAddScent || '';
+
+      // Scent cards: price per vial in this size, cheapest first.
+      scents.forEach((li) => {
+        const v = vialOf(li, size);
+        const n = picks.filter((p) => p.li === li).length;
+        const badge = li.querySelector('[data-count]');
+        badge.hidden = n === 0 || !repeats;
+        badge.textContent = '× ' + n;
+        li.classList.toggle('is-picked', n > 0);
+        li.classList.toggle('is-off', !v);
+        li.querySelector('[data-vial-price]').textContent = v
+          ? t('PerVial').replace('[price]', money(v.price)).replace('[size]', size)
+          : t('Unavailable');
+        const btn = li.querySelector('[data-add]');
+        const toggle = !repeats && n > 0;
+        // Set full: the button stays reachable and explains itself instead of going dead.
+        const blocked = !!v && !toggle && full;
+        btn.disabled = !v;
+        btn.toggleAttribute('aria-disabled', blocked);
+        if (blocked) btn.setAttribute('aria-disabled', 'true');
+        const tip = li.querySelector('[data-tip]');
+        if (tip) {
+          tip.hidden = !blocked;
+          if (blocked) btn.setAttribute('aria-describedby', tip.id);
+          else btn.removeAttribute('aria-describedby');
+          if (!blocked) li.classList.remove('show-tip');
+        }
+        btn.classList.toggle('is-remove', toggle);
+        btn.setAttribute('aria-label', `${toggle ? removeLabel : addLabel}: ${li.dataset.scent}`);
+        btn.querySelector('[data-add-text]').textContent = toggle ? removeLabel : addLabel;
+        btn.querySelector('[data-add-icon]').textContent = toggle ? '−' : '+';
+      });
+      if (list) {
+        scents
+          .slice()
+          .sort((a, b) => {
+            const va = vialOf(a, size);
+            const vb = vialOf(b, size);
+            if (!va || !vb) return va ? -1 : vb ? 1 : 0;
+            return va.price - vb.price;
+          })
+          .forEach((li) => list.appendChild(li));
+      }
+
+      // Total = the vials picked, added up, less the set's discount.
+      const sub = picks.reduce((a, p) => a + vialOf(p.li, size).price, 0);
+      const pctOff = discountOf(set);
+      const off = Math.round(sub * pctOff);
+      const subLine = root.querySelector('[data-sub-line]');
+      const offLine = root.querySelector('[data-off-line]');
+      if (subLine && offLine) {
+        subLine.hidden = offLine.hidden = !(pctOff && sub);
+        root.querySelector('[data-sub]').textContent = money(sub);
+        root.querySelector('[data-off]').textContent = '− ' + money(off);
+        root.querySelector('[data-off-label]').textContent = t('Discount').replace('[n]', Math.round(pctOff * 100));
+      }
+      totalEl.textContent = money(sub - off);
+      submit.disabled = !full;
+
+      if (focusSlot != null) {
+        const target = slotsEl.children[Math.min(focusSlot, slotsEl.children.length - 1)];
+        const btn = target && target.querySelector('.pvp__remove');
+        (btn || statusEl).focus();
+      }
+    }
+
+    scents.forEach((li) => {
+      li.querySelector('[data-add]').addEventListener('click', () => {
+        const count = parseInt(current().dataset.count, 10) || 1;
+        // Picked already (one of each scent): this button removes it.
+        if (!repeats && picks.some((p) => p.li === li)) {
+          picks = picks.filter((p) => p.li !== li);
+          draw();
+          return;
+        }
+        if (picks.length >= count) {
+          // Full: say what to do, and nudge the tray.
+          statusEl.textContent = li.querySelector('[data-tip]')?.textContent.trim() || t('Full');
+          li.classList.add('show-tip');
+          clearTimeout(li._tipTimer);
+          li._tipTimer = setTimeout(() => li.classList.remove('show-tip'), 2200);
+          const tray = root.querySelector('.pvp__tray');
+          if (tray) {
+            tray.classList.remove('is-nudge');
+            void tray.offsetWidth;
+            tray.classList.add('is-nudge');
+          }
+          return;
+        }
+        picks.push({ li, name: li.dataset.scent });
+        draw();
+        const slot = slotsEl.children[picks.length - 1];
+        if (slot) slot.classList.add('is-new');
+      });
+    });
+    setInputs.forEach((i) => i.addEventListener('change', () => {
+      prefill();
+      draw();
+    }));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const set = current();
+      const count = parseInt(set.dataset.count, 10) || 1;
+      const size = set.dataset.size;
+      if (picks.length < count) return;
+      // One line per perfume (same perfume twice = quantity 2), all marked with this set.
+      const label = `${set.dataset.title} · ${count} × ${size} ml (${SET_ID()})`;
+      const byId = new Map();
+      picks.forEach((p) => {
+        const v = vialOf(p.li, size);
+        byId.set(v.id, (byId.get(v.id) || 0) + 1);
+      });
+      const items = [...byId].map(([id, quantity]) => ({ id, quantity, properties: { Set: label } }));
+
+      submit.disabled = true;
+      try {
+        const res = await fetch(`${root.dataset.cartAdd}.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ items }),
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.description || err.message || '');
+        }
+        location.href = root.dataset.cart || '/cart';
+      } catch (err) {
+        statusEl.textContent = err.message || t('Error');
+        statusEl.focus();
+        submit.disabled = false;
+      }
+    });
+
+    // Keep the tray clear of the sticky header (its height changes with the
+    // announcement bar and screen size).
+    const header = document.querySelector('perfume-header, .shopify-section-group-header-group');
+    const placeTray = () => {
+      if (!header) return;
+      const h = Math.round(header.getBoundingClientRect().height);
+      if (h > 0) root.style.setProperty('--pvp-sticky-top', `${h + 16}px`);
+    };
+    placeTray();
+    window.addEventListener('resize', placeTray, { passive: true });
+    if (header && 'ResizeObserver' in window) new ResizeObserver(placeTray).observe(header);
+
+    statusEl.tabIndex = -1;
+    // ?scent=<handle> (from a product page): that perfume goes in first, in a set
+    // whose size it comes in.
+    const wantedScent = new URLSearchParams(location.search).get('scent');
+    const first = wantedScent && scents.find((li) => li.dataset.handle === wantedScent);
+    if (first) {
+      if (!vialOf(first, current().dataset.size)) {
+        const fit = setInputs.find((i) => vialOf(first, i.dataset.size));
+        if (fit) fit.checked = true;
+      }
+      if (vialOf(first, current().dataset.size)) picks = [{ li: first, name: first.dataset.scent }];
+    }
+    prefill();
+    draw();
+  }
+
+  const run = () => document.querySelectorAll('[data-pvp]').forEach(init);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+  document.addEventListener('shopify:section:load', (e) => {
+    const root = e.target.querySelector('[data-pvp]');
+    if (root) init(root);
+  });
+})();

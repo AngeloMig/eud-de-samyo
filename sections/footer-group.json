@@ -33,7 +33,20 @@
       ],
       "settings": {
         "background_color": "#D8D1C5",
-        "text_color": "#292521"
+        "text_color": "#292521",
+        "layout": "atelier",
+        "heading": "Your next\nsignature scent.",
+        "intro": "A new favourite starts with a little curiosity.",
+        "discovery_link": "/pages/find-your-scent",
+        "discovery_label": "Not sure? Find your scent",
+        "newsletter_heading": "Stay in the notes.",
+        "newsletter_text": "New arrivals and scent notes, in your inbox.",
+        "email_placeholder": "Your email address",
+        "reveal": false,
+        "wordmark_motion": "prefix",
+        "wordmark_deboss": true,
+        "wordmark_depth": 2,
+        "wordmark_mist": true
       }
     }
   },

@@ -1,0 +1,242 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decant pricing per perfume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--paper:#efe9df;--line:rgba(41,37,33,.14);--amber:#d9b46a;--good:#3f7a4f;--bad:#a14b3c;--field:#fff8e6}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.55 'Instrument Sans',system-ui,sans-serif}
+ .wrap{max-width:1240px;margin:0 auto;padding:0 32px 60px}
+ header{padding:40px 0 6px} h1{font:400 50px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:92ch;margin:0}
+ h2{font:400 32px/1.05 'Cormorant Garamond';margin:40px 0 6px} .sub{color:var(--soft);margin:0 0 16px;max-width:92ch}
+ .card{background:#fff;padding:22px 24px;margin-bottom:16px}
+ .k{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--soft)}
+ .inputs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px 16px}
+ label.f{display:grid;gap:4px;font-size:12px;color:var(--soft)}
+ input,select{font:500 15px/1 'Instrument Sans';padding:9px 10px;border:1px solid var(--line);background:var(--field);color:var(--ink);width:100%;min-height:44px}
+ select{background:#fff}
+ input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+ .tablewrap{overflow-x:auto}
+ table{width:100%;border-collapse:collapse;font-size:14px}
+ th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap;vertical-align:top}
+ th{font:600 10px/1.25 'Instrument Sans';letter-spacing:.12em;text-transform:uppercase;color:var(--soft);vertical-align:bottom}
+ th:first-child,td:first-child{text-align:left}
+ td input{width:100px;min-height:38px;padding:7px 8px;text-align:right}
+ td input.ml{width:70px}
+ td .c{display:block;font-size:11.5px;color:var(--soft);font-weight:400}
+ td b{font-weight:600}
+ .brand{font-size:11px;color:var(--soft);display:block}
+ .tester{display:flex;gap:10px;align-items:center;background:#fff;padding:12px 16px;margin:0 0 12px;font-size:13.5px;min-height:44px;cursor:pointer} .tester input{width:20px;height:20px;min-height:0;accent-color:var(--ink)}
+ .src{display:block;font-size:11px;color:var(--soft);text-underline-offset:2px;white-space:normal;max-width:260px}
+ .ok{color:var(--good)} .low{color:var(--bad)} .high{color:#9a6a12} .na{color:#b3aca3}
+ tr.site td{background:var(--paper);font-weight:600}
+ .rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .rule{background:var(--paper);padding:16px 18px} .rule b{font:400 22px/1.1 'Cormorant Garamond';display:block;margin-bottom:4px} .rule p{margin:0;font-size:13.5px;color:var(--soft)}
+ .builder{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:24px;align-items:start}
+ .slots{display:grid;gap:8px;margin-top:10px}
+ .slots label{display:grid;grid-template-columns:62px 1fr;align-items:center;gap:8px;font-size:12px;color:var(--soft)}
+ .bt{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+ .bt button{border:1px solid var(--ink);background:#fff;font:500 13px/1 'Instrument Sans';padding:10px 13px;border-radius:99px;cursor:pointer;min-height:44px;color:var(--ink)}
+ .bt button[aria-pressed=true]{background:var(--ink);color:#fff}
+ .sheet{font-variant-numeric:tabular-nums;border:1px solid var(--line);padding:18px 20px;background:#fdfcf9}
+ .sheet .ln{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:7px 0;border-bottom:1px dashed var(--line)}
+ .sheet .ln span:first-child{color:var(--soft)} .sheet .ln small{display:block;font-size:12px;color:var(--soft)}
+ .sheet .tot{border-bottom:1px solid var(--ink);font-weight:600} .sheet .tot span:first-child{color:var(--ink)}
+ .sheet .big{font:400 40px/1 'Cormorant Garamond';margin:14px 0 2px}
+ .sheet .verdict{margin:10px 0 0;padding:10px 12px;font-size:13.5px}
+ .sheet .verdict.ok{background:#e6f0e8} .sheet .verdict.low{background:#f6e4df}
+ footer{color:var(--soft);font-size:12.5px;margin-top:28px;max-width:100ch}
+ @media (max-width:989px){.inputs{grid-template-columns:repeat(3,minmax(0,1fr))}.rules{grid-template-columns:1fr}.builder{grid-template-columns:1fr}}
+ @media (max-width:600px){.wrap{padding:0 16px 40px}h1{font-size:38px}.inputs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+ .pick{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:24px;align-items:start}
+ .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+ .chips button{border:1px solid var(--line);background:#fff;border-radius:99px;min-height:44px;padding:8px 14px;cursor:pointer;font:500 13px/1.2 'Instrument Sans';color:var(--ink);text-align:left}
+ .chips button:hover:not(:disabled){border-color:var(--ink)}
+ .chips button:disabled{opacity:.35;cursor:default}
+ .chips button small{display:block;font-weight:600;font-size:12px}
+ .chips button.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+ .tray{border:1px solid var(--line);background:#fdfcf9;padding:16px 18px;font-variant-numeric:tabular-nums}
+ .slot{display:grid;grid-template-columns:22px minmax(0,1fr) auto 44px;align-items:center;gap:8px;border:1px dashed var(--line);min-height:48px;padding:2px 2px 2px 10px;margin-bottom:6px;font-size:14px}
+ .slot.full{border-style:solid;background:#fff}
+ .slot .n{font-size:11px;font-weight:600;color:var(--soft)} .slot .e{color:#b3aca3}
+ .slot button{border:0;background:none;font-size:20px;cursor:pointer;min-height:44px;color:var(--ink)}
+ .tline{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:14px} .tline.tot{border-top:1px solid var(--ink);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+ .tline .s{color:var(--soft)}
+ .high{color:#9a6a12}
+ @media (max-width:989px){.pick{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+
+<header>
+ <h1>Decant pricing, perfume by perfume</h1>
+ <p class="lede">Each perfume has its own price per vial. A set costs the vials the customer picks, added up, the same as the vial picker on the site. Bottle prices come from FragranceX’s product pages in pesos (22 November 2026), using the 100 ml tester where one is listed. Click a source line to re-check it. Type your real price in a yellow box if you pay less or more: everything updates and is saved in this browser.</p>
+</header>
+
+<h2>1 · Your costs and targets</h2>
+<p class="sub">Replace the vial, label and packaging costs with your supplier’s. FragranceX prices don’t include shipping to the Philippines or import duties: add them as a %.</p>
+<div class="card"><div class="inputs">
+ <label class="f">Shipping & duties on bottle %<input id="ship" type="number" step="1" value="0"></label>
+ <label class="f">Loss when pouring %<input id="loss" type="number" step="0.5" value="5"></label>
+ <label class="f">1 ml vial ₱<input id="v1" type="number" step="0.5" value="8"></label>
+ <label class="f">2 ml spray ₱<input id="v2" type="number" step="0.5" value="15"></label>
+ <label class="f">5 ml atomizer ₱<input id="v5" type="number" step="0.5" value="35"></label>
+ <label class="f">10 ml atomizer ₱<input id="v10" type="number" step="0.5" value="55"></label>
+ <label class="f">Label per vial ₱<input id="lab" type="number" step="0.5" value="4"></label>
+ <label class="f">Box & packing per set ₱<input id="pack" type="number" step="1" value="40"></label>
+ <label class="f">Payment fee %<input id="fee" type="number" step="0.1" value="3.5"></label>
+ <label class="f">Vial prices built for margin %<input id="vm" type="number" step="1" value="36"></label>
+ <label class="f">Six-vial set discount %<input id="d6" type="number" step="1" value="10"></label>
+ <label class="f">Margin must stay between %<span style="display:flex;gap:6px"><input id="tm" type="number" step="1" value="30" aria-label="Lowest margin %"><input id="tmax" type="number" step="1" value="40" aria-label="Highest margin %"></span></label>
+</div>
+<label class="tester"><input type="checkbox" id="usetester"> Use the 100 ml tester price where FragranceX lists one (Terre d’Hermès ₱4,336.30, Eros ₱4,027.84, The One ₱4,071.21).</label>
+</div>
+
+<h2>2 · The price of each vial</h2>
+<p class="sub">These are the prices to enter in Shopify as each perfume’s size variants (1 ml, 2 ml, 5 ml, 10 ml). Each covers the perfume, the vial, the label and a share of the set’s box (a third for 1 and 2 ml, half for 5 ml, all of it for 10 ml), plus the payment fee and the margin you chose, rounded up to ₱5. Grey line = your cost for that vial without the box.</p>
+<div class="card tablewrap"><table id="t-vial"><thead><tr><th>Perfume</th><th>Bottle ₱</th><th>ml</th><th>Cost per ml</th><th>1 ml vial</th><th>2 ml vial</th><th>5 ml vial</th><th>10 ml vial</th></tr></thead><tbody></tbody></table></div>
+
+<h2>3 · Every set: lowest and highest price, and your margin</h2>
+<p class="sub">Customers pick different scents, so the lowest price is the cheapest different scents added up and the highest is the dearest. The margin column checks every possible mix of different scents.</p>
+<div class="card tablewrap"><table id="t-set"><thead><tr><th>Set</th><th>Lowest price</th><th>Highest price</th><th>Margin, every mix</th></tr></thead><tbody></tbody></table></div>
+
+<h2>4 · Try a set, exactly like the vial picker</h2>
+<p class="sub">Choose a set, then tap scents to fill the vials. You see what the customer pays and, under it, every line of your cost and profit.</p>
+<div class="card pick">
+ <div>
+  <span class="k">Set</span>
+  <div class="chips" id="set-btns"></div>
+  <span class="k" style="display:block;margin-top:18px">Scents (cheapest first)</span>
+  <div class="chips" id="scent-btns"></div>
+ </div>
+ <div class="tray" id="tray" aria-live="polite"></div>
+</div>
+<div class="card" id="sheet" style="font-variant-numeric:tabular-nums"></div>
+
+<footer>
+ How every number is made. Cost per ml = bottle price ÷ bottle ml × (1 + shipping &amp; duties) × (1 + pouring loss). Vial price = (ml × cost per ml + vial + label + box share) ÷ (1 − payment fee − margin), rounded up to ₱5. Set price = the vials picked, added up, minus the six-vial discount. Your cost for a set = perfume + vials + labels + one box. Profit = price − cost − payment fee; margin = profit ÷ price. Shipping to the customer is left out (they pay it). Not financial or tax advice; VAT and income tax are not included.
+</footer>
+</div>
+
+<script>
+const FX='https://www.fragrancex.com/products/';
+const PERFUMES=[ // [id, brand, name, bottle ₱, bottle ml, source note, source url, tester ₱ (same size, if FragranceX lists one)]
+ // Bottle prices: FragranceX product pages as shown in pesos on 22 Nov 2026, full boxed bottle (not tester).
+ ['sauvage','Dior','Sauvage EDP',10203.51,100,'FragranceX · 100 ml EDP',FX+'christian-dior/sauvage-cologne'],
+ ['homme','Dior','Dior Homme Intense',10376.98,100,'FragranceX · 100 ml EDP',FX+'christian-dior/dior-homme-intense-cologne'],
+ ['terre','Hermès',"Terre d'Hermès EDT",5209.63,100,'FragranceX · 100 ml EDT',FX+'hermes/terre-d-hermes-cologne',4336.30],
+ ['bleu','Chanel','Bleu de Chanel EDP','',100,'FragranceX · sold out, no price',FX+'chanel/bleu-de-chanel-cologne'],
+ ['oud','Tom Ford','Oud Wood EDP',19265.34,100,'FragranceX · 100 ml EDP (no 50 ml; 30 ml ₱10,070.15)',FX+'tom-ford/tom-ford-oud-wood-cologne'],
+ ['roma','Valentino','Uomo Born in Roma EDT',7662.12,100,'FragranceX · 100 ml EDT',FX+'valentino/valentino-uomo-born-in-roma-cologne'],
+ ['eros','Versace','Eros EDT',4947.26,100,'FragranceX · 100 ml EDT',FX+'versace/versace-eros-cologne',4027.84],
+ ['y','Yves Saint Laurent','Y EDP',9500.93,100,'FragranceX · 100 ml EDP',FX+'yves-saint-laurent/y-cologne'],
+ ['wss','Jo Malone London','Wood Sage & Sea Salt Cologne',8290.42,100,'FragranceX · 100 ml Cologne',FX+'jo-malone/jo-malone-wood-sage-and-sea-salt-perfume'],
+ ['one','Dolce & Gabbana','The One for Men EDP',4903.34,100,'FragranceX · 100 ml EDP',FX+'dolce-and-gabbana/the-one-cologne',4071.21],
+ ['swy','Emporio Armani','Stronger With You Intensely',8318.61,100,'FragranceX · 100 ml EDP',FX+'giorgio-armani/stronger-with-you-intensely-cologne']];
+const SETS=[ // [id, name, count, ml]
+ ['t1','Try trio',3,1],['s1','Discovery six',6,1],['t2','Wear trio',3,2],
+ ['s2','Wardrobe six',6,2],['d5','Signature duo',2,5],['x10','Travel ten',1,10]];
+const SIZES=[1,2,5,10], SHARE={1:3,2:3,5:2,10:1};
+const KEY='samyo-decant-pricing-v2';
+const $=id=>document.getElementById(id);
+const peso=(n,dec)=>'₱'+n.toLocaleString('en-PH',{minimumFractionDigits:dec?2:0,maximumFractionDigits:dec?2:0});
+const p2=n=>peso(n,true);
+const pct=m=>(m*100).toFixed(1)+'%';
+
+let saved={};
+try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){saved={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}}
+document.querySelectorAll('.inputs input').forEach(el=>{
+  if(saved['in:'+el.id]!=null) el.value=saved['in:'+el.id];
+  el.addEventListener('input',()=>{saved['in:'+el.id]=el.value;save();render()});
+});
+let useTester=saved.useTester!=null?!!saved.useTester:true;
+const ut=$('usetester');ut.checked=useTester;ut.addEventListener('change',()=>{useTester=ut.checked;saved.useTester=useTester;save();render()});
+const own=p=>saved['bp:'+p[0]]!=null&&saved['bp:'+p[0]]!=='';
+const bottle=p=>own(p)?saved['bp:'+p[0]]:(useTester&&p[7]?p[7]:p[3]);
+const bml=p=>{const v=saved['ml:'+p[0]];return v!=null&&v!==''?v:p[4]};
+const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0};
+function S(){return{ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),pack:num('pack'),fee:num('fee')/100,vm:num('vm')/100,d6:num('d6')/100,tm:num('tm')/100,tmax:num('tmax')/100}}
+function perMl(p,s){const b=parseFloat(bottle(p)),m=parseFloat(bml(p));if(!(b>0&&m>0))return null;return b/m*(1+s.ship)*(1+s.loss)}
+const vialPrice=(pm,ml,s)=>Math.ceil(((ml*pm+s.vial[ml]+s.lab+s.pack/SHARE[ml])/(1-s.fee-s.vm))/5-1e-9)*5;
+const priced=s=>PERFUMES.map(p=>({p,pm:perMl(p,s)})).filter(x=>x.pm!=null).sort((a,b)=>a.pm-b.pm);
+const discOf=(set,s)=>set[2]===6?s.d6:0;
+// What a set of picks costs the customer and you.
+function sale(set,picks,s){
+  const ml=set[3], prices=picks.map(x=>vialPrice(x.pm,ml,s)), sub=prices.reduce((a,b)=>a+b,0), d=discOf(set,s), off=Math.round(sub*d*100)/100, price=sub-off;
+  const juice=picks.reduce((a,x)=>a+ml*x.pm,0), vials=picks.length*s.vial[ml], labels=picks.length*s.lab, cost=juice+vials+labels+s.pack, fee=price*s.fee, profit=price-cost-fee;
+  return{prices,sub,d,off,price,juice,vials,labels,cost,fee,profit,m:price>0?profit/price:0};
+}
+const band=(m,s)=>m<s.tm-1e-9?'low':m>s.tmax+1e-9?'high':'ok';
+function combos(arr,k){const out=[];const rec=(st,a)=>{if(a.length===k){out.push(a.slice());return}for(let i=st;i<arr.length;i++){a.push(arr[i]);rec(i+1,a);a.pop()}};rec(0,[]);return out}
+
+// ---- 2 ----
+function renderVials(s){
+  const tb=$('t-vial').tBodies[0];
+  if(!tb.dataset.built){
+    tb.innerHTML=PERFUMES.map(p=>`<tr data-id="${p[0]}"><td><span class="brand">${p[1]}</span>${p[2]}<a class="src" href="${p[6]}" target="_blank" rel="noopener">${p[5]}</a><span class="src tst"></span></td><td><input aria-label="${p[2]} bottle price in pesos" data-k="bp" type="number" step="0.01" placeholder="enter"></td><td><input class="ml" aria-label="${p[2]} bottle size in ml" data-k="ml" type="number" step="1"></td><td class="pm"></td>${SIZES.map(z=>`<td class="z${z}"></td>`).join('')}</tr>`).join('');
+    tb.querySelectorAll('input').forEach(i=>i.addEventListener('input',()=>{saved[i.dataset.k+':'+i.closest('tr').dataset.id]=i.value;save();render()}));
+    tb.dataset.built=1;
+  }
+  PERFUMES.forEach(p=>{
+    const tr=tb.querySelector(`[data-id="${p[0]}"]`), pm=perMl(p,s), bi=tr.querySelector('[data-k=bp]'), mi=tr.querySelector('[data-k=ml]');
+    if(document.activeElement!==bi)bi.value=bottle(p);
+    if(document.activeElement!==mi)mi.value=bml(p);
+    tr.querySelector('.tst').textContent=own(p)?'your own price':useTester&&p[7]?`using the tester (boxed ${p2(p[3])})`:p[7]?`tester ${p2(p[7])} available`:'';
+    tr.querySelector('.pm').innerHTML=pm==null?'<span class="na">—</span>':`<b>${p2(pm)}</b>`;
+    SIZES.forEach(z=>{const c=tr.querySelector('.z'+z);c.innerHTML=pm==null?'<span class="na">—</span>':`<b>${peso(vialPrice(pm,z,s))}</b><span class="c">cost ${p2(z*pm+s.vial[z]+s.lab)}</span>`});
+  });
+}
+
+// ---- 3 ----
+function renderSets(s){
+  const L=priced(s);
+  $('t-set').tBodies[0].innerHTML=SETS.map(set=>{
+    if(L.length<set[2])return `<tr><td>${set[1]}</td><td colspan="3" class="na">Needs ${set[2]} priced perfumes.</td></tr>`;
+    const lo=sale(set,L.slice(0,set[2]),s), hi=sale(set,L.slice(-set[2]),s);
+    let mlo=1,mhi=-1;combos(L,set[2]).forEach(c=>{const r=sale(set,c,s);mlo=Math.min(mlo,r.m);mhi=Math.max(mhi,r.m)});
+    const cls=band(mlo,s)==='ok'&&band(mhi,s)==='ok'?'ok':band(mlo,s)==='low'?'low':'high';
+    const show=r=>r.off?`<b>${p2(r.price)}</b><span class="c"><s>${peso(r.sub)}</s> − ${Math.round(r.d*100)}%</span>`:`<b>${peso(r.price)}</b>`;
+    return `<tr><td>${set[1]}<span class="c">${set[2]} × ${set[3]} ml${set[2]===6?` · ${Math.round(s.d6*100)}% off`:''}</span></td><td>${show(lo)}<span class="c">${L.slice(0,set[2]).map(x=>x.p[2]).join(' + ')}</span></td><td>${show(hi)}<span class="c">${L.slice(-set[2]).map(x=>x.p[2]).join(' + ')}</span></td><td class="${cls}">${pct(mlo)} – ${pct(mhi)}</td></tr>`;
+  }).join('');
+}
+
+// ---- 4: the picker ----
+let cur='t1', picks=[];
+function renderPicker(s){
+  const L=priced(s), set=SETS.find(x=>x[0]===cur), ml=set[3];
+  picks=picks.map(x=>L.find(y=>y.p===x.p)).filter(Boolean).slice(0,set[2]);
+  $('set-btns').innerHTML=SETS.map(x=>`<button type="button" data-set="${x[0]}" class="${x[0]===cur?'on':''}" aria-pressed="${x[0]===cur}">${x[1]}<small>${x[2]} × ${x[3]} ml</small></button>`).join('');
+  const full=picks.length>=set[2];
+  $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${peso(vialPrice(x.pm,ml,s))} per ${ml} ml</small></button>`}).join('');
+  const r=sale(set,picks,s);
+  let h=`<span class="k">${set[1]} · ${set[2]} × ${ml} ml</span><div style="margin-top:10px">`;
+  for(let i=0;i<set[2];i++){const x=picks[i];h+=x?`<div class="slot full"><span class="n">${i+1}</span><span>${x.p[2]}</span><span>${peso(r.prices[i])}</span><button type="button" data-rm="${i}" aria-label="Remove ${x.p[2]}">×</button></div>`:`<div class="slot"><span class="n">${i+1}</span><span class="e">Empty</span><span></span><span></span></div>`}
+  h+=`</div><div class="tline"><span class="s">Vials added up</span><span>${p2(r.sub)}</span></div>`;
+  if(set[2]===6&&s.d6)h+=`<div class="tline"><span class="s">Six-vial discount (${Math.round(s.d6*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
+  h+=`<div class="tline tot"><span>Customer pays</span><span>${p2(r.price)}</span></div><p class="k" style="margin:8px 0 0">${full?'Set complete':`${picks.length} of ${set[2]} picked`}</p>`;
+  $('tray').innerHTML=h;
+  // the sum
+  const g=`<span class="k">Your cost and profit for this set</span>`;
+  if(!picks.length){$('sheet').innerHTML=g+'<p class="sub" style="margin:8px 0 0">Pick scents to see the sum.</p>';return}
+  let t=g+'<div class="sheet" style="margin-top:10px">';
+  picks.forEach(x=>{t+=`<div class="ln"><span>${x.p[2]}: ${ml} ml × ${p2(x.pm)}/ml<small>${p2(x.pm)}/ml = ${p2(+bottle(x.p))} ÷ ${bml(x.p)} ml${s.ship?` × ${(1+s.ship).toFixed(2)} (shipping & duties)`:''} × ${(1+s.loss).toFixed(2)} (pouring loss)</small></span><span>${p2(ml*x.pm)}</span></div>`});
+  t+=`<div class="ln"><span>Vials: ${picks.length} × ${p2(s.vial[ml])}</span><span>${p2(r.vials)}</span></div>`;
+  t+=`<div class="ln"><span>Labels: ${picks.length} × ${p2(s.lab)}</span><span>${p2(r.labels)}</span></div>`;
+  t+=`<div class="ln"><span>Box & packing (once per set)</span><span>${p2(s.pack)}</span></div>`;
+  t+=`<div class="ln tot"><span>Your cost</span><span>${p2(r.cost)}</span></div>`;
+  t+=`<div class="ln"><span>Customer pays</span><span>${p2(r.price)}</span></div>`;
+  t+=`<div class="ln"><span>Payment fee: ${p2(r.price)} × ${(s.fee*100).toFixed(1)}%</span><span>− ${p2(r.fee)}</span></div>`;
+  t+=`<div class="ln"><span>Your cost</span><span>− ${p2(r.cost)}</span></div>`;
+  const b=band(r.m,s);
+  t+=`<p class="big">${p2(r.profit)}</p><span class="k">profit · margin ${pct(r.m)}</span>`;
+  if(full)t+=`<p class="verdict ${b==='ok'?'ok':'low'}">${b==='ok'?`Inside your ${Math.round(s.tm*100)}–${Math.round(s.tmax*100)}% range.`:b==='low'?`Below ${Math.round(s.tm*100)}%: raise the vial margin or lower the discount.`:`Above ${Math.round(s.tmax*100)}%: you could lower the vial margin.`}</p>`;
+  $('sheet').innerHTML=t+'</div>';
+}
+document.addEventListener('click',e=>{
+  const sb=e.target.closest('[data-set]');if(sb){cur=sb.dataset.set;render();return}
+  const sc=e.target.closest('#scent-btns [data-i]');if(sc){const L=priced(S());picks.push(L[+sc.dataset.i]);render();return}
+  const rm=e.target.closest('[data-rm]');if(rm){picks.splice(+rm.dataset.rm,1);render()}
+});
+function render(){const s=S();renderVials(s);renderSets(s);renderPicker(s)}
+render();
+</script>
+</body></html>

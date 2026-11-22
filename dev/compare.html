@@ -11,7 +11,7 @@
   rel="stylesheet"
   href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
 >
-<link rel="stylesheet" href="../assets/perfume-tokens.css?v=1795235614472">
+<link rel="stylesheet" href="../assets/perfume-tokens.css?v=1795319811259">
 
 <style>
   :root {
@@ -80,8 +80,8 @@
   })();
 </script>
 <div style="position:fixed;left:8px;bottom:8px;z-index:200;font:11px/1.4 sans-serif;background:#26221f;color:#fff;padding:4px 8px;border-radius:4px;opacity:.75">Preview: demo products &amp; prices</div>
-<link rel="stylesheet" href="../assets/perfume-header.css?v=1795278938143">
-<script src="../assets/perfume-header.js?v=1795278938144" defer="defer"></script><style>#PerfumeHeader-header {
+<link rel="stylesheet" href="../assets/perfume-header.css?v=1795319811252">
+<script src="../assets/perfume-header.js?v=1795319811253" defer="defer"></script><style>#PerfumeHeader-header {
     --ph-logo-w: 96px;
     --ph-logo-size: 34px;
     --ph-paper: #FFFFFF;
@@ -216,10 +216,8 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
       </button>
     </nav>
   </div>
-</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795203139535">
-<script src="../assets/perfume-cart-drawer.js?v=1795203158781" defer="defer"></script>
-
-<perfume-cart-drawer
+</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795354692265">
+<script src="../assets/perfume-cart-drawer.js?v=1795354692265" defer="defer"></script><perfume-cart-drawer
   class="pcd"
   id="PerfumeCartDrawer"
   data-cart-url="/cart"
@@ -279,8 +277,8 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
 </perfume-cart-drawer>
 
 
-<main id="MainContent"><p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example comparison: both fragrances and every value are made up</p><link rel="stylesheet" href="../assets/perfume-discovery.css?v=1795208367089">
-<script src="../assets/perfume-discovery.js?v=1795208354707" defer="defer"></script><perfume-compare id="PerfumeCompare-compare" class="pcmp" style="--pcmp-bg: #F3F0EB; --pcmp-ink: #26221F;">
+<main id="MainContent"><p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example comparison: both fragrances and every value are made up</p><link rel="stylesheet" href="../assets/perfume-discovery.css?v=1795319811249">
+<script src="../assets/perfume-discovery.js?v=1795319811250" defer="defer"></script><perfume-compare id="PerfumeCompare-compare" class="pcmp" style="--pcmp-bg: #F3F0EB; --pcmp-ink: #26221F;">
     <span class="pd-anchor" id="compare"></span>
     <div class="pd-head">
       <p class="pd-kicker">Fragrance comparison</p><h1 class="pd-h pcmp__title">Example One vs Example Two</h1><div class="pcmp__verdict rte"><p>Example verdict: pick One for evenings and rain, Two for hot days and the office.</p></div></div><div class="pcmp__spread">
@@ -340,9 +338,9 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
 </div></div>
       <p class="pd-basis">Performance and weather are our editorial estimates; prices on other sites can change.</p></perfume-compare>
 
-<link rel="stylesheet" href="../assets/perfume-lineup.css?v=1795235648835">
-<script src="../assets/perfume-lineup.js?v=1795202799348" defer="defer"></script>
-<script src="../assets/perfume-reveal.js?v=1795194271512" defer="defer"></script><style>#PerfumeLineup-lineup {
+<link rel="stylesheet" href="../assets/perfume-lineup.css?v=1795319811255">
+<script src="../assets/perfume-lineup.js?v=1795319811255" defer="defer"></script>
+<script src="../assets/perfume-reveal.js?v=1795319811257" defer="defer"></script><style>#PerfumeLineup-lineup {
     --pl-bg: #E8E4DC;
     --pl-ink: #292521;
     --pl-card: 170px;
@@ -381,14 +379,17 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
 
 
 </main>
-<link rel="stylesheet" href="../assets/perfume-footer.css?v=1795277826342">
-<script src="../assets/perfume-footer.js?v=1795193174961" defer="defer"></script><style>#PerfumeFooter-footer {
+<link rel="stylesheet" href="../assets/perfume-footer.css?v=1795348750488">
+<script src="../assets/perfume-footer.js?v=1795348626785" defer="defer"></script><style>#PerfumeFooter-footer {
     --pfo-bg: #D8D1C5;
     --pfo-ink: #292521;
     --pfo-len: 9;
-  }</style><perfume-footer id="PerfumeFooter-footer" class="pfo" data-reveal="true">
-  <div class="pfo__inner" data-pfo-inner><form method="post" action="/contact#PerfumeFooterNewsletter" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeFooterNewsletter" class="pfo-news" novalidate><input type="hidden" name="contact[tags]" value="newsletter">
-        <label class="pf-visually-hidden" for="PerfumeFooterEmail-footer">Your email, for new arrivals and scent notes</label>
+    --pfo-engrave-depth: 2px;
+  }</style><perfume-footer id="PerfumeFooter-footer" class="pfo pfo--atelier" data-wordmark-motion="prefix" data-wordmark-mist="true" data-reveal="false">
+  <div class="pfo__inner" data-pfo-inner>
+    <div class="pfo__upper"><div class="pfo__invitation"><h2 class="pfo__heading">Your next<br />
+signature scent.</h2><p class="pfo__intro">A new favourite starts with a little curiosity.</p><a class="pfo__discovery pfo-link" href="find-your-scent.html">Not sure? Find your scent <span aria-hidden="true">→</span></a></div><div class="pfo__content"><div class="pfo-news__intro"><h2 class="pfo-news__heading">Stay in the notes.</h2><p>New arrivals and scent notes, in your inbox.</p></div><form method="post" action="/contact#PerfumeFooterNewsletter" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeFooterNewsletter" class="pfo-news" novalidate><input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="pf-visually-hidden" for="PerfumeFooterEmail-footer">Your email address</label>
         <input
           id="PerfumeFooterEmail-footer"
           class="pfo-news__input"
@@ -398,17 +399,22 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
           autocorrect="off"
           autocapitalize="off"
           required
-          placeholder="Your email, for new arrivals and scent notes"
+          placeholder="Your email address"
           
         >
-        <button type="submit" class="pfo-news__button">
-          <span class="pfo-roll"><span class="pfo-roll-in" data-text="Subscribe">Subscribe</span></span>
-        </button></form><div class="pfo__cols"><div class="pfo-col" data-block-id="footer-b1"><p class="pfo-col__heading">Contact us</p><div class="pfo-col__text"><p>hello@samyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p></div></div><div class="pfo-col" data-block-id="footer-b2"><p class="pfo-col__heading">Shop</p><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="collection.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Shop all">Shop all</span></span></a></li><li><a class="pfo-link" href="collection.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Brands">Brands</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Scent notes">Scent notes</span></span></a></li><li><a class="pfo-link" href="journal.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Journal">Journal</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="About">About</span></span></a></li></ul></div><div class="pfo-col" data-block-id="footer-b3"><p class="pfo-col__heading">Help</p><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="/policies/shipping-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Shipping &amp; delivery">Shipping &amp; delivery</span></span></a></li><li><a class="pfo-link" href="/policies/refund-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Returns">Returns</span></span></a></li><li><a class="pfo-link" href="/pages/authenticity"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Authenticity">Authenticity</span></span></a></li><li><a class="pfo-link" href="scent-guide.html"><span class="pfo-roll"><span class="pfo-roll-in" data-text="About us">About us</span></span></a></li><li><a class="pfo-link" href="/pages/contact"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Contact">Contact</span></span></a></li><li><a class="pfo-link" href="/policies/privacy-policy"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Privacy policy">Privacy policy</span></span></a></li><li><a class="pfo-link" href="/policies/terms-of-service"><span class="pfo-roll"><span class="pfo-roll-in" data-text="Terms of service">Terms of service</span></span></a></li></ul></div><a class="pfo-top pfo-link" href="#MainContent" data-pfo-top>
-          <span class="pfo-roll"><span class="pfo-roll-in" data-text="Back to top">Back to top</span></span>
-          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 14V2M3 7l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
-        </a></div><p class="pfo-wordmark pfo-wordmark--logo" aria-hidden="true" data-pfo-wordmark><span class="pfo-wordmark__pre"><span>eau de</span></span><span class="pfo-wordmark__ch" style="--i: 0;"><span>s</span></span><span class="pfo-wordmark__ch" style="--i: 1;"><span>a</span></span><span class="pfo-wordmark__ch" style="--i: 2;"><span>m</span></span><span class="pfo-wordmark__ch" style="--i: 3;"><span>y</span></span><span class="pfo-wordmark__ch" style="--i: 4;"><span>ó</span></span></p><div class="pfo__bottom">
+        <button type="submit" class="pfo-news__button" aria-label="Subscribe">
+          <span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Subscribe">Subscribe</span></span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 10h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button></form><div class="pfo__cols"><div class="pfo-col" data-block-id="footer-b1"><p class="pfo-col__heading">Contact us</p><div class="pfo-col__text"><p>hello@samyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p></div></div><details class="pfo-col pfo-col--menu" open data-pfo-menu data-block-id="footer-b2">
+          <summary class="pfo-col__heading"><span>Shop</span><svg class="pfo-col__toggle" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></summary><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="collection.html" aria-label="Shop all"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Shop all">Shop all</span></span></a></li><li><a class="pfo-link" href="collection.html" aria-label="Brands"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Brands">Brands</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="Scent notes"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Scent notes">Scent notes</span></span></a></li><li><a class="pfo-link" href="journal.html" aria-label="Journal"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Journal">Journal</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="About"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="About">About</span></span></a></li></ul></details><details class="pfo-col pfo-col--menu" open data-pfo-menu data-block-id="footer-b3">
+          <summary class="pfo-col__heading"><span>Help</span><svg class="pfo-col__toggle" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></summary><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="/policies/shipping-policy" aria-label="Shipping &amp; delivery"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Shipping &amp; delivery">Shipping &amp; delivery</span></span></a></li><li><a class="pfo-link" href="/policies/refund-policy" aria-label="Returns"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Returns">Returns</span></span></a></li><li><a class="pfo-link" href="/pages/authenticity" aria-label="Authenticity"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Authenticity">Authenticity</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="About us"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="About us">About us</span></span></a></li><li><a class="pfo-link" href="/pages/contact" aria-label="Contact"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Contact">Contact</span></span></a></li><li><a class="pfo-link" href="/policies/privacy-policy" aria-label="Privacy policy"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Privacy policy">Privacy policy</span></span></a></li><li><a class="pfo-link" href="/policies/terms-of-service" aria-label="Terms of service"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Terms of service">Terms of service</span></span></a></li></ul></details></div>
+      </div>
+    </div><div class="pfo-signature" data-wordmark-hover="deboss">
+      <p class="pfo-wordmark pfo-wordmark--logo" aria-hidden="true" data-pfo-wordmark><span class="pfo-wordmark__pre"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">eau de</span><span class="pfo-wordmark__carved">eau de</span></span></span><span class="pfo-wordmark__ch" style="--i: 0;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">s</span><span class="pfo-wordmark__carved">s</span></span></span><span class="pfo-wordmark__ch" style="--i: 1;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">a</span><span class="pfo-wordmark__carved">a</span></span></span><span class="pfo-wordmark__ch" style="--i: 2;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">m</span><span class="pfo-wordmark__carved">m</span></span></span><span class="pfo-wordmark__ch" style="--i: 3;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">y</span><span class="pfo-wordmark__carved">y</span></span></span><span class="pfo-wordmark__ch" style="--i: 4;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">ó</span><span class="pfo-wordmark__carved">ó</span></span></span></p>
+      </div><div class="pfo__bottom">
       <ul class="pfo__legal" role="list">
-        <li>&copy; 2026 Samyo</li><li><a class="pfo-link" href="/policies/shipping-policy">Shipping &amp; delivery</a></li><li><a class="pfo-link" href="/policies/refund-policy">Returns</a></li><li><a class="pfo-link" href="/pages/authenticity">Authenticity</a></li><li><a class="pfo-link" href="scent-guide.html">About us</a></li><li><a class="pfo-link" href="/pages/contact">Contact</a></li><li><a class="pfo-link" href="/policies/privacy-policy">Privacy policy</a></li><li><a class="pfo-link" href="/policies/terms-of-service">Terms of service</a></li></ul><p class="pfo__credit">Authentic fragrances, delivered across the Philippines</p></div>
+        <li>&copy; 2026 Samyo</li><li><a class="pfo-link" href="/policies/shipping-policy">Shipping &amp; delivery</a></li><li><a class="pfo-link" href="/policies/refund-policy">Returns</a></li><li><a class="pfo-link" href="/pages/authenticity">Authenticity</a></li><li><a class="pfo-link" href="scent-guide.html">About us</a></li><li><a class="pfo-link" href="/pages/contact">Contact</a></li><li><a class="pfo-link" href="/policies/privacy-policy">Privacy policy</a></li><li><a class="pfo-link" href="/policies/terms-of-service">Terms of service</a></li></ul><p class="pfo__credit">Authentic fragrances, delivered across the Philippines</p><a class="pfo-top pfo-top--atelier pfo-link" href="#MainContent" data-pfo-top>
+          <span>Back to top</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 17V3M4 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a></div>
   </div>
 </perfume-footer>
 

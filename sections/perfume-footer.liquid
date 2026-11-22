@@ -12,6 +12,10 @@
 {%- endcomment -%}
 {%- liquid
   assign fid = 'PerfumeFooter-' | append: section.id
+  assign atelier = false
+  if section.settings.layout == 'atelier'
+    assign atelier = true
+  endif
   assign wordmark = section.settings.wordmark | default: shop.name
   assign wordmark_length = wordmark | size
   assign wm_logo = false
@@ -37,12 +41,32 @@
     --pfo-bg: {{ section.settings.background_color }};
     --pfo-ink: {{ section.settings.text_color }};
     --pfo-len: {{ wordmark_length }};
+    --pfo-engrave-depth: {{ section.settings.wordmark_depth }}px;
   }
 {%- endstyle -%}
 
-<perfume-footer id="{{ fid }}" class="pfo" data-reveal="{{ section.settings.reveal }}">
+<perfume-footer id="{{ fid }}" class="pfo{% if atelier %} pfo--atelier{% endif %}" data-wordmark-motion="{{ section.settings.wordmark_motion }}" data-wordmark-mist="{{ section.settings.wordmark_mist }}" data-reveal="{% if atelier %}false{% else %}{{ section.settings.reveal }}{% endif %}">
   <div class="pfo__inner" data-pfo-inner>
+    <div class="pfo__upper">
+      {%- if atelier -%}
+        <div class="pfo__invitation">
+          {%- if section.settings.heading != blank -%}
+            <h2 class="pfo__heading">{{ section.settings.heading | escape | newline_to_br }}</h2>
+          {%- endif -%}
+          {%- if section.settings.intro != blank -%}<p class="pfo__intro">{{ section.settings.intro | escape }}</p>{%- endif -%}
+          {%- if section.settings.discovery_link != blank and section.settings.discovery_label != blank -%}
+            <a class="pfo__discovery pfo-link" href="{{ section.settings.discovery_link }}">{{ section.settings.discovery_label | escape }} <span aria-hidden="true">→</span></a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      <div class="pfo__content">
     {%- if section.settings.show_newsletter -%}
+      {%- if atelier -%}
+        <div class="pfo-news__intro">
+          {%- if section.settings.newsletter_heading != blank -%}<h2 class="pfo-news__heading">{{ section.settings.newsletter_heading | escape }}</h2>{%- endif -%}
+          {%- if section.settings.newsletter_text != blank -%}<p>{{ section.settings.newsletter_text | escape }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
       {%- form 'customer', id: 'PerfumeFooterNewsletter', class: 'pfo-news' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
         <label class="pf-visually-hidden" for="PerfumeFooterEmail-{{ section.id }}">{{ section.settings.email_placeholder | escape }}</label>
@@ -58,8 +82,9 @@
           placeholder="{{ section.settings.email_placeholder | escape }}"
           {% if form.errors %}aria-invalid="true" aria-describedby="PerfumeFooterNews-msg"{% endif %}
         >
-        <button type="submit" class="pfo-news__button">
-          <span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ section.settings.subscribe_label | escape }}">{{ section.settings.subscribe_label | escape }}</span></span>
+        <button type="submit" class="pfo-news__button" aria-label="{{ section.settings.subscribe_label | escape }}">
+          <span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="{{ section.settings.subscribe_label | escape }}">{{ section.settings.subscribe_label | escape }}</span></span>
+          {%- if atelier -%}<svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 10h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>{%- endif -%}
         </button>
         {%- if form.posted_successfully? -%}
           <p class="pfo-news__msg" id="PerfumeFooterNews-msg" role="status">{{ section.settings.success_message | escape }}</p>
@@ -71,42 +96,55 @@
 
     <div class="pfo__cols">
       {%- for block in section.blocks -%}
+        {%- assign menu_disclosure = false -%}
+        {%- if atelier and section.settings.collapse_mobile_menus and block.type == 'menu' -%}
+          {%- assign menu_disclosure = true -%}
+        {%- endif -%}
+        {%- if menu_disclosure -%}
+        <details class="pfo-col pfo-col--menu" open data-pfo-menu {{ block.shopify_attributes }}>
+          <summary class="pfo-col__heading"><span>{{ block.settings.heading | escape }}</span><svg class="pfo-col__toggle" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></summary>
+        {%- else -%}
         <div class="pfo-col" {{ block.shopify_attributes }}>
           {%- if block.settings.heading != blank -%}
             <p class="pfo-col__heading">{{ block.settings.heading | escape }}</p>
           {%- endif -%}
+        {%- endif -%}
           {%- case block.type -%}
             {%- when 'menu' -%}
               <ul class="pfo-col__list" role="list">
                 {%- for link in block.settings.menu.links -%}
-                  <li><a class="pfo-link" href="{{ link.url }}"><span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ link.title | escape }}">{{ link.title | escape }}</span></span></a></li>
+                  <li><a class="pfo-link" href="{{ link.url }}" aria-label="{{ link.title | escape }}"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="{{ link.title | escape }}">{{ link.title | escape }}</span></span></a></li>
                 {%- endfor -%}
               </ul>
             {%- when 'text' -%}
               <div class="pfo-col__text">{{ block.settings.text }}</div>
           {%- endcase -%}
-        </div>
+        {%- if menu_disclosure -%}</details>{%- else -%}</div>{%- endif -%}
       {%- endfor -%}
 
-      {%- if section.settings.show_back_to_top -%}
-        <a class="pfo-top pfo-link" href="#MainContent" data-pfo-top>
-          <span class="pfo-roll"><span class="pfo-roll-in" data-text="{{ section.settings.back_to_top_label | escape }}">{{ section.settings.back_to_top_label | escape }}</span></span>
+      {%- if section.settings.show_back_to_top and atelier == false -%}
+        <a class="pfo-top pfo-link" href="#MainContent" data-pfo-top aria-label="{{ section.settings.back_to_top_label | escape }}">
+          <span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="{{ section.settings.back_to_top_label | escape }}">{{ section.settings.back_to_top_label | escape }}</span></span>
           <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M8 14V2M3 7l5-5 5 5" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
         </a>
       {%- endif -%}
     </div>
+      </div>
+    </div>
 
     {%- if wordmark != blank -%}
+      <div class="pfo-signature" data-wordmark-hover="{% if section.settings.wordmark_deboss %}deboss{% else %}none{% endif %}">
       <p class="pfo-wordmark{% if wm_logo %} pfo-wordmark--logo{% endif %}" aria-hidden="true" data-pfo-wordmark>
         {%- assign chars = wordmark | split: '' -%}
         {%- if wm_logo -%}
-          {%- if wm_prefix != blank -%}<span class="pfo-wordmark__pre"><span>{{ wm_prefix | escape }}</span></span>{%- endif -%}
+          {%- if wm_prefix != blank -%}<span class="pfo-wordmark__pre"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">{{ wm_prefix | escape }}</span><span class="pfo-wordmark__carved">{{ wm_prefix | escape }}</span></span></span>{%- endif -%}
           {%- assign chars = wm_last | split: '' -%}
         {%- endif -%}
         {%- for ch in chars -%}
-          {%- if ch == ' ' -%}<span class="pfo-wordmark__space"> </span>{%- else -%}<span class="pfo-wordmark__ch" style="--i: {{ forloop.index0 }};"><span>{{ ch | escape }}</span></span>{%- endif -%}
+          {%- if ch == ' ' -%}<span class="pfo-wordmark__space"> </span>{%- else -%}<span class="pfo-wordmark__ch" style="--i: {{ forloop.index0 }};"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">{{ ch | escape }}</span><span class="pfo-wordmark__carved">{{ ch | escape }}</span></span></span>{%- endif -%}
         {%- endfor -%}
       </p>
+      </div>
     {%- endif -%}
 
     <div class="pfo__bottom">
@@ -126,6 +164,12 @@
       {%- if section.settings.credit != blank -%}
         <p class="pfo__credit">{{ section.settings.credit | escape }}</p>
       {%- endif -%}
+      {%- if atelier and section.settings.show_back_to_top -%}
+        <a class="pfo-top pfo-top--atelier pfo-link" href="#MainContent" data-pfo-top>
+          <span>{{ section.settings.back_to_top_label | escape }}</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 17V3M4 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a>
+      {%- endif -%}
     </div>
   </div>
 </perfume-footer>
@@ -135,19 +179,44 @@
   "name": "Perfume footer",
   "tag": "footer",
   "class": "section-perfume-footer",
-  "enabled_on": { "groups": ["footer"] },
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
   "max_blocks": 4,
   "settings": [
+    { "type": "header", "content": "Design" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Footer design",
+      "options": [
+        { "value": "atelier", "label": "Editorial" },
+        { "value": "classic", "label": "Original" }
+      ],
+      "default": "atelier"
+    },
+    { "type": "textarea", "id": "heading", "label": "Invitation heading", "default": "Your next\nsignature scent." },
+    { "type": "text", "id": "intro", "label": "Invitation text", "default": "A new favourite starts with a little curiosity." },
+    { "type": "text", "id": "discovery_label", "label": "Scent finder label", "default": "Not sure? Find your scent" },
+    { "type": "url", "id": "discovery_link", "label": "Scent finder link" },
     { "type": "header", "content": "Newsletter" },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Stay in the notes." },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "New arrivals and scent notes, in your inbox." },
     { "type": "checkbox", "id": "show_newsletter", "label": "Show email signup", "info": "Signups become customers tagged newsletter (Customers in Shopify admin).", "default": true },
     { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Your email, for new arrivals and scent notes" },
     { "type": "text", "id": "subscribe_label", "label": "Button label", "default": "Subscribe" },
     { "type": "text", "id": "success_message", "label": "Thank-you message", "default": "Thank you. You're on the list." },
-
     { "type": "header", "content": "Layout" },
+    { "type": "checkbox", "id": "collapse_mobile_menus", "label": "Collapse menus on phones", "default": true },
     { "type": "checkbox", "id": "show_back_to_top", "label": "Show Back to top", "default": true },
     { "type": "text", "id": "back_to_top_label", "label": "Back to top label", "default": "Back to top" },
     { "type": "text", "id": "wordmark", "label": "Giant wordmark", "info": "Fills the footer's width. Falls back to the store name.", "default": "eau de samyó" },
+    { "type": "select", "id": "wordmark_motion", "label": "Wordmark entrance", "options": [{ "value": "none", "label": "No animation" }, { "value": "prefix", "label": "Prefix first (idea 5)" }], "default": "prefix" },
+    { "type": "checkbox", "id": "wordmark_deboss", "label": "Pressed-in wordmark on hover", "default": true },
+    { "type": "checkbox", "id": "wordmark_mist", "label": "Perfume mist on wordmark hover", "default": true },
+    { "type": "range", "id": "wordmark_depth", "label": "Engraving depth", "min": 0.5, "max": 4, "step": 0.5, "unit": "px", "default": 2 },
     {
       "type": "select",
       "id": "wordmark_style",
@@ -162,7 +231,6 @@
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },
     { "type": "text", "id": "credit", "label": "Credit line", "default": "Authentic fragrances, delivered across the Philippines" },
     { "type": "checkbox", "id": "reveal", "label": "Reveal from under the page on scroll", "default": true },
-
     { "type": "header", "content": "Colours" },
     { "type": "color", "id": "background_color", "label": "Background", "default": "#D8D1C5" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" }
@@ -189,9 +257,18 @@
     {
       "name": "Perfume footer",
       "blocks": [
-        { "type": "text", "settings": { "heading": "Contact us" } },
-        { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
-        { "type": "menu", "settings": { "heading": "Help", "menu": "footer" } }
+        {
+          "type": "text",
+          "settings": { "heading": "Contact us" }
+        },
+        {
+          "type": "menu",
+          "settings": { "heading": "Shop", "menu": "main-menu" }
+        },
+        {
+          "type": "menu",
+          "settings": { "heading": "Help", "menu": "footer" }
+        }
       ]
     }
   ]

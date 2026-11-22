@@ -4,7 +4,8 @@
   size's bundles. Row 2: bundle cards (blocks "bundle"). Under it: an optional,
   clearly labelled partner (affiliate) link for the full bottle.
 
-  Bundle price: from the chosen product if any, otherwise the block's own price text
+  Bundle price: from the chosen product if any (its lowest variant, with "from" when the
+  variants differ, e.g. one per scent tier), otherwise the block's own price text
   (e.g. "₱590"). Size cards show "from ₱x" = the lowest price per vial among that
   size's bundles. Without JavaScript every bundle is shown.
 
@@ -52,6 +53,91 @@
       {%- endif -%}
     </div>
 
+    {%- liquid
+      assign picker_url = section.settings.picker_page.url
+      if picker_url == blank
+        assign picker_url = pages['build-your-set'].url
+      endif
+    -%}
+    {%- if section.settings.layout == 'sets' -%}
+      {%- comment -%}
+        Sets as vial cards (same look as the vial picker): each set shows its vials at
+        their real relative size, its price range and opens the picker with that set.
+      {%- endcomment -%}
+      {%- if bundles.size > 0 -%}
+        <ul class="pdc__sets" role="list">
+          {%- for block in bundles -%}
+            {%- liquid
+              assign bs = block.settings.size
+              assign bp = block.settings.product
+              case bs
+                when '1'
+                  assign v_img = 'sample-decant-square.webp'
+                  assign v_h = 44
+                when '2'
+                  assign v_img = 'sample-decant-clear.webp'
+                  assign v_h = 62
+                when '5'
+                  assign v_img = 'sample-decant-amber.webp'
+                  assign v_h = 82
+                else
+                  assign v_img = 'sample-decant-amber.webp'
+                  assign v_h = 100
+              endcase
+              assign v_shown = block.settings.count | at_most: 6
+              assign b_note = ''
+              for sz in sizes
+                if sz.settings.size == bs
+                  assign b_note = sz.settings.note
+                endif
+              endfor
+              if bp != blank
+                assign p_lo = bp.price_min | money
+                assign p_hi = ''
+                if bp.price_varies
+                  assign p_hi = bp.price_max | money
+                endif
+              else
+                assign p_lo = block.settings.price | split: '–' | first | strip
+                assign p_hi = block.settings.price | split: '–' | last | strip
+                if p_hi == p_lo
+                  assign p_hi = ''
+                endif
+              endif
+              assign b_url = block.settings.link
+              if b_url == blank and picker_url != blank
+                assign b_url = picker_url | append: '?set=' | append: block.settings.count | append: 'x' | append: bs
+              endif
+              assign from_txt = section.settings.set_from_label | replace: '[price]', p_lo
+              assign to_txt = section.settings.set_to_label | replace: '[price]', p_hi
+            -%}
+            <li class="pdc__set" style="--i: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+              {%- if b_url != blank -%}<a class="pdc__set-card" href="{{ b_url }}">{%- else -%}<div class="pdc__set-card">{%- endif -%}
+                {%- if block.settings.badge != blank -%}<span class="pdc__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+                <span class="pdc__set-vials" style="--vh: {{ v_h }}%;" data-n="{{ v_shown }}" aria-hidden="true">
+                  {%- for i in (1..v_shown) -%}
+                    <img src="{{ v_img | asset_url }}" alt="" width="40" height="160" loading="lazy" style="--j: {{ forloop.index0 }};">
+                  {%- endfor -%}
+                </span>
+                <span class="pdc__set-name">{{ block.settings.title | escape }}{% if block.settings.title_italic != blank %} <em>{{ block.settings.title_italic | escape }}</em>{% endif %}</span>
+                <span class="pdc__set-what">{{ block.settings.count }} × {{ bs }} ml</span>
+                {%- if b_note != blank -%}<span class="pdc__set-note">{{ b_note | escape }}</span>{%- endif -%}
+                <span class="pdc__set-price">
+                  <span class="pdc__set-from">{{ from_txt | escape }}</span>
+                  {%- if p_hi != blank -%}<span class="pdc__set-to">{{ to_txt | escape }}</span>{%- endif -%}
+                </span>
+                <span class="pdc__set-cta">
+                  {%- if b_url != blank -%}{{ block.settings.button_label | default: 'Pick your scents' | escape }} <span aria-hidden="true">→</span>{%- else -%}{{ section.settings.soon_label | escape }}{%- endif -%}
+                </span>
+              {%- if b_url != blank -%}</a>{%- else -%}</div>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- if picker_url != blank and section.settings.cta_label != blank -%}
+          <p class="pdc__more"><a class="pdc__cta" href="{{ picker_url }}">{{ section.settings.cta_label | escape }} <span aria-hidden="true">→</span></a>{%- if section.settings.cta_note != blank -%}<span>{{ section.settings.cta_note | escape }}</span>{%- endif -%}</p>
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
     {%- if sizes.size > 0 -%}
       <div class="pdc__sizes" role="group" aria-label="{{ section.settings.sizes_label | escape }}">
         {%- for block in sizes -%}
@@ -63,7 +149,8 @@
                 if b.settings.product != blank
                   assign p_num = b.settings.product.price | divided_by: 100.0
                 else
-                  assign p_num = b.settings.price | remove: '₱' | remove: 'PHP' | remove: ',' | strip | plus: 0
+                  assign p_first = b.settings.price | split: '–' | first | split: ' - ' | first
+                  assign p_num = p_first | remove: '₱' | remove: 'PHP' | remove: 'from' | remove: ',' | strip | plus: 0
                 endif
                 assign per = p_num | times: 1.0 | divided_by: b.settings.count
                 if p_num > 0
@@ -134,9 +221,9 @@
             <span class="pdc__what">{{ b_count }} × {{ block.settings.size }} ml · {{ section.settings.pick_label | replace: '[n]', b_count }}</span>
             <span class="pdc__price">
               {%- if bp != blank -%}
-                {{ bp.price | money }}{% if bp.compare_at_price > bp.price %}<s>{{ bp.compare_at_price | money }}</s>{% endif %}
+                {% if bp.price_varies %}{{ section.settings.from_label | escape }} {% endif %}{{ bp.price_min | money }}{% if bp.compare_at_price > bp.price %}<s>{{ bp.compare_at_price | money }}</s>{% endif %}
               {%- else -%}
-                {{ block.settings.price | escape }}{% if block.settings.compare_price != blank %}<s>{{ block.settings.compare_price | escape }}</s>{% endif %}
+                {% if block.settings.price_from %}{{ section.settings.from_label | escape }} {% endif %}{{ block.settings.price | escape }}{% if block.settings.compare_price != blank %}<s>{{ block.settings.compare_price | escape }}</s>{% endif %}
               {%- endif -%}
             </span>
             {%- if block.settings.button_label != blank -%}
@@ -149,6 +236,7 @@
           </li>
         {%- endfor -%}
       </ul>
+    {%- endif -%}
     {%- endif -%}
 
     {%- if section.settings.partner_text != blank and section.settings.partner_link != blank -%}
@@ -178,6 +266,21 @@
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Poured from authentic full bottles, labelled by hand. Wear it for a week; buy the bottle only if you love it.</p>" },
     { "type": "checkbox", "id": "hero_sample", "label": "Show the built-in vials photo", "default": true },
     { "type": "image_picker", "id": "hero_image", "label": "Own photo next to the heading", "info": "A transparent cut-out works best. Replaces the built-in one." },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "sets", "label": "Set cards that open the vial picker" },
+        { "value": "sizes", "label": "Sizes, then bundles" }
+      ],
+      "default": "sets"
+    },
+    { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Set cards open it with that set chosen. Empty: the page with the handle build-your-set." },
+    { "type": "text", "id": "set_from_label", "label": "Set cards: lowest price", "info": "[price] = the bundle's first price.", "default": "from [price]" },
+    { "type": "text", "id": "set_to_label", "label": "Set cards: highest price", "info": "[price] = the bundle's second price (after the –).", "default": "up to [price]" },
+    { "type": "text", "id": "cta_label", "label": "Link under the set cards", "default": "Build your own set" },
+    { "type": "text", "id": "cta_note", "label": "Line next to that link", "default": "Mix any scents. Each perfume once per set." },
     { "type": "text", "id": "sizes_label", "label": "Size picker label (screen readers)", "default": "Choose a size" },
     { "type": "text", "id": "from_label", "label": "Price prefix on sizes", "default": "from" },
     { "type": "text", "id": "pick_label", "label": "Bundle line", "default": "pick any [n] of our scents", "info": "[n] becomes the number of vials." },
@@ -248,7 +351,8 @@
         },
         { "type": "range", "id": "count", "label": "Number of vials", "min": 1, "max": 10, "step": 1, "default": 3 },
         { "type": "product", "id": "product", "label": "Product", "info": "Its price and page are used. Without a product, the price text and link below are shown." },
-        { "type": "text", "id": "price", "label": "Price", "default": "₱590" },
+        { "type": "text", "id": "price", "label": "Price", "info": "A price or a range, e.g. ₱315 – ₱1,035 when it depends on the scents picked.", "default": "₱590" },
+        { "type": "checkbox", "id": "price_from", "label": "Show “from” before the price text", "info": "For sets priced by scent tier. With a product, “from” shows when its variants have different prices.", "default": false },
         { "type": "text", "id": "compare_price", "label": "Struck-out price", "info": "Optional, e.g. the price of the vials bought one by one." },
         { "type": "text", "id": "badge", "label": "Badge", "info": "Optional, e.g. Save 15%." },
         { "type": "url", "id": "link", "label": "Link", "info": "Used when no product is chosen." },

@@ -17,6 +17,30 @@
       const signal = this.abort.signal;
       this.inner = this.querySelector('[data-pfo-inner]');
       this.wordmark = this.querySelector('[data-pfo-wordmark]');
+      const signature = this.querySelector('.pfo-signature');
+      signature?.addEventListener('pointerenter', event => {
+        if (event.pointerType === 'mouse' && !this.wordmark?.classList.contains('is-entering')) this.spraySignature();
+      }, { signal });
+      signature?.addEventListener('pointerleave', () => this.finishMist(), { signal });
+
+      // Keep Shopify's native success/error handling; stop malformed email posts
+      // even though the customer form disables the browser's automatic validation.
+      this.querySelector('.pfo-news')?.addEventListener('submit', (event) => {
+        if (event.currentTarget.checkValidity()) return;
+        event.preventDefault();
+        event.currentTarget.reportValidity();
+      }, { signal });
+
+      const mobile = window.matchMedia('(max-width: 749px)');
+      const menus = [...this.querySelectorAll('[data-pfo-menu]')];
+      const arrangeMenus = () => menus.forEach(menu => {
+        menu.open = !mobile.matches || menu.contains(document.activeElement);
+      });
+      menus.forEach(menu => menu.querySelector('summary').addEventListener('click', event => {
+        if (!mobile.matches) event.preventDefault();
+      }, { signal }));
+      mobile.addEventListener('change', arrangeMenus, { signal });
+      arrangeMenus();
 
       if (this.dataset.reveal === 'true' && !reduced.matches && this.inner) {
         const update = () => {
@@ -44,18 +68,28 @@
       }
 
       if (this.wordmark) {
+        const reveal = () => {
+          this.wordmark.classList.add('is-in');
+          if (this.dataset.wordmarkMotion === 'prefix') this.revealSignature();
+        };
         if (reduced.matches || !('IntersectionObserver' in window)) this.wordmark.classList.add('is-in');
         else {
           this.wordObserver = new IntersectionObserver(
             ([entry]) => {
               if (!entry.isIntersecting) return;
-              this.wordmark.classList.add('is-in');
               this.wordObserver.disconnect();
+              reveal();
             },
-            { threshold: 0.4 }
+            { threshold: 0.12 }
           );
           this.wordObserver.observe(this.wordmark);
         }
+        reduced.addEventListener('change', () => {
+          if (reduced.matches) { this.finishSignature(); this.finishMist(); }
+        }, { signal });
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) { this.finishSignature(); this.finishMist(); }
+        }, { signal });
       }
 
       this.querySelector('[data-pfo-top]')?.addEventListener(
@@ -73,7 +107,77 @@
       );
     }
 
+    // Idea 5: the small prefix introduces the name, once on entering the viewport.
+    // Baseline content is visible; a failed script never leaves the signature hidden.
+    revealSignature() {
+      this.finishSignature();
+      if (!this.wordmark || reduced.matches || typeof this.wordmark.animate !== 'function') return;
+      this.wordmark.classList.add('is-in', 'is-entering');
+      const prefix = this.wordmark.querySelector('.pfo-wordmark__pre');
+      const letters = [...this.wordmark.querySelectorAll('.pfo-wordmark__ch')];
+      const easing = 'cubic-bezier(0.16, 1, 0.3, 1)';
+      const animations = [];
+      if (prefix) animations.push(prefix.animate([
+        { opacity: 0, transform: 'translateX(-18px)' },
+        { opacity: 1, transform: 'translateX(0)' },
+      ], { duration: 700, easing, fill: 'both' }));
+      letters.forEach((letter, index) => animations.push(letter.animate([
+        { opacity: 0, transform: 'translateY(28%)' },
+        { opacity: 1, transform: 'translateY(0)' },
+      ], { duration: 1000, delay: (prefix ? 500 : 0) + index * 65, easing, fill: 'both' })));
+      this.signatureAnimations = animations;
+      Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
+        if (this.signatureAnimations === animations) this.finishSignature();
+      });
+    }
+
+    finishSignature() {
+      this.signatureAnimations?.forEach(animation => animation.cancel());
+      this.signatureAnimations = null;
+      this.wordmark?.classList.remove('is-entering');
+    }
+
+    // One short atomiser plume per hover; no loop or pointer-tracking work.
+    spraySignature() {
+      this.finishMist();
+      if (this.dataset.wordmarkMist !== 'true' || reduced.matches || !this.wordmark?.animate) return;
+      const layer = document.createElement('span');
+      layer.className = 'pfo-signature__mist';
+      layer.setAttribute('aria-hidden', 'true');
+      this.querySelector('.pfo-signature')?.append(layer);
+      this.mistLayer = layer;
+      const animations = [];
+      for (let i = 0; i < 21; i++) {
+        const cloud = i > 17;
+        const drop = document.createElement('span');
+        drop.className = `pfo-signature__drop${cloud ? ' pfo-signature__drop--cloud' : ''}`;
+        drop.style.left = `${cloud ? 32 + (i - 18) * 19 : 16 + (i * 13 % 73)}%`;
+        drop.style.top = `${cloud ? 47 : 39 + (i * 7 % 33)}%`;
+        layer.append(drop);
+        const x = 14 + (i % 5) * 9;
+        const y = -25 - (i % 6) * 10;
+        animations.push(drop.animate([
+          { opacity: 0, transform: 'translate(0, 10px) scale(0.65)' },
+          { opacity: cloud ? 0.24 : 0.65, offset: 0.22, transform: `translate(${x * 0.22}px, ${y * 0.18}px) scale(1)` },
+          { opacity: 0, transform: `translate(${x}px, ${y}px) scale(${cloud ? 2.4 : 0.45})` },
+        ], { duration: 1250 + i % 3 * 120, delay: i % 6 * 45, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)', fill: 'both' }));
+      }
+      this.mistAnimations = animations;
+      Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
+        if (this.mistLayer === layer) this.finishMist();
+      });
+    }
+
+    finishMist() {
+      this.mistAnimations?.forEach(animation => animation.cancel());
+      this.mistAnimations = null;
+      this.mistLayer?.remove();
+      this.mistLayer = null;
+    }
+
     disconnectedCallback() {
+      this.finishSignature();
+      this.finishMist();
       this.abort?.abort();
       this.observer?.disconnect();
       this.wordObserver?.disconnect();

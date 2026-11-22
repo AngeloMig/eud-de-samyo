@@ -1,0 +1,287 @@
+{%- comment -%}
+  Vial picker ("Build your set", templates/page.decant-builder.json).
+
+  1. Choose a set (blocks "set": e.g. 3 × 1 ml).
+  2. Pick a scent for every vial. A set starts filled with the cheapest different
+     scents (its lowest price); picked scents fade in the grid and their button
+     removes them. Scents come from a collection (setting
+     "collection", else all products); a perfume is offered in a size when it has a
+     variant for it: any option value "1 ml", "2 ml", "5 ml" or "10 ml".
+  3. Add to bag: one line per picked vial (that perfume's size variant, at its own
+     price), all marked with the set, e.g. "Set: Try trio · 3 × 1 ml (k3f9)".
+
+  The set's price is the sum of the vials picked: three different perfumes give
+  their three prices added up, less the set's discount (block setting; the matching
+  automatic discount must exist in Shopify). Set cards show the range: the cheapest
+  and dearest different scents (or one scent repeated, when repeats are allowed).
+  Vial prices: dev/decant-pricing.html, section 2b.
+
+  Open with a set chosen: ?set=3x1 (count x size). The homepage Decants bundles can
+  link here that way. ?scent=<product handle> puts that perfume in the set first (the
+  product page's "Build a set with this scent" link).
+
+  Without JavaScript the sets and scents still show, with a note to enable it.
+  Styles: assets/perfume-vial-picker.css. Script: assets/perfume-vial-picker.js.
+{%- endcomment -%}
+{%- liquid
+  assign vid = 'VialPicker-' | append: section.id
+  assign sets = section.blocks | where: 'type', 'set'
+  assign pool = section.settings.collection.products
+  if pool == blank or pool.size == 0
+    assign pool = collections.all.products
+  endif
+  assign vial_sizes = '1,2,5,10' | split: ','
+-%}
+
+{{ 'perfume-vial-picker.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'perfume-vial-picker.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  #{{ vid }} {
+    --pvp-bg: {{ section.settings.background_color }};
+    --pvp-ink: {{ section.settings.text_color }};
+    --pvp-card: {{ section.settings.card_color }};
+    --pvp-pt: {{ section.settings.padding_top }}px;
+    --pvp-pb: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<section
+  id="{{ vid }}"
+  class="pvp"
+  aria-labelledby="{{ vid }}-h"
+  data-pvp
+  data-repeats="{{ section.settings.allow_repeats }}"
+  data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+  data-cart-add="{{ routes.cart_add_url }}"
+  data-cart="{{ routes.cart_url }}"
+  data-vial-1="{{ 'sample-decant-square.webp' | asset_url }}"
+  data-vial-2="{{ 'sample-decant-clear.webp' | asset_url }}"
+  data-vial-5="{{ 'sample-decant-amber.webp' | asset_url }}"
+  data-vial-10="{{ 'sample-decant-amber.webp' | asset_url }}"
+  data-t-picked="{{ section.settings.picked_label | escape }}"
+  data-t-full="{{ section.settings.full_label | escape }}"
+  data-t-empty="{{ section.settings.empty_label | escape }}"
+  data-t-remove="{{ section.settings.remove_label | escape }}"
+  data-t-add-scent="{{ section.settings.add_scent_label | escape }}"
+  data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
+  data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
+  data-t-error="{{ section.settings.error_label | escape }}"
+  data-t-discount="{{ section.settings.discount_label | escape }}"
+  data-t-from="{{ section.settings.range_from_label | escape }}"
+  data-t-to="{{ section.settings.range_to_label | escape }}"
+>
+  <div class="pvp__wrap">
+    <header class="pvp__head">
+      {%- if section.settings.kicker != blank -%}<p class="pf-kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+      <h1 class="pvp__h" id="{{ vid }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</h1>
+      {%- if section.settings.text != blank -%}<div class="pvp__text">{{ section.settings.text }}</div>{%- endif -%}
+    </header>
+
+    <noscript><p class="pvp__hint">{{ section.settings.nojs_label | escape }}</p></noscript>
+
+    <div class="pvp__grid">
+      <div class="pvp__main">
+        {%- comment -%} Step 1: the set {%- endcomment -%}
+        <fieldset class="pvp__step">
+          <legend class="pvp__legend"><span>1</span>{{ section.settings.step1_label | escape }}</legend>
+          {%- if sets.size > 0 -%}
+            <div class="pvp__sets">
+              {%- for s in sets -%}
+                {%- assign key = s.settings.count | append: 'x' | append: s.settings.size -%}
+                <label class="pvp__set" {{ s.shopify_attributes }}>
+                  <input
+                    type="radio"
+                    name="{{ vid }}-set"
+                    value="{{ key }}"
+                    data-count="{{ s.settings.count }}"
+                    data-size="{{ s.settings.size }}"
+                    data-discount="{{ s.settings.discount }}"
+                    data-title="{{ s.settings.title | escape }}{% if s.settings.title_italic != blank %} {{ s.settings.title_italic | escape }}{% endif %}"
+                    {% if forloop.first %}checked{% endif %}
+                  >
+                  {%- liquid
+                    case s.settings.size
+                      when '1'
+                        assign v_img = 'sample-decant-square.webp'
+                        assign v_h = 44
+                      when '2'
+                        assign v_img = 'sample-decant-clear.webp'
+                        assign v_h = 62
+                      when '5'
+                        assign v_img = 'sample-decant-amber.webp'
+                        assign v_h = 82
+                      else
+                        assign v_img = 'sample-decant-amber.webp'
+                        assign v_h = 100
+                    endcase
+                    assign v_shown = s.settings.count | at_most: 6
+                  -%}
+                  <span class="pvp__set-box">
+                    <span class="pvp__set-check" aria-hidden="true"></span>
+                    {%- if s.settings.badge != blank -%}<span class="pvp__badge">{{ s.settings.badge | escape }}</span>{%- endif -%}
+                    <span class="pvp__set-vials" style="--vh: {{ v_h }}%;" data-n="{{ v_shown }}" aria-hidden="true">
+                      {%- for i in (1..v_shown) -%}
+                        <img src="{{ v_img | asset_url }}" alt="" width="40" height="160" loading="lazy" style="--i: {{ forloop.index0 }};">
+                      {%- endfor -%}
+                    </span>
+                    <span class="pvp__set-name">{{ s.settings.title | escape }}{% if s.settings.title_italic != blank %} <em>{{ s.settings.title_italic | escape }}</em>{% endif %}</span>
+                    <span class="pvp__set-what">{{ s.settings.count }} × {{ s.settings.size }} ml</span>
+                    <span class="pvp__set-price"><span class="pvp__set-from" data-range-lo></span><span class="pvp__set-to" data-range-hi></span></span>
+                  </span>
+                </label>
+              {%- endfor -%}
+            </div>
+            {%- if section.settings.pricing_note != blank -%}<p class="pvp__note">{{ section.settings.pricing_note | escape }}</p>{%- endif -%}
+          {%- elsif request.design_mode -%}
+            <p class="pvp__hint">Add Set blocks, e.g. 3 × 1 ml.</p>
+          {%- endif -%}
+        </fieldset>
+
+        {%- comment -%} Step 2: the scents, each with its own price per vial {%- endcomment -%}
+        <fieldset class="pvp__step">
+          <legend class="pvp__legend"><span>2</span>{{ section.settings.step2_label | escape }}</legend>
+          {%- if section.settings.swap_note != blank -%}
+            <p class="pvp__swap"><span class="pvp__swap-icon" aria-hidden="true">i</span><span>{{ section.settings.swap_note | escape }}</span></p>
+          {%- endif -%}
+          <ul class="pvp__scents" role="list" data-scents>
+            {%- assign shown = 0 -%}
+            {%- for p in pool limit: 100 -%}
+              {%- capture vials -%}
+                {%- for z in vial_sizes -%}
+                  {%- assign want = z | append: 'ml' -%}
+                  {%- for v in p.variants -%}
+                    {%- assign o1 = v.option1 | downcase | remove: ' ' -%}
+                    {%- assign o2 = v.option2 | downcase | remove: ' ' -%}
+                    {%- assign o3 = v.option3 | downcase | remove: ' ' -%}
+                    {%- if o1 == want or o2 == want or o3 == want -%}
+                      {{- z }}:{{ v.id }}:{{ v.price }}:{{ v.available }};
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              {%- endcapture -%}
+              {%- if vials == blank -%}{%- continue -%}{%- endif -%}
+              {%- assign shown = shown | plus: 1 -%}
+              {%- assign media = p.featured_media -%}
+              <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vials="{{ vials | strip }}">
+                <span class="pvp__scent-img" aria-hidden="true">
+                  {%- if media != blank -%}
+                    {{ media.preview_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(min-width: 990px) 15vw, 40vw', alt: '', loading: 'lazy' }}
+                  {%- else -%}
+                    <img class="pvp__scent-vial" src="{{ 'sample-decant-clear.webp' | asset_url }}" alt="" width="90" height="533" loading="lazy">
+                  {%- endif -%}
+                </span>
+                <span class="pvp__scent-vendor">{{ p.vendor | escape }}</span>
+                <span class="pvp__scent-name">{{ p.title | escape }}</span>
+                <span class="pvp__vial-price" data-vial-price></span>
+                <button type="button" class="pvp__add" data-add aria-label="{{ section.settings.add_scent_label | escape }}: {{ p.title | escape }}">
+                  <span aria-hidden="true" data-add-icon>+</span> <span data-add-text>{{ section.settings.add_scent_label | escape }}</span>
+                </button>
+                <span class="pvp__tip" id="{{ vid }}-tip-{{ forloop.index }}" role="tooltip" data-tip hidden>{{ section.settings.full_tip_label | escape }}</span>
+                <span class="pvp__count" data-count hidden></span>
+              </li>
+            {%- endfor -%}
+            {%- if shown == 0 -%}
+              <li class="pvp__hint">No scents to show yet. Give each perfume decant size variants (1 ml, 2 ml, 5 ml, 10 ml){% if section.settings.collection != blank %} in the chosen collection{% endif %}.</li>
+            {%- endif -%}
+          </ul>
+        </fieldset>
+      </div>
+
+      {%- comment -%} The tray: your vials, each with its price, and the total {%- endcomment -%}
+      <aside class="pvp__tray" aria-labelledby="{{ vid }}-tray">
+        <h2 class="pvp__tray-h" id="{{ vid }}-tray">{{ section.settings.tray_label | escape }}</h2>
+        <p class="pvp__tray-set" data-set-name></p>
+        <ol class="pvp__slots" data-slots role="list"></ol>
+        <p class="pvp__status" data-status aria-live="polite"></p>
+        <form method="post" action="{{ routes.cart_add_url }}" class="pvp__form" data-form>
+          <p class="pvp__line" data-sub-line hidden><span>{{ section.settings.subtotal_label | escape }}</span><span data-sub></span></p>
+          <p class="pvp__line" data-off-line hidden><span data-off-label></span><span data-off></span></p>
+          <p class="pvp__total"><span>{{ section.settings.total_label | escape }}</span><b data-total></b></p>
+          <button type="submit" class="pvp__submit" data-submit disabled>{{ section.settings.add_label | escape }}</button>
+        </form>
+        {%- if section.settings.trust != blank -%}<p class="pvp__trust">{{ section.settings.trust | escape }}</p>{%- endif -%}
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vial picker",
+  "tag": "div",
+  "class": "section-perfume-vial-picker",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Decants" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Build your" },
+    { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "set" },
+    { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Choose a set, then pick a scent for every vial. Poured by hand from authentic full bottles.</p>" },
+    { "type": "collection", "id": "collection", "label": "Scents to choose from", "info": "Leave empty to use all products. A perfume shows in a size when it has a variant for it, e.g. 1 ml." },
+    { "type": "checkbox", "id": "allow_repeats", "label": "Allow the same scent more than once", "info": "Off: every vial in a set is a different scent, and set prices show the cheapest and dearest different scents.", "default": false },
+    { "type": "header", "content": "Labels" },
+    { "type": "text", "id": "step1_label", "label": "Step 1", "default": "Choose your set" },
+    { "type": "text", "id": "range_from_label", "label": "Set price: lowest", "info": "[price] = the cheapest different scents.", "default": "from [price]" },
+    { "type": "text", "id": "range_to_label", "label": "Set price: highest", "info": "[price] = the dearest different scents.", "default": "up to [price]" },
+    { "type": "text", "id": "pricing_note", "label": "Pricing note under the sets", "default": "Each perfume has its own price per vial. Your set costs the vials you pick, added up." },
+    { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
+    { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
+    { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    { "type": "text", "id": "unavailable_label", "label": "Scent not offered in a size", "default": "Not in this size" },
+    { "type": "text", "id": "add_scent_label", "label": "Add scent button", "default": "Add" },
+    { "type": "text", "id": "tray_label", "label": "Tray heading", "default": "Your vials" },
+    { "type": "text", "id": "empty_label", "label": "Empty vial", "default": "Empty" },
+    { "type": "text", "id": "remove_label", "label": "Remove button", "default": "Remove" },
+    { "type": "text", "id": "picked_label", "label": "Progress", "info": "[n] = picked, [total] = vials in the set.", "default": "[n] of [total] picked" },
+    { "type": "text", "id": "full_tip_label", "label": "Hint on Add when the set is full", "default": "Remove one to add this" },
+    { "type": "text", "id": "full_label", "label": "Set complete", "default": "All set. To swap a scent, remove one and add another." },
+    { "type": "text", "id": "subtotal_label", "label": "Before discount", "default": "Vials added up" },
+    { "type": "text", "id": "discount_label", "label": "Discount line", "info": "[n] = the set's discount %.", "default": "Set discount ([n]%)" },
+    { "type": "text", "id": "total_label", "label": "Total", "default": "Total" },
+    { "type": "text", "id": "add_label", "label": "Add to bag button", "default": "Add set to bag" },
+    { "type": "text", "id": "error_label", "label": "Add to bag error", "default": "Couldn't add the set. Please try again." },
+    { "type": "text", "id": "trust", "label": "Note under the tray", "default": "Decanted from authentic bottles. Not affiliated with the brands." },
+    { "type": "text", "id": "nojs_label", "label": "Message without JavaScript", "default": "Turn on JavaScript to pick your scents." },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F7F5F0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" },
+    { "type": "color", "id": "card_color", "label": "Cards", "default": "#FFFFFF" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 8, "unit": "px", "default": 96 }
+  ],
+  "blocks": [
+    {
+      "type": "set",
+      "name": "Set",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Name", "default": "Try" },
+        { "type": "text", "id": "title_italic", "label": "Name, italic part", "default": "trio" },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Vial size",
+          "options": [
+            { "value": "1", "label": "1 ml" },
+            { "value": "2", "label": "2 ml" },
+            { "value": "5", "label": "5 ml" },
+            { "value": "10", "label": "10 ml" }
+          ],
+          "default": "1"
+        },
+        { "type": "range", "id": "count", "label": "Vials in the set", "min": 1, "max": 10, "step": 1, "default": 3 },
+        { "type": "range", "id": "discount", "label": "Discount shown for this set", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 0, "info": "Only shows the price. Create the same automatic discount in Shopify (Discounts) so checkout charges it." },
+        { "type": "text", "id": "badge", "label": "Badge", "info": "e.g. 10% off. Leave empty for none." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vial picker",
+      "blocks": [
+        { "type": "set", "settings": { "title": "Try", "title_italic": "trio", "size": "1", "count": 3 } },
+        { "type": "set", "settings": { "title": "Discovery", "title_italic": "six", "size": "1", "count": 6 } }
+      ]
+    }
+  ]
+}
+{% endschema %}

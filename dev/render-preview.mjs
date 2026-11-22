@@ -164,6 +164,8 @@ const DEMO_BLOG = { title: 'Journal', handle: 'journal', url: '/blogs/journal', 
 
 const globals = {
   blogs: { journal: DEMO_BLOG },
+  // PREVIEW ONLY: the vial picker page, so links to it (homepage set cards, product pages) work.
+  pages: { 'build-your-set': { url: 'vial-picker.html' } },
   request: { design_mode: false },
   routes: {
     collections_url: '/collections',
@@ -412,6 +414,20 @@ for (const key of template.order) {
 writeFileSync(join(root, 'dev/home.html'), page('Samyo home preview', `${header}\n<main id="MainContent">${parts.join('\n')}</main>\n${footer}`, false));
 writeFileSync(join(root, 'dev/preview.html'), page('Perfume showcase preview', showcase));
 console.log(`wrote dev/home.html (${template.order.join(', ')}) and dev/preview.html`);
+
+// Footer review pages: the real section and forms, without the long homepage.
+const footerGroupPreview = JSON.parse(readFileSync(join(root, 'sections/footer-group.json'), 'utf8'));
+const footerSectionPreview = footerGroupPreview.sections.footer;
+for (const [file, label, layout, alternative] of [
+  ['footer-new.html', 'Editorial footer', 'atelier', 'footer-original.html'],
+  ['footer-original.html', 'Original footer', 'classic', 'footer-new.html'],
+]) {
+  const footerPreview = await renderSection('perfume-footer', 'footer', { layout, reveal: false, ...(layout === 'classic' ? { wordmark_motion: 'none', wordmark_deboss: false, wordmark_mist: false } : {}) }, footerSectionPreview);
+  const reviewBar = `<main id="MainContent" style="padding:20px clamp(22px,4vw,64px);display:flex;justify-content:space-between;gap:20px;align-items:center;font:12px 'Instrument Sans',sans-serif;background:#f7f5f0;color:#292521"><span>Footer preview · ${label}</span><a style="color:inherit;min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px" href="${alternative}">Compare ${layout === 'atelier' ? 'original' : 'new design'}</a></main>`;
+  writeFileSync(join(root, `dev/${file}`), page(`Samyó · ${label}`, reviewBar + footerPreview, false).replace('Preview: demo products &amp; prices', 'Footer design preview'));
+}
+await import('./tools/build-footer-motion.mjs');
+await import('./tools/build-footer-hover.mjs');
 
 // ---------- Hero ideas 1-6 (dev/hero-ideas.html) ----------
 // Each idea is its own page (header + hero) so it can be framed at desktop or phone
@@ -745,4 +761,60 @@ async function renderGroupScoped(file, scope) {
   for (const key of aTpl.order) aParts.push(await renderSection(aTpl.sections[key].type, key, {}, { blocks: {}, block_order: [], ...aTpl.sections[key] }, {}, aScope));
   writeFileSync(join(root, 'dev/article.html'), page('Samyo article preview', `${aHeader}\n<main id="MainContent">${banner}${aParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/journal.html, dev/article.html');
+}
+
+// ---------- Vial picker page (dev/vial-picker.html) ----------
+// PREVIEW ONLY: the store's perfumes with decant size variants priced as in
+// dev/decant-pricing.html section 2 (36% vial margin, 22 Nov 2026). Bleu de Chanel has no decant
+// prices yet (sold out at FragranceX), so the picker leaves it out.
+{
+  const SCENTS = [
+    ['Sauvage Eau de Parfum', 'Dior', 'samyo-dior-sauvage-edp.webp', [220, 410, 985, 1935]],
+    ['Dior Homme Intense', 'Dior', 'samyo-dior-homme-intense.webp', [225, 415, 1000, 1965]],
+    ['Y Eau de Parfum', 'Yves Saint Laurent', null, [210, 385, 925, 1815]],
+    ['Uomo Born in Roma Eau de Toilette', 'Valentino', 'samyo-brand-valentino-2.webp', [175, 320, 765, 1495]],
+    ['Wood Sage & Sea Salt Cologne', 'Jo Malone London', null, [190, 345, 820, 1605]],
+    ['Stronger With You Intensely', 'Emporio Armani', 'samyo-armani-stronger-with-you-intensely.webp', [190, 345, 820, 1610]],
+    ["Terre d'Hermès Eau de Toilette", 'Hermès', 'samyo-brand-hermes-1.webp', [120, 205, 475, 920]],
+    ['Eros Eau de Toilette', 'Versace', 'samyo-brand-versace-1.webp', [115, 195, 450, 865]],
+    ['The One for Men Eau de Parfum', 'Dolce & Gabbana', 'samyo-dg-the-one.webp', [115, 195, 455, 875]],
+    ['Oud Wood Eau de Parfum', 'Tom Ford', 'samyo-brand-tom-ford-3.webp', [380, 725, 1770, 3510]],
+    ['Bleu de Chanel Eau de Parfum', 'Chanel', 'samyo-brand-chanel-3.webp', null],
+  ];
+  let vVar = 8000;
+  const vProducts = SCENTS.map(([title, vendor, img, prices], i) => ({
+    title, vendor, url: 'product.html', tags: [], handle: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    featured_media: img ? { id: 900 + i, alt: '', preview_image: { src: `../dev/shop-images/${img}` } } : null,
+    variants: [
+      { id: ++vVar, option1: '100 ml', price: 0, available: true },
+      ...(prices || []).map((p, j) => ({ id: ++vVar, option1: `${[1, 2, 5, 10][j]} ml`, price: p * 100, available: true })),
+    ],
+  }));
+  const vScope = { template: { name: 'page', suffix: 'decant-builder' }, collections: { all: { products: vProducts } }, cart: { currency: { iso_code: 'PHP' } } };
+  const vHeader = await renderGroupScoped('header-group.json', vScope);
+  const vTpl = JSON.parse(readFileSync(join(root, 'templates/page.decant-builder.json'), 'utf8'));
+  const vParts = [];
+  for (const key of vTpl.order) vParts.push(await renderSection(vTpl.sections[key].type, key, {}, vTpl.sections[key], {}, vScope));
+  writeFileSync(join(root, 'dev/vial-picker.html'), page('Samyo vial picker preview', `${vHeader}\n<main id="MainContent">${vParts.join('\n')}</main>\n${footer}`, false));
+  console.log('wrote dev/vial-picker.html');
+}
+
+// ---------- Decant product page (dev/product-decant.html) ----------
+// PREVIEW ONLY: Dior Homme Intense as a decant product (1, 2, 5, 10 ml at the
+// dev/decant-pricing.html prices). The page should offer only 10 ml and link the
+// smaller sizes to the vial picker.
+{
+  const homme = demoProducts.find((p) => p.title === 'Dior Homme Intense');
+  if (homme) {
+    let dv = 8800;
+    const sizes = [['1 ml', 225], ['2 ml', 415], ['5 ml', 1000], ['10 ml', 1965]];
+    const variants = sizes.map(([title, p]) => ({ id: ++dv, title, price: p * 100, available: true, options: [title], compare_at_price: null, featured_media: null }));
+    const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: 22500, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
+    const dScope = { product: decant, collection: null, template: { name: 'product' }, collections: { all: { products: demoProducts } }, pages: { 'build-your-set': { url: 'vial-picker.html' } } };
+    const dHeader = await renderGroupScoped('header-group.json', dScope);
+    const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
+    const main = await renderSection('main-product-perfume', 'main', {}, productTpl.sections.main, {}, dScope);
+    writeFileSync(join(root, 'dev/product-decant.html'), page('Samyo decant product preview', `${dHeader}\n<main id="MainContent">${main}</main>\n${footer}`, false));
+    console.log('wrote dev/product-decant.html');
+  }
 }

@@ -1,0 +1,185 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set chooser ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+ :root{--ink:#292521;--soft:#6e665e;--page:#f7f5f0;--paper:#efe9df;--line:rgba(41,37,33,.14);--gold:#d9b46a;--ease:cubic-bezier(.16,1,.3,1)}
+ *{box-sizing:border-box} body{margin:0;background:#ece8e1;color:var(--ink);font:15px/1.5 'Instrument Sans',system-ui,sans-serif}
+ .wrap{max-width:1180px;margin:0 auto;padding:0 32px 60px}
+ header{padding:40px 0 6px} h1{font:400 48px/1 'Cormorant Garamond',serif;margin:0 0 10px;letter-spacing:-.02em} .lede{color:var(--soft);max-width:90ch;margin:0}
+ nav.jump{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 0} nav.jump a{font-size:12.5px;color:var(--ink);background:#fff;padding:8px 12px;border-radius:99px;text-decoration:none}
+ .idea{margin-top:40px} .idea>h2{font:400 30px/1.05 'Cormorant Garamond';margin:0 0 4px} .idea>h2 span{color:var(--gold);margin-right:10px}
+ .idea>p{color:var(--soft);margin:0 0 12px;max-width:90ch}
+ .stage{background:var(--page);padding:36px 40px}
+ .k{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase}
+ .out{margin-top:14px;font-size:13px;color:var(--soft)} .out b{color:var(--ink)}
+ button{font:inherit;color:inherit;cursor:pointer}
+ :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+ .serif{font-family:'Cormorant Garamond',serif}
+ .badge{display:inline-block;background:var(--gold);color:var(--ink);border-radius:99px;font:600 10px/1 'Instrument Sans';letter-spacing:.12em;text-transform:uppercase;padding:5px 8px}
+ /* 1 Even row */
+ .r1{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+ .r1 button{background:#fff;border:1px solid transparent;padding:16px 14px;text-align:left;display:grid;gap:3px;align-content:start;min-height:150px;position:relative;transition:translate .4s var(--ease)}
+ .r1 button:hover{translate:0 -3px}
+ .r1 button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r1 .nm{font:400 22px/1 'Cormorant Garamond'} .r1 .nm i{font-style:italic}
+ .r1 .ml{font-size:12px;opacity:.65}
+ .r1 .from{margin-top:auto;font-size:11px;opacity:.65;padding-top:14px} .r1 .pr{font:400 26px/1 'Cormorant Garamond'} .r1 .up{font-size:11px;opacity:.65}
+ .r1 .badge{position:absolute;top:-8px;right:10px}
+ /* 2 Size then count */
+ .seg{display:inline-flex;background:#fff;border-radius:99px;padding:4px;gap:2px}
+ .seg button{border:0;background:none;border-radius:99px;padding:10px 18px;min-height:44px;font-weight:500}
+ .seg button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r2row{display:flex;gap:28px;flex-wrap:wrap;align-items:end}
+ .r2cards{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+ .r2cards button{background:#fff;border:1px solid var(--line);padding:14px 18px;min-width:220px;text-align:left;display:grid;gap:2px}
+ .r2cards button[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+ .r2cards .pr{font:400 24px/1 'Cormorant Garamond'}
+ /* 3 Vial cards */
+ .r3{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+ .r3 button{background:#fff;border:1px solid transparent;padding:14px 10px 14px;display:grid;justify-items:center;gap:6px;text-align:center;position:relative}
+ .r3 button[aria-pressed=true]{border-color:var(--ink)}
+ .r3 .vials{height:96px;display:flex;align-items:flex-end;gap:2px}
+ .r3 .vials img{width:auto;filter:drop-shadow(0 6px 5px rgba(41,37,33,.18))}
+ .r3 .nm{font:400 20px/1 'Cormorant Garamond'} .r3 .nm i{font-style:italic}
+ .r3 .pr{font-size:13px;font-weight:600} .r3 .ml{font-size:11px;color:var(--soft)}
+ .r3 .badge{position:absolute;top:8px;right:8px}
+ /* 4 Price list */
+ .r4{background:#fff;padding:10px 26px;max-width:760px}
+ .r4 button{display:grid;grid-template-columns:auto 1fr auto auto;align-items:baseline;gap:12px;width:100%;background:none;border:0;border-bottom:1px solid var(--line);padding:16px 0;text-align:left;min-height:56px}
+ .r4 button:last-child{border-bottom:0}
+ .r4 .nm{font:400 24px/1 'Cormorant Garamond'} .r4 .nm i{font-style:italic}
+ .r4 .dots{border-bottom:1px dotted rgba(41,37,33,.35);transform:translateY(-5px)}
+ .r4 .pr{font:400 22px/1 'Cormorant Garamond';white-space:nowrap}
+ .r4 .chk{width:22px;height:22px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-size:12px}
+ .r4 button[aria-pressed=true] .chk{background:var(--ink);color:#fff}
+ .r4 .sub{font-size:12px;color:var(--soft);font-family:'Instrument Sans';margin-left:8px}
+ /* 5 Scroll carousel */
+ .r5{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}
+ .r5 button{flex:0 0 220px;scroll-snap-align:start;background:#fff;border:1px solid transparent;padding:18px;text-align:left;display:grid;gap:4px;min-height:200px;position:relative}
+ .r5 button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r5 .nm{font:400 30px/1 'Cormorant Garamond'} .r5 .nm i{font-style:italic}
+ .r5 .per{margin-top:auto;font:400 34px/1 'Cormorant Garamond'} .r5 .per small{font:500 12px 'Instrument Sans';opacity:.7}
+ .r5 .tot{font-size:12px;opacity:.7}
+ .r5 .badge{position:absolute;top:16px;right:16px}
+ /* 6 Matrix by size */
+ .r6{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+ .r6 .col{display:grid;gap:8px;align-content:start}
+ .r6 .head{font:400 30px/1 'Cormorant Garamond';padding:0 2px 6px;border-bottom:1px solid var(--ink)}
+ .r6 .head small{font:500 11px 'Instrument Sans';color:var(--soft);display:block;margin-top:4px;letter-spacing:.04em}
+ .r6 button{background:#fff;border:1px solid transparent;padding:12px 14px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:60px}
+ .r6 button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r6 .nm{font:400 19px/1.1 'Cormorant Garamond'} .r6 .nm small{display:block;font:500 11px 'Instrument Sans';opacity:.65;margin-top:3px}
+ .r6 .pr{font-size:13px;font-weight:600;white-space:nowrap}
+ /* 7 Chips */
+ .r7{display:flex;flex-wrap:wrap;gap:8px}
+ .r7 button{border:1px solid var(--line);background:#fff;border-radius:99px;padding:10px 18px;min-height:48px;display:flex;gap:10px;align-items:center}
+ .r7 button b{font:400 19px/1 'Cormorant Garamond';font-weight:400}
+ .r7 button span{font-size:12.5px;color:var(--soft)}
+ .r7 button[aria-pressed=true]{background:var(--ink);color:var(--page);border-color:var(--ink)} .r7 button[aria-pressed=true] span{color:#cfc5b8}
+ .r7 .badge{padding:4px 7px}
+ /* 8 Price per vial */
+ .r8{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .r8 button{background:#fff;border:1px solid transparent;padding:18px 20px;text-align:left;display:grid;grid-template-columns:1fr auto;gap:2px 14px;align-items:end}
+ .r8 button[aria-pressed=true]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+ .r8 .nm{font:400 24px/1 'Cormorant Garamond';grid-column:1} .r8 .nm i{font-style:italic}
+ .r8 .ml{font-size:12px;color:var(--soft);grid-column:1}
+ .r8 .per{grid-column:2;grid-row:1/3;text-align:right;font:400 30px/1 'Cormorant Garamond'} .r8 .per small{display:block;font:500 11px 'Instrument Sans';color:var(--soft);margin-top:4px}
+ .r8 .tot{grid-column:1/-1;font-size:12px;color:var(--soft);border-top:1px solid var(--line);margin-top:10px;padding-top:8px}
+ /* 9 Dots + strike */
+ .r9{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .r9 button{background:#fff;border:1px solid transparent;padding:18px 20px;text-align:left;display:grid;gap:8px}
+ .r9 button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r9 .top{display:flex;justify-content:space-between;align-items:baseline}
+ .r9 .nm{font:400 24px/1 'Cormorant Garamond'} .r9 .nm i{font-style:italic}
+ .r9 .dots{display:flex;gap:4px} .r9 .dots i{width:var(--s);height:calc(var(--s) * 2.6);border-radius:3px 3px 5px 5px;background:currentColor;opacity:.75;display:block}
+ .r9 .pr{font:400 22px/1 'Cormorant Garamond'} .r9 .pr s{font-size:15px;opacity:.5;margin-right:6px}
+ /* 10 Ladder */
+ .r10{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .r10 .pair{background:#fff;display:grid}
+ .r10 button{background:none;border:0;padding:16px 18px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:64px}
+ .r10 button+button{border-top:1px dashed var(--line)}
+ .r10 button[aria-pressed=true]{background:var(--ink);color:var(--page)}
+ .r10 .nm{font:400 22px/1 'Cormorant Garamond'} .r10 .nm i{font-style:italic} .r10 .nm small{display:block;font:500 11px 'Instrument Sans';opacity:.65;margin-top:3px}
+ .r10 .pr{font-size:13px;font-weight:600;text-align:right;white-space:nowrap} .r10 .pr small{display:block;font-weight:500;opacity:.7}
+ .r10 .size{font:400 34px/1 'Cormorant Garamond';padding:16px 18px 0}
+ @media (max-width:989px){.r1,.r3{grid-template-columns:repeat(3,minmax(0,1fr))}.r6{grid-template-columns:repeat(2,minmax(0,1fr))}.r8,.r9,.r10{grid-template-columns:repeat(2,minmax(0,1fr))}}
+ @media (max-width:640px){.wrap{padding:0 16px 40px}.stage{padding:24px 16px}.r1,.r3{grid-template-columns:repeat(2,minmax(0,1fr))}.r8,.r9,.r10{grid-template-columns:1fr}h1{font-size:38px}}
+ @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><div class="wrap">
+<header>
+ <h1>Ten ways to choose a set</h1>
+ <p class="lede">Ten takes on step 1 of the vial picker. They all use the real set prices (lowest = cheapest different scents, highest = dearest; six-vial sets after their 10%). All of them fix the same problems: prices wrapping onto two lines, the extra “.00”, the badge pushing cards down, and Travel ten alone on a second row. Click to try each one.</p>
+ <nav class="jump"><a href="#i1">1 Even row</a><a href="#i2">2 Size, then count</a><a href="#i3">3 Vial cards</a><a href="#i4">4 Price list</a><a href="#i5">5 Swipe cards</a><a href="#i6">6 By size</a><a href="#i7">7 Chips</a><a href="#i8">8 Per vial</a><a href="#i9">9 Vial dots</a><a href="#i10">10 Trio or six</a></nav>
+</header>
+
+<section class="idea" id="i1"><h2><span>01</span>Even row</h2><p>All six in one row, the same height. “From ₱350” in large type with “up to ₱825” underneath, so nothing wraps. The badge sits on the card’s top edge and doesn’t push anything.</p><div class="stage"><div class="r1" data-g="1"></div><p class="out" data-o="1"></p></div></section>
+
+<section class="idea" id="i2"><h2><span>02</span>Size first, then how many</h2><p>Two small questions instead of six cards: pick a size (1, 2, 5, 10 ml), then 3 or 6. Fewer choices on screen at once; good on phones.</p><div class="stage"><div class="r2row"><div><span class="k">Size</span><div class="seg" id="s2" style="margin-top:8px"></div></div></div><div class="r2cards" id="c2"></div><p class="out" data-o="2"></p></div></section>
+
+<section class="idea" id="i3"><h2><span>03</span>Vial cards</h2><p>Each card shows the actual vials, one per vial in the set, at their real size. You see “three small” or “one big” before reading anything.</p><div class="stage"><div class="r3" data-g="3"></div><p class="out" data-o="3"></p></div></section>
+
+<section class="idea" id="i4"><h2><span>04</span>Perfumer’s price list</h2><p>A printed menu: set name, dotted leader, price. Feels like a parfumerie price card, and long prices never wrap.</p><div class="stage"><div class="r4" data-g="4"></div><p class="out" data-o="4"></p></div></section>
+
+<section class="idea" id="i5"><h2><span>05</span>Swipe cards with price per vial</h2><p>Big cards in a row you can swipe. The headline is the price per vial (from ₱117 a vial); the set total sits below.</p><div class="stage"><div class="r5" data-g="5"></div><p class="out" data-o="5"></p></div></section>
+
+<section class="idea" id="i6"><h2><span>06</span>Grouped by size</h2><p>Four columns, one per vial size, with each size’s sets under it. Makes it obvious that the six-vial set is the same vials, twice as many, 10% off.</p><div class="stage"><div class="r6" id="g6"></div><p class="out" data-o="6"></p></div></section>
+
+<section class="idea" id="i7"><h2><span>07</span>Quiet chips</h2><p>One line of chips: “Try trio · 3 × 1 ml · from ₱350”. Takes the least space and puts the scents straight after.</p><div class="stage"><div class="r7" data-g="7"></div><p class="out" data-o="7"></p></div></section>
+
+<section class="idea" id="i8"><h2><span>08</span>Price per vial, front and centre</h2><p>Three across, two rows (no orphan). The right side shows the cheapest price per vial; the set range is a quiet line under it.</p><div class="stage"><div class="r8" data-g="8"></div><p class="out" data-o="8"></p></div></section>
+
+<section class="idea" id="i9"><h2><span>09</span>Vial dots and the saving</h2><p>Small vial shapes show how many you get. Six-vial sets show the price before the 10% struck out, so the saving is clear without a badge.</p><div class="stage"><div class="r9" data-g="9"></div><p class="out" data-o="9"></p></div></section>
+
+<section class="idea" id="i10"><h2><span>10</span>Trio or six, by size</h2><p>Three cards (1 ml, 2 ml, and 5/10 ml), each with its options stacked: the trio on top, the six under it with “10% off”. Feels like choosing an upgrade.</p><div class="stage"><div class="r10" id="g10"></div><p class="out" data-o="10"></p></div></section>
+</div>
+<script>
+// Real prices (vial picker, 36% vial margin, cheapest/dearest different scents; sixes after 10%).
+const SETS=[
+ {id:'t1',a:'Try',b:'trio',n:3,ml:1,lo:350,hi:825,d:0},
+ {id:'s1',a:'Discovery',b:'six',n:6,ml:1,lo:814.5,hi:1273.5,d:10,before:905},
+ {id:'t2',a:'Wear',b:'trio',n:3,ml:2,lo:595,hi:1550,d:0},
+ {id:'s2',a:'Wardrobe',b:'six',n:6,ml:2,lo:1444.5,hi:2362.5,d:10,before:1605},
+ {id:'d5',a:'Signature',b:'duo',n:2,ml:5,lo:905,hi:2770,d:0},
+ {id:'x10',a:'Travel',b:'ten',n:1,ml:10,lo:865,hi:3510,d:0}];
+const IMG={1:['sample-decant-square.webp',.42],2:['sample-decant-clear.webp',.6],5:['sample-decant-amber.webp',.82],10:['sample-decant-amber.webp',1]};
+const P=n=>'₱'+n.toLocaleString('en-PH',{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2});
+const per=s=>P(Math.round(s.lo/s.n));
+const nm=s=>`${s.a} <i>${s.b}</i>`;
+const badge=s=>s.d?`<span class="badge">${s.d}% off</span>`:'';
+let sel={};
+function bind(g,render){const el=typeof g==='string'?document.getElementById(g):document.querySelector(`[data-g="${g}"]`);const key=String(g);sel[key]=sel[key]||'t1';const draw=()=>{el.innerHTML=render(sel[key]);el.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>{sel[key]=b.dataset.id;draw()});const s=SETS.find(x=>x.id===sel[key]);const o=document.querySelector(`[data-o="${key.replace(/\D/g,'')}"]`);if(o)o.innerHTML=`Chosen: <b>${s.a} ${s.b}</b> · ${s.n} × ${s.ml} ml · ${P(s.lo)} – ${P(s.hi)}`};draw()}
+const btn=(s,cur,inner)=>`<button type="button" data-id="${s.id}" aria-pressed="${s.id===cur}">${inner}</button>`;
+
+bind(1,cur=>SETS.map(s=>btn(s,cur,`${badge(s)}<span class="nm">${nm(s)}</span><span class="ml">${s.n} × ${s.ml} ml</span><span class="from">from</span><span class="pr">${P(s.lo)}</span><span class="up">up to ${P(s.hi)}</span>`)).join(''));
+
+// 2
+let size2=1;
+function draw2(){
+  const sizes=[1,2,5,10];
+  document.getElementById('s2').innerHTML=sizes.map(z=>`<button type="button" data-z="${z}" aria-pressed="${z===size2}">${z} ml</button>`).join('');
+  document.querySelectorAll('#s2 [data-z]').forEach(b=>b.onclick=()=>{size2=+b.dataset.z;sel['c2']=SETS.find(s=>s.ml===size2).id;draw2()});
+  bind('c2',cur=>SETS.filter(s=>s.ml===size2).map(s=>btn(s,cur,`<span class="k" style="letter-spacing:.1em">${s.n} vials ${badge(s)}</span><span class="serif" style="font-size:22px">${nm(s)}</span><span class="pr">${P(s.lo)} – ${P(s.hi)}</span>`)).join(''));
+}
+sel['c2']='t1';draw2();
+
+bind(3,cur=>SETS.map(s=>{const h=Math.round(96*IMG[s.ml][1]);return btn(s,cur,`${badge(s)}<span class="vials">${Array.from({length:Math.min(s.n,6)},()=>`<img src="../assets/${IMG[s.ml][0]}" alt="" style="height:${h}px">`).join('')}</span><span class="nm">${nm(s)}</span><span class="ml">${s.n} × ${s.ml} ml</span><span class="pr">from ${P(s.lo)}</span>`)}).join(''));
+
+bind(4,cur=>SETS.map(s=>btn(s,cur,`<span class="chk" aria-hidden="true">${s.id===cur?'✓':''}</span><span class="nm">${nm(s)}<span class="sub">${s.n} × ${s.ml} ml${s.d?` · ${s.d}% off`:''}</span></span><span class="dots"></span><span class="pr">${P(s.lo)} – ${P(s.hi)}</span>`)).join(''));
+
+bind(5,cur=>SETS.map(s=>btn(s,cur,`${badge(s)}<span class="k">${s.n} × ${s.ml} ml</span><span class="nm">${nm(s)}</span><span class="per">${per(s)} <small>a vial, from</small></span><span class="tot">Set ${P(s.lo)} – ${P(s.hi)}</span>`)).join(''));
+
+// 6
+function draw6(){bind('g6',cur=>[1,2,5,10].map(z=>`<div class="col"><div class="head">${z} ml<small>${{1:'≈ 10–15 sprays',2:'≈ 25–30 sprays',5:'≈ 70 sprays',10:'≈ 150 sprays'}[z]}</small></div>${SETS.filter(s=>s.ml===z).map(s=>btn(s,cur,`<span class="nm">${nm(s)}<small>${s.n} vials${s.d?` · ${s.d}% off`:''}</small></span><span class="pr">from ${P(s.lo)}</span>`)).join('')}</div>`).join(''))}
+draw6();
+
+bind(7,cur=>SETS.map(s=>btn(s,cur,`<b>${nm(s)}</b><span>${s.n} × ${s.ml} ml · from ${P(s.lo)}</span>${badge(s)}`)).join(''));
+
+bind(8,cur=>SETS.map(s=>btn(s,cur,`<span class="nm">${nm(s)}</span><span class="ml">${s.n} × ${s.ml} ml ${badge(s)}</span><span class="per">${per(s)}<small>a vial, from</small></span><span class="tot">Set ${P(s.lo)} – ${P(s.hi)}</span>`)).join(''));
+
+bind(9,cur=>SETS.map(s=>{const sz={1:7,2:8,5:10,10:12}[s.ml];return btn(s,cur,`<span class="top"><span class="nm">${nm(s)}</span><span class="dots" style="--s:${sz}px">${'<i></i>'.repeat(s.n)}</span></span><span style="font-size:12px;opacity:.7">${s.n} × ${s.ml} ml</span><span class="pr">${s.before?`<s>${P(s.before)}</s>`:''}from ${P(s.lo)}</span>`)}).join(''));
+
+function draw10(){bind('g10',cur=>[[1,'1 ml'],[2,'2 ml'],[5,'5 & 10 ml']].map(([z,label])=>`<div class="pair"><div class="size">${label}</div>${SETS.filter(s=>z===5?s.ml>=5:s.ml===z).map(s=>btn(s,cur,`<span class="nm">${nm(s)}<small>${s.n} × ${s.ml} ml</small></span><span class="pr">from ${P(s.lo)}${s.d?`<small>${s.d}% off</small>`:''}</span>`)).join('')}</div>`).join(''))}
+draw10();
+</script>
+</body></html>

@@ -22,6 +22,10 @@
 {%- endcomment -%}
 {{ 'perfume-cart-drawer.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'perfume-cart-drawer.js' | asset_url }}" defer="defer"></script>
+{%- if template.name == 'cart' -%}
+  {%- comment -%} Decant sets stay whole on the cart page too (assets/perfume-cart-sets.js). {%- endcomment -%}
+  <script src="{{ 'perfume-cart-sets.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 <perfume-cart-drawer
   class="pcd"

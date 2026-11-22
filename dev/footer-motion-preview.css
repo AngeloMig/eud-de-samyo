@@ -1,0 +1,42 @@
+/* Local animation studies. The Shopify footer keeps its current static signature. */
+html[data-motion-context='wordmark'] #MainContent { display: none !important; }
+html[data-motion-context='wordmark'] .pfo__upper,
+html[data-motion-context='wordmark'] .pfo__bottom { display: none; }
+html[data-motion-context='wordmark'] .pfo__inner { padding: 72px 28px 48px; }
+html[data-motion-context='wordmark'] .motion-wordmark-wrap { margin: 0; }
+.motion-wordmark-wrap { position: relative; margin: 44px 0 24px; padding-bottom: min(9vw, calc(74vw / var(--pfo-len))); perspective: 1000px; }
+.motion-wordmark-wrap > .pfo-wordmark { margin: 0; transform-origin: 50% 70%; user-select: none; }
+.motion-wordmark-wrap > .pfo-wordmark__outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--pfo-ink);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.motion-spritz {
+  background: currentColor;
+  border-radius: 50%;
+  height: var(--droplet-size);
+  left: 2%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  width: var(--droplet-size);
+}
+.motion-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.motion-toolbar button { background: transparent; border: 1px solid #bab3a7; color: #292521; min-height: 44px; padding: 0 14px; font-size: 12px; }
+.motion-toolbar button[aria-pressed='true'],
+.motion-toolbar [data-replay] { background: #292521; border-color: #292521; color: #f7f5f0; }
+.motion-toolbar button:disabled { opacity: 0.5; cursor: default; }
+.motion-review .frame-surround { min-height: 280px; }
+.motion-review iframe { transition: none; }
+.motion-live { font-size: 12px; min-height: 20px; margin: 12px 0 0; color: #5e5750; }
+.motion-review .preview-intro { margin-bottom: 20px; }
+.motion-review .preview-intro p { max-width: 70ch; }
+@media (max-width: 749px) {
+  html[data-motion-context='wordmark'] .pfo__inner { padding: 60px 20px 40px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motion-wordmark-wrap * { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Footer animation 1 · Spritz reveal</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
+>
+<link rel="stylesheet" href="../assets/perfume-tokens.css?v=1795319811259">
+
+<style>
+  :root {
+    --font-body-family: 'Instrument Sans', 'Helvetica Neue', Arial, sans-serif;
+    --font-body-style: normal;
+    --font-body-weight: 400;
+    --font-body-weight-bold: 600;
+    --font-heading-family: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+    --font-heading-style: normal;
+    --font-heading-weight: 500;
+  }
+</style>
+
+<style>
+  body { margin: 0; background: var(--pf-paper); color: var(--pf-ink); }
+  .preview-next { padding: 96px var(--pf-gutter); font-family: var(--pf-font-serif); font-size: var(--pf-display-sm); }
+</style>
+<script>document.documentElement.dataset.motionContext=new URLSearchParams(location.search).get('context')==='footer'?'footer':'wordmark';</script></head>
+<body data-motion-idea="1">
+<script>
+  // PREVIEW ONLY: a fake cart (add, change, read) so Add to bag and the drawer work without a store.
+  (() => {
+    const variants = {"9001":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"60 ml","price":620000,"final_line_price":620000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9002":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"100 ml","price":890000,"final_line_price":890000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9003":{"product_title":"Sauvage Eau de Parfum","vendor":"Dior","variant_title":"200 ml","price":1390000,"final_line_price":1390000,"image":"../dev/shop-images/samyo-dior-sauvage-edp.webp","url":"#product","currency":"PHP"},"9004":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"50 ml","price":610000,"final_line_price":610000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9005":{"product_title":"Dior Homme Intense","vendor":"Dior","variant_title":"100 ml","price":850000,"final_line_price":850000,"image":"../dev/shop-images/samyo-dior-homme-intense.webp","url":"#product","currency":"PHP"},"9006":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"50 ml","price":430000,"final_line_price":430000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9007":{"product_title":"The One","vendor":"Dolce & Gabbana","variant_title":"100 ml","price":590000,"final_line_price":590000,"image":"../dev/shop-images/samyo-dg-the-one.webp","url":"#product","currency":"PHP"},"9008":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"50 ml","price":520000,"final_line_price":520000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"},"9009":{"product_title":"Stronger With You Intensely","vendor":"Emporio Armani","variant_title":"100 ml","price":720000,"final_line_price":720000,"image":"../dev/shop-images/samyo-armani-stronger-with-you-intensely.webp","url":"#product","currency":"PHP"}};
+    const ids = Object.keys(variants);
+    const items = [];
+    let note = '';
+    const put = (id, qty) => {
+      const v = variants[id];
+      if (!v) return;
+      const it = items.find((x) => x.key === 'k' + id);
+      if (it) it.quantity += qty;
+      else items.push({ key: 'k' + id, variant_id: Number(id), quantity: qty, ...v });
+    };
+    // Start with two items, like the header's demo count.
+    if (ids.length) { put(ids[1] || ids[0], 1); put(ids[ids.length - 1], 1); }
+    const cart = () => {
+      items.forEach((x) => { x.final_price = x.price; x.final_line_price = x.price * x.quantity; });
+      return { item_count: items.reduce((a, x) => a + x.quantity, 0), total_price: items.reduce((a, x) => a + x.final_line_price, 0), currency: 'PHP', note, items };
+    };
+    const realFetch = window.fetch.bind(window);
+    const json = (o) => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    window.fetch = async (url, opts = {}) => {
+      const u = String(url);
+      if (u.endsWith('/cart/add.js')) {
+        await new Promise((r) => setTimeout(r, 900));
+        const id = opts.body && opts.body.get ? opts.body.get('id') : null;
+        put(id, 1);
+        const it = items.find((x) => x.key === 'k' + id) || {};
+        return json({ ...it, quantity: 1 });
+      }
+      if (u.endsWith('/cart/change.js')) {
+        await new Promise((r) => setTimeout(r, 350));
+        const b = JSON.parse(opts.body || '{}');
+        const i = items.findIndex((x) => x.key === b.id);
+        if (i > -1) { if (b.quantity > 0) items[i].quantity = b.quantity; else items.splice(i, 1); }
+        return json(cart());
+      }
+      if (u.endsWith('/cart/update.js')) {
+        const b = JSON.parse(opts.body || '{}');
+        if (typeof b.note === 'string') note = b.note;
+        return json(cart());
+      }
+      if (u.endsWith('/cart.js')) return json(cart());
+      return realFetch(url, opts);
+    };
+  })();
+</script>
+
+<main id="MainContent" style="padding:20px clamp(22px,4vw,64px);display:flex;justify-content:space-between;gap:20px;align-items:center;font:12px 'Instrument Sans',sans-serif;background:#f7f5f0;color:#292521"><span>Footer preview · Editorial footer</span><a style="color:inherit;min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px" href="footer-original.html">Compare original</a></main><link rel="stylesheet" href="../assets/perfume-footer.css?v=1795348750488">
+<script src="../assets/perfume-footer.js?v=1795348626785" defer="defer"></script><style>#PerfumeFooter-footer {
+    --pfo-bg: #D8D1C5;
+    --pfo-ink: #292521;
+    --pfo-len: 9;
+    --pfo-engrave-depth: 2px;
+  }</style><perfume-footer id="PerfumeFooter-footer" class="pfo pfo--atelier" data-wordmark-motion="none" data-wordmark-mist="false" data-reveal="false">
+  <div class="pfo__inner" data-pfo-inner>
+    <div class="pfo__upper"><div class="pfo__invitation"><h2 class="pfo__heading">Your next<br />
+signature scent.</h2><p class="pfo__intro">A new favourite starts with a little curiosity.</p><a class="pfo__discovery pfo-link" href="find-your-scent.html">Not sure? Find your scent <span aria-hidden="true">→</span></a></div><div class="pfo__content"><div class="pfo-news__intro"><h2 class="pfo-news__heading">Stay in the notes.</h2><p>New arrivals and scent notes, in your inbox.</p></div><form method="post" action="/contact#PerfumeFooterNewsletter" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeFooterNewsletter" class="pfo-news" novalidate><input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="pf-visually-hidden" for="PerfumeFooterEmail-footer">Your email address</label>
+        <input
+          id="PerfumeFooterEmail-footer"
+          class="pfo-news__input"
+          type="email"
+          name="contact[email]"
+          autocomplete="email"
+          autocorrect="off"
+          autocapitalize="off"
+          required
+          placeholder="Your email address"
+          
+        >
+        <button type="submit" class="pfo-news__button" aria-label="Subscribe">
+          <span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Subscribe">Subscribe</span></span><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 10h14m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.3"/></svg></button></form><div class="pfo__cols"><div class="pfo-col" data-block-id="footer-b1"><p class="pfo-col__heading">Contact us</p><div class="pfo-col__text"><p>hello@samyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p></div></div><details class="pfo-col pfo-col--menu" open data-pfo-menu data-block-id="footer-b2">
+          <summary class="pfo-col__heading"><span>Shop</span><svg class="pfo-col__toggle" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></summary><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="collection.html" aria-label="Shop all"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Shop all">Shop all</span></span></a></li><li><a class="pfo-link" href="collection.html" aria-label="Brands"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Brands">Brands</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="Scent notes"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Scent notes">Scent notes</span></span></a></li><li><a class="pfo-link" href="journal.html" aria-label="Journal"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Journal">Journal</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="About"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="About">About</span></span></a></li></ul></details><details class="pfo-col pfo-col--menu" open data-pfo-menu data-block-id="footer-b3">
+          <summary class="pfo-col__heading"><span>Help</span><svg class="pfo-col__toggle" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M8 3v10" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></summary><ul class="pfo-col__list" role="list"><li><a class="pfo-link" href="/policies/shipping-policy" aria-label="Shipping &amp; delivery"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Shipping &amp; delivery">Shipping &amp; delivery</span></span></a></li><li><a class="pfo-link" href="/policies/refund-policy" aria-label="Returns"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Returns">Returns</span></span></a></li><li><a class="pfo-link" href="/pages/authenticity" aria-label="Authenticity"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Authenticity">Authenticity</span></span></a></li><li><a class="pfo-link" href="scent-guide.html" aria-label="About us"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="About us">About us</span></span></a></li><li><a class="pfo-link" href="/pages/contact" aria-label="Contact"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Contact">Contact</span></span></a></li><li><a class="pfo-link" href="/policies/privacy-policy" aria-label="Privacy policy"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Privacy policy">Privacy policy</span></span></a></li><li><a class="pfo-link" href="/policies/terms-of-service" aria-label="Terms of service"><span class="pfo-roll" aria-hidden="true"><span class="pfo-roll-in" data-text="Terms of service">Terms of service</span></span></a></li></ul></details></div>
+      </div>
+    </div><div class="pfo-signature" data-wordmark-hover="none">
+      <p class="pfo-wordmark pfo-wordmark--logo" aria-hidden="true" data-pfo-wordmark><span class="pfo-wordmark__pre"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">eau de</span><span class="pfo-wordmark__carved">eau de</span></span></span><span class="pfo-wordmark__ch" style="--i: 0;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">s</span><span class="pfo-wordmark__carved">s</span></span></span><span class="pfo-wordmark__ch" style="--i: 1;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">a</span><span class="pfo-wordmark__carved">a</span></span></span><span class="pfo-wordmark__ch" style="--i: 2;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">m</span><span class="pfo-wordmark__carved">m</span></span></span><span class="pfo-wordmark__ch" style="--i: 3;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">y</span><span class="pfo-wordmark__carved">y</span></span></span><span class="pfo-wordmark__ch" style="--i: 4;"><span class="pfo-wordmark__glyph"><span class="pfo-wordmark__ink">ó</span><span class="pfo-wordmark__carved">ó</span></span></span></p>
+      </div><div class="pfo__bottom">
+      <ul class="pfo__legal" role="list">
+        <li>&copy; 2026 Samyo</li><li><a class="pfo-link" href="/policies/shipping-policy">Shipping &amp; delivery</a></li><li><a class="pfo-link" href="/policies/refund-policy">Returns</a></li><li><a class="pfo-link" href="/pages/authenticity">Authenticity</a></li><li><a class="pfo-link" href="scent-guide.html">About us</a></li><li><a class="pfo-link" href="/pages/contact">Contact</a></li><li><a class="pfo-link" href="/policies/privacy-policy">Privacy policy</a></li><li><a class="pfo-link" href="/policies/terms-of-service">Terms of service</a></li></ul><p class="pfo__credit">Authentic fragrances, delivered across the Philippines</p><a class="pfo-top pfo-top--atelier pfo-link" href="#MainContent" data-pfo-top>
+          <span>Back to top</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 17V3M4 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </a></div>
+  </div>
+</perfume-footer>
+
+
+
+
+<link rel="stylesheet" href="footer-motion-preview.css?v=1795347450252"><script src="footer-motion-study.js?v=1795347567309"></script></body>
+</html>

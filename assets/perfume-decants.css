@@ -261,6 +261,178 @@
   opacity: 0.6;
 }
 
+/* Set cards (layout "sets"): the vial picker's look, on the homepage */
+.pdc__sets {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pdc__set-card {
+  align-content: start;
+  background: var(--pdc-card, #fff);
+  color: inherit;
+  display: grid;
+  gap: 3px;
+  height: 100%;
+  justify-items: center;
+  padding: 22px 12px 18px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: translate 0.5s var(--pf-ease-out, ease), box-shadow 0.5s ease;
+}
+
+a.pdc__set-card:hover {
+  box-shadow: 0 24px 32px -24px rgba(41, 37, 33, 0.45);
+  translate: 0 -4px;
+}
+
+a.pdc__set-card:focus-visible {
+  outline: 2px solid var(--pdc-ink, #292521);
+  outline-offset: 3px;
+}
+
+.pdc__set-vials {
+  align-items: flex-end;
+  display: flex;
+  height: 150px;
+  justify-content: center;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.pdc__set-vials img {
+  filter: drop-shadow(0 10px 8px rgba(41, 37, 33, 0.2));
+  height: var(--vh, 60%);
+  object-fit: contain;
+  transition: translate 0.5s var(--pf-ease-out, ease);
+  transition-delay: calc(var(--j, 0) * 45ms);
+  width: auto;
+}
+
+.pdc__set-vials[data-n='2'] img + img {
+  margin-left: 10px;
+}
+
+.pdc__set-vials[data-n='3'] img + img {
+  margin-left: 5px;
+}
+
+.pdc__set-vials[data-n='6'] img + img {
+  margin-left: 3px;
+}
+
+a.pdc__set-card:hover .pdc__set-vials img {
+  translate: 0 -8px;
+}
+
+.pdc__set-name {
+  font-family: var(--pf-font-serif);
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pdc__set-name em {
+  font-style: italic;
+}
+
+.pdc__set-what {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.pdc__set-note {
+  font-size: 11.5px;
+  opacity: 0.55;
+}
+
+.pdc__set-price {
+  display: grid;
+  gap: 2px;
+  margin-top: 12px;
+}
+
+.pdc__set-from {
+  font-family: var(--pf-font-serif);
+  font-size: 24px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.pdc__set-to {
+  font-size: 12px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.pdc__set-cta {
+  align-self: end;
+  border-top: 1px solid color-mix(in srgb, var(--pdc-ink) 12%, transparent);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-top: 14px;
+  padding-top: 12px;
+  width: 100%;
+}
+
+.pdc__set-cta span {
+  display: inline-block;
+  transition: translate 0.4s var(--pf-ease-out, ease);
+}
+
+a.pdc__set-card:hover .pdc__set-cta span {
+  translate: 4px 0;
+}
+
+.pdc__set .pdc__badge {
+  font-size: 9px;
+  padding: 5px 7px;
+  right: 10px;
+  top: 10px;
+}
+
+.pdc__more {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 18px 0 0;
+}
+
+.pdc__more > span {
+  color: color-mix(in srgb, var(--pdc-ink) 65%, transparent);
+  font-size: 13px;
+}
+
+.pdc__cta {
+  align-items: center;
+  background: var(--pdc-ink, #292521);
+  border-radius: 999px;
+  color: var(--pdc-bg, #f7f5f0);
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 22px;
+  text-decoration: none;
+  transition: translate 0.4s var(--pf-ease-out, ease);
+}
+
+.pdc__cta:hover {
+  translate: 0 -2px;
+}
+
+.pdc__cta:focus-visible {
+  outline: 2px solid var(--pdc-ink, #292521);
+  outline-offset: 3px;
+}
+
 /* Partner link */
 .pdc__partner {
   align-items: center;
@@ -294,6 +466,12 @@
   margin: 12px 0 0;
   opacity: 0.6;
   padding: 12px;
+}
+
+@media screen and (max-width: 1199px) {
+  .pdc__sets {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media screen and (max-width: 989px) {
@@ -345,9 +523,31 @@
   .pdc__bundles {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .pdc__sets {
+    gap: 6px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pdc__set-card {
+    padding: 16px 8px 14px;
+  }
+
+  .pdc__set-vials {
+    height: 100px;
+  }
+
+  .pdc__set-name,
+  .pdc__set-from {
+    font-size: 20px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pdc__set-card,
+  .pdc__set-vials img,
+  .pdc__set-cta span,
+  .pdc__cta,
   .pdc__size,
   .pdc__vial img,
   .pdc__btn,
@@ -357,5 +557,12 @@
 
   .pdc-ready .pdc__bundle.is-in {
     animation: none;
+  }
+
+  a.pdc__set-card:hover,
+  a.pdc__set-card:hover .pdc__set-vials img,
+  a.pdc__set-card:hover .pdc__set-cta span,
+  .pdc__cta:hover {
+    translate: none;
   }
 }

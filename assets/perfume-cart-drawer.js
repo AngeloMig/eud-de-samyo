@@ -6,6 +6,10 @@
   theme (Dawn pub/sub cartUpdate + a 'cart:updated' event) so the Bag count follows.
   Closed: inert. Open: focus moves in, Tab stays inside, Escape and the scrim close it,
   and focus returns to whatever opened it.
+  Decant sets (sections/perfume-vial-picker.liquid): vials added together carry the
+  same "Set" line property. They show as one card, with each vial's price, the set's
+  savings when a discount applies, and one Remove that takes out the whole set (no
+  per-vial quantities, so a set can't be broken up).
   Free-delivery bar: what is left to the goal (data-ship-threshold, store currency,
   converted with Shopify.currency.rate on other currencies). Gift message: saved as
   the cart note through /cart/update.js, a moment after typing stops.
@@ -158,32 +162,74 @@
       if (this.noteField && document.activeElement !== this.noteField && typeof cart.note === 'string') {
         this.noteField.value = cart.note;
       }
-      this.list.innerHTML = items
-        .map((item, i) => {
-          const variant = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
-          const isNew = this.newVariant && Number(item.variant_id) === Number(this.newVariant);
-          const img = sized(item.image || item.featured_image?.url, 240);
-          const url = item.url || '#';
-          return `<li class="pcd__item${isNew ? ' is-new' : ''}" style="--i:${i}" data-key="${esc(item.key)}" data-qty="${item.quantity}">
-            <a class="pcd__media" href="${esc(url)}" tabindex="-1" aria-hidden="true">${img ? `<img src="${esc(img)}" alt="" loading="lazy" width="84" height="105">` : ''}</a>
-            <div class="pcd__info">
-              ${item.vendor ? `<p class="pcd__brand">${esc(item.vendor)}</p>` : ''}
-              <a class="pcd__name" href="${esc(url)}">${esc(item.product_title)}</a>
-              ${variant ? `<p class="pcd__variant">${esc(variant)}</p>` : ''}
-              <div class="pcd__qty" role="group" aria-label="Quantity of ${esc(item.product_title)}">
-                <button type="button" data-pcd-step="-1" aria-label="One fewer"${item.quantity <= 1 ? ' disabled' : ''}>−</button>
-                <output aria-live="polite">${item.quantity}</output>
-                <button type="button" data-pcd-step="1" aria-label="One more">+</button>
-              </div>
-            </div>
-            <div class="pcd__side">
-              <p class="pcd__price">${money(item.final_line_price, cart.currency)}</p>
-              <button type="button" class="pcd__remove" data-pcd-remove>Remove<span class="pf-visually-hidden"> ${esc(item.product_title)}</span></button>
-            </div>
-          </li>`;
+      // Decant sets: group lines by their "Set" property, in cart order.
+      const groups = [];
+      const bySet = new Map();
+      items.forEach((item) => {
+        const set = item.properties && item.properties.Set;
+        if (!set) return groups.push({ item });
+        if (!bySet.has(set)) {
+          const g = { set, lines: [] };
+          bySet.set(set, g);
+          groups.push(g);
+        }
+        bySet.get(set).lines.push(item);
+      });
+      this.list.innerHTML = groups.map((g, i) => (g.set ? this.setCard(g, i, cart) : this.itemRow(g.item, i, cart))).join('');
+      this.newVariant = null;
+    }
+
+    itemRow(item, i, cart) {
+      const variant = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
+      const isNew = this.newVariant && Number(item.variant_id) === Number(this.newVariant);
+      const img = sized(item.image || item.featured_image?.url, 240);
+      const url = item.url || '#';
+      return `<li class="pcd__item${isNew ? ' is-new' : ''}" style="--i:${i}" data-key="${esc(item.key)}" data-qty="${item.quantity}">
+        <a class="pcd__media" href="${esc(url)}" tabindex="-1" aria-hidden="true">${img ? `<img src="${esc(img)}" alt="" loading="lazy" width="84" height="105">` : ''}</a>
+        <div class="pcd__info">
+          ${item.vendor ? `<p class="pcd__brand">${esc(item.vendor)}</p>` : ''}
+          <a class="pcd__name" href="${esc(url)}">${esc(item.product_title)}</a>
+          ${variant ? `<p class="pcd__variant">${esc(variant)}</p>` : ''}
+          <div class="pcd__qty" role="group" aria-label="Quantity of ${esc(item.product_title)}">
+            <button type="button" data-pcd-step="-1" aria-label="One fewer"${item.quantity <= 1 ? ' disabled' : ''}>−</button>
+            <output aria-live="polite">${item.quantity}</output>
+            <button type="button" data-pcd-step="1" aria-label="One more">+</button>
+          </div>
+        </div>
+        <div class="pcd__side">
+          <p class="pcd__price">${money(item.final_line_price, cart.currency)}</p>
+          <button type="button" class="pcd__remove" data-pcd-remove>Remove<span class="pf-visually-hidden"> ${esc(item.product_title)}</span></button>
+        </div>
+      </li>`;
+    }
+
+    // One decant set: its vials, the set price (and savings), one Remove.
+    setCard(g, i, cart) {
+      const name = g.set.replace(/\s*\([a-z0-9]+\)\s*$/i, '');
+      const total = g.lines.reduce((a, l) => a + l.final_line_price, 0);
+      const before = g.lines.reduce((a, l) => a + l.original_line_price, 0);
+      const isNew = this.newVariant && g.lines.some((l) => Number(l.variant_id) === Number(this.newVariant));
+      const imgs = g.lines.slice(0, 3).map((l) => sized(l.image || l.featured_image?.url, 160)).filter(Boolean);
+      const vials = g.lines
+        .map((l) => {
+          const size = l.variant_title && l.variant_title !== 'Default Title' ? ` · ${esc(l.variant_title)}` : '';
+          const qty = l.quantity > 1 ? ` × ${l.quantity}` : '';
+          return `<li><span>${esc(l.product_title)}${size}${qty}</span><span>${money(l.original_line_price, cart.currency)}</span></li>`;
         })
         .join('');
-      this.newVariant = null;
+      return `<li class="pcd__item pcd__set${isNew ? ' is-new' : ''}" style="--i:${i}" data-set="${esc(g.set)}" data-keys="${esc(g.lines.map((l) => l.key).join(','))}">
+        <span class="pcd__media pcd__set-media" aria-hidden="true">${imgs.map((src) => `<img src="${esc(src)}" alt="" loading="lazy" width="56" height="70">`).join('')}</span>
+        <div class="pcd__info">
+          <p class="pcd__brand">Decant set</p>
+          <p class="pcd__name">${esc(name)}</p>
+          <ul class="pcd__set-vials" role="list">${vials}</ul>
+        </div>
+        <div class="pcd__side">
+          <p class="pcd__price">${before > total ? `<s>${money(before, cart.currency)}</s> ` : ''}${money(total, cart.currency)}</p>
+          ${before > total ? `<p class="pcd__save">You save ${money(before - total, cart.currency)}</p>` : ''}
+          <button type="button" class="pcd__remove" data-pcd-remove-set>Remove set<span class="pf-visually-hidden"> ${esc(name)}</span></button>
+        </div>
+      </li>`;
     }
 
     renderShip(cart) {
@@ -232,6 +278,34 @@
       const step = e.target.closest('[data-pcd-step]');
       if (step) return this.change(li, Number(li.dataset.qty) + Number(step.dataset.pcdStep));
       if (e.target.closest('[data-pcd-remove]')) return this.change(li, 0);
+      if (e.target.closest('[data-pcd-remove-set]')) return this.removeSet(li);
+    }
+
+    // Remove every vial of a set in one request.
+    async removeSet(li) {
+      const updates = {};
+      (li.dataset.keys || '').split(',').filter(Boolean).forEach((k) => { updates[k] = 0; });
+      li.classList.add('is-busy');
+      try {
+        const res = await fetch(`${this.dataset.updateUrl || '/cart/update'}.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates }),
+        });
+        const cart = await res.json();
+        if (!res.ok) throw new Error(cart.description || cart.message || 'Could not update the bag.');
+        const name = li.querySelector('.pcd__name')?.textContent || 'Set';
+        this.render(cart);
+        this.status.textContent = `${name} removed.`;
+        if (typeof window.publish === 'function' && window.PUB_SUB_EVENTS?.cartUpdate) {
+          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'perfume-cart-drawer', cartData: cart });
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+        if (!this.panel.contains(document.activeElement)) this.querySelector('.pcd__close')?.focus({ preventScroll: true });
+      } catch (error) {
+        li.classList.remove('is-busy');
+        this.status.textContent = error.message;
+      }
     }
 
     async change(li, quantity) {

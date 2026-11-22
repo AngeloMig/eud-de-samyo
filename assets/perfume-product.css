@@ -288,6 +288,23 @@
   padding: 0;
 }
 
+.pp__sets-link {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 12px 0 0;
+  opacity: 0.85;
+}
+
+.pp__sets-link a {
+  color: inherit;
+  display: inline-flex;
+  font-weight: 600;
+  gap: 4px;
+  min-height: 44px;
+  align-items: center;
+  text-underline-offset: 3px;
+}
+
 .pp__option + .pp__option {
   margin-top: 14px;
 }

@@ -1,0 +1,24 @@
+/* Local hover studies; all motion uses transforms, opacity and clip paths. */
+html[data-hover-context='wordmark'] #MainContent,
+html[data-hover-context='wordmark'] .pfo__upper,
+html[data-hover-context='wordmark'] .pfo__bottom { display: none !important; }
+html[data-hover-context='wordmark'] .pfo__inner { padding: 60px 28px 32px; }
+.pfo-signature { isolation: isolate; }
+.pfo-signature .pfo-wordmark { position: relative; z-index: 1; }
+.pfo-signature .hover-copy { position: absolute; margin: 0; left: 0; width: 100%; pointer-events: none; --pfo-pressed: 0; }
+.hover-copy .pfo-wordmark__ink { opacity: 1; }
+.hover-copy .pfo-wordmark__carved { display: none; }
+.hover-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.hover-dot { position: absolute; pointer-events: none; width: 3px; height: 3px; border-radius: 50%; background: #fff9ee; }
+.hover-cloud { width: 64px; height: 18px; filter: blur(10px); }
+.hover-blotter { position: absolute; inset: 16% 1% 13%; background: #f4f0e7; clip-path: polygon(0 7%,98% 0,100% 93%,2% 100%); transform-origin: 50% 65%; pointer-events: none; }
+.hover-toolbar { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.hover-toolbar button { min-height: 44px; padding: 0 14px; border: 1px solid #bab3a7; background: transparent; color: #292521; font-size: 12px; }
+.hover-toolbar [data-play-hover],.hover-toolbar button[aria-pressed='true'] { background: #292521; color: #f7f5f0; border-color: #292521; }
+.hover-toolbar button:disabled { opacity: 0.5; cursor: default; }
+.hover-review .hover-live { margin-top: 14px; font-size: 12px; min-height: 20px; }
+.hover-review .frame-surround { min-height: 240px; }
+.hover-review iframe { transition: none; }
+html[data-hover-reduced='true'] .pfo-signature * { transition: none !important; }
+@media(max-width:749px) { html[data-hover-context='wordmark'] .pfo__inner { padding: 48px 20px 24px; } }
+@media(prefers-reduced-motion:reduce) { .pfo-signature * { transition: none !important; } }

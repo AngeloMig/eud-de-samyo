@@ -640,7 +640,8 @@
             "title_italic": "trio",
             "size": "1",
             "count": 3,
-            "price": "₱590",
+            "price": "₱350 – ₱825",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"
           }
@@ -652,7 +653,8 @@
             "title_italic": "six",
             "size": "1",
             "count": 6,
-            "price": "₱1,090",
+            "price": "₱814.50 – ₱1,273.50",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "light"
           }
@@ -664,7 +666,8 @@
             "title_italic": "trio",
             "size": "2",
             "count": 3,
-            "price": "₱1,090",
+            "price": "₱595 – ₱1,550",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"
           }
@@ -676,7 +679,8 @@
             "title_italic": "six",
             "size": "2",
             "count": 6,
-            "price": "₱1,990",
+            "price": "₱1,444.50 – ₱2,362.50",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "light"
           }
@@ -688,7 +692,8 @@
             "title_italic": "duo",
             "size": "5",
             "count": 2,
-            "price": "₱1,690",
+            "price": "₱905 – ₱2,770",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"
           }
@@ -700,7 +705,8 @@
             "title_italic": "ten",
             "size": "10",
             "count": 1,
-            "price": "₱1,690",
+            "price": "₱865 – ₱3,510",
+            "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"
           }

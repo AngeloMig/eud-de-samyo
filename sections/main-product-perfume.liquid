@@ -24,6 +24,12 @@
   button come from the offer for the chosen size, and the button is "Buy at
   FragranceX" (rel="sponsored", new tab) with the disclosure under it. No Add to bag,
   quantity or structured data (Samyo doesn't sell it, so no ₱0 offer for Google).
+  Exception: a perfume with decant sizes (Sizes block, "sizes sold only in sets") is
+  sold here; its full-bottle offers show in Where to buy, not in this box.
+
+  Decant sizes: the Sizes block hides the sizes sold only in sets (default 1, 2 and
+  5 ml) and links to the vial picker (?scent=<handle>) instead; the page never opens
+  on a hidden size, and the hidden variants are left out of the script's data.
 {%- endcomment -%}
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
@@ -32,6 +38,54 @@
   assign tint = product.metafields.fragrance.tile_color.value | default: section.settings.background_color
   assign conc = product.metafields.fragrance.profile.value.concentration.value | default: product.metafields.fragrance.concentration.value
   assign tagline = product.metafields.fragrance.profile.value.tagline.value | default: product.metafields.fragrance.tagline.value
+
+  # Decant sizes sold only in sets (Sizes block): not offered here, so a single small
+  # vial can't be bought alone. They still exist for the vial picker.
+  assign hide_key = ','
+  assign picker_url = ''
+  assign picker_text = ''
+  assign picker_link = ''
+  for b in section.blocks
+    if b.type == 'variant_picker' and b.settings.hide_set_sizes
+      assign hide_raw = b.settings.set_sizes | downcase | remove: ' '
+      assign hide_key = ',' | append: hide_raw | append: ','
+      assign picker_text = b.settings.picker_text
+      assign picker_link = b.settings.picker_link_label
+      assign picker_url = b.settings.picker_page.url
+      if picker_url == blank
+        assign picker_url = pages['build-your-set'].url
+      endif
+    endif
+  endfor
+  assign hidden_count = 0
+  assign hidden_min = 0
+  assign shown_variants = ''
+  for v in product.variants
+    assign vk = v.title | downcase | remove: ' '
+    assign vkey = ',' | append: vk | append: ','
+    if hide_key contains vkey
+      assign hidden_count = hidden_count | plus: 1
+      if hidden_min == 0 or v.price < hidden_min
+        assign hidden_min = v.price
+      endif
+    else
+      assign shown_variants = shown_variants | append: v.id | append: ','
+    endif
+  endfor
+  assign cv_key = current_variant.title | downcase | remove: ' '
+  assign cv_key = ',' | append: cv_key | append: ','
+  if hidden_count > 0 and hide_key contains cv_key
+    for v in product.variants
+      assign vk = v.title | downcase | remove: ' '
+      assign vkey = ',' | append: vk | append: ','
+      unless hide_key contains vkey
+        assign current_variant = v
+        if v.available
+          break
+        endif
+      endunless
+    endfor
+  endif
 
   # Variants become the slides when at least two of them have their own image.
   assign seen = ','
@@ -80,10 +134,12 @@
   assign heart_notes = profile.middle_notes.value | default: product.metafields.fragrance.middle_notes.value
   assign base_notes = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
 
-  # Affiliate listing: the offer for the chosen size (or the first one).
+  # Affiliate listing: the offer for the chosen size (or the first one). A perfume
+  # Samyo sells as decants stays a Samyo product (Add to bag); its full-bottle offers
+  # then show in the Where to buy section instead (sections/perfume-where-to-buy.liquid).
   assign offers = product.metafields.samyo.affiliate_offers.value
   assign is_aff = false
-  if offers != blank and offers.size > 0
+  if offers != blank and offers.size > 0 and hidden_count == 0
     assign is_aff = true
     assign offer = offers.first
     for o in offers
@@ -277,6 +333,9 @@
                     <div class="pp__pills">
                       {%- for value in option.values -%}
                         {%- assign value_name = value.name | default: value -%}
+                        {%- assign pill_key = value_name | downcase | remove: ' ' -%}
+                        {%- assign pill_key = ',' | append: pill_key | append: ',' -%}
+                        {%- if hide_key contains pill_key -%}{%- continue -%}{%- endif -%}
                         <label class="pp-pill">
                           <input
                             type="radio"
@@ -291,6 +350,13 @@
                     </div>
                   </fieldset>
                 {%- endfor -%}
+                {%- if hidden_count > 0 and picker_url != blank -%}
+                  {%- assign hidden_price = hidden_min | money -%}
+                  <p class="pp__sets-link">
+                    {{ picker_text | replace: '[price]', hidden_price | escape }}
+                    <a href="{{ picker_url }}?scent={{ product.handle | url_encode }}">{{ picker_link | escape }} <span aria-hidden="true">→</span></a>
+                  </p>
+                {%- endif -%}
               </div>
             {%- endunless -%}
 
@@ -486,7 +552,16 @@
 
   <script type="application/json" data-pp-variants>
     [
+      {%- assign first_json = true -%}
       {%- for v in product.variants -%}
+        {%- assign vid_key = v.id | append: ',' -%}
+        {%- if hidden_count > 0 -%}
+          {%- assign vid_key = ',' | append: vid_key -%}
+          {%- assign shown_key = ',' | append: shown_variants -%}
+          {%- unless shown_key contains vid_key -%}{%- continue -%}{%- endunless -%}
+        {%- endif -%}
+        {%- unless first_json -%},{%- endunless -%}
+        {%- assign first_json = false -%}
         {
           "id": {{ v.id | json }},
           "title": {{ v.title | json }},
@@ -495,7 +570,7 @@
           "price": {{ v.price | money | json }},
           "compare": {% if v.compare_at_price > v.price %}{{ v.compare_at_price | money | json }}{% else %}null{% endif %},
           "media": {% if v.featured_media %}{{ v.featured_media.id | json }}{% else %}null{% endif %}
-        }{% unless forloop.last %},{% endunless %}
+        }
       {%- endfor -%}
     ]
   </script>
@@ -586,7 +661,18 @@
         { "type": "text", "id": "see_all_label", "label": "See all link", "info": "Scrolls to the notes section (anchor #notes). [count] becomes the number of notes. Empty hides it.", "default": "See all [count] notes" }
       ]
     },
-    { "type": "variant_picker", "name": "Sizes", "limit": 1, "settings": [] },
+    {
+      "type": "variant_picker",
+      "name": "Sizes",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "hide_set_sizes", "label": "Hide decant sizes sold only in sets", "info": "Those sizes are bought through the vial picker, not one by one here.", "default": true },
+        { "type": "text", "id": "set_sizes", "label": "Sizes sold only in sets", "info": "Variant names, separated by commas.", "default": "1 ml, 2 ml, 5 ml" },
+        { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Leave empty to use the page with the handle build-your-set." },
+        { "type": "text", "id": "picker_text", "label": "Line under the sizes", "info": "[price] = the cheapest hidden size.", "default": "Smaller sizes, from [price] a vial, come in decant sets." },
+        { "type": "text", "id": "picker_link_label", "label": "Link", "default": "Build a set with this scent" }
+      ]
+    },
     {
       "type": "buy_buttons",
       "name": "Add to bag",

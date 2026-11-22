@@ -1,0 +1,11 @@
+body { background: #f7f5f0; margin: 0; }
+.signature-review { padding: 30px clamp(24px, 4vw, 64px); color: #292521; font: 14px/1.5 'Instrument Sans', sans-serif; }
+.signature-review h1 { font: 400 clamp(30px, 4vw, 48px)/1.05 'Cormorant Garamond', serif; margin: 0 0 12px; }
+.signature-review p { max-width: 65ch; margin: 0 0 20px; }
+.signature-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.signature-controls button, .signature-controls a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border: 1px solid #b3aa9e; border-radius: 24px; background: transparent; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
+.signature-controls button[aria-pressed='true'] { background: #292521; border-color: #292521; color: #f7f5f0; }
+.signature-controls :focus-visible { outline: 2px solid #292521; outline-offset: 4px; }
+.signature-controls button:hover, .signature-controls a:hover { border-color: #292521; }
+.pfo__upper, .pfo__bottom { display: none !important; }
+.pfo--atelier .pfo__inner { padding-top: clamp(28px, 5vw, 70px); padding-bottom: clamp(28px, 5vw, 70px); }
