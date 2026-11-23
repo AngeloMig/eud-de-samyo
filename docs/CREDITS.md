@@ -36,6 +36,19 @@ only next to "Buy at FragranceX" affiliate links, not for stock sold through thi
 store's own checkout. If background removal is not allowed, upload the originals
 instead (same file names, .png).
 
+## Product photos added in Shopify (FragranceX via CJ, 2026-11-23)
+
+The owner confirmed that the FragranceX program terms on CJ allow these images on
+the store, including pages that sell the decants. Added to the products in the
+Shopify admin ("Add media from URL"); local copies in `dev/source-photos/fragrancex/`.
+
+| Shopify file | Product | Source | Size |
+|---|---|---|---|
+| jmwssw.jpg | Jo Malone London Wood Sage & Sea Salt Cologne | FragranceX product image `jmwssw` (img.fragrancex.com) | 750x750, bottle with box |
+| yym33ed.jpg | Yves Saint Laurent Y Eau de Parfum | FragranceX product image `yym33ed` (img.fragrancex.com) | 750x750, bottle with box |
+
+The One for Men uses the owner's photo `samyo-dg-the-one.webp` (173x266, small).
+
 ## Bottle-only photos (supplied by the store owner, 2026-11-21) — now used on the home page
 
 Source not stated; the Sauvage and Dolce & Gabbana shots look like brand or retailer

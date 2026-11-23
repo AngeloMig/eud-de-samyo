@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Investor calculator · Samyó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ink:#26221f; --paper:#f7f5f0; --bg:#efebe4; --soft:rgba(38,34,31,.62); --line:rgba(38,34,31,.14); --gold:#b8913f; --good:#2f6b45; --bad:#a3392f; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:400 14px/1.5 'Instrument Sans',system-ui,sans-serif; }
+  main { max-width:1180px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font:400 42px/1.05 'Cormorant Garamond',serif; margin:0 0 6px; }
+  h2 { font:500 26px/1.1 'Cormorant Garamond',serif; margin:34px 0 8px; }
+  .sub { color:var(--soft); margin:0 0 14px; max-width:820px; }
+  .card { background:var(--paper); border:1px solid var(--line); padding:18px; }
+  .grid { display:grid; gap:12px 16px; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); }
+  label.f { display:grid; gap:4px; font-size:12px; color:var(--soft); }
+  input, select { font:inherit; color:var(--ink); background:#fff; border:1px solid var(--line); padding:9px 10px; min-height:40px; width:100%; }
+  input:focus-visible, select:focus-visible, button:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .inv { display:grid; gap:10px; grid-template-columns:1.4fr 1fr 1fr 1fr 1.2fr auto; align-items:end; padding:12px 0; border-bottom:1px solid var(--line); }
+  .inv:last-child { border-bottom:0; }
+  .inv { grid-template-columns:1.3fr 1fr 1fr 1fr .8fr 1.1fr auto; }
+  .inv--bottle { grid-template-columns:1.2fr 1fr 1.6fr 1fr 1fr .8fr auto; }
+  .tiers { border-bottom:1px solid var(--line); padding-bottom:16px; margin-bottom:6px; }
+  .tiers-h { margin:0 0 10px; } .tiers-h span { color:var(--soft); font-size:12px; margin-left:6px; }
+  input[disabled] { background:#f3f0ea; color:var(--ink); }
+  .linkbtn { background:none; border:0; padding:0 2px; font:inherit; font-size:11px; color:var(--ink); text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+  .inv-auto { grid-column:1 / -1; margin:0; font-size:12px; color:var(--soft); }
+  .inv-auto b { color:var(--ink); font-weight:600; }
+  .btn { background:var(--ink); color:var(--paper); border:0; border-radius:99px; padding:0 18px; min-height:40px; font:600 13px 'Instrument Sans',sans-serif; cursor:pointer; }
+  .btn.ghost { background:none; color:var(--ink); border:1px solid var(--line); }
+  .btn[disabled] { opacity:.4; cursor:not-allowed; }
+  .kpis { display:grid; gap:12px; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); }
+  .kpi { background:var(--paper); border:1px solid var(--line); padding:14px 16px; }
+  .kpi span { display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--soft); }
+  .kpi b { font:500 30px/1.15 'Cormorant Garamond',serif; }
+  .kpi small { display:block; color:var(--soft); font-size:12px; }
+  .wrap { overflow-x:auto; background:var(--paper); border:1px solid var(--line); }
+  table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
+  th, td { padding:9px 12px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th:first-child, td:first-child { text-align:left; }
+  th { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); font-weight:600; background:#fbfaf7; position:sticky; top:0; }
+  td .c { display:block; font-size:11px; color:var(--soft); }
+  .neg { color:var(--bad); } .pos { color:var(--good); }
+  .warn { background:#fbf1e3; border:1px solid #e7cfa6; padding:12px 14px; margin-top:12px; }
+  .warn p { margin:4px 0; }
+  .note { font-size:12px; color:var(--soft); margin-top:10px; }
+  @media (max-width:760px) { .inv, .inv--bottle { grid-template-columns:1fr 1fr; } .inv .rm { grid-column:span 2; } h1 { font-size:34px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Investor calculator</h1>
+  <p class="sub">Two ways to plan investor money. First, one investor paying for one bottle. Below, several investors (1 to 5) funding the whole stock. Each "round" = the stock bought with the money, sold until the bottles are empty. Each investor earns a % of their money per round, up to a total payout, then gets their money back and leaves. Figures use the per-bottle results from the decant price calculator (23 Nov 2026 prices); change any number to test your own case. Not financial advice.</p>
+
+
+  <h2>One bottle, one investor</h2>
+  <p class="sub">An investor pays for one bottle. When that bottle is empty, they get their money back plus a % (e.g. ₱6,200 + 20% = ₱7,440). Pick a perfume to fill in its prices, or type your own.</p>
+  <div class="card">
+    <div class="grid" id="b-in"></div>
+    <div class="kpis" id="b-kpis" style="margin-top:16px"></div>
+    <div id="b-warn"></div>
+    <div class="wrap" style="margin-top:14px"><table id="b-table"></table></div>
+    <p class="note">"Costs per vial" covers the vial, label and its share of the box and delivery; "fees" are payment, Shopify and a small allowance, charged on the price. Both come from the price calculator (still estimates). The bottle cost itself is counted separately, so profit here is after paying back the bottle.</p>
+  </div>
+
+  <h2>Several investors</h2>
+  <div class="card">
+    <div class="tiers">
+      <p class="tiers-h"><b>Return tiers</b> <span>Each investor's rate fills in from the amount they put in. You can still type a different rate on any investor; "Use tier" switches it back.</span></p>
+      <div class="grid" id="tiers"></div>
+    </div>
+    <div id="investors"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <button type="button" class="btn" id="add">+ Whole-stock investor</button>
+      <button type="button" class="btn" id="addBottle">+ Bottle investor</button>
+      <button type="button" class="btn ghost" id="reset">Reset to example</button>
+    </div>
+    <p class="note"><b>Whole stock:</b> their money buys part of all your stock; they get the return each time a round sells out, for the number of rounds, then their money back (₱100,000 at 20% for 3 rounds → ₱160,000). "Reinvested" grows their money each round instead. <b>One bottle:</b> they pay for one bottle; choosing the perfume fills in its price, vial price and vial count, and when that bottle is empty they get their money back plus the return. Everything under each row is worked out automatically.</p>
+  </div>
+
+  <h2>Business assumptions</h2>
+  <div class="card grid" id="assume"></div>
+  <p class="note">Defaults come from the 9-bottle example (every perfume except Oud Wood, sold out as 1 ml sets): ₱76,806 of bottles → ₱239,400 sales, ₱121,533 profit after bottles and every per-order cost (vials, labels, box, fees, delivery), about 285 orders. Those per-order costs are still estimates in the price calculator.</p>
+
+  <h2>Results</h2>
+  <div class="kpis" id="kpis"></div>
+  <div id="warnings"></div>
+
+  <h2>Round by round</h2>
+  <div class="wrap"><table id="rounds"></table></div>
+
+  <h2>Each investor</h2>
+  <div class="wrap"><table id="per"></table></div>
+</main>
+
+<script>
+const KEY = 'samyo-investor-calc-v2';
+const $ = (id) => document.getElementById(id);
+const peso = (n) => (n < 0 ? '−' : '') + '₱' + Math.round(Math.abs(n)).toLocaleString('en-PH');
+const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+// Bottle prices (FragranceX, 100 ml) and live vial prices 1 / 2 / 5 / 10 ml, 23 Nov 2026.
+const PERF = [
+  ['Custom', 6200, [185, 320, 705, 1365]],
+  ['Versace Eros EDT', 4028, [185, 320, 705, 1365]],
+  ['D&G The One for Men EDP', 4071, [185, 320, 710, 1375]],
+  ["Hermès Terre d'Hermès EDT", 4336, [190, 335, 745, 1450]],
+  ['Valentino Uomo Born in Roma EDT', 7662, [285, 525, 1205, 2365]],
+  ['Jo Malone Wood Sage & Sea Salt', 8290, [305, 560, 1290, 2540]],
+  ['Armani Stronger With You Intensely', 8319, [305, 560, 1295, 2545]],
+  ['YSL Y EDP', 9501, [340, 630, 1455, 2870]],
+  ['Dior Sauvage EDP', 10204, [360, 670, 1555, 3065]],
+  ['Dior Homme Intense', 10377, [365, 680, 1575, 3110]],
+  ['Tom Ford Oud Wood EDP', 19265, [615, 1180, 2800, 5560]],
+];
+const SZ = [1, 2, 5, 10];
+// Per vial: a fixed part (vial, label, box share, delivery share) + fees as a % of the price.
+// Fitted to the price calculator's results (Eros, Sauvage, Oud Wood agree within ₱1).
+const OTHER = { 1: 24, 2: 26.5, 5: 37, 10: 37 }; // Lazada vials (1 ml ₱4, 2 ml ₱7.50, 5 ml ₱8, 10 ml ₱9) + ₱2 label
+const PER_ORDER = { 1: 3, 2: 3, 5: 2, 10: 1 }; // vials per order (the set)
+
+// From the decant price calculator: 9 bottles, ₱76,806 bottle cost (incl. 15% shipping & import).
+const BASE = { bottles: 76806, sales: 239400, profit: 121533, orders: 285 }; // Lazada vial (₱4/7.50/8/9) and ₱2 label costs, 23 Nov 2026
+const ASSUME = [
+  ['bottleShare', 'Share of money spent on bottles (%)', 77, 'Stock investors: the rest pays vials, labels, boxes and a cash buffer.'],
+  ['salesPerPeso', 'Sales per ₱1 of bottles', +(BASE.sales / BASE.bottles).toFixed(3), ''],
+  ['profitPerPeso', 'Profit per ₱1 of bottles (after all per-order costs)', +(BASE.profit / BASE.bottles).toFixed(3), ''],
+  ['ordersPer10k', 'Orders per ₱10,000 of bottles', +(BASE.orders / BASE.bottles * 10000).toFixed(1), ''],
+  ['adsPerOrder', 'Ads per order (₱)', 60, ''],
+  ['ordersPerMonth', 'Orders you can sell per month', 40, 'Your real selling speed. This decides how long a round takes.'],
+  ['fixedPerMonth', 'Fixed costs per month (₱)', 1550, 'Shopify plan, apps, other.'],
+  ['sellThrough', 'Share of each round that sells (%)', 100, 'Lower it to test slow sales or leftover bottles.'],
+  ['ownMoney', 'Your own money in the stock (₱)', 0, ''],
+  ['ownReinvest', 'Share of your profit you put back into stock (%)', 0, 'Keeps stock up when investors leave.'],
+  ['maxRounds', 'Rounds to show', 8, ''],
+  ['shipPct', 'Shipping & import (% of bottle price)', 15, 'Bottle investors: you pay this on top of the bottle.'],
+  ['pourLoss', 'Lost while pouring (%)', 5, ''],
+  ['feesPct', 'Fees per sale (% of vial price)', 8.6, 'Payment, Shopify and a small allowance.'],
+  ['vialsPerScent', 'Vials of one scent sold per month', 15, 'Bottle investors: how fast one bottle empties.'],
+];
+const EXAMPLE = {
+  investors: [
+    { type: 'stock', name: 'Investor 1', amount: 100000, rate: 20, rounds: 3, reinvest: false },
+    { type: 'stock', name: 'Investor 2', amount: 50000, rate: 20, rounds: 3, reinvest: false },
+    { type: 'bottle', name: 'Investor 3', perf: 8, size: 1, amount: 10204, rate: 20 },
+  ],
+  assume: Object.fromEntries(ASSUME.map((a) => [a[0], a[2]])),
+};
+let state;
+try { state = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { state = null; }
+if (!state || !Array.isArray(state.investors)) state = JSON.parse(JSON.stringify(EXAMPLE));
+ASSUME.forEach((a) => { if (state.assume[a[0]] == null) state.assume[a[0]] = a[2]; });
+// Vial costs were updated (Lazada prices): move the old default profit ratio to the new one.
+if ([1.516, 1.56].some((old) => Math.abs((+state.assume.profitPerPeso || 0) - old) < 0.002)) state.assume.profitPerPeso = +(BASE.profit / BASE.bottles).toFixed(3);
+state.investors.forEach((v) => { if (!v.type) v.type = 'stock'; if (v.rounds == null) v.rounds = 3; if (v.perf == null) v.perf = 1; if (v.size == null) v.size = 1; });
+const TIERS = { on: 1, min: 5000, t1Max: 20000, t1: 15, t2Max: 99999, t2: 18, t3: 20, bonus: 0, bonusN: 3 };
+state.tiers = Object.assign({}, TIERS, state.tiers || {});
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* this browser can't save */ } };
+
+// Tier rate from the amount put in (+ a launch bonus for the first investors, if set).
+function tierRate(amount, i) {
+  const T = state.tiers;
+  const a = +amount || 0;
+  let r = a <= +T.t1Max ? +T.t1 : a <= +T.t2Max ? +T.t2 : +T.t3;
+  if (i < (+T.bonusN || 0)) r += +T.bonus || 0;
+  return r;
+}
+// Investors with the rate actually used (tiers on = automatic).
+// A rate typed on an investor (custom) always wins over the tier.
+const rated = () => state.investors.map((v, i) => ({ ...v, rate: state.tiers.on && !v.custom ? tierRate(v.amount, i) : +v.rate || 0 }));
+
+// What a stock investor can receive in total: money back + return × rounds (reinvested returns grow).
+const capOf = (v) => {
+  const amt = +v.amount || 0, r = (+v.rate || 0) / 100, n = Math.max(1, +v.rounds || 1);
+  return v.reinvest ? amt * (1 + r) ** n : amt * (1 + r * n);
+};
+
+// One bottle bought with an investor's money, sold out as one vial size.
+function bottleDeal(v) {
+  const A = state.assume;
+  const p = PERF[+v.perf] || PERF[0];
+  const size = +v.size || 1;
+  const vialPrice = p[2][SZ.indexOf(size)];
+  const vials = Math.floor(100 * (1 - (+A.pourLoss || 0) / 100) / size + 1e-9);
+  const sales = vials * vialPrice;
+  const bottleCost = (+v.amount || 0) * (1 + (+A.shipPct || 0) / 100);
+  const other = vials * ((OTHER[size] || 30) + vialPrice * (+A.feesPct || 0) / 100);
+  const orders = vials / (PER_ORDER[size] || 1);
+  const ads = orders * (+A.adsPerOrder || 0);
+  const profit = sales - bottleCost - other - ads;
+  const ret = (+v.amount || 0) * (+v.rate || 0) / 100;
+  const months = vials / Math.max(1, +A.vialsPerScent || 1);
+  return { p, size, vialPrice, vials, sales, profit, ret, gets: (+v.amount || 0) + ret, you: profit - ret, months };
+}
+
+// Rate box: filled from the tier, but you can type your own (then "Use tier" puts it back).
+function rateField(v, i, label) {
+  const auto = state.tiers.on && !v.custom;
+  const tag = !state.tiers.on ? '' : auto ? ' · auto' : ` · custom <button type="button" class="linkbtn" data-tier="${i}">Use tier</button>`;
+  return `<label class="f"><span>${label}${tag}</span><input data-k="rate" type="number" min="0" max="100" step="0.5" value="${auto ? tierRate(v.amount, i) : v.rate}"></label>`;
+}
+
+function drawInputs() {
+  $('investors').innerHTML = state.investors.map((v, i) => {
+    const typeSel = `<label class="f">Type<select data-k="type"><option value="stock"${v.type === 'stock' ? ' selected' : ''}>Whole stock</option><option value="bottle"${v.type === 'bottle' ? ' selected' : ''}>One bottle</option></select></label>`;
+    const name = `<label class="f">Name<input data-k="name" value="${esc(v.name)}"></label>`;
+    const rm = `<button type="button" class="btn ghost rm" data-rm="${i}" aria-label="Remove ${esc(v.name)}"${state.investors.length <= 1 ? ' disabled' : ''}>Remove</button>`;
+    if (v.type === 'bottle') {
+      return `<div class="inv inv--bottle" data-i="${i}">${name}${typeSel}
+        <label class="f">Perfume<select data-k="perf">${PERF.map((p, j) => `<option value="${j}"${+v.perf === j ? ' selected' : ''}>${esc(p[0])}</option>`).join('')}</select></label>
+        <label class="f">Sold as<select data-k="size">${SZ.map((z) => `<option value="${z}"${+v.size === z ? ' selected' : ''}>${z} ml vials</option>`).join('')}</select></label>
+        <label class="f">Bottle price (₱)<input data-k="amount" type="number" min="0" step="1" value="${v.amount}"></label>
+        ${rateField(v, i, 'Return (%)')}
+        ${rm}<p class="inv-auto" data-auto="${i}"></p></div>`;
+    }
+    return `<div class="inv" data-i="${i}">${name}${typeSel}
+      <label class="f">Invests (₱)<input data-k="amount" type="number" min="0" step="1000" value="${v.amount}"></label>
+      ${rateField(v, i, 'Return per round (%)')}
+      <label class="f">Rounds<input data-k="rounds" type="number" min="1" max="20" step="1" value="${v.rounds}"></label>
+      <label class="f">Each round's return<select data-k="reinvest"><option value="0"${v.reinvest ? '' : ' selected'}>Paid out</option><option value="1"${v.reinvest ? ' selected' : ''}>Reinvested</option></select></label>
+      ${rm}<p class="inv-auto" data-auto="${i}"></p></div>`;
+  }).join('');
+  const T = state.tiers;
+  const tf = (k, l, step) => `<label class="f">${l}<input data-t="${k}" type="number" step="${step || 'any'}" value="${T[k]}"></label>`;
+  $('tiers').innerHTML = `
+    <label class="f">Rates<select data-t="on"><option value="1"${T.on ? ' selected' : ''}>Automatic, by tier</option><option value="0"${T.on ? '' : ' selected'}>Typed per investor</option></select></label>
+    ${tf('t1Max', 'Starter: up to (₱)', 1000)}${tf('t1', 'Starter return (%)', 0.5)}
+    ${tf('t2Max', 'Partner: up to (₱)', 1000)}${tf('t2', 'Partner return (%)', 0.5)}
+    ${tf('t3', 'Founding partner (above that) return (%)', 0.5)}
+    ${tf('min', 'Minimum investment (₱)', 1000)}
+    ${tf('bonus', 'Launch bonus (+% points)', 0.5)}${tf('bonusN', 'Launch bonus: first how many investors', 1)}`;
+  $('add').disabled = state.investors.length >= 5;
+  $('addBottle').disabled = state.investors.length >= 5;
+  $('assume').innerHTML = ASSUME.map((a) => `<label class="f">${a[1]}<input data-a="${a[0]}" type="number" step="any" value="${state.assume[a[0]]}">${a[3] ? `<span style="font-size:11px">${a[3]}</span>` : ''}</label>`).join('');
+}
+
+function simulate() {
+  const A = state.assume;
+  const inv = rated().filter((v) => v.type !== 'bottle').map((v) => ({ ...v, amount: +v.amount || 0, rate: (+v.rate || 0) / 100, cap: capOf(v), capital: +v.amount || 0, received: 0, done: false, exitRound: null, exitMonth: null }));
+  let own = +A.ownMoney || 0;
+  let month = 0, yourTotal = 0;
+  const rows = [];
+  for (let r = 1; r <= (+A.maxRounds || 8); r++) {
+    const active = inv.filter((v) => !v.done);
+    const money = active.reduce((s, v) => s + v.capital, 0) + own;
+    if (money <= 0) break;
+    const sell = (+A.sellThrough || 0) / 100;
+    const bottles = money * (+A.bottleShare || 0) / 100;
+    const orders = bottles * (+A.ordersPer10k || 0) / 10000 * sell;
+    const months = orders / Math.max(1, +A.ordersPerMonth || 1);
+    const sales = bottles * (+A.salesPerPeso || 0) * sell;
+    const profit = bottles * (+A.profitPerPeso || 0) * sell - orders * (+A.adsPerOrder || 0) - months * (+A.fixedPerMonth || 0);
+    month += months;
+    let paid = 0, back = 0;
+    const lines = [];
+    active.forEach((v) => {
+      const room = Math.max(0, v.cap - v.received - v.capital);
+      const ret = Math.min(v.capital * v.rate, room);
+      if (v.reinvest && room - ret > 0.5) {
+        v.capital += ret;
+        lines.push(`${esc(v.name)}: ${peso(ret)} reinvested`);
+      } else {
+        v.received += ret; paid += ret;
+        lines.push(`${esc(v.name)}: ${peso(ret)} paid`);
+      }
+      if (v.received + v.capital >= v.cap - 0.5) {
+        const rest = v.cap - v.received;
+        v.received += rest; back += rest;
+        v.done = true; v.exitRound = r; v.exitMonth = month;
+        lines.push(`${esc(v.name)}: ${peso(rest)} money back – done`);
+      }
+    });
+    const you = profit - paid;
+    const putBack = Math.max(0, you) * (+A.ownReinvest || 0) / 100;
+    own += putBack;
+    yourTotal += you - putBack;
+    rows.push({ r, money, bottles, orders, months, month, sales, profit, returnsPaid: paid, back, you, putBack, yourTotal, lines });
+    if (inv.every((v) => v.done) && own <= 0) break;
+  }
+  return { inv, rows };
+}
+
+function render() {
+  const { inv, rows } = simulate();
+  const R = rated();
+  const bott = R.filter((v) => v.type === 'bottle').map((v) => ({ v, d: bottleDeal(v) }));
+  // Automatic line under each investor
+  R.forEach((v, i) => {
+    const el = document.querySelector(`[data-auto="${i}"]`);
+    const rateEl = document.querySelector(`.inv[data-i="${i}"] [data-k="rate"]`);
+    if (rateEl && state.tiers.on && !state.investors[i].custom && document.activeElement !== rateEl) rateEl.value = v.rate;
+    if (!el) return;
+    if (v.type === 'bottle') {
+      const d = bottleDeal(v);
+      el.innerHTML = `${d.vials} vials × ${peso(d.vialPrice)} = ${peso(d.sales)} sales · empty in about ${d.months.toFixed(1)} months · <b>investor gets ${peso(d.gets)}</b> (${peso(+v.amount)} back + ${peso(d.ret)}) · <b class="${d.you < 0 ? 'neg' : 'pos'}">you keep ${peso(d.you)}</b>`;
+    } else {
+      const cap = capOf(v);
+      el.innerHTML = `Total payout: <b>${peso(cap)}</b> (${peso(+v.amount)} back + ${peso(cap - (+v.amount || 0))} profit over ${v.rounds} round${+v.rounds === 1 ? '' : 's'})`;
+    }
+  });
+  const stockIn = inv.reduce((s, v) => s + v.amount, 0);
+  const bottleIn = bott.reduce((s, x) => s + (+x.v.amount || 0), 0);
+  const stockOut = inv.reduce((s, v) => s + v.received, 0);
+  const bottleOut = bott.reduce((s, x) => s + x.d.gets, 0);
+  const youStock = rows.reduce((s, x) => s + x.you, 0);
+  const youBottle = bott.reduce((s, x) => s + x.d.you, 0);
+  const months = Math.max(rows.length ? rows[rows.length - 1].month : 0, ...bott.map((x) => x.d.months), 0);
+  const allDone = inv.every((v) => v.done);
+  const profitTo = stockOut - inv.filter((v) => v.done).reduce((s, v) => s + v.amount, 0) + bott.reduce((s, x) => s + x.d.ret, 0);
+  $('kpis').innerHTML = `
+    <div class="kpi"><span>Money in</span><b>${peso(stockIn + bottleIn)}</b><small>${inv.length} stock · ${bott.length} bottle investor${bott.length === 1 ? '' : 's'}</small></div>
+    <div class="kpi"><span>Paid to investors</span><b>${peso(stockOut + bottleOut)}</b><small>incl. their money back · their profit ${peso(profitTo)}</small></div>
+    <div class="kpi"><span>You keep</span><b class="${youStock + youBottle < 0 ? 'neg' : ''}">${peso(youStock + youBottle)}</b><small>stock ${peso(youStock)} · bottles ${peso(youBottle)}</small></div>
+    <div class="kpi"><span>Time</span><b>${months.toFixed(1)} mo</b><small>${allDone ? 'all investors paid out' : 'some stock investors still in'}</small></div>`;
+  const w = [];
+  const r1 = rows[0];
+  if (r1 && r1.months > 6) w.push(`Round 1 takes about ${r1.months.toFixed(1)} months at ${state.assume.ordersPerMonth} orders a month. Stock investors wait that long for their first payout.`);
+  rows.forEach((x) => { if (x.you < 0) w.push(`Round ${x.r}: returns (${peso(x.returnsPaid)}) are more than the round's profit (${peso(x.profit)}).`); });
+  bott.forEach(({ v, d }) => {
+    if (d.you < 0) w.push(`${esc(v.name)}: their ${v.rate}% is more than the bottle's profit, so you'd lose ${peso(-d.you)} on it.`);
+    if (+v.perf > 0 && Math.abs((+v.amount) - d.p[1]) > 1) w.push(`${esc(v.name)}: the bottle price differs from the ${esc(d.p[0])} price in the list (${peso(d.p[1])}). Fine if it's the real price you pay.`);
+  });
+  const T = state.tiers;
+  R.forEach((v) => { if ((+v.amount || 0) < +T.min) w.push(`${esc(v.name)}: ${peso(+v.amount)} is below your minimum of ${peso(+T.min)}.`); });
+  // Money you can turn into sales within about 6 months at today's selling speed.
+  const A = state.assume;
+  const ordersPerPeso = (+A.ordersPer10k || 0) / 10000 * (+A.bottleShare || 0) / 100;
+  const sixMonths = ordersPerPeso > 0 ? (+A.ordersPerMonth || 0) * 6 / ordersPerPeso : 0;
+  if (sixMonths && stockIn + bottleIn > sixMonths) w.push(`Total investor money (${peso(stockIn + bottleIn)}) is more than you can sell in about 6 months at ${A.ordersPerMonth} orders a month (about ${peso(sixMonths)}). Take less for now, or raise sales first.`);
+  if (!allDone && inv.length) w.push(`Not every stock investor is paid out within ${state.assume.maxRounds} rounds. Raise "Rounds to show".`);
+  $('warnings').innerHTML = w.length ? `<div class="warn"><b>Check these</b>${w.map((t) => `<p>• ${t}</p>`).join('')}</div>` : '';
+
+  $('rounds').innerHTML = rows.length ? `<thead><tr><th>Round</th><th>Money in stock</th><th>Bottles</th><th>Orders · time</th><th>Sales</th><th>Profit</th><th>Returns paid</th><th>Money back</th><th>You keep</th><th>You, total</th></tr></thead><tbody>${rows.map((x) => `<tr>
+      <td>${x.r}<span class="c">${x.lines.join('<br>')}</span></td>
+      <td>${peso(x.money)}</td><td>${peso(x.bottles)}</td>
+      <td>${Math.round(x.orders)}<span class="c">${x.months.toFixed(1)} mo (to month ${x.month.toFixed(1)})</span></td>
+      <td>${peso(x.sales)}</td><td>${peso(x.profit)}</td><td>${peso(x.returnsPaid)}</td><td>${x.back ? peso(x.back) : '–'}</td>
+      <td class="${x.you < 0 ? 'neg' : 'pos'}">${peso(x.you)}${x.putBack ? `<span class="c">${peso(x.putBack)} put back into stock</span>` : ''}</td>
+      <td>${peso(x.yourTotal)}</td></tr>`).join('')}</tbody>` : '<tbody><tr><td>No whole-stock investors.</td></tr></tbody>';
+
+  const yearly = (got, put, mo) => (mo > 0 && put > 0 ? (((got / put) ** (12 / mo) - 1) * 100).toFixed(0) + '%' : '–');
+  $('per').innerHTML = `<thead><tr><th>Investor</th><th>Put in</th><th>Return</th><th>Total payout</th><th>Profit to them</th><th>You keep</th><th>Paid out by</th><th>≈ Yearly return</th></tr></thead><tbody>${inv.map((v) => `<tr><td>${esc(v.name)}<span class="c">whole stock · ${v.reinvest ? 'reinvests' : 'paid out'}</span></td><td>${peso(v.amount)}</td><td>${(v.rate * 100).toFixed(0)}% a round</td><td>${peso(v.received)}</td><td>${peso(v.received - (v.done ? v.amount : 0))}</td><td>shared</td><td>${v.done ? `round ${v.exitRound} · month ${v.exitMonth.toFixed(1)}` : 'not yet'}</td><td>${v.done ? yearly(v.received, v.amount, v.exitMonth) : '–'}</td></tr>`).join('')}${bott.map(({ v, d }) => `<tr><td>${esc(v.name)}<span class="c">one bottle · ${esc(d.p[0])} · ${d.size} ml</span></td><td>${peso(+v.amount)}</td><td>${v.rate}% once</td><td>${peso(d.gets)}</td><td>${peso(d.ret)}</td><td class="${d.you < 0 ? 'neg' : 'pos'}">${peso(d.you)}</td><td>month ${d.months.toFixed(1)}</td><td>${yearly(d.gets, +v.amount, d.months)}</td></tr>`).join('')}</tbody>`;
+}
+
+document.addEventListener('input', (e) => {
+  const row = e.target.closest('.inv');
+  if (row && e.target.dataset.k) {
+    const v = state.investors[+row.dataset.i];
+    const k = e.target.dataset.k;
+    if (k === 'name') v.name = e.target.value;
+    else if (k === 'reinvest') v.reinvest = e.target.value === '1';
+    else if (k === 'type') v.type = e.target.value;
+    else v[k] = +e.target.value;
+    if (k === 'rate' && state.tiers.on && !v.custom) { v.custom = true; save(); drawInputs(); render(); const el = document.querySelector(`.inv[data-i="${row.dataset.i}"] [data-k="rate"]`); if (el) { el.focus(); const n = el.value.length; try { el.setSelectionRange(n, n); } catch (err) { /* number inputs */ } } return; }
+    // Choosing a perfume fills in its bottle price; changing type redraws the row.
+    if (k === 'perf' && +v.perf > 0) v.amount = PERF[+v.perf][1];
+    if (k === 'type' && v.type === 'bottle') { if (!(+v.perf > 0)) { v.perf = 1; v.size = 1; } v.amount = PERF[+v.perf][1]; }
+    if (k === 'type' && v.type === 'stock' && (+v.amount || 0) < 10000) v.amount = 50000;
+    if (k === 'perf' || k === 'type') { save(); drawInputs(); render(); return; }
+  } else if (e.target.dataset.a) {
+    state.assume[e.target.dataset.a] = +e.target.value;
+  } else if (e.target.dataset.t) {
+    state.tiers[e.target.dataset.t] = +e.target.value;
+    // Switching tiers off keeps today's automatic rates as the typed ones.
+    if (e.target.dataset.t === 'on' && !state.tiers.on) state.investors.forEach((v, i) => { if (!v.custom) v.rate = tierRate(v.amount, i); });
+    save(); drawInputs(); render(); return;
+  } else return;
+  save(); render();
+});
+document.addEventListener('click', (e) => {
+  if (e.target.dataset.tier != null) { e.preventDefault(); state.investors[+e.target.dataset.tier].custom = false; save(); drawInputs(); render(); return; }
+  if (e.target.dataset.rm != null) { state.investors.splice(+e.target.dataset.rm, 1); save(); drawInputs(); render(); }
+});
+$('add').addEventListener('click', () => {
+  if (state.investors.length >= 5) return;
+  state.investors.push({ type: 'stock', name: `Investor ${state.investors.length + 1}`, amount: 50000, rate: 20, rounds: 3, reinvest: false, perf: 1, size: 1 });
+  save(); drawInputs(); render();
+});
+$('addBottle').addEventListener('click', () => {
+  if (state.investors.length >= 5) return;
+  state.investors.push({ type: 'bottle', name: `Investor ${state.investors.length + 1}`, perf: 1, size: 1, amount: PERF[1][1], rate: 20, rounds: 3, reinvest: false });
+  save(); drawInputs(); render();
+});
+$('reset').addEventListener('click', () => { state = JSON.parse(JSON.stringify(EXAMPLE)); state.tiers = Object.assign({}, TIERS); save(); drawInputs(); render(); });
+drawInputs(); render();
+
+// ---------- One bottle, one investor ----------
+const BKEY = 'samyo-investor-bottle-v1';
+const BDEF = { perf: 0, price: 6200, ship: 15, ml: 100, loss: 5, size: 1, vialPrice: 185, other: 30, fees: 8.6, ads: 60, rate: 20, back: 1, perMonth: 15 };
+let B;
+try { B = JSON.parse(localStorage.getItem(BKEY)) || null; } catch (e) { B = null; }
+B = Object.assign({}, BDEF, B || {});
+if (B.fees == null || (+B.size === 1 && B.other !== OTHER[1]) || B.v !== 3) { B.other = OTHER[+B.size] || 24; B.fees = B.fees == null ? 8.6 : B.fees; B.v = 3; }
+const bsave = () => { try { localStorage.setItem(BKEY, JSON.stringify(B)); } catch (e) { /* not saved */ } };
+const BF = [
+  ['perf', 'Perfume', 'select'],
+  ['price', 'Investor pays for the bottle (₱)'],
+  ['ship', 'Shipping & import you pay (% of bottle)'],
+  ['ml', 'Bottle size (ml)'],
+  ['loss', 'Lost while pouring (%)'],
+  ['size', 'Sold as', 'size'],
+  ['vialPrice', 'Price per vial (₱)'],
+  ['other', 'Costs per vial: vial, label, box & delivery share (₱)'],
+  ['fees', 'Fees per sale (% of vial price)'],
+  ['ads', 'Ads per order (₱)'],
+  ['perMonth', 'Vials of this scent sold per month'],
+  ['rate', 'Investor return (%)'],
+  ['back', 'Investor also gets the bottle price back', 'yesno'],
+];
+function bInputs() {
+  $('b-in').innerHTML = BF.map(([k, l, t]) => {
+    if (t === 'select') return `<label class="f">${l}<select data-b="${k}">${PERF.map((p, i) => `<option value="${i}"${+B.perf === i ? ' selected' : ''}>${p[0]}</option>`).join('')}</select></label>`;
+    if (t === 'size') return `<label class="f">${l}<select data-b="${k}">${SZ.map((z) => `<option value="${z}"${+B.size === z ? ' selected' : ''}>${z} ml vials</option>`).join('')}</select></label>`;
+    if (t === 'yesno') return `<label class="f">${l}<select data-b="${k}"><option value="1"${B.back ? ' selected' : ''}>Yes (money back + %)</option><option value="0"${B.back ? '' : ' selected'}>No (only the %)</option></select></label>`;
+    return `<label class="f">${l}<input data-b="${k}" type="number" step="any" value="${B[k]}"></label>`;
+  }).join('');
+}
+function bRender() {
+  const vials = Math.floor((+B.ml) * (1 - (+B.loss) / 100) / (+B.size) + 1e-9);
+  const sales = vials * (+B.vialPrice);
+  const bottleCost = (+B.price) * (1 + (+B.ship) / 100);
+  const other = vials * ((+B.other) + (+B.vialPrice) * (+B.fees) / 100);
+  const orders = vials / (PER_ORDER[+B.size] || 1);
+  const ads = orders * (+B.ads);
+  const profit = sales - bottleCost - other - ads;
+  const invProfit = (+B.price) * (+B.rate) / 100;
+  const invGets = invProfit + (B.back ? +B.price : 0);
+  // If the bottle price comes back to the investor, it is paid out of sales (the bottle is "theirs").
+  const youKeep = profit - invProfit + (B.back ? 0 : +B.price);
+  const months = vials / Math.max(1, +B.perMonth);
+  $('b-kpis').innerHTML = `
+    <div class="kpi"><span>When the bottle is empty</span><b>${vials} vials</b><small>${B.size} ml each · about ${months.toFixed(1)} months at ${B.perMonth} a month</small></div>
+    <div class="kpi"><span>Investor gets</span><b>${peso(invGets)}</b><small>${B.back ? `${peso(+B.price)} back + ` : ''}${peso(invProfit)} profit (${B.rate}%)</small></div>
+    <div class="kpi"><span>You keep</span><b class="${youKeep < 0 ? 'neg' : ''}">${peso(youKeep)}</b><small>after the bottle, all per-vial costs, ads and the investor</small></div>
+    <div class="kpi"><span>Investor's yearly return</span><b>${months > 0 ? (((invGets / +B.price) ** (12 / months) - 1) * 100).toFixed(0) : 0}%</b><small>${B.rate}% over ${months.toFixed(1)} months${B.back ? '' : ' (only if their money is also returned)'}</small></div>`;
+  const w = [];
+  if (youKeep < 0) w.push('The investor\'s share is bigger than this bottle\'s profit: you would lose money on it.');
+  if (!B.back) w.push('With "only the %", the investor never gets their bottle money back. That is unusual: say clearly in writing what happens to their ₱' + Math.round(+B.price).toLocaleString('en-PH') + '.');
+  if (months > 6) w.push(`Emptying this bottle takes about ${months.toFixed(1)} months; the investor waits that long to be paid.`);
+  $('b-warn').innerHTML = w.length ? `<div class="warn"><b>Check these</b>${w.map((t) => `<p>• ${t}</p>`).join('')}</div>` : '';
+  $('b-table').innerHTML = `<tbody>
+    <tr><td>Sales (${vials} × ${peso(+B.vialPrice)})</td><td>${peso(sales)}</td></tr>
+    <tr><td>Bottle (${peso(+B.price)}) + shipping & import ${B.ship}%</td><td class="neg">${peso(-bottleCost)}</td></tr>
+    <tr><td>Costs per vial (${vials} × ${peso(+B.other)} + ${B.fees}% fees)</td><td class="neg">${peso(-other)}</td></tr>
+    <tr><td>Ads (${Math.round(orders)} orders × ${peso(+B.ads)})</td><td class="neg">${peso(-ads)}</td></tr>
+    <tr><td><b>Profit from this bottle</b></td><td><b>${peso(profit)}</b></td></tr>
+    <tr><td>Investor's ${B.rate}%</td><td class="neg">${peso(-invProfit)}</td></tr>
+    ${B.back ? '' : `<tr><td>Bottle money kept (investor not repaid)</td><td>${peso(+B.price)}</td></tr>`}
+    <tr><td><b>You keep</b></td><td><b class="${youKeep < 0 ? 'neg' : 'pos'}">${peso(youKeep)}</b></td></tr>
+  </tbody>`;
+}
+document.addEventListener('input', (e) => {
+  const k = e.target.dataset.b;
+  if (!k) return;
+  B[k] = e.target.tagName === 'SELECT' ? +e.target.value : +e.target.value;
+  if (k === 'perf' || k === 'size') {
+    const p = PERF[+B.perf];
+    if (k === 'perf' && +B.perf > 0) B.price = p[1];
+    B.vialPrice = p[2][SZ.indexOf(+B.size)];
+    B.other = OTHER[+B.size];
+    bInputs();
+  }
+  bsave(); bRender();
+});
+bInputs(); bRender();
+</script>
+</body>
+</html>

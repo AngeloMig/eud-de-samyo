@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label preview · Samyó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
+<style>
+  /* Preview only: 1 mm is drawn as --u pixels so small labels are easy to judge. */
+  :root { --ink:#26221f; --soft:rgba(38,34,31,.6); --line:rgba(38,34,31,.14); --gold:#c9a45a; --u:11px; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#ece8e1; color:var(--ink); font:400 14px/1.5 'Instrument Sans',system-ui,sans-serif; }
+  main { max-width:1200px; margin:0 auto; padding:32px 20px 80px; }
+  h1 { font:400 46px/1.05 'Italiana',serif; margin:0 0 6px; }
+  h2 { font:500 28px/1.1 'Cormorant Garamond',serif; margin:44px 0 6px; }
+  .sub { color:var(--soft); margin:0 0 18px; max-width:860px; }
+  .grid { display:grid; gap:26px 22px; grid-template-columns:repeat(auto-fill,minmax(calc(30 * var(--u) + 2px),1fr)); }
+  figure { margin:0; }
+  figcaption { font-size:12px; color:var(--soft); margin-top:8px; }
+  figcaption b { color:var(--ink); }
+
+  /* ---------- Vial label (minimal, centred) ---------- */
+  .lbl { --w:30; --h:10; width:calc(var(--w) * var(--u)); height:calc(var(--h) * var(--u)); background:var(--bg,#fff); color:var(--fg,var(--ink)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:calc(var(--h) * var(--u) * .035); text-align:center; padding:0 calc(var(--u) * 1.2); box-shadow:0 8px 22px rgba(0,0,0,.12); border-radius:2px; position:relative; overflow:hidden; }
+  .lbl .logo { line-height:.9; white-space:nowrap; }
+  .lbl .pre { font:italic 500 calc(var(--h) * var(--u) * .2)/1 'Cormorant Garamond',serif; opacity:.75; }
+  .lbl .mark { font:400 calc(var(--h) * var(--u) * .42)/1 'Italiana',serif; color:var(--mark,currentColor); }
+  .lbl .l1, .lbl .l2 { white-space:nowrap; text-transform:uppercase; }
+  .lbl .l1 { font:600 calc(var(--h) * var(--u) * .135)/1.15 'Instrument Sans',sans-serif; letter-spacing:.2em; }
+  .lbl .l2 { font:500 calc(var(--h) * var(--u) * .11)/1.15 'Instrument Sans',sans-serif; letter-spacing:.24em; color:var(--l2,currentColor); opacity:var(--l2o,.62); }
+  .lbl.big { --w:40; --h:14; }
+  .lbl .edge { position:absolute; inset:0; border:calc(var(--u) * .25) solid var(--edge,transparent); pointer-events:none; }
+
+  /* ---------- Cap seals ---------- */
+  .seals { display:flex; flex-wrap:wrap; gap:28px 36px; align-items:center; }
+  .round { width:calc(18 * var(--u)); height:calc(18 * var(--u)); border-radius:50%; background:var(--bg,#fff); color:var(--fg,var(--ink)); display:grid; place-items:center; text-align:center; box-shadow:0 8px 22px rgba(0,0,0,.14); position:relative; }
+  .round::before { content:''; position:absolute; inset:calc(var(--u) * 1); border-radius:50%; border:calc(var(--u) * .18) solid var(--ring,currentColor); opacity:.5; }
+  .round .mark { font:400 calc(var(--u) * 4.6)/1 'Italiana',serif; display:block; }
+  .round .small { font:600 calc(var(--u) * 1.05)/1.3 'Instrument Sans',sans-serif; letter-spacing:.24em; text-transform:uppercase; display:block; opacity:.7; }
+  .strip { width:calc(44 * var(--u)); height:calc(8 * var(--u)); background:var(--bg,#fff); color:var(--fg,var(--ink)); display:flex; align-items:center; justify-content:space-between; padding:0 calc(var(--u) * 2.4); box-shadow:0 8px 22px rgba(0,0,0,.12); border-radius:2px; }
+  .strip .mark { font:400 calc(var(--u) * 4)/1 'Italiana',serif; }
+  .strip .small { font:600 calc(var(--u) * 1.05)/1 'Instrument Sans',sans-serif; letter-spacing:.26em; text-transform:uppercase; opacity:.7; }
+  .strip .cut { width:calc(var(--u) * 1.4); height:calc(var(--u) * 1.4); border:calc(var(--u) * .18) solid currentColor; transform:rotate(45deg); opacity:.45; }
+
+  /* ---------- Insert card (business-card size 90 × 55 mm, drawn at --c) ---------- */
+  .cards { display:flex; flex-wrap:wrap; gap:26px; }
+  .card { --c:5px; width:calc(90 * var(--c)); height:calc(55 * var(--c)); background:var(--bg,#fbf9f5); color:var(--fg,var(--ink)); box-shadow:0 10px 26px rgba(0,0,0,.14); padding:calc(5 * var(--c)) calc(6 * var(--c)); display:flex; flex-direction:column; position:relative; }
+  .card .logo { line-height:.9; white-space:nowrap; }
+  .card .logo .pre { font:italic 500 calc(var(--c) * 3.3)/1 'Cormorant Garamond',serif; opacity:.75; }
+  .card .logo .mark { font:400 calc(var(--c) * 7)/1 'Italiana',serif; }
+  .card .k { font:600 calc(var(--c) * 1.55)/1.4 'Instrument Sans',sans-serif; letter-spacing:.22em; text-transform:uppercase; opacity:.62; }
+  .card .set { font:500 calc(var(--c) * 4.2)/1.1 'Cormorant Garamond',serif; margin:calc(var(--c) * 2.6) 0 calc(var(--c) * 1.2); }
+  .card .set em { font-style:italic; }
+  .card ol { margin:0; padding:0; list-style:none; display:grid; gap:calc(var(--c) * .9); }
+  .card li { display:flex; justify-content:space-between; gap:12px; font:500 calc(var(--c) * 2.05)/1.2 'Instrument Sans',sans-serif; border-bottom:1px solid color-mix(in srgb, currentColor 14%, transparent); padding-bottom:calc(var(--c) * .9); }
+  .card li span { opacity:.6; font-weight:400; }
+  .card .foot { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; gap:12px; }
+  .card .small { font:400 calc(var(--c) * 1.65)/1.45 'Instrument Sans',sans-serif; opacity:.75; }
+  .card .small b { font-weight:600; opacity:1; }
+  .card .qr { width:calc(15 * var(--c)); height:calc(15 * var(--c)); flex:none; border:1px dashed currentColor; opacity:.55; display:grid; place-items:center; font:600 calc(var(--c) * 1.6)/1.2 'Instrument Sans',sans-serif; text-align:center; }
+  .card.back .k { margin-bottom:calc(var(--c) * 1.2); }
+  .card.back p { margin:0 0 calc(var(--c) * 1.8); }
+  .card .rule { height:1px; background:currentColor; opacity:.2; margin:calc(var(--c) * 2) 0; }
+  .note { font-size:12px; color:var(--soft); margin-top:12px; max-width:860px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Label preview</h1>
+  <p class="sub">Everything below is drawn about 11× bigger than real size so you can judge it. Real sizes are written under each item. Choose the colours you like; then I'll add them to the vial label sheet with the download button.</p>
+
+  <h2>Vial label colours</h2>
+  <p class="sub">Same minimal design in different colours. White and cream print best on an Epson L300 (less ink, no banding). Dark and coloured labels use much more ink.</p>
+  <div class="grid" id="colours"></div>
+
+  <h2>Colour by size (easy packing)</h2>
+  <p class="sub">One soft colour per vial size, so the right vial goes into the right set at a glance: amber for 1 ml, grey-blue for 2 ml, sage for 5 ml, blush for 10 ml.</p>
+  <div class="grid" id="bysize"></div>
+
+  <h2>Cap seal stickers</h2>
+  <p class="sub">Stuck across the cap and the vial, so the customer can see it hasn't been opened. Round seal 18 mm (on top of a cap or the box), or a thin strip 44 × 8 mm wrapped over the cap.</p>
+  <div class="seals" id="seals"></div>
+
+  <h2>Insert card</h2>
+  <p class="sub">Business-card size, 90 × 55 mm (10 per A4 sheet). Front: the set and its scents. Back: how to use, safety, and that the perfumes are decanted by you (not by the brands).</p>
+  <div class="cards">
+    <div class="card">
+      <div class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></div>
+      <div class="set">Try <em>trio</em> <span class="k">· 3 × 1 ml</span></div>
+      <ol>
+        <li>Dior · Sauvage <span>Eau de Parfum</span></li>
+        <li>Versace · Eros <span>Eau de Toilette</span></li>
+        <li>Hermès · Terre d'Hermès <span>Eau de Toilette</span></li>
+      </ol>
+      <div class="foot">
+        <div class="small">Poured on <b>23 Nov 2026</b> · Batch <b>B261123</b><br>Wear each for a few days. Love one? The full bottle is a scan away.</div>
+        <div class="qr">QR<br>your shop</div>
+      </div>
+    </div>
+    <div class="card back">
+      <div class="k">How to use</div>
+      <p class="small">Spray or dab on pulse points: wrists, neck, behind the ears. Don't rub. Keep the vial upright and out of the sun.</p>
+      <div class="k">Safety</div>
+      <p class="small">Flammable. Keep away from heat and flame. For external use only. Avoid eyes. Keep out of reach of children.</p>
+      <div class="rule"></div>
+      <p class="small">Decanted by hand from authentic full bottles by <b>Samyó</b>. Samyó is not affiliated with or endorsed by the brands named.</p>
+      <div class="foot"><div class="small"><b>[your website]</b> · <b>[@instagram]</b> · Pulilan, Bulacan</div></div>
+    </div>
+    <div class="card" style="--bg:#26221f;--fg:#f2ead8">
+      <div class="logo"><span class="pre" style="color:#d9b46a">eau de </span><span class="mark">samyó</span></div>
+      <div class="set">Discovery <em>six</em> <span class="k" style="color:#d9b46a;opacity:1">· 6 × 1 ml · 10% off</span></div>
+      <ol>
+        <li>Dior · Sauvage <span>EDP</span></li>
+        <li>Versace · Eros <span>EDT</span></li>
+        <li>Hermès · Terre d'Hermès <span>EDT</span></li>
+        <li>Valentino · Uomo Born in Roma <span>EDT</span></li>
+      </ol>
+      <div class="foot"><div class="small">+ 2 more · Batch <b>B261123</b></div><div class="qr" style="border-color:#d9b46a">QR</div></div>
+    </div>
+  </div>
+  <p class="note">The QR box is a placeholder: it can link to your website, or to each perfume's page where the customer can buy the full bottle (your affiliate link, labelled as such). Fill in your website and Instagram where it says [your website] and [@instagram].</p>
+</main>
+
+<script>
+const label = (o) => `<div class="lbl${o.big ? ' big' : ''}" style="--bg:${o.bg};--fg:${o.fg};${o.mark ? `--mark:${o.mark};` : ''}${o.l2 ? `--l2:${o.l2};--l2o:1;` : ''}${o.edge ? `--edge:${o.edge};` : ''}"><span class="edge"></span><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="l1">${o.l1 || 'Dior · Sauvage'}</span><span class="l2">${o.l2t || 'Eau de Parfum · 1 ml'}</span></div>`;
+const COL = [
+  { n: 'Classic white', bg: '#ffffff', fg: '#26221f', note: 'Cleanest, least ink.' },
+  { n: 'Cream', bg: '#f4ede0', fg: '#26221f', note: 'Warmer, matches the website.' },
+  { n: 'White + gold', bg: '#ffffff', fg: '#26221f', mark: '#b08a3e', l2: '#b08a3e', note: '"samyó" and the size line in gold.' },
+  { n: 'White + gold edge', bg: '#ffffff', fg: '#26221f', edge: '#c9a45a', note: 'A thin gold frame.' },
+  { n: 'Charcoal & gold', bg: '#26221f', fg: '#f2ead8', mark: '#e9d9b0', l2: '#d9b46a', note: 'Matches the Discovery six card. Heavy ink.' },
+  { n: 'Gold', bg: '#d9b46a', fg: '#26221f', note: 'Bold; uses a lot of yellow ink.' },
+  { n: 'Sage', bg: '#e3e8dc', fg: '#26221f', note: 'Soft green.' },
+  { n: 'Blush', bg: '#f3e2dc', fg: '#26221f', note: 'Soft pink.' },
+];
+document.getElementById('colours').innerHTML = COL.map((c) => `<figure>${label(c)}<figcaption><b>${c.n}</b> · ${c.note}</figcaption></figure>`).join('');
+const BY = [
+  { n: '1 ml', bg: '#f5e6d3', fg: '#26221f', l2t: 'Eau de Parfum · 1 ml' },
+  { n: '2 ml', bg: '#e2e8ee', fg: '#26221f', l2t: 'Eau de Parfum · 2 ml' },
+  { n: '5 ml', bg: '#e3e8dc', fg: '#26221f', l2t: 'Eau de Parfum · 5 ml', big: 1 },
+  { n: '10 ml', bg: '#f3e2dc', fg: '#26221f', l2t: 'Eau de Parfum · 10 ml', big: 1 },
+];
+document.getElementById('bysize').innerHTML = BY.map((c) => `<figure>${label(c)}<figcaption><b>${c.n}</b> · ${c.big ? '40 × 14 mm' : '30 × 10 mm'}</figcaption></figure>`).join('');
+const SEALS = [
+  { t: 'round', bg: '#ffffff', fg: '#26221f', n: 'Round · white' },
+  { t: 'round', bg: '#26221f', fg: '#f2ead8', ring: '#d9b46a', n: 'Round · charcoal & gold' },
+  { t: 'round', bg: '#d9b46a', fg: '#26221f', n: 'Round · gold' },
+  { t: 'strip', bg: '#ffffff', fg: '#26221f', n: 'Strip · white' },
+  { t: 'strip', bg: '#26221f', fg: '#f2ead8', n: 'Strip · charcoal' },
+];
+document.getElementById('seals').innerHTML = SEALS.map((s) => s.t === 'round'
+  ? `<figure><div class="round" style="--bg:${s.bg};--fg:${s.fg};${s.ring ? `--ring:${s.ring}` : ''}"><div><span class="small">sealed by</span><span class="mark">samyó</span><span class="small">by hand</span></div></div><figcaption><b>${s.n}</b> · 18 mm</figcaption></figure>`
+  : `<figure><div class="strip" style="--bg:${s.bg};--fg:${s.fg}"><span class="small">Sealed</span><span class="cut"></span><span class="mark">samyó</span><span class="cut"></span><span class="small">by hand</span></div><figcaption><b>${s.n}</b> · 44 × 8 mm</figcaption></figure>`).join('');
+</script>
+</body>
+</html>

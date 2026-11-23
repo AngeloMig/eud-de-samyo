@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vial labels · Samyó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
+<style>
+  /* Printed at 100% on A4: every size below is in real millimetres. */
+  @page { size: A4; margin: 0; }
+  :root { --ink:#26221f; --soft:rgba(38,34,31,.6); --line:rgba(38,34,31,.14); }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#e9e5de; color:var(--ink); font:400 14px/1.5 'Instrument Sans',system-ui,sans-serif; }
+  .ui { max-width:1100px; margin:0 auto; padding:28px 20px 10px; }
+  h1 { font:500 38px/1.05 'Cormorant Garamond',serif; margin:0 0 6px; }
+  .sub { color:var(--soft); margin:0 0 16px; max-width:820px; }
+  .panel { background:#f7f5f0; border:1px solid var(--line); padding:16px; display:grid; gap:14px; }
+  .row { display:flex; flex-wrap:wrap; gap:12px 18px; align-items:end; }
+  label.f { display:grid; gap:4px; font-size:12px; color:var(--soft); }
+  input, select { font:inherit; color:var(--ink); background:#fff; border:1px solid var(--line); padding:8px 10px; min-height:40px; }
+  input[type=number] { width:70px; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { padding:6px 8px; border-bottom:1px solid var(--line); text-align:left; }
+  th { font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--soft); font-weight:600; }
+  .btn { background:var(--ink); color:#f7f5f0; border:0; border-radius:99px; padding:0 22px; min-height:44px; font:600 14px 'Instrument Sans',sans-serif; cursor:pointer; }
+  .btn.ghost { background:none; color:var(--ink); border:1px solid var(--line); }
+  .btn:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  .tips { font-size:13px; color:var(--soft); margin:0; padding-left:18px; }
+  .tips b { color:var(--ink); }
+  .count { font-size:13px; }
+
+  /* The A4 preview / print area */
+  /* One .page per A4 sheet; labels are placed at exact mm positions inside an 8 mm margin. */
+  .paper { margin:18px auto 60px; display:grid; gap:18px; justify-content:center; }
+  .page { position:relative; width:210mm; height:297mm; background:#fff; box-shadow:0 10px 40px rgba(0,0,0,.15); overflow:hidden; }
+  .page .lbl { position:absolute; }
+  /* Minimal centred label: logo · brand + perfume · type + size, filling the label. */
+  .lbl { width:var(--w); height:var(--h); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:calc(var(--h) * .035); padding:0 calc(var(--h) * .12); overflow:hidden; text-align:center; break-inside:avoid; page-break-inside:avoid; background:var(--bg,#fff); color:var(--fg,#26221f); }
+  .paper.guides .lbl { border:0.2mm dashed rgba(0,0,0,.3); }
+  .lbl .logo { line-height:.9; white-space:nowrap; }
+  .lbl .pre { font:italic 500 calc(var(--h) * .2)/1 'Cormorant Garamond',serif; opacity:.75; }
+  .lbl .mark { font:400 calc(var(--h) * .42)/1 'Italiana','Cormorant Garamond',serif; }
+  .lbl .line1, .lbl .line2 { display:block; max-width:100%; white-space:nowrap; overflow:hidden; text-transform:uppercase; font-family:'Instrument Sans',sans-serif; }
+  .lbl .line1 { font-weight:600; font-size:calc(var(--h) * .135); letter-spacing:.2em; line-height:1.15; }
+  .lbl .line2 { font-weight:500; font-size:calc(var(--h) * .11); letter-spacing:.24em; line-height:1.15; opacity:.62; }
+  /* White + gold (default): "samyó" and the type/size line in gold. */
+  .gold .lbl .mark, .gold .lbl .line2 { color:#b08a3e; }
+  .gold .lbl .line2 { opacity:1; }
+  .dark .lbl { --bg:#26221f; --fg:#f2ead8; }
+  .dark .lbl .mark { color:#e9d9b0; }
+  .dark .lbl .line2 { color:#d9b46a; opacity:1; }
+
+  @media print {
+    body { background:#fff; }
+    .ui { display:none; }
+    .paper { display:block; margin:0; }
+    .page { box-shadow:none; break-after:page; page-break-after:always; }
+    .page:last-child { break-after:auto; page-break-after:auto; }
+  }
+  @media (max-width:860px) { .paper { transform-origin:top left; } }
+</style>
+</head>
+<body>
+<div class="ui">
+  <h1>Vial labels</h1>
+  <p class="sub">Choose how many labels you need for each perfume and size, then press Download PDF (to save or send the file) or Print. The sheet is A4 and every label is drawn at its real size in millimetres, ready for an Epson L300 on A4 vinyl sticker paper.</p>
+  <div class="panel">
+    <div class="row">
+      <label class="f">Batch code (optional)<input id="batch" value="" style="width:140px" placeholder="e.g. B261123"></label>
+      <label class="f">Small label (1 & 2 ml)<select id="small"><option value="30x10">30 × 10 mm</option><option value="25x9">25 × 9 mm</option><option value="35x12">35 × 12 mm</option></select></label>
+      <label class="f">Large label (5 & 10 ml)<select id="large"><option value="40x14">40 × 14 mm</option><option value="35x12">35 × 12 mm</option><option value="45x16">45 × 16 mm</option></select></label>
+      <label class="f">Colour<select id="tone"><option value="gold">White + gold</option><option value="light">White, dark text</option><option value="dark">Charcoal & gold</option></select></label>
+      <label class="f">Cut guides<select id="guides"><option value="1">Show dashed lines</option><option value="0">Hide</option></select></label>
+    </div>
+    <table>
+      <thead><tr><th>Perfume</th><th>1 ml</th><th>2 ml</th><th>5 ml</th><th>10 ml</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="row">
+      <button type="button" class="btn" id="pdf">Download PDF</button>
+      <button type="button" class="btn ghost" id="print">Print</button>
+      <button type="button" class="btn ghost" id="fill">Fill: 6 × 1 ml, 6 × 2 ml, 2 × 5 ml, 1 × 10 ml each</button>
+      <button type="button" class="btn ghost" id="clear">Clear all</button>
+      <span class="count" id="count"></span>
+      <span class="count" id="pdfStatus" role="status" aria-live="polite"></span>
+    </div>
+    <ul class="tips">
+      <li><b>Test first:</b> print on plain paper and hold it against a sticker sheet to check the labels line up.</li>
+      <li><b>Epson L300 settings:</b> load one sticker sheet in the rear tray, printable side facing you (up). In the print window choose Paper size <b>A4</b>, Scale <b>100% / Actual size</b> (not "Fit to page"), Margins <b>Default</b>; in the Epson driver choose Paper type <b>Epson Matte</b> (or Photo Paper Glossy for glossy vinyl) and Quality <b>High</b>.</li>
+      <li><b>Let it dry 15–30 minutes.</b> The L300's ink is not waterproof and perfume contains alcohol, so cover the sheet with clear cold-laminate film before cutting, or spray-test one label first.</li>
+      <li><b>Cut</b> along the dashed lines with a ruler and craft knife.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="paper guides" id="paper"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+
+<script>
+const PERF = [
+  ['Dior', 'Sauvage', 'EDP'],
+  ['Dior', 'Homme Intense', 'EDP'],
+  ['Hermès', "Terre d'Hermès", 'EDT'],
+  ['Tom Ford', 'Oud Wood', 'EDP'],
+  ['Valentino', 'Uomo Born in Roma', 'EDT'],
+  ['Versace', 'Eros', 'EDT'],
+  ['YSL', 'Y', 'EDP'],
+  ['Jo Malone', 'Wood Sage & Sea Salt', 'Cologne'],
+  ['Dolce & Gabbana', 'The One for Men', 'EDP'],
+  ['Armani', 'Stronger With You Intensely', 'EDP'],
+];
+const SIZES = [1, 2, 5, 10];
+const KEY = 'samyo-vial-labels-v1';
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+const today = new Date();
+const defBatch = 'B' + String(today.getFullYear()).slice(2) + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)) || null; } catch (e) { S = null; }
+if (!S) S = { batch: '', small: '30x10', large: '40x14', tone: 'gold', guides: '1', qty: PERF.map(() => [6, 6, 2, 1]) };
+if (!S.v) { S.tone = 'gold'; S.v = 2; }
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* not saved */ } };
+
+function drawRows() {
+  $('rows').innerHTML = PERF.map((p, i) => `<tr><td>${esc(p[0])} · ${esc(p[1])} <span style="color:var(--soft)">${esc(p[2])}</span></td>${SIZES.map((z, j) => `<td><input type="number" min="0" max="300" step="1" data-i="${i}" data-j="${j}" value="${S.qty[i][j]}" aria-label="${esc(p[1])} ${z} ml labels"></td>`).join('')}</tr>`).join('');
+  ['batch', 'small', 'large', 'tone', 'guides'].forEach((k) => { $(k).value = S[k]; });
+}
+
+const TYPE = { EDP: 'Eau de Parfum', EDT: 'Eau de Toilette', EDC: 'Eau de Cologne', Cologne: 'Cologne', Elixir: 'Elixir', Parfum: 'Parfum' };
+function label(p, ml, w, h) {
+  const type = TYPE[p[2]] || p[2];
+  return `<div class="lbl" style="--w:${w}mm;--h:${h}mm"><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="line1">${esc(p[0])} · ${esc(p[1])}</span><span class="line2">${esc(type)} · ${ml} ml${S.batch ? ' · ' + esc(S.batch) : ''}</span></div>`;
+}
+
+const PAGE = { w: 210, h: 297, m: 8, gap: 2 };
+function draw() {
+  const [sw, sh] = S.small.split('x').map(Number);
+  const [lw, lh] = S.large.split('x').map(Number);
+  const items = [];
+  PERF.forEach((p, i) => SIZES.forEach((z, j) => {
+    const q = Math.max(0, Math.min(300, +S.qty[i][j] || 0));
+    for (let k = 0; k < q; k++) items.push(z <= 2 ? { p, z, w: sw, h: sh, g: 0 } : { p, z, w: lw, h: lh, g: 1 });
+  }));
+  items.sort((a, b) => a.g - b.g);
+  // Place labels row by row at exact mm positions; start a new sheet when one is full.
+  const W = PAGE.w - PAGE.m * 2, H = PAGE.h - PAGE.m * 2;
+  const pages = [[]];
+  let x = 0, y = 0, rowH = 0, lastG = items.length ? items[0].g : 0;
+  items.forEach((it) => {
+    if (it.g !== lastG) { x = 0; y += rowH + PAGE.gap * 2; rowH = 0; lastG = it.g; }
+    if (x + it.w > W + 0.01) { x = 0; y += rowH + PAGE.gap; rowH = 0; }
+    if (y + it.h > H + 0.01) { pages.push([]); x = 0; y = 0; rowH = 0; }
+    pages[pages.length - 1].push({ ...it, x: x + PAGE.m, y: y + PAGE.m });
+    x += it.w + PAGE.gap; rowH = Math.max(rowH, it.h);
+  });
+  const paper = $('paper');
+  paper.className = 'paper' + (S.guides === '1' ? ' guides' : '') + (S.tone === 'dark' ? ' dark' : S.tone === 'gold' ? ' gold' : '');
+  paper.innerHTML = items.length ? pages.map((pg) => `<div class="page">${pg.map((it) => label(it.p, it.z, it.w, it.h).replace('<div class="lbl" style="', `<div class="lbl" style="left:${it.x}mm;top:${it.y}mm;`)).join('')}</div>`).join('') : '<div class="page"></div>';
+  fit();
+  $('count').textContent = `${items.length} labels on ${items.length ? pages.length : 0} A4 sheet${pages.length > 1 ? 's' : ''}`;
+}
+
+// Download: each A4 sheet is drawn at high resolution and saved as one PDF page,
+// so the file prints at exactly the same size on any computer or print shop.
+async function downloadPdf() {
+  const st = $('pdfStatus');
+  if (!window.html2canvas || !window.jspdf) { st.textContent = 'Still loading the PDF tools. Try again in a moment (needs internet).'; return; }
+  const btn = $('pdf');
+  btn.disabled = true;
+  try {
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    fit();
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+    const pages = [...document.querySelectorAll('#paper .page')];
+    for (let i = 0; i < pages.length; i++) {
+      st.textContent = `Preparing sheet ${i + 1} of ${pages.length}…`;
+      const canvas = await window.html2canvas(pages[i], { scale: 4, backgroundColor: '#ffffff', logging: false });
+      if (i > 0) pdf.addPage('a4', 'portrait');
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 210, 297);
+    }
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    pdf.save(`samyo-vial-labels-${stamp}.pdf`);
+    st.textContent = `Saved ${pages.length} sheet${pages.length > 1 ? 's' : ''}. Print it at 100% / Actual size.`;
+  } catch (e) {
+    st.textContent = 'Could not make the PDF here. Use Print → Save as PDF instead.';
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// Long names (e.g. Stronger With You Intensely) shrink to fit their label instead of being cut off.
+function fit() {
+  document.querySelectorAll('.lbl .line1, .lbl .line2').forEach((el) => {
+    el.style.fontSize = '';
+    let fs = parseFloat(getComputedStyle(el).fontSize);
+    const min = fs * 0.5;
+    el.style.letterSpacing = '';
+    while (el.scrollWidth > el.clientWidth + 0.5 && fs > min) {
+      fs *= 0.94;
+      el.style.fontSize = fs + 'px';
+      el.style.letterSpacing = '.1em';
+    }
+  });
+}
+
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t.dataset.i != null) S.qty[+t.dataset.i][+t.dataset.j] = +t.value;
+  else if (['batch', 'small', 'large', 'tone', 'guides'].includes(t.id)) S[t.id] = t.value;
+  else return;
+  save(); draw();
+});
+$('print').addEventListener('click', () => window.print());
+$('pdf').addEventListener('click', downloadPdf);
+$('fill').addEventListener('click', () => { S.qty = PERF.map(() => [6, 6, 2, 1]); save(); drawRows(); draw(); });
+$('clear').addEventListener('click', () => { S.qty = PERF.map(() => [0, 0, 0, 0]); save(); drawRows(); draw(); });
+drawRows(); draw();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+window.addEventListener('beforeprint', fit);
+</script>
+</body>
+</html>

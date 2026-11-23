@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Packaging ideas 31–40 · Samyó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="labels-shared.css">
+<style>
+  .grid2 { display:grid; grid-template-columns:repeat(auto-fill,minmax(520px,1fr)); gap:22px; }
+  .grid2 section { margin-top:0; }
+  .vial { width:18px; border-radius:2px 2px 3px 3px; background:linear-gradient(90deg,#7a3410,#d38b3d 45%,#6b2c0c); position:relative; }
+  .vial::before { content:''; position:absolute; left:-1px; right:-1px; top:-14px; height:14px; background:#1d1d1d; border-radius:2px; }
+  /* 31 flight card */
+  .flight { width:460px; height:220px; background:#fbf8f2; display:grid; grid-template-columns:repeat(3,1fr); align-items:end; padding:70px 30px 16px; position:relative; }
+  .flight .top { position:absolute; top:14px; left:0; right:0; text-align:center; }
+  .flight .top .pre { font-size:15px; } .flight .top .mark { font-size:30px; }
+  .flight .fslot { display:grid; justify-items:center; gap:8px; }
+  .flight .fslot .vial { height:80px; }
+  .flight .fslot .band { width:44px; height:8px; background:var(--gold2); opacity:.7; margin-top:-44px; position:relative; z-index:1; border-radius:1px; }
+  .flight .fslot em { font:600 10px 'Instrument Sans',sans-serif; font-style:normal; letter-spacing:.16em; text-transform:uppercase; margin-top:40px; }
+  /* 32 personal label */
+  .personal .l2 { color:var(--gold); }
+  /* 33 passport */
+  .passport { display:flex; }
+  .passport .p { --c:3.4px; width:calc(55 * var(--c)); height:calc(85 * var(--c)); background:#fbf8f2; padding:calc(6 * var(--c)) calc(5 * var(--c)); display:flex; flex-direction:column; gap:calc(2 * var(--c)); }
+  .passport .p + .p { border-left:1px dashed var(--line); }
+  .passport .p.cover { background:#26221f; color:#f2ead8; align-items:center; justify-content:center; text-align:center; }
+  .passport .p.cover .mark { color:#e9d9b0; font-size:calc(9 * var(--c)); } .passport .p.cover .pre { color:#d9b46a; font-size:calc(4 * var(--c)); }
+  .passport .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:calc(2 * var(--c)); }
+  .passport .st { aspect-ratio:1; border:1px dashed var(--gold); border-radius:50%; display:grid; place-items:center; text-align:center; font:600 calc(1.5 * var(--c))/1.2 'Instrument Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
+  .passport .st.on { background:rgba(176,138,62,.12); border-style:solid; }
+  /* 34 inner lid */
+  .innerlid { width:440px; height:250px; background:#26221f; color:#f2ead8; display:grid; place-items:center; text-align:center; position:relative; }
+  .innerlid::before { content:''; position:absolute; inset:14px; border:1px solid rgba(217,180,106,.5); }
+  .innerlid h3 { font:italic 500 34px/1.1 'Cormorant Garamond',serif; margin:6px 0; }
+  .innerlid .caps { font-size:10px; letter-spacing:.3em; color:#d9b46a; font-weight:600; }
+  /* 35 matchbox */
+  .match { width:300px; height:140px; background:#fbf8f2; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:4px; position:relative; border-left:14px solid var(--gold2); }
+  .match .pre { font-size:16px; } .match .mark { font-size:34px; }
+  .match .caps { font-size:10px; letter-spacing:.26em; font-weight:600; }
+  /* 36 order sticker */
+  .ord { width:170px; height:90px; background:#fff; border:1px solid var(--ink); display:grid; grid-template-rows:auto 1fr; }
+  .ord .h { background:var(--ink); color:#f2ead8; font:600 10px 'Instrument Sans',sans-serif; letter-spacing:.26em; text-transform:uppercase; padding:5px 10px; display:flex; justify-content:space-between; }
+  .ord .b { display:grid; place-items:center; font:400 34px/1 'Italiana',serif; }
+  /* 37 sprays card */
+  .sprayrow { display:grid; grid-template-columns:repeat(4,1fr); gap:calc(2 * var(--c)); margin-top:calc(2 * var(--c)); }
+  .sprayrow div { text-align:center; border:1px solid var(--line); padding:calc(1.4 * var(--c)) 0; }
+  .sprayrow b { display:block; font:400 calc(4.2 * var(--c))/1 'Italiana',serif; color:var(--gold); }
+  .sprayrow span { font:600 calc(1.4 * var(--c)) 'Instrument Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+  /* 38 price board */
+  .board { width:300px; height:420px; background:#fbf8f2; padding:28px 26px; display:flex; flex-direction:column; gap:10px; }
+  .board .logo { text-align:center; } .board .pre { font-size:18px; } .board .mark { font-size:40px; }
+  .board .k { font:600 10px 'Instrument Sans',sans-serif; letter-spacing:.26em; text-transform:uppercase; opacity:.62; text-align:center; margin-bottom:6px; }
+  .board .it { display:flex; justify-content:space-between; gap:10px; font:500 13px 'Instrument Sans',sans-serif; border-bottom:1px dotted rgba(38,34,31,.3); padding-bottom:6px; }
+  .board .it em { font-style:normal; color:var(--gold); font-weight:600; }
+  .board .it small { display:block; font-size:10px; opacity:.6; font-weight:400; }
+  /* 39 mailer sticker */
+  .mailer { width:180px; height:180px; border-radius:50%; background:#fff; display:grid; place-items:center; text-align:center; position:relative; }
+  .mailer svg { position:absolute; inset:0; }
+  .mailer .mark { font-size:40px; display:block; }
+  .mailer .pre { font-size:16px; }
+  /* 40 backdrop */
+  .backdrop { width:460px; height:260px; background:linear-gradient(180deg,#f4ede0,#e9dfcc); position:relative; display:flex; align-items:flex-end; justify-content:center; gap:22px; padding-bottom:30px; overflow:hidden; }
+  .backdrop .big { position:absolute; top:22px; left:0; right:0; text-align:center; font:400 92px/1 'Italiana',serif; color:var(--gold); opacity:.22; }
+  .backdrop .vial { height:110px; width:22px; } .backdrop .vial.s { height:76px; width:20px; } .backdrop .vial.xs { height:56px; width:18px; }
+  .backdrop .floor { position:absolute; left:0; right:0; bottom:0; height:30px; background:linear-gradient(180deg,rgba(0,0,0,.06),rgba(0,0,0,0)); }
+  .backdrop .tagline { position:absolute; bottom:8px; left:0; right:0; text-align:center; font:600 9px 'Instrument Sans',sans-serif; letter-spacing:.3em; text-transform:uppercase; color:var(--ink); opacity:.55; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Packaging ideas 31–40 · preview</h1>
+  <p class="sub">10 more ideas in White + gold, drawn larger than real size (real size under each). Pick the numbers you like and I'll add them to the print page with the download button.</p>
+
+  <div class="grid2">
+    <section><h2><span class="n">31</span>Flight card</h2><p class="d">The vials lie in a row on a card, each held by a small band, like a tasting flight. Great for photos and gifting.</p>
+      <figure><div class="flight shadow"><div class="top"><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span></div>
+        <div class="fslot"><span class="vial" style="height:72px"></span><span class="band"></span><em>Sauvage</em></div>
+        <div class="fslot"><span class="vial" style="height:72px"></span><span class="band"></span><em>Eros</em></div>
+        <div class="fslot"><span class="vial" style="height:72px"></span><span class="band"></span><em>Terre d'Hermès</em></div>
+      </div><figcaption><b>Flight card</b> · 100 × 60 mm, on card stock</figcaption></figure></section>
+
+    <section><h2><span class="n">32</span>Personal name label</h2><p class="d">"Made for Maria": an optional personalised label for gifts (add a name field at checkout).</p>
+      <div class="row"><figure><div class="lbl shadow personal"><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="caps l1">Dior · Sauvage</span><span class="caps l2">Made for Maria · 1 ml</span></div><figcaption><b>Personal label</b> · 30 × 10 mm</figcaption></figure></div></section>
+
+    <section><h2><span class="n">33</span>Scent passport</h2><p class="d">A small folded booklet: one stamp for every perfume a customer has tried with you. Brings them back to "complete" it.</p>
+      <figure><div class="passport shadow"><div class="p cover"><span class="pre">eau de</span><span class="mark">samyó</span><span class="caps" style="font-size:9px;letter-spacing:.3em;font-weight:600;margin-top:8px;color:#d9b46a">Scent passport</span></div>
+        <div class="p"><div class="k">Scents tried</div><div class="grid"><div class="st on">No. 01<br>Sauvage</div><div class="st on">No. 06<br>Eros</div><div class="st">No. 02</div><div class="st">No. 03</div><div class="st">No. 04</div><div class="st">No. 05</div></div></div></div><figcaption><b>Passport</b> · folded 55 × 85 mm</figcaption></figure></section>
+
+    <section><h2><span class="n">34</span>Inside-the-lid message</h2><p class="d">A card glued inside the box lid: the first thing they read when they open it.</p>
+      <figure><div class="innerlid shadow"><div><div class="caps">Hello, scent lover</div><h3>Your scents are waiting.</h3><div class="caps" style="color:#f2ead8;opacity:.6">Take your time · one a day</div></div></div><figcaption><b>Lid card</b> · cut to your box lid</figcaption></figure></section>
+
+    <section><h2><span class="n">35</span>Single-vial sleeve</h2><p class="d">A slim matchbox-style sleeve for a single 10 ml (Travel ten), so even one vial arrives looking finished.</p>
+      <figure><div class="match shadow"><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="caps">Travel ten · 10 ml</span></div><figcaption><b>Sleeve</b> · about 100 × 40 mm, folded</figcaption></figure></section>
+
+    <section><h2><span class="n">36</span>Order number sticker</h2><p class="d">A small sticker on the box corner with the order number, so packed boxes don't get mixed up before shipping.</p>
+      <figure><div class="ord shadow"><div class="h"><span>Order</span><span>samyó</span></div><div class="b">#1024</div></div><figcaption><b>Order sticker</b> · 40 × 20 mm</figcaption></figure></section>
+
+    <section><h2><span class="n">37</span>"How much is in a vial" card</h2><p class="d">An approximate spray count per size, so people know what they're getting. Quantity only, no claims about the perfumes.</p>
+      <figure><div class="card shadow"><div class="k">About how many sprays</div><div class="sprayrow"><div><b>≈10</b><span>1 ml</span></div><div><b>≈20</b><span>2 ml</span></div><div><b>≈50</b><span>5 ml</span></div><div><b>≈100</b><span>10 ml</span></div></div><div class="foot"><div class="s" style="opacity:.6">Approximate, with a typical atomiser. Your count may vary.</div></div></div><figcaption><b>Vial card</b> · 90 × 55 mm</figcaption></figure></section>
+
+    <section><h2><span class="n">38</span>Price board for bazaars</h2><p class="d">An A5 price list for pop-up stalls, using your real set prices (from today).</p>
+      <figure><div class="board shadow"><div class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></div><div class="k">Decant sets</div>
+        <div class="it"><span>Try trio<small>3 × 1 ml</small></span><em>from ₱560</em></div>
+        <div class="it"><span>Discovery six<small>6 × 1 ml · 10% off</small></span><em>from ₱1,309.50</em></div>
+        <div class="it"><span>Wear trio<small>3 × 2 ml</small></span><em>from ₱975</em></div>
+        <div class="it"><span>Wardrobe six<small>6 × 2 ml · 10% off</small></span><em>from ₱2,358</em></div>
+        <div class="it"><span>Signature duo<small>2 × 5 ml</small></span><em>from ₱1,415</em></div>
+        <div class="it"><span>Travel ten<small>1 × 10 ml</small></span><em>from ₱1,365</em></div>
+      </div><figcaption><b>Price board</b> · A5, 148 × 210 mm</figcaption></figure></section>
+
+    <section><h2><span class="n">39</span>"Small business" mailer sticker</h2><p class="d">A round sticker for the outside of the pouch or mailer.</p>
+      <figure><div class="mailer shadow"><svg viewBox="0 0 180 180" aria-hidden="true"><defs><path id="c" d="M90,90 m-68,0 a68,68 0 1,1 136,0 a68,68 0 1,1 -136,0"/></defs><text font-family="Instrument Sans, sans-serif" font-size="9.5" font-weight="600" letter-spacing="3.2" fill="#b08a3e"><textPath href="#c">THANK YOU FOR SUPPORTING A SMALL FILIPINO BUSINESS ·</textPath></text></svg><div><span class="pre">eau de</span><span class="mark">samyó</span></div></div><figcaption><b>Mailer sticker</b> · 50 mm</figcaption></figure></section>
+
+    <section><h2><span class="n">40</span>Photo backdrop card</h2><p class="d">A folded card to stand behind the vials when filming TikToks or taking product photos. Every post shows your name.</p>
+      <figure><div class="backdrop shadow"><div class="big">samyó</div><span class="vial xs"></span><span class="vial"></span><span class="vial s"></span><div class="floor"></div><div class="tagline">eau de samyó · decants</div></div><figcaption><b>Backdrop</b> · A4, folded into an L</figcaption></figure></section>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" width="1200" height="960" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif">
+  <title>Samyó vial labels with subtle design: 1 ml, Dior</title>
+  <defs>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity=".2"/></filter>
+    <!-- Fine diagonal hairlines, like a perfume box texture -->
+    <pattern id="lines" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#26221f" stroke-opacity=".05" stroke-width="2"/>
+    </pattern>
+    <pattern id="linesGold" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="14" stroke="#d9b46a" stroke-opacity=".09" stroke-width="2"/>
+    </pattern>
+    <linearGradient id="fadeR" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" x2="1">
+      <stop offset="0" stop-color="#7a3410"/><stop offset=".45" stop-color="#c46a23"/><stop offset=".6" stop-color="#e09445"/><stop offset="1" stop-color="#6b2c0c"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" x2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".25" stop-color="#fff" stop-opacity=".55"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cap" x1="0" x2="1"><stop offset="0" stop-color="#111"/><stop offset=".35" stop-color="#3a3a3a"/><stop offset="1" stop-color="#0b0b0b"/></linearGradient>
+
+    <!-- Label D: white, hairline frame, faint "s" behind -->
+    <g id="labelD">
+      <rect width="600" height="200" rx="10" fill="#fff"/>
+      <text x="560" y="214" text-anchor="end" font-size="300" font-style="italic" fill="#26221f" fill-opacity=".045" font-family="'Cormorant Garamond', Georgia, serif">s</text>
+      <rect x="12" y="12" width="576" height="176" rx="5" fill="none" stroke="#26221f" stroke-opacity=".28" stroke-width="2"/>
+      <g transform="translate(40 0)">
+        <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
+        <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+      </g>
+      <line x1="262" y1="48" x2="262" y2="152" stroke="#26221f" stroke-opacity=".3" stroke-width="2"/>
+      <rect x="256" y="94" width="12" height="12" transform="rotate(45 262 100)" fill="#c9a45a"/>
+      <g transform="translate(294 0)">
+        <text x="0" y="86" font-size="40" font-weight="600" letter-spacing="9" fill="#26221f">DIOR</text>
+        <text x="0" y="122" font-size="22" fill="#26221f" fill-opacity=".7">Sauvage · EDP</text>
+        <text x="0" y="164" font-size="30" font-weight="600" fill="#26221f">1 ml</text>
+      </g>
+    </g>
+  </defs>
+
+  <rect width="1200" height="960" fill="#f3f0eb"/>
+  <text x="60" y="78" font-size="30" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">Subtle label designs · 1 ml · Dior</text>
+  <text x="60" y="108" font-size="15" fill="#26221f" fill-opacity=".6">Drawn 10× larger than real size. Real label: 30 × 10 mm. Lines are thin but still print on an Epson L300.</text>
+
+  <!-- D -->
+  <g transform="translate(60 150)" filter="url(#sh)"><use href="#labelD"/></g>
+  <text x="60" y="392" font-size="15" fill="#26221f">D · Hairline frame, a tiny gold diamond on the divider, a faint "s" behind</text>
+
+  <!-- E: dark with fine gold lines -->
+  <g transform="translate(60 440)" filter="url(#sh)">
+    <rect width="600" height="200" rx="10" fill="#26221f"/>
+    <rect width="600" height="200" rx="10" fill="url(#linesGold)"/>
+    <rect x="12" y="12" width="576" height="176" rx="5" fill="none" stroke="#d9b46a" stroke-opacity=".55" stroke-width="2"/>
+    <rect x="18" y="18" width="564" height="164" rx="3" fill="none" stroke="#d9b46a" stroke-opacity=".22" stroke-width="1.5"/>
+    <g transform="translate(40 0)">
+      <text x="0" y="84" font-size="30" font-style="italic" fill="#d9b46a" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
+      <text x="0" y="146" font-size="64" fill="#f2ead8" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+    </g>
+    <line x1="262" y1="48" x2="262" y2="152" stroke="#d9b46a" stroke-opacity=".55" stroke-width="2"/>
+    <g transform="translate(294 0)">
+      <text x="0" y="86" font-size="40" font-weight="600" letter-spacing="9" fill="#f2ead8">DIOR</text>
+      <text x="0" y="122" font-size="22" fill="#f2ead8" fill-opacity=".7">Sauvage · EDP</text>
+      <text x="0" y="164" font-size="30" font-weight="600" fill="#d9b46a">1 ml</text>
+    </g>
+  </g>
+  <text x="60" y="682" font-size="15" fill="#26221f">E · Dark, double gold hairline frame and very fine diagonal lines</text>
+
+  <!-- F: white, soft texture fading to the right, gold edge -->
+  <g transform="translate(60 720)" filter="url(#sh)">
+    <rect width="600" height="200" rx="10" fill="#fff"/>
+    <rect width="300" height="200" rx="10" fill="url(#lines)"/>
+    <rect x="150" width="150" height="200" fill="url(#fadeR)"/>
+    <rect x="0" y="0" width="8" height="200" rx="4" fill="#c9a45a"/>
+    <g transform="translate(40 0)">
+      <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
+      <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+    </g>
+    <line x1="262" y1="48" x2="262" y2="152" stroke="#26221f" stroke-opacity=".3" stroke-width="2"/>
+    <g transform="translate(294 0)">
+      <text x="0" y="86" font-size="40" font-weight="600" letter-spacing="9" fill="#26221f">DIOR</text>
+      <text x="0" y="122" font-size="22" fill="#26221f" fill-opacity=".7">Sauvage · EDP</text>
+      <text x="0" y="164" font-size="30" font-weight="600" fill="#26221f">1 ml</text>
+    </g>
+  </g>
+  <text x="60" y="942" font-size="15" fill="#26221f">F · White, a thin gold edge and a soft line texture behind the name</text>
+
+  <!-- Mock-up: D on a 1 ml vial -->
+  <g transform="translate(820 150)">
+    <text x="0" y="-10" font-size="15" fill="#26221f" fill-opacity=".7">On a 1 ml vial (label D)</text>
+    <g filter="url(#sh)">
+      <rect x="95" y="20" width="110" height="140" rx="8" fill="url(#cap)"/>
+      <rect x="85" y="150" width="130" height="16" rx="4" fill="#1a1a1a"/>
+      <rect x="80" y="160" width="140" height="440" rx="14" fill="url(#amber)"/>
+      <rect x="80" y="160" width="140" height="440" rx="14" fill="url(#glass)"/>
+      <g transform="translate(80 340) scale(0.2333 0.45)"><use href="#labelD"/></g>
+    </g>
+  </g>
+</svg>
