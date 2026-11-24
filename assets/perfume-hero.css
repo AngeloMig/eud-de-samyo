@@ -82,6 +82,19 @@ perfume-hero {
   min-width: 0; /* long script words must not widen the column */
 }
 
+/* The big script may dip into the buttons: the heading sits below them, so the
+   solid button covers it (owner, 2026-11-25). */
+.phh__heading {
+  position: relative;
+  z-index: 0;
+}
+
+.phh__actions,
+.phh__foot {
+  position: relative;
+  z-index: 1;
+}
+
 .phh__rot {
   display: inline-grid;
   font-family: var(--phh-script);
