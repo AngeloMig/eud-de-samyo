@@ -175,7 +175,8 @@
       {%- comment -%}
         Each perfume's notes, shown in random free cells while that perfume is hovered or
         focused (assets/perfume-hero.js). Decorative: the product page lists the notes.
-        A bundled cut-out where there is one, else the theme's line drawing + the name.
+        Real photos only: the tile's own note upload, the bundled cut-out, or the theme's
+        licensed note photo; with none, the note's name on its colour.
       {%- endcomment -%}
       {%- for block in tiles limit: 7 -%}
         {%- if block.settings.hover_notes != blank -%}
@@ -231,12 +232,42 @@
                     assign note_tint = '#E6DFD4'
                 endcase
               -%}
-              <li class="phh-note{% if note_file != blank %} phh-note--photo{% endif %}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
+              {%- liquid
+                # Real photos only: the merchant's own upload, else the bundled cut-out,
+                # else the theme's licensed note photo (perfume-note-art, shown larger).
+                # No photo at all: the note's name on its colour (no drawing).
+                case note_index
+                  when 0
+                    assign note_upload = block.settings.note_image_1
+                  when 1
+                    assign note_upload = block.settings.note_image_2
+                  else
+                    assign note_upload = block.settings.note_image_3
+                endcase
+                assign note_photo = ''
+                if note_upload == blank and note_file == blank
+                  capture note_photo
+                    render 'perfume-note-art', note: note_art
+                  endcapture
+                  if note_photo contains 'pf-note-photo'
+                    assign note_photo = note_photo | replace: 'w=240&h=240', 'w=600&h=780' | replace: 'width="240" height="240"', 'width="600" height="780"'
+                  else
+                    assign note_photo = ''
+                  endif
+                endif
+                assign note_kind = 'text'
+                if note_upload != blank or note_file != blank or note_photo != blank
+                  assign note_kind = 'photo'
+                endif
+              -%}
+              <li class="phh-note phh-note--{{ note_kind }}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
                 <span class="phh-note__media">
-                  {%- if note_file != blank -%}
+                  {%- if note_upload != blank -%}
+                    {{ note_upload | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 12vw, 30vw', loading: 'lazy', alt: '' }}
+                  {%- elsif note_file != blank -%}
                     <img src="{{ note_file | asset_url }}" alt="" loading="lazy">
-                  {%- else -%}
-                    {%- render 'perfume-note-art', note: note_art, style: 'drawing' -%}
+                  {%- elsif note_photo != blank -%}
+                    {{ note_photo }}
                   {%- endif -%}
                 </span>
                 <span class="phh-note__label"><span class="phh-note__kicker">Note</span><span class="phh-note__name">{{ note_name | capitalize | escape }}</span></span>
@@ -637,6 +668,9 @@
           "label": "Notes shown on hover",
           "info": "Perfume tiles only: up to 3, comma-separated, from the brand's official list, e.g. bergamot, vanilla, patchouli. Hovering the tile shows them in place of the scent tiles."
         },
+        { "type": "image_picker", "id": "note_image_1", "label": "Note 1 photo", "info": "Optional. Replaces the built-in photo of the first note." },
+        { "type": "image_picker", "id": "note_image_2", "label": "Note 2 photo" },
+        { "type": "image_picker", "id": "note_image_3", "label": "Note 3 photo" },
         {
           "type": "url",
           "id": "link",

@@ -637,9 +637,25 @@ perfume-header {
   width: 100%;
 }
 
-.phh-note__media .pf-note-art {
-  height: 46%;
-  width: 46%;
+/* The theme's note photo, filling the tile instead of a small disc. */
+.phh-note__media .pf-note-photo {
+  aspect-ratio: auto;
+  border-radius: 0;
+  inset: 0;
+  position: absolute;
+}
+
+.phh-note__media .pf-note-photo img {
+  height: 100% !important;
+  left: 0;
+  top: 0;
+  width: 100% !important;
+}
+
+/* No photo yet: the name, large, on the note's colour. */
+.phh-note--text .phh-note__name {
+  font-size: clamp(28px, 2.6vw, 44px);
+  font-style: italic;
 }
 
 .phh-note__label {

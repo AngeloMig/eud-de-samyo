@@ -10,10 +10,13 @@
 - **Hover notes**: new tile setting "Notes shown on hover" (perfume tiles, up to 3,
   comma-separated). Hovering/focusing a perfume tile fades the scent tiles
   (`.phh-tile--scent`: tiles not linking to a product) and wipes its notes into
-  random free cells of the 4 x 3 grid (scent cells + empty cells). Note visual: the
-  bundled cut-out for lemon, cinnamon, vanilla, iris, lavender, orange, rose,
-  cardamom; otherwise the `perfume-note-art` drawing + the name (ambrette and sage
-  have no drawing yet: name only).
+  random free cells of the 4 x 3 grid (scent cells + empty cells). Note visual,
+  **real photos only (owner: no icons)**: the tile's own "Note 1/2/3 photo" upload,
+  else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
+  cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
+  asked for at 600 x 780 instead of 240), else the note's name large on its colour.
+  **Need photos: patchouli (Sauvage), ambrette (Homme Intense), sage (The One)**: no
+  free-licence photo found on 2026-11-25; upload them in the tile settings.
 - Home page notes, checked 2026-11-25: Sauvage EDP bergamot, vanilla, patchouli
   (dior.com); Dior Homme Intense iris, ambrette, cedar (dior.com); Stronger With You
   Intensely pink pepper, lavender, vanilla (Sephora key notes; Armani's page doesn't
