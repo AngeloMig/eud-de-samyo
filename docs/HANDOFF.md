@@ -16,15 +16,16 @@
   else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
   cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
   asked for at 600 x 780 instead of 240), else the note's name large on its colour. Full-bleed photos get a paper chip
-  behind the label. Cut-out fit by note: cedar, pepper, cinnamon fill the card
+  behind the label. Cut-out fit by note: pepper, cinnamon fill the card
   (`--fill`, label chip); lavender, iris, rose stand on the bottom edge (`--stem`,
   label at the top, zoom from the bottom instead of drifting). Bergamot and amber cut-outs weren't clean, so they stay uncut.
   No free-licence photo exists yet for patchouli, ambrette or sage (searched
   2026-11-25); upload one in the tile settings to use them.
 - Home page notes, checked 2026-11-25, picked from each perfume's published list so
   every note has a real photo (owner asked for photos, not icons): Sauvage EDP
-  bergamot, Sichuan pepper, vanilla (dior.com names bergamot, Sichuan pepper,
-  vanilla); Dior Homme Intense iris, lavender, cedar (dior.com: iris, cedar;
+  bergamot, lavender, vanilla (dior.com: bergamot, vanilla; lavender from the
+  published pyramid; Sichuan pepper dropped because it showed the same peppercorn
+  photo as Stronger With You's pink pepper); Dior Homme Intense iris, lavender, cedar (dior.com: iris, cedar;
   lavender from the published pyramid); Stronger With You Intensely pink pepper,
   lavender, vanilla (Sephora key notes); The One EDP orange, tobacco, amber (D&G:
   orange; John Lewis base notes tobacco, amber, cedarwood). Patchouli, ambrette and

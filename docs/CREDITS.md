@@ -92,10 +92,15 @@ and photographer, open `https://unsplash.com/photos/<id>` with the id below.
 | mineral | photo-1614759258004-39da973d3268 |
 | tobacco | photo-1618843916388-29bb8a13b4fd |
 
-Cedar, pepper and tobacco are now transparent cut-outs made on 2026-11-25 from the
-same Unsplash photos (ids above; sources in `dev/source-photos/notes/`):
-`assets/sample-scent-cedar.webp`, `-pepper.webp`, `-tobacco.webp`. Bergamot and
-amber cut-outs weren't clean enough, so they keep the uncut photos.
+Pepper and tobacco are now transparent cut-outs made on 2026-11-25 from the same
+Unsplash photos (ids above; sources in `dev/source-photos/notes/`):
+`assets/sample-scent-pepper.webp`, `-tobacco.webp`. **Cedar** is cut from a different
+photo: "Isolated slice of tree on white background" by Mockup Graphics,
+https://unsplash.com/photos/brown-and-white-round-decor-BAcrUzXyg18
+(`photo-1615485021298-2c79b31a0f2b`, free Unsplash License) →
+`assets/sample-scent-cedar.webp`. Bergamot and amber keep the uncut photos (no clean
+free photo to cut: Unsplash has no real bergamot photo; its amber resin shots aren't
+isolated).
 
 Lemon, cinnamon and vanilla use the transparent cut-outs listed above. Patchouli and
 tonka still use drawings (no suitable free photo found).
