@@ -4,13 +4,19 @@
 
 - Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;
   home page: summer, sunday morning, your first date, rain in manila — lowercase on
-  purpose) and **Time per word** (2–6 s, default 3). The handwritten accent is
+  purpose at first, then owner asked: summer, Sunday morning, your first date, rain
+  in Manila — normal grammar) and **Time per word** (2–6 s, default 3).
+  Fix pass after the live check (clipped, flicker/overlap, small, tilted): no tilt,
+  script at 1.55em on the same baseline as "like", wipe edges 1em outside the glyphs
+  (swashes never clipped), incoming word starts only after the outgoing one has
+  faded (measured: never two words visible), each word fitted on its own
+  (`--w-fit`) so short words stay large. The handwritten accent is
   cleared on the home page so the rotating word is the only script.
 - The heading's last word ("you") and the list share one inline-grid cell, so the
   heading never reflows; screen readers only read "you". Incoming word: clip-path
   wipe left→right (written in), outgoing: lift + fade; reset without transition.
-- Fit: if the longest word doesn't fit beside the lead ("like"), all words scale
-  down together (`--rot-fit`), re-checked after fonts load and on resize.
+- Fit: each word that doesn't fit beside the lead ("like") scales down on its own
+  (`--w-fit`), re-checked after fonts load and on resize.
 - Starts after the intro; holds while the **heading** is hovered (not the whole hero:
   it fills the screen), while focus is in the hero, off screen or in a hidden tab;
   off under reduced motion.

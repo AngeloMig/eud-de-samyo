@@ -81,39 +81,47 @@ perfume-hero {
 .phh__rot {
   display: inline-grid;
   font-family: var(--phh-script);
-  font-size: calc(1.08em * var(--rot-fit, 1));
+  font-size: 1.55em;
   letter-spacing: 0;
-  line-height: 1;
-  transform: rotate(-3deg) translateY(0.04em);
-  transform-origin: 0 70%;
+  line-height: 0.6;
+  margin-left: 0.04em;
   vertical-align: baseline;
 }
 
+/* Each word is sized on its own (--w-fit, set by perfume-hero.js) so short words
+   stay large and only long phrases shrink to fit beside "like". The wipe's edges
+   sit far outside the glyphs so the script's swashes are never clipped. */
 .phh__rw {
-  clip-path: inset(-0.4em 100% -0.5em -0.3em);
+  align-self: baseline;
+  clip-path: inset(-1em 100% -1em -1em);
+  font-size: calc(1em * var(--w-fit, 1));
   grid-area: 1 / 1;
-  padding-right: 0.12em;
+  opacity: 0;
+  padding-right: 0.08em;
   white-space: nowrap;
 }
 
 .phh__rw.is-on {
-  clip-path: inset(-0.4em -0.3em -0.5em -0.3em);
+  clip-path: inset(-1em -1em -1em -1em);
+  opacity: 1;
 }
 
-.phh__rot.is-ready .phh__rw {
+/* In: written left to right, only after the outgoing word has gone (no overlap).
+   Out: fades and lifts slightly. A word is put back to "unwritten" without any
+   transition by perfume-hero.js. */
+.phh__rot.is-ready .phh__rw.is-on {
   transition:
-    clip-path 1.25s cubic-bezier(0.45, 0.05, 0.3, 1) 0.18s,
-    opacity 0.6s ease,
-    transform 0.9s var(--phh-ease);
+    clip-path 1.3s cubic-bezier(0.45, 0.05, 0.3, 1) 0.45s,
+    opacity 0.01s linear 0.45s;
 }
 
 .phh__rot.is-ready .phh__rw.is-out {
-  clip-path: inset(-0.4em -0.3em -0.5em -0.3em);
+  clip-path: inset(-1em -1em -1em -1em);
   opacity: 0;
-  transform: translateY(-0.18em);
+  transform: translateY(-0.12em);
   transition:
-    opacity 0.55s ease,
-    transform 0.8s var(--phh-ease);
+    opacity 0.45s ease,
+    transform 0.6s var(--phh-ease);
 }
 
 .phh:not(.is-pre) .phh__line--rot {
