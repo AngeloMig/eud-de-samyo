@@ -128,8 +128,12 @@ a.pb__link:hover .pb__name {
    the tilt needs at any width (width x tan 4deg, plus a ribbon), and clips the
    ribbon ends, so nothing above or below is ever covered. */
 .pb--ribbons {
-  --pb-rb-h: calc(var(--pb-size) * 1.1 + 34px);
-  --pb-tilt: 4deg;
+  --pb-rb-h: calc(var(--pb-size) * 1.1 + 44px);
+  /* Tilt from the ribbon's own height and the screen width, so the two ribbons
+     still overlap at the far edges at any width (no wedge of background between
+     them). Fallback for browsers without atan2(): a gentle fixed tilt. */
+  --pb-tilt: 2deg;
+  --pb-tilt: calc(atan2(var(--pb-rb-h), 112vw) * 0.92);
 }
 
 .pb__ribbons {
@@ -147,7 +151,7 @@ a.pb__link:hover .pb__name {
 .pb__rb .pb__viewport {
   border: 0;
   mask-image: none;
-  padding-block: 17px;
+  padding-block: 22px;
 }
 
 .pb__rb--a {
@@ -193,8 +197,9 @@ a.pb__link:hover .pb__name {
 
 @media screen and (max-width: 749px) {
   .pb--ribbons {
-    --pb-rb-h: calc(var(--pb-size-m) * 1.1 + 26px);
-    --pb-tilt: 5deg;
+    --pb-rb-h: calc(var(--pb-size-m) * 1.1 + 30px);
+    --pb-tilt: 3deg;
+    --pb-tilt: calc(atan2(var(--pb-rb-h), 112vw) * 0.92);
   }
 
   .pb__ribbons {
@@ -202,7 +207,7 @@ a.pb__link:hover .pb__name {
   }
 
   .pb__rb .pb__viewport {
-    padding-block: 13px;
+    padding-block: 15px;
   }
 
   .pb__word {
@@ -217,12 +222,13 @@ a.pb__link:hover .pb__name {
    trust line, the showcase adds it to its top padding. The hero's tiles may go
    under the ribbons (owner's choice). */
 :root {
-  --pb-half: calc(50px + 4.6vw);
+  /* With the width-based tilt the whole crossing is about two ribbons tall. */
+  --pb-half: 108px;
 }
 
 @media screen and (max-width: 749px) {
   :root {
-    --pb-half: calc(34px + 6vw);
+    --pb-half: 66px;
   }
 }
 

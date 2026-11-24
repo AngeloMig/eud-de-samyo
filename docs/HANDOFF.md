@@ -20,6 +20,10 @@
   to its top padding. Hero tiles may go under the ribbons (owner's choice).
   Measured at 1440 / 1024 / 390: hero and showcase touch (0 gap), the hero text ends
   above the ribbons and the showcase kicker starts below them.
+- Edge wedges removed (owner): the tilt is now `atan2(ribbon height, 112vw) × 0.92`
+  (fallback 2° / 3° on phones), so the ribbons overlap edge to edge at any width;
+  ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
+  1024 / 390: no gap between ribbons at either edge, text still clear.
 
 ## Update 2026-11-25: hero rotating word
 
