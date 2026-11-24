@@ -1,5 +1,17 @@
 # Handoff: Sangyo perfume theme
 
+## Update 2026-11-25: hero intro smoothing
+
+- Heading lines no longer show their tops before sliding in: each `.phh__line` mask
+  has 0.16em padding above and below (Cormorant overflows its 0.92 line-height), and
+  the start state is `translateY(calc(100% + .5em))` plus opacity 0, fading in as it
+  rises.
+- No end-state flash: a one-line script *before* `<perfume-hero>` adds
+  `html.pf-intro-pre`, and every intro start state also matches
+  `html.pf-intro-pre .phh[data-intro='true']`. The original inline script after the
+  section (is-pre + 4s fallback, a danger zone in AGENTS.md) is unchanged; both
+  classes are removed on reveal or by the fallback.
+
 ## Update 2026-11-25: hero floating tiles + hover notes
 
 - Owner picked hero idea 2 (floating tiles) of 10, plus hover notes.

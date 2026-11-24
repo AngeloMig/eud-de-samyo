@@ -41,6 +41,10 @@
   }
 {%- endstyle -%}
 
+{%- if section.settings.animate_intro -%}
+  {%- comment -%} Start state before the hero is parsed, so its end state never flashes first. {%- endcomment -%}
+  <script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('pf-intro-pre');</script>
+{%- endif -%}
 <perfume-hero
   id="{{ sid }}"
   class="phh{% if section.settings.labels_on_touch %} phh--labels-touch{% endif %}{% if section.settings.intro_speed == 'fast' %} phh--fast{% endif %}{% if section.settings.float_tiles %} phh--float{% endif %}"

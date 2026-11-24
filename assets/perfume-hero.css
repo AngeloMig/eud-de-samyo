@@ -55,17 +55,20 @@ perfume-hero {
   max-width: 11.5em;
 }
 
-/* Each line is a mask; its text slides up into it. Padding keeps descenders. */
+/* Each line is a mask; its text slides up into it. Padding above and below keeps
+   Cormorant's tall ascenders and descenders inside the mask (line-height is < 1). */
 .phh__line {
   display: block;
-  margin-bottom: -0.14em;
+  margin: -0.16em 0 -0.16em;
   overflow: hidden;
-  padding-bottom: 0.14em;
+  padding: 0.16em 0;
 }
 
 .phh__line > span {
   display: block;
-  transition: transform calc(1.15s * var(--phh-k)) var(--phh-ease);
+  transition:
+    transform calc(1.15s * var(--phh-k)) var(--phh-ease),
+    opacity calc(0.9s * var(--phh-k)) ease;
   transition-delay: calc(var(--phh-delay) + var(--i) * 85ms * var(--phh-k));
 }
 
@@ -342,19 +345,28 @@ perfume-hero {
   }
 }
 
-/* ---------- Intro: start states ---------- */
-.phh.is-pre .phh__line > span {
-  transform: translateY(108%);
+/* ---------- Intro: start states ----------
+   Matched both by .is-pre (inline script after the section) and by
+   html.pf-intro-pre (tiny script before it), so the hero never paints in its end
+   state first. The text starts fully below its mask (100% + room for ascenders). */
+.phh.is-pre .phh__line > span,
+html.pf-intro-pre .phh[data-intro='true'] .phh__line > span {
+  opacity: 0;
+  transform: translateY(calc(100% + 0.5em));
 }
 
-.phh.is-pre .phh__accent {
+.phh.is-pre .phh__accent,
+html.pf-intro-pre .phh[data-intro='true'] .phh__accent {
   opacity: 0;
   transform: translateY(14px) rotate(-4deg);
 }
 
 .phh.is-pre .phh__slogan,
 .phh.is-pre .phh__actions,
-.phh.is-pre .phh__trust {
+.phh.is-pre .phh__trust,
+html.pf-intro-pre .phh[data-intro='true'] .phh__slogan,
+html.pf-intro-pre .phh[data-intro='true'] .phh__actions,
+html.pf-intro-pre .phh[data-intro='true'] .phh__trust {
   opacity: 0;
   transform: translateY(12px);
 }
@@ -380,11 +392,13 @@ perfume-hero {
   }
 }
 
-.phh.is-pre .phh-tile__inner {
+.phh.is-pre .phh-tile__inner,
+html.pf-intro-pre .phh[data-intro='true'] .phh-tile__inner {
   clip-path: inset(100% 0 0 0);
 }
 
-.phh.is-pre .phh-tile__media {
+.phh.is-pre .phh-tile__media,
+html.pf-intro-pre .phh[data-intro='true'] .phh-tile__media {
   transform: translateY(12%) scale(1.18);
 }
 
