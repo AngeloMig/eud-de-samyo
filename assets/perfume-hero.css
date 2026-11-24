@@ -544,6 +544,137 @@ perfume-header {
   }
 }
 
+/* ---------- Floating tiles (setting) ----------
+   Each tile bobs on the `translate` property and leans with the mouse on `transform`
+   (set from assets/perfume-hero.js), so neither touches the intro or hover motion
+   on the inner elements. Pauses while the grid is hovered or focused. */
+.phh-tile,
+.phh-note {
+  transition:
+    transform 1.2s var(--phh-ease),
+    opacity 0.45s ease;
+}
+
+.phh--float .phh-tile,
+.phh--float .phh-note {
+  transform: translate(calc(var(--phh-mx, 0) * var(--dp, 10) * 1px), calc(var(--phh-my, 0) * var(--dp, 10) * 1px));
+}
+
+.phh-tile:nth-child(1) { --dp: 8; --bob: 7s; }
+.phh-tile:nth-child(2) { --dp: 16; --bob: 8.5s; }
+.phh-tile:nth-child(3) { --dp: 12; --bob: 7.6s; }
+.phh-tile:nth-child(4) { --dp: 20; --bob: 9s; }
+.phh-tile:nth-child(5) { --dp: 26; --bob: 8s; }
+.phh-tile:nth-child(6) { --dp: 10; --bob: 8.8s; }
+.phh-tile:nth-child(7) { --dp: 14; --bob: 7.2s; }
+.phh-note { --dp: 18; --bob: 8s; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .phh--float .phh-tile,
+  .phh--float .phh-note {
+    animation: phh-bob var(--bob, 8s) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.1s) infinite alternate;
+  }
+
+  .phh--float .phh__grid:hover .phh-tile,
+  .phh--float .phh__grid:hover .phh-note,
+  .phh--float .phh__grid:focus-within .phh-tile,
+  .phh--float .phh__grid:focus-within .phh-note {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes phh-bob {
+  from {
+    translate: 0 -6px;
+  }
+
+  to {
+    translate: 0 8px;
+  }
+}
+
+/* ---------- Hover notes ----------
+   While a perfume tile is hovered or focused, the scent tiles step back and that
+   perfume's notes wipe up in random free cells (placed by assets/perfume-hero.js). */
+.phh__grid.is-notes .phh-tile--scent {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.phh-note {
+  display: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.phh-note.is-placed {
+  display: block;
+}
+
+.phh-note__media,
+.phh-note__label {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.8s var(--phh-ease);
+  transition-delay: calc(var(--j, 0) * 70ms);
+}
+
+.phh-note__media {
+  align-items: center;
+  background: var(--tile-bg);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.phh-note__media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  transition: transform 1.2s var(--phh-ease);
+  width: 100%;
+}
+
+.phh-note__media .pf-note-art {
+  height: 46%;
+  width: 46%;
+}
+
+.phh-note__label {
+  bottom: 12px;
+  display: grid;
+  gap: 2px;
+  left: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.phh-note__kicker {
+  font-family: var(--pf-font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.phh-note__name {
+  font-family: var(--pf-font-serif);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.phh-note.is-on .phh-note__media,
+.phh-note.is-on .phh-note__label {
+  clip-path: inset(0 0 0 0);
+}
+
+.phh-note.is-on .phh-note__media img {
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .phh *,
   .phh *::before {
@@ -553,5 +684,10 @@ perfume-header {
 
   .phh-cursor {
     display: none;
+  }
+
+  .phh-tile,
+  .phh-note {
+    transform: none !important;
   }
 }

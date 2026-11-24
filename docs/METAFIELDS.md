@@ -41,7 +41,7 @@ guess: the theme shows "not assessed yet" for empty performance data.
 
 Integer 0–5 per accord: `citrus`, `woody`, `musky`, `floral`, `fresh`, `sweet`,
 `spicy`, `amber`, `aromatic`; plus `source` (single line text, choices:
-Manufacturer, Community, Samyo wear test) and `source_note` (multi-line text).
+Manufacturer, Community, Sangyo wear test) and `source_note` (multi-line text).
 
 ### `fragrance_performance`
 
@@ -51,7 +51,7 @@ Manufacturer, Community, Samyo wear test) and `source_note` (multi-line text).
 | Projection | `projection` | Single line text, choices: Intimate, Moderate, Strong |
 | Sillage | `sillage` | Single line text, choices: Soft, Moderate, Heavy |
 | Hot & humid (PH) suitability | `humid_weather` | Single line text, choices: Great, OK, Better for cool evenings |
-| Source | `source` | Single line text, choices: Community, Samyo wear test |
+| Source | `source` | Single line text, choices: Community, Sangyo wear test |
 | Tested on | `tested_on` | Date |
 
 ### `retailer_offer`
@@ -73,7 +73,7 @@ is true and `affiliate_url` is set; otherwise `url` is used with no commission w
 ## Fragrance profiles (discovery pages): the canonical data
 
 Approved plan: `docs/DISCOVERY-PLAN.md`. A **fragrance profile** is a metaobject, so a
-perfume can have a research page even when Samyó doesn't sell it. Products point to
+perfume can have a research page even when Sangyó doesn't sell it. Products point to
 their profile; when a product exists, the product page is the canonical page and the
 profile page links to it (canonical tag in `layout/theme.liquid`).
 
@@ -90,7 +90,7 @@ profile page links to it (canonical tag in `layout/theme.liquid`).
 | Colour A / Colour B | `palette_a`, `palette_b` | Color (page background gradient) |
 | Bottle image | `hero_image` | File (transparent PNG/WebP) |
 | Characteristics | `characteristics` | List of metaobject references → `scent_score` |
-| Characteristics basis | `characteristics_basis` | Single line text, choices: Samyó editorial assessment, Licensed data, Community estimate |
+| Characteristics basis | `characteristics_basis` | Single line text, choices: Sangyó editorial assessment, Licensed data, Community estimate |
 | Top / Heart / Base notes | `top_notes`, `middle_notes`, `base_notes` | List of metaobject references → `fragrance_note` |
 | Opening / Heart / Dry-down text | `opening_text`, `heart_text`, `drydown_text` | Multi-line text (what you smell at each stage) |
 | Longevity, from / to (hours) | `longevity_min_h`, `longevity_max_h` | Integer (leave empty if not evaluated) |
@@ -102,13 +102,13 @@ profile page links to it (canonical tag in `layout/theme.liquid`).
 | Day or night | `day_night` | Single line text, choices: Day, Day and night, Night |
 | Hot, humid day / Air-conditioned office / Rainy day / Warm evening | `climate_hot_day`, `climate_office`, `climate_rainy`, `climate_evening` | Single line text, choices: Great, Good, Careful |
 | Occasions | `occasions` | List of single line text, choices: Everyday, Office, Date night, Formal, Casual, Special occasions |
-| Wear basis / note | `wear_basis`, `wear_note` | Single line text (e.g. Samyó editorial assessment) / Multi-line text |
+| Wear basis / note | `wear_basis`, `wear_note` | Single line text (e.g. Sangyó editorial assessment) / Multi-line text |
 | Climate details (Phase 2) | `climate` | List of metaobject references → `climate_fit` (richer than the four simple ratings; wins when set) |
 | Occasion details (Phase 2) | `occasion_fits` | List of metaobject references → `occasion_fit` (wins over `occasions` when set) |
 | Related (manual picks) | `related` | List of metaobject references → `fragrance_profile` (shown first in Similar fragrances, as "Our pick") |
 | Editorial observations | `observations` | Rich text |
 | Sources | `sources` | List of metaobject references → `source_reference` |
-| Products | `products` | List of product references (where Samyó sells it) |
+| Products | `products` | List of product references (where Sangyó sells it) |
 | Brand website | `brand_url` | URL |
 | Brand affiliate link | `brand_affiliate_url` | URL (only if an approved programme) |
 | Retailer offers | `offers` | List of metaobject references → `retailer_offer` (above) |
@@ -173,7 +173,7 @@ card says what it shares. Manual picks in `related` come first, marked "Our pick
 ### `fragrance_comparison` ("A vs B" pages; turn on **Web pages**, template `fragrance_comparison`)
 
 For searches like "Versace Eros vs Dior Sauvage": a crawlable page with the two side by
-side and Samyó's own verdict.
+side and Sangyó's own verdict.
 
 | Field | Key | Type |
 |---|---|---|

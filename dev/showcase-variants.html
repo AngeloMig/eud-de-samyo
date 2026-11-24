@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Samyó edit: 10 variants</title>
+<title>The Sangyó edit: 10 variants</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Instrument+Sans:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
 <style>
@@ -140,7 +140,7 @@
  }
  @media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
 </style></head><body>
-<header class="top"><h1>The Samyó edit: 10 variants</h1><p class="lede">Ten ways to show the featured perfumes, all calmer and more compact than now, most on one background for every perfume (your idea first). They're built with the real copy, notes and bottle photos, and they all work: click the arrows, thumbnails, names or bottles to switch perfume. Prices and stock are the preview's example values.</p></header>
+<header class="top"><h1>The Sangyó edit: 10 variants</h1><p class="lede">Ten ways to show the featured perfumes, all calmer and more compact than now, most on one background for every perfume (your idea first). They're built with the real copy, notes and bottle photos, and they all work: click the arrows, thumbnails, names or bottles to switch perfume. Prices and stock are the preview's example values.</p></header>
 <nav class="jump" id="jump"></nav>
 <main id="variants"></main>
 <script>
@@ -173,7 +173,7 @@ const V = [
   { t: 'Ivory with a coloured plinth', tag: 'Colour, contained', d: 'One ivory background for all; each bottle stands on a round plinth in its own colour, so the colour stays but is contained. Small colour buttons switch perfume.',
     r: (p, i) => `<div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${chips(p)}${sizes(p)}${buy(p)}<div class="others">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" style="--c:${q.c}" aria-label="${q.name}"></button>`).join('')}</div></div><div class="pic"><span class="plinth" style="--c:${p.c}"></span><img class="bottle fade" src="${p.img}" alt="${p.name}"></div>` },
   { t: 'Gallery cards', tag: 'Most compact', d: 'No carousel at all: the four perfumes side by side on white cards with their note photos, price and a quick Add. Everything visible at once; the bottle tilts a little on hover.', all: true,
-    r: () => `<div class="head"><div><p class="k">Featured fragrances</p><h3 class="name" style="font-size:40px"><i>The Samyó edit</i></h3></div><span class="lnk">Shop all</span></div><div class="grid">${P.map((p) => `<div class="card"><div class="ph"><img class="bottle" src="${p.img}" alt="${p.name}"></div><p class="brand" style="font-size:10px">${p.brand}</p><h3 class="name">${p.name}</h3><div class="notes">${p.notes.map(([l, k]) => `<img src="${noteImg(k)}" alt="${l}" title="${l}">`).join('')}</div><div class="row"><span>From ${p.price}</span><b>Add +</b></div></div>`).join('')}</div>` },
+    r: () => `<div class="head"><div><p class="k">Featured fragrances</p><h3 class="name" style="font-size:40px"><i>The Sangyó edit</i></h3></div><span class="lnk">Shop all</span></div><div class="grid">${P.map((p) => `<div class="card"><div class="ph"><img class="bottle" src="${p.img}" alt="${p.name}"></div><p class="brand" style="font-size:10px">${p.brand}</p><h3 class="name">${p.name}</h3><div class="notes">${p.notes.map(([l, k]) => `<img src="${noteImg(k)}" alt="${l}" title="${l}">`).join('')}</div><div class="row"><span>From ${p.price}</span><b>Add +</b></div></div>`).join('')}</div>` },
   { t: 'Split with thumbnails', tag: 'Shop-like', d: 'Half picture on a light grey square, half text. Thumbnails of all four bottles sit under the text to switch, like a product gallery. Very clear, very compact.',
     r: (p, i) => `<div class="pic"><span class="no">${pad(i)}</span><img class="bottle fade" src="${p.img}" alt="${p.name}"></div><div class="info fade">${head(p)}<p class="desc">${p.desc}</p>${chips(p)}${sizes(p)}<div style="display:flex;gap:22px;align-items:center">${buy(p)}<span class="lnk">Discover</span></div><div class="thumbs">${P.map((q, j) => `<button type="button" data-to="${j}" class="${j === i ? 'on' : ''}" aria-label="${q.name}"><img src="${q.img}" alt=""></button>`).join('')}</div></div>` },
   { t: 'Centred spotlight', tag: 'Aesthetic', d: 'White, centred and symmetrical: a large light name, the bottle in the middle and its four notes as round photos floating around it. Dots underneath switch perfume.',

@@ -52,7 +52,7 @@
 
 /* ---------- Living inside Dawn ----------
    Dawn styles h1-h5 globally (heading colour from its colour scheme, letter-spacing,
-   line-height) and sets body letter-spacing; Samyo sections set their own. Sizes in
+   line-height) and sets body letter-spacing; Sangyo sections set their own. Sizes in
    these files are px because Dawn makes 1rem = 10px. */
 :is(.ps, .phh, .ph, .pfo, .pb, .pfa) {
   letter-spacing: normal;

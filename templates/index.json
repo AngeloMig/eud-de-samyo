@@ -1,5 +1,5 @@
 /*
- * Samyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
+ * Sangyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
  * Settings > Files with the same names before using this template.
  */
 {
@@ -16,6 +16,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dior-sauvage-eau-de-parfum",
+            "hover_notes": "bergamot, vanilla, patchouli",
             "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
             "kicker": "Dior",
             "label": "Sauvage Eau de Parfum",
@@ -44,6 +45,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/emporio-armani-stronger-with-you-intensely",
+            "hover_notes": "pink pepper, lavender, vanilla",
             "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
             "kicker": "Emporio Armani",
             "label": "Stronger With You Intensely",
@@ -72,6 +74,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dior-homme-intense",
+            "hover_notes": "iris, ambrette, cedar",
             "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
             "kicker": "Dior",
             "label": "Homme Intense",
@@ -100,6 +103,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dolce-gabbana-the-one",
+            "hover_notes": "orange, sage, tobacco",
             "image": "shopify://shop_images/samyo-dg-the-one.webp",
             "kicker": "Dolce & Gabbana",
             "label": "The One",
@@ -816,7 +820,7 @@
           "type": "question",
           "settings": {
             "question": "How much is delivery?",
-            "answer": "<p>Customers pay delivery on Samyó orders below ₱10,000. Standard delivery is free on orders of ₱10,000 and above after discounts. Partner retailers have their own delivery policies.</p>",
+            "answer": "<p>Customers pay delivery on Sangyó orders below ₱10,000. Standard delivery is free on orders of ₱10,000 and above after discounts. Partner retailers have their own delivery policies.</p>",
             "delivery_rates": true
           }
         },

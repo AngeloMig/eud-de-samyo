@@ -91,7 +91,7 @@
 
     // ---------- Entrance ----------
     // Plays by itself (~3.4s) once the section is well into view: the heading ("The
-    // Samyó edit") appears large in the centre and glides up to the top centre,
+    // Sangyó edit") appears large in the centre and glides up to the top centre,
     // shrinking; the bottle rises and the details fade in; last, after a short pause,
     // the perfume's name appears in the centre and drifts up to its place behind the
     // bottle. No pinning or

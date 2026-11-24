@@ -24,7 +24,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Caption under the tile" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Caption under the tile" from dev/tile-label-ideas.html.
 What it does: Text under the image on the stone background.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -37,7 +37,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Kicker top-left, name below" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Kicker top-left, name below" from dev/tile-label-ideas.html.
 What it does: Small kicker in the empty top corner.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -50,7 +50,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "White pill in the corner" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "White pill in the corner" from dev/tile-label-ideas.html.
 What it does: One short word on a white pill.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -63,7 +63,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Vertical label on the edge" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Vertical label on the edge" from dev/tile-label-ideas.html.
 What it does: Small capitals up the tile's right edge.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -76,7 +76,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Panel slides up on hover" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Panel slides up on hover" from dev/tile-label-ideas.html.
 What it does: A paper panel slides up with kicker and name.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -89,7 +89,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Number + name, sans" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Number + name, sans" from dev/tile-label-ideas.html.
 What it does: 01 Sauvage under each tile.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -102,7 +102,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Handwritten note" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Handwritten note" from dev/tile-label-ideas.html.
 What it does: One script word in the empty corner.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -115,7 +115,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Sticker tag" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Sticker tag" from dev/tile-label-ideas.html.
 What it does: A small rotated dark tag.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -128,7 +128,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "One shared caption" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "One shared caption" from dev/tile-label-ideas.html.
 What it does: One caption line under the grid for the hovered tile.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -141,7 +141,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Frosted bar" from dev/tile-label-ideas.html.
+Sangyo theme (sections/perfume-hero.liquid, assets/perfume-hero.css). Build idea "Frosted bar" from dev/tile-label-ideas.html.
 What it does: A frosted strip with name and View.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.

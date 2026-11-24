@@ -1,8 +1,8 @@
-# Getting the Samyo theme live on Shopify
+# Getting the Sangyo theme live on Shopify
 
 This repo is a complete Shopify theme: Dawn v16.2.0 (Shopify's free theme) with the
-Samyo sections on top. Git history: the first commit is untouched Dawn, so `git diff`
-against it shows everything Samyo changed.
+Sangyo sections on top. Git history: the first commit is untouched Dawn, so `git diff`
+against it shows everything Sangyo changed.
 
 ## 0. What you need
 
@@ -58,7 +58,7 @@ second level has its own links. The preview (`dev/*.html`) shows exactly this.
 - **About** → `/pages/about`
 
 The Find your scent quiz (`/pages/find-your-scent`) is linked from the homepage hero,
-the scent families and Why Samyó; add it to the menu too if you like.
+the scent families and Why Sangyó; add it to the menu too if you like.
 
 `footer`: Shipping & delivery, Returns, Authenticity, About us, Contact, Privacy
 policy, Terms of service (policies from Settings > Policies; About, Authenticity
@@ -84,7 +84,7 @@ automatically (collection image, else its first product's photo).
 
 ## 4. Connect the sections to real data (theme editor)
 
-Online Store > Themes > Customize (on the Samyo theme):
+Online Store > Themes > Customize (on the Sangyo theme):
 
 - **Perfume showcase**: in each Perfume block pick the **Product**. With a product
   and no Primary button link, the block gets size pills and Add to bag in place.

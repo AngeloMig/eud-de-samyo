@@ -1,9 +1,9 @@
 # FragranceX products from the CJ feed
 
-Samyo can list FragranceX perfumes as **affiliate listings**. The product page shows
-the perfume in Samyo's design (notes, Scent story), and its button says
+Sangyo can list FragranceX perfumes as **affiliate listings**. The product page shows
+the perfume in Sangyo's design (notes, Scent story), and its button says
 **"Buy at FragranceX"**. The button goes to your CJ tracking link, so you earn a
-commission. Samyo does not sell these items: there is no Add to bag, and the price
+commission. Sangyo does not sell these items: there is no Add to bag, and the price
 shown is FragranceX's, with its currency and the date it was checked.
 
 Your own stock stays normal products, with Add to bag. You can have both in one store.
@@ -57,7 +57,7 @@ node scripts/cj-feed-to-shopify.mjs \
 |---|---|
 | `--brands` | Only these brands, written as the feed writes them |
 | `--match` | Only titles containing one of these words, e.g. `"sauvage,bleu de chanel"` |
-| `--brand-map` | Rename brands to how Samyo shows them |
+| `--brand-map` | Rename brands to how Sangyo shows them |
 | `--include-testers` / `--include-sets` | Keep testers / gift sets (skipped by default) |
 | `--in-stock` | Drop rows the feed marks out of stock |
 | `--limit` | At most this many products |

@@ -1,4 +1,4 @@
-# Samyo perfume theme: agent instructions (Codex, Claude Code, others)
+# Sangyo perfume theme: agent instructions (Codex, Claude Code, others)
 
 Read `docs/HANDOFF.md` first: current status, decisions already made, and the next
 tasks in order. Going live: `docs/SETUP.md`. Fragrance data model:
@@ -7,11 +7,11 @@ and usage conditions: `docs/CREDITS.md`.
 
 ## Facts
 
-- What: the Shopify theme for **Samyo**, a premium multi-brand perfume store
+- What: the Shopify theme for **Sangyo**, a premium multi-brand perfume store
   (Dior, Hermès, Chanel, YSL…) for the Philippines (PHP prices).
-- This repo root **is the theme**: Shopify **Dawn v16.2.0** plus the Samyo sections.
-  Git: commit `dd98c2b` is untouched Dawn, so `git diff dd98c2b` shows every Samyo
-  change. Samyo files are prefixed `perfume-` (sections, snippets, assets) plus
+- This repo root **is the theme**: Shopify **Dawn v16.2.0** plus the Sangyo sections.
+  Git: commit `dd98c2b` is untouched Dawn, so `git diff dd98c2b` shows every Sangyo
+  change. Sangyo files are prefixed `perfume-` (sections, snippets, assets) plus
   `templates/index.json`, `sections/header-group.json`, `sections/footer-group.json`,
   the `render 'perfume-head'` line in `layout/theme.liquid` and the scheme-1 colours
   in `config/settings_data.json`.
@@ -26,7 +26,7 @@ and usage conditions: `docs/CREDITS.md`.
 # Real store preview (needs a store):
 shopify theme dev --store YOUR-STORE.myshopify.com
 
-# Static preview without a store: renders the Samyo sections from templates/index.json
+# Static preview without a store: renders the Sangyo sections from templates/index.json
 # and the header/footer groups into dev/home.html (+ dev/preview.html = showcase).
 # liquidjs is borrowed from another local project's node_modules.
 LIQUIDJS=/Users/angelomiguel/GitHub/High-Spirits/node_modules/liquidjs node dev/render-preview.mjs
@@ -53,7 +53,7 @@ Image tools (new cut-outs): `docs/HANDOFF.md` → "Image pipeline".
   groups; filters can't take filtered arguments (assign first); render-tag arguments
   can't use filters either. JSON templates/groups must only use existing blocks and
   valid setting values.
-- Sizes in Samyo CSS are px: Dawn sets `html { font-size: 62.5% }` (1rem = 10px).
+- Sizes in Sangyo CSS are px: Dawn sets `html { font-size: 62.5% }` (1rem = 10px).
 - Motion: transform / opacity / clip-path only; always a `prefers-reduced-motion`
   path; never leave content hidden if JS fails (hero: 4s fallback; reveals only hide
   under `html.pf-js`).
@@ -61,7 +61,7 @@ Image tools (new cut-outs): `docs/HANDOFF.md` → "Image pipeline".
   focus, 44px touch targets on phones. Moving content pauses on hover and keyboard
   focus and stops under reduced motion; the owner chose no visible Pause buttons
   (2026-11-21), so don't add them back.
-  Exception: the Why Samyó seal ring keeps spinning on hover (owner, 2026-11-25);
+  Exception: the Why Sangyó seal ring keeps spinning on hover (owner, 2026-11-25);
   it still stops under reduced motion.
 - **Never** label an unbranded stock bottle as a real brand's perfume, and never copy
   brand photos from brand websites yourself. Product photos come from the owner

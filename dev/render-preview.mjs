@@ -158,7 +158,7 @@ const DEMO_ARTICLES = [
   ['top-heart-and-base-notes-explained', 'Top, heart and base notes, explained', 'Basics', 'photo-1563364664-399838d1394c', '2026-10-29',
     PARA(["A perfume changes as it dries. The lightest materials evaporate first, which is why the opening smells different from the same perfume an hour later.", "Reading a perfume's pyramid tells you what to expect at each stage."])],
 ].map(([handle, title, tag, img, date, content], i) => ({
-  id: 7000 + i, handle, title, tags: [tag], image: U(img), published_at: date, author: 'Samyó', content, excerpt: '',
+  id: 7000 + i, handle, title, tags: [tag], image: U(img), published_at: date, author: 'Sangyó', content, excerpt: '',
   url: `/blogs/journal/${handle}`,
 }));
 const DEMO_BLOG = { title: 'Journal', handle: 'journal', url: '/blogs/journal', articles: DEMO_ARTICLES, articles_count: DEMO_ARTICLES.length, all_tags: ['Basics', 'Guides', 'Weather'] };
@@ -182,7 +182,7 @@ const globals = {
     account_url: '/account',
     all_products_collection_url: '/collections/all',
   },
-  shop: { name: 'Samyo', customer_accounts_enabled: true, enabled_payment_types: [] },
+  shop: { name: 'Sangyo', customer_accounts_enabled: true, enabled_payment_types: [] },
   cart: { item_count: 2 },
   customer: null,
   template: { name: 'index' },
@@ -415,7 +415,7 @@ for (const key of template.order) {
   parts.push(html);
 }
 
-writeFileSync(join(root, 'dev/home.html'), page('Samyo home preview', `${header}\n<main id="MainContent">${parts.join('\n')}</main>\n${footer}`, false));
+writeFileSync(join(root, 'dev/home.html'), page('Sangyo home preview', `${header}\n<main id="MainContent">${parts.join('\n')}</main>\n${footer}`, false));
 writeFileSync(join(root, 'dev/preview.html'), page('Perfume showcase preview', showcase));
 console.log(`wrote dev/home.html (${template.order.join(', ')}) and dev/preview.html`);
 
@@ -428,7 +428,7 @@ for (const [file, label, layout, alternative] of [
 ]) {
   const footerPreview = await renderSection('perfume-footer', 'footer', { layout, reveal: false, ...(layout === 'classic' ? { wordmark_motion: 'none', wordmark_deboss: false, wordmark_mist: false } : {}) }, footerSectionPreview);
   const reviewBar = `<main id="MainContent" style="padding:20px clamp(22px,4vw,64px);display:flex;justify-content:space-between;gap:20px;align-items:center;font:12px 'Instrument Sans',sans-serif;background:#f7f5f0;color:#292521"><span>Footer preview · ${label}</span><a style="color:inherit;min-height:44px;display:inline-flex;align-items:center;text-underline-offset:4px" href="${alternative}">Compare ${layout === 'atelier' ? 'original' : 'new design'}</a></main>`;
-  writeFileSync(join(root, `dev/${file}`), page(`Samyó · ${label}`, reviewBar + footerPreview, false).replace('Preview: demo products &amp; prices', 'Footer design preview'));
+  writeFileSync(join(root, `dev/${file}`), page(`Sangyó · ${label}`, reviewBar + footerPreview, false).replace('Preview: demo products &amp; prices', 'Footer design preview'));
 }
 await import('./tools/build-footer-motion.mjs');
 await import('./tools/build-footer-hover.mjs');
@@ -556,7 +556,7 @@ if (homme) {
     if (sec.type === 'perfume-testimonials') html = html.replace('<span class="prv__anchor"', '<p style="position:absolute;right:16px;top:16px;margin:0;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example placeholders, not real reviews</p><span class="prv__anchor"');
     pParts.push(html);
   }
-  writeFileSync(join(root, 'dev/product.html'), page('Samyo product preview', `${pHeader}\n<main id="MainContent">${pParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/product.html'), page('Sangyo product preview', `${pHeader}\n<main id="MainContent">${pParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/product.html (Dior Homme Intense)');
 }
 
@@ -580,7 +580,7 @@ if (sauvage) {
   const aHeader = await renderGroupScoped('header-group.json', aScope);
   const sec = productTpl.sections.main;
   const main = await renderSection(sec.type, 'main', {}, sec, {}, aScope);
-  writeFileSync(join(root, 'dev/product-affiliate.html'), page('Samyo affiliate product preview', `${aHeader}\n<main id="MainContent">${main}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/product-affiliate.html'), page('Sangyo affiliate product preview', `${aHeader}\n<main id="MainContent">${main}</main>\n${footer}`, false));
   console.log('wrote dev/product-affiliate.html (affiliate listing)');
 }
 
@@ -610,7 +610,7 @@ for (const key of colTpl.order) {
   const sec = colTpl.sections[key];
   cParts.push(await renderSection(sec.type, key, {}, sec.blocks ? sec : { ...sec, blocks: {}, block_order: [] }, {}, cScope));
 }
-writeFileSync(join(root, 'dev/collection.html'), page('Samyo collection preview', `${cHeader}\n<main id="MainContent">${cParts.join('\n')}</main>\n${footer}`, false));
+writeFileSync(join(root, 'dev/collection.html'), page('Sangyo collection preview', `${cHeader}\n<main id="MainContent">${cParts.join('\n')}</main>\n${footer}`, false));
 console.log('wrote dev/collection.html');
 
 async function renderGroupScoped(file, scope) {
@@ -627,7 +627,7 @@ async function renderGroupScoped(file, scope) {
   const gTpl = JSON.parse(readFileSync(join(root, 'templates/page.scent-guide.json'), 'utf8'));
   const gParts = [];
   for (const key of gTpl.order) gParts.push(await renderSection(gTpl.sections[key].type, key, {}, gTpl.sections[key], {}, gScope));
-  writeFileSync(join(root, 'dev/scent-guide.html'), page('Samyo scent guide preview', `${gHeader}\n<main id="MainContent">${gParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/scent-guide.html'), page('Sangyo scent guide preview', `${gHeader}\n<main id="MainContent">${gParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/scent-guide.html');
 }
 
@@ -647,7 +647,7 @@ async function renderGroupScoped(file, scope) {
   const qTpl = JSON.parse(readFileSync(join(root, 'templates/page.find-your-scent.json'), 'utf8'));
   const qParts = [];
   for (const key of qTpl.order) qParts.push(await renderSection(qTpl.sections[key].type, key, {}, qTpl.sections[key], {}, qScope));
-  writeFileSync(join(root, 'dev/find-your-scent.html'), page('Samyo quiz preview', `${qHeader}\n<main id="MainContent">${qParts.join('\n')}</main>\n${footer}`.replace('<perfume-quiz', '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example tags on demo perfumes</p><perfume-quiz'), false));
+  writeFileSync(join(root, 'dev/find-your-scent.html'), page('Sangyo quiz preview', `${qHeader}\n<main id="MainContent">${qParts.join('\n')}</main>\n${footer}`.replace('<perfume-quiz', '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example tags on demo perfumes</p><perfume-quiz'), false));
   console.log('wrote dev/find-your-scent.html');
 }
 
@@ -660,7 +660,7 @@ async function renderGroupScoped(file, scope) {
   const example = {
     name: { value: 'Example Fragrance' }, brand: { value: 'Example House' }, concentration: { value: 'Eau de Parfum' },
     family: { value: 'Aromatic' }, tagline: { value: 'example: citrus, iris & woods' },
-    description: { value: 'Example text: two or three sentences in Samyó’s own words about what the perfume is like.' },
+    description: { value: 'Example text: two or three sentences in Sangyó’s own words about what the perfume is like.' },
     palette_a: { value: '#DCE6EE' }, palette_b: { value: '#F3F0EB' },
     hero_image: { value: { src: '../assets/sample-bottle-clear.webp' } },
     characteristics_basis: { value: 'Example only, not an assessment' },
@@ -711,7 +711,7 @@ async function renderGroupScoped(file, scope) {
     fParts.push(await renderSection(sec.type, key, {}, sec.blocks ? sec : { ...sec, blocks: {}, block_order: [] }, {}, fScope));
   }
   const banner = '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example Fragrance: every value is made up for the preview</p>';
-  writeFileSync(join(root, 'dev/fragrance.html'), page('Samyo fragrance profile preview', `${fHeader}\n<main id="MainContent">${banner}${fParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/fragrance.html'), page('Sangyo fragrance profile preview', `${fHeader}\n<main id="MainContent">${banner}${fParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/fragrance.html (example profile)');
 }
 
@@ -745,7 +745,7 @@ async function renderGroupScoped(file, scope) {
     vParts.push(await renderSection(sec.type, key, {}, sec.blocks ? sec : { ...sec, blocks: {}, block_order: [] }, {}, vScope));
   }
   const banner = '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example comparison: both fragrances and every value are made up</p>';
-  writeFileSync(join(root, 'dev/compare.html'), page('Samyo comparison preview', `${vHeader}\n<main id="MainContent">${banner}${vParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/compare.html'), page('Sangyo comparison preview', `${vHeader}\n<main id="MainContent">${banner}${vParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/compare.html');
 }
 
@@ -757,13 +757,13 @@ async function renderGroupScoped(file, scope) {
   const bTpl = JSON.parse(readFileSync(join(root, 'templates/blog.json'), 'utf8'));
   const bParts = [];
   for (const key of bTpl.order) bParts.push(await renderSection(bTpl.sections[key].type, key, {}, { blocks: {}, block_order: [], ...bTpl.sections[key] }, {}, bScope));
-  writeFileSync(join(root, 'dev/journal.html'), page('Samyo journal preview', `${bHeader}\n<main id="MainContent">${banner}${bParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/journal.html'), page('Sangyo journal preview', `${bHeader}\n<main id="MainContent">${banner}${bParts.join('\n')}</main>\n${footer}`, false));
   const aScope = { blog: DEMO_BLOG, article: DEMO_ARTICLES[0], template: { name: 'article' } };
   const aHeader = await renderGroupScoped('header-group.json', aScope);
   const aTpl = JSON.parse(readFileSync(join(root, 'templates/article.json'), 'utf8'));
   const aParts = [];
   for (const key of aTpl.order) aParts.push(await renderSection(aTpl.sections[key].type, key, {}, { blocks: {}, block_order: [], ...aTpl.sections[key] }, {}, aScope));
-  writeFileSync(join(root, 'dev/article.html'), page('Samyo article preview', `${aHeader}\n<main id="MainContent">${banner}${aParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/article.html'), page('Sangyo article preview', `${aHeader}\n<main id="MainContent">${banner}${aParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/journal.html, dev/article.html');
 }
 
@@ -799,7 +799,7 @@ async function renderGroupScoped(file, scope) {
   const vTpl = JSON.parse(readFileSync(join(root, 'templates/page.decant-builder.json'), 'utf8'));
   const vParts = [];
   for (const key of vTpl.order) vParts.push(await renderSection(vTpl.sections[key].type, key, {}, vTpl.sections[key], {}, vScope));
-  writeFileSync(join(root, 'dev/vial-picker.html'), page('Samyo vial picker preview', `${vHeader}\n<main id="MainContent">${vParts.join('\n')}</main>\n${footer}`, false));
+  writeFileSync(join(root, 'dev/vial-picker.html'), page('Sangyo vial picker preview', `${vHeader}\n<main id="MainContent">${vParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/vial-picker.html');
 }
 
@@ -821,7 +821,7 @@ async function renderGroupScoped(file, scope) {
     // PREVIEW ONLY: an example FragranceX offer (example.com link, not a real CJ link).
     decant.metafields.samyo = { affiliate_offers: { value: [{ size: '100 ml', url: 'https://example.com/cj-link', price: '₱10,376.98', in_stock: true }] }, retailer: { value: 'FragranceX' }, price_checked: { value: '2026-11-22' } };
     const where = await renderSection('perfume-where-to-buy', 'where', {}, { blocks: {}, block_order: [], ...productTpl.sections.where }, {}, dScope);
-    writeFileSync(join(root, 'dev/product-decant.html'), page('Samyo decant product preview', `${dHeader}\n<main id="MainContent">${main}${where}</main>\n${footer}`, false));
+    writeFileSync(join(root, 'dev/product-decant.html'), page('Sangyo decant product preview', `${dHeader}\n<main id="MainContent">${main}${where}</main>\n${footer}`, false));
     console.log('wrote dev/product-decant.html');
   }
 }

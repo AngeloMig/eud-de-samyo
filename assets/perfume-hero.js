@@ -8,6 +8,10 @@
 
   Cursor: a dot follows the mouse over the hero (eased), and grows with a label over
   linked tiles. Mouse and trackpad only; off with reduced motion.
+
+  Floating tiles: the grid's lean follows the mouse (--phh-mx / --phh-my).
+  Hover notes: hovering or focusing a perfume tile shows its notes in random free
+  cells; the scent tiles step back until the pointer or focus leaves.
 */
 (() => {
   if (customElements.get('perfume-hero')) return;
@@ -20,6 +24,8 @@
       this.abort = new AbortController();
       this.intro();
       this.bindCursor();
+      this.bindFloat();
+      this.bindNotes();
     }
 
     disconnectedCallback() {
@@ -63,6 +69,107 @@
         this.classList.remove('is-pre');
         document.documentElement.classList.remove('pf-intro-pre');
       });
+    }
+
+    // Floating tiles: the grid leans with the mouse (each tile by its own depth, CSS).
+    bindFloat() {
+      const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+      const grid = this.querySelector('.phh__grid');
+      if (!grid || !this.classList.contains('phh--float') || !fine.matches || reduced.matches) return;
+      const signal = this.abort.signal;
+      this.addEventListener(
+        'pointermove',
+        (e) => {
+          if (e.pointerType !== 'mouse') return;
+          const r = this.getBoundingClientRect();
+          grid.style.setProperty('--phh-mx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
+          grid.style.setProperty('--phh-my', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
+        },
+        { signal }
+      );
+      this.addEventListener(
+        'pointerleave',
+        () => {
+          grid.style.setProperty('--phh-mx', 0);
+          grid.style.setProperty('--phh-my', 0);
+        },
+        { signal }
+      );
+    }
+
+    // Hover notes: a perfume tile's notes take random free cells (scent tiles' cells
+    // and empty cells of the 4 x 3 grid) while it is hovered or focused.
+    bindNotes() {
+      const grid = this.querySelector('.phh__grid');
+      const perfumes = grid ? [...grid.querySelectorAll('.phh-tile[data-notes]')] : [];
+      if (!perfumes.length) return;
+      const signal = this.abort.signal;
+      const allNotes = [...grid.querySelectorAll('.phh-note')];
+      const cellOf = (el) => {
+        const cs = getComputedStyle(el);
+        return `${parseInt(cs.gridRowStart, 10)}/${parseInt(cs.gridColumnStart, 10)}`;
+      };
+      const freeCells = () => {
+        const taken = new Set();
+        const free = [];
+        grid.querySelectorAll('.phh-tile').forEach((t) => {
+          const cell = cellOf(t);
+          if (t.classList.contains('phh-tile--scent')) free.push(cell);
+          taken.add(cell);
+        });
+        for (let r = 1; r <= 3; r++) for (let c = 1; c <= 4; c++) if (!taken.has(`${r}/${c}`)) free.push(`${r}/${c}`);
+        for (let i = free.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [free[i], free[j]] = [free[j], free[i]];
+        }
+        return free;
+      };
+
+      let current = null;
+      let hideTimer;
+      const clearNotes = (keep) => {
+        allNotes.forEach((n) => {
+          if (n.dataset.for === keep) return;
+          n.classList.remove('is-on');
+          clearTimeout(n._t);
+          n._t = setTimeout(() => n.classList.contains('is-on') || n.classList.remove('is-placed'), 650);
+        });
+      };
+      const show = (id) => {
+        clearTimeout(hideTimer);
+        if (id === current) return;
+        current = id;
+        clearNotes(id);
+        const cells = freeCells();
+        grid.querySelectorAll(`.phh-note[data-for="${id}"]`).forEach((n, i) => {
+          if (!cells[i]) return;
+          clearTimeout(n._t);
+          n.style.gridArea = cells[i];
+          n.classList.add('is-placed');
+          requestAnimationFrame(() => requestAnimationFrame(() => current === id && n.classList.add('is-on')));
+        });
+        grid.classList.add('is-notes');
+      };
+      const hide = () => {
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          current = null;
+          clearNotes(null);
+          grid.classList.remove('is-notes');
+        }, 160);
+      };
+
+      perfumes.forEach((tile) => {
+        const id = tile.dataset.notes;
+        tile.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && show(id), { signal });
+        tile.addEventListener('focusin', () => show(id), { signal });
+      });
+      grid.addEventListener('pointerleave', hide, { signal });
+      grid.addEventListener('focusout', (e) => grid.contains(e.relatedTarget) || hide(), { signal });
+      // Leaving a perfume for another tile (not a perfume) also puts the scents back.
+      grid.querySelectorAll('.phh-tile:not([data-notes])').forEach((t) =>
+        t.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && hide(), { signal })
+      );
     }
 
     bindCursor() {

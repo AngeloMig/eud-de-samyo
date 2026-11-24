@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 980" width="1300" height="980">
-  <title>Samyó minimal vial label</title>
+  <title>Sangyó minimal vial label</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&amp;family=Instrument+Sans:wght@500;600&amp;family=Italiana&amp;display=swap');
     .pre { font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 500; }
@@ -17,7 +17,7 @@
          Three centred lines that fill the label: logo · brand + perfume · type + size. -->
     <g id="dior">
       <rect width="600" height="200" rx="8" fill="#fff"/>
-      <text x="300" y="86" text-anchor="middle"><tspan class="pre" font-size="40" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="84" fill="#26221f">samyó</tspan></text>
+      <text x="300" y="86" text-anchor="middle"><tspan class="pre" font-size="40" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="84" fill="#26221f">sangyó</tspan></text>
       <text x="300" y="134" text-anchor="middle" class="sans" font-size="27" font-weight="600" letter-spacing="7" fill="#26221f">DIOR · SAUVAGE</text>
       <text x="300" y="174" text-anchor="middle" class="sans" font-size="22" font-weight="500" letter-spacing="6" fill="#26221f" fill-opacity=".62">EAU DE PARFUM · 1 ML</text>
     </g>
@@ -25,7 +25,7 @@
 
   <rect width="1300" height="980" fill="#f3f0eb"/>
   <text x="60" y="76" class="name" font-size="40" fill="#26221f">Minimal label</text>
-  <text x="60" y="106" class="note" font-size="15" fill-opacity=".6">Real size 30 × 10 mm (1 &amp; 2 ml) or 40 × 14 mm (5 &amp; 10 ml), drawn 20× larger. Your fonts: Italiana for "samyó", Cormorant Garamond italic for "eau de", Instrument Sans for the rest.</text>
+  <text x="60" y="106" class="note" font-size="15" fill-opacity=".6">Real size 30 × 10 mm (1 &amp; 2 ml) or 40 × 14 mm (5 &amp; 10 ml), drawn 20× larger. Your fonts: Italiana for "sangyó", Cormorant Garamond italic for "eau de", Instrument Sans for the rest.</text>
 
   <!-- 1 ml · Dior Sauvage EDP -->
   <g transform="translate(60 150)" filter="url(#sh)"><use href="#dior"/></g>
@@ -34,7 +34,7 @@
   <!-- 2 ml · Versace Eros EDT -->
   <g transform="translate(60 420)" filter="url(#sh)">
     <rect width="600" height="200" rx="8" fill="#fff"/>
-    <text x="300" y="86" text-anchor="middle"><tspan class="pre" font-size="40" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="84" fill="#26221f">samyó</tspan></text>
+    <text x="300" y="86" text-anchor="middle"><tspan class="pre" font-size="40" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="84" fill="#26221f">sangyó</tspan></text>
     <text x="300" y="134" text-anchor="middle" class="sans" font-size="27" font-weight="600" letter-spacing="7" fill="#26221f">VERSACE · EROS</text>
     <text x="300" y="174" text-anchor="middle" class="sans" font-size="22" font-weight="500" letter-spacing="6" fill="#26221f" fill-opacity=".62">EAU DE TOILETTE · 2 ML</text>
   </g>
@@ -43,7 +43,7 @@
   <!-- 10 ml · long name: Armani Stronger With You Intensely (40 × 14 mm → 800 × 280) -->
   <g transform="translate(60 690)" filter="url(#sh)">
     <rect width="800" height="250" rx="8" fill="#fff"/>
-    <text x="400" y="104" text-anchor="middle"><tspan class="pre" font-size="50" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="106" fill="#26221f">samyó</tspan></text>
+    <text x="400" y="104" text-anchor="middle"><tspan class="pre" font-size="50" fill="#26221f" fill-opacity=".75">eau de </tspan><tspan class="name" font-size="106" fill="#26221f">sangyó</tspan></text>
     <text x="400" y="164" text-anchor="middle" class="sans" font-size="25" font-weight="600" letter-spacing="3.5" fill="#26221f">ARMANI · STRONGER WITH YOU INTENSELY</text>
     <text x="400" y="214" text-anchor="middle" class="sans" font-size="27" font-weight="500" letter-spacing="7" fill="#26221f" fill-opacity=".62">EAU DE PARFUM · 10 ML</text>
   </g>

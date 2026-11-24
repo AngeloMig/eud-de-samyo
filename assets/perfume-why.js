@@ -1,5 +1,5 @@
 /*
-  Why Samyó, Seal layout (sections/perfume-why.liquid).
+  Why Sangyó, Seal layout (sections/perfume-why.liquid).
   - Hovering or focusing a promise shows that promise's icon in the seal's centre,
     and leans that promise toward the seal.
   - Ring motion "Spins, faster as you scroll" / "Turns only as you scroll": the

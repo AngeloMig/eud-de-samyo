@@ -9,7 +9,7 @@
   <details class="pf-delivery"{% if expanded %} open{% endif %}>
     <summary>Standard delivery rates</summary>
     <div class="pf-delivery__body">
-      <p><strong>Free standard delivery on Samyó orders of ₱{{ delivery_threshold | money_without_currency }} and above after discounts.</strong></p>
+      <p><strong>Free standard delivery on Sangyó orders of ₱{{ delivery_threshold | money_without_currency }} and above after discounts.</strong></p>
       <p>For smaller orders, customers pay delivery. Estimated small-parcel rates from {{ settings.pf_shipping_origin | escape }}:</p>
       <table><caption class="pf-visually-hidden">Estimated delivery fees below the free-delivery threshold</caption><tbody>
         {%- for region in delivery_regions -%}
@@ -19,7 +19,7 @@
         {%- endfor -%}
       </tbody></table>
       <p class="pf-delivery__note">{{ settings.pf_shipping_note | escape }}</p>
-      <p class="pf-delivery__note">Partner full-bottle purchases follow the retailer’s delivery policy and do not count toward Samyó’s free-delivery threshold.</p>
+      <p class="pf-delivery__note">Partner full-bottle purchases follow the retailer’s delivery policy and do not count toward Sangyó’s free-delivery threshold.</p>
     </div>
   </details>
 {%- endif -%}

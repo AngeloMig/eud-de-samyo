@@ -264,7 +264,7 @@
           "settings": {
             "title": "Shipping and delivery",
             "source": "custom",
-            "content": "<p>Delivery fees apply below ₱10,000. Samyó covers standard delivery on orders of ₱10,000 and above after discounts.</p>",
+            "content": "<p>Delivery fees apply below ₱10,000. Sangyó covers standard delivery on orders of ₱10,000 and above after discounts.</p>",
             "delivery_rates": true
           }
         },

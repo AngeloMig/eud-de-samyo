@@ -1,6 +1,6 @@
 {%- comment -%}
-  Samyo product page (templates/product.json), laid out like the High Spirits
-  product page and dressed like the homepage's "Samyó edit":
+  Sangyo product page (templates/product.json), laid out like the High Spirits
+  product page and dressed like the homepage's "Sangyó edit":
   breadcrumbs, then an info column (brand, name, concentration, price, notes,
   sizes, Add to bag) beside a carousel of bottles on the perfume's own tint: the
   chosen one large, the others smaller and faded to its right, the name big and
@@ -23,7 +23,7 @@
   when product.metafields.samyo.affiliate_offers has offers, the price, stock and
   button come from the offer for the chosen size, and the button is "Buy at
   FragranceX" (rel="sponsored", new tab) with the disclosure under it. No Add to bag,
-  quantity or structured data (Samyo doesn't sell it, so no ₱0 offer for Google).
+  quantity or structured data (Sangyo doesn't sell it, so no ₱0 offer for Google).
   Exception: a perfume with decant sizes (Sizes block, "sizes sold only in sets") is
   sold here; its full-bottle offers show in Where to buy, not in this box.
 
@@ -135,7 +135,7 @@
   assign base_notes = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
 
   # Affiliate listing: the offer for the chosen size (or the first one). A perfume
-  # Samyo sells as decants stays a Samyo product (Add to bag); its full-bottle offers
+  # Sangyo sells as decants stays a Sangyo product (Add to bag); its full-bottle offers
   # then show in the Where to buy section instead (sections/perfume-where-to-buy.liquid).
   assign offers = product.metafields.samyo.affiliate_offers.value
   assign is_aff = false

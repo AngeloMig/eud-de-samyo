@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
-    {%- comment -%} Samyo: a fragrance profile page for a perfume we sell points to its product page (docs/DISCOVERY-PLAN.md). {%- endcomment -%}
+    {%- comment -%} Sangyo: a fragrance profile page for a perfume we sell points to its product page (docs/DISCOVERY-PLAN.md). {%- endcomment -%}
     {%- if template.name == 'metaobject' and metaobject.products.value.size > 0 -%}
       <link rel="canonical" href="{{ shop.url }}{{ metaobject.products.value.first.url }}">
     {%- else -%}
@@ -324,7 +324,7 @@
         document.documentElement.classList.add('shopify-design-mode');
       }
     </script>
-    {%- comment -%} Samyo: fonts, design tokens, Dawn font overrides (snippets/perfume-head.liquid). {%- endcomment -%}
+    {%- comment -%} Sangyo: fonts, design tokens, Dawn font overrides (snippets/perfume-head.liquid). {%- endcomment -%}
     {%- render 'perfume-head' -%}
   </head>
 

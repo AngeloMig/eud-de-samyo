@@ -1,6 +1,44 @@
-# Handoff: Samyo perfume theme
+# Handoff: Sangyo perfume theme
 
-## Update 2026-11-25: Why Samyó, Seal layout
+## Update 2026-11-25: hero floating tiles + hover notes
+
+- Owner picked hero idea 2 (floating tiles) of 10, plus hover notes.
+- **Floating tiles** (section setting, default on): each `<li>` bobs on the CSS
+  `translate` property and leans with the mouse on `transform` (`--phh-mx/--phh-my`
+  from `perfume-hero.js`), so the intro and hover motion on inner elements are
+  untouched. Pauses while the grid is hovered/focused; off under reduced motion.
+- **Hover notes**: new tile setting "Notes shown on hover" (perfume tiles, up to 3,
+  comma-separated). Hovering/focusing a perfume tile fades the scent tiles
+  (`.phh-tile--scent`: tiles not linking to a product) and wipes its notes into
+  random free cells of the 4 x 3 grid (scent cells + empty cells). Note visual: the
+  bundled cut-out for lemon, cinnamon, vanilla, iris, lavender, orange, rose,
+  cardamom; otherwise the `perfume-note-art` drawing + the name (ambrette and sage
+  have no drawing yet: name only).
+- Home page notes, checked 2026-11-25: Sauvage EDP bergamot, vanilla, patchouli
+  (dior.com); Dior Homme Intense iris, ambrette, cedar (dior.com); Stronger With You
+  Intensely pink pepper, lavender, vanilla (Sephora key notes; Armani's page doesn't
+  list them); The One EDP orange, sage, tobacco (D&G says orange, herbaceous, woody;
+  sage/tobacco from Notino/Sephora) — **owner to confirm The One and SWYI**.
+
+## Update 2026-11-25: renamed Samyo → Sangyó
+
+- The owner has the name **Sangyó** registered with the DTI, so every customer-facing
+  name in the theme, docs and dev previews now says Sangyó / sangyó (logo text,
+  footer wordmark "eau de sangyó", Why Sangyó, ring text, FAQ and delivery copy,
+  setting labels). Plain "Sangyo" in code comments.
+- **Kept on purpose (technical IDs, never shown as the brand):** image file names
+  `samyo-*.webp` (Shopify Files referenced by name in templates), metafield namespace
+  `samyo.*` (`retailer`, `price_checked`, `affiliate_offers`), setting ids
+  `show_samyo` / `samyo_note`, CSS class `pwb__row--samyo`, JS global
+  `SamyoShipping`, localStorage keys `samyo-*`, the repo name and the owner's local
+  folder `~/Samyo/feeds`. Renaming any of these breaks saved data or image links;
+  images could still be renamed before their first upload.
+- Placeholder contact email `hello@samyo.shop` is unchanged until the owner confirms
+  the new address/domain.
+- Copy that leaned on the old meaning ("to breathe in a scent"): the footer slogan
+  "breathe it in" and the Why seal's breathing centre. Check they still fit Sangyó.
+
+## Update 2026-11-25: Why Sangyó, Seal layout
 
 - `perfume-why` has a new **Layout** setting: Seal (new default, used on the home
   page) or Grid (the previous design, unchanged). Owner picked idea 6 of 10.
@@ -121,7 +159,7 @@
 - Local implementation: buyer pays standard delivery below ₱10,000; free standard
   delivery from **₱10,000 after discounts**, before shipping/tax. Affiliate
   retailer purchases are excluded. No commit, push or live checkout change made.
-- New global **Samyó delivery** settings control the origin, threshold, four
+- New global **Sangyó delivery** settings control the origin, threshold, four
   estimated rates and explanatory copy. Working assumption: Metro Manila origin;
   owner has not confirmed dispatch city. Rates: NCR ₱85, Other Luzon ₱178,
   Visayas ₱212, Mindanao ₱234, based on GoGo Xpress's small-pouch pricing plus fuel.
@@ -172,7 +210,7 @@ also helps people research a scent before buying. Design direction:
   `docs/product-page.md` there.
 - Typography: Cormorant Garamond (Hermès-like display serif), Instrument Sans (body),
   Mrs Saint Delafield (signature script, sparingly). All OFL, via Google Fonts.
-- Store name chosen: **Samyo** (Filipino: to breathe in a scent). samyo.com is taken;
+- Store name first chosen: **Samyo** (Filipino: to breathe in a scent), renamed to **Sangyó** on 2026-11-25 (see the top update). samyo.com is taken;
   samyo.shop / .store / .net were available on 2026-11-20 (not registered; no
   trademark check done).
 
@@ -327,14 +365,14 @@ Queued by the owner, not built yet (items 2–3 done below):
 ## Update 2026-11-21: now a complete Shopify theme
 
 - The repo root is the theme: Shopify Dawn v16.2.0 (downloaded with the owner's OK,
-  commit `dd98c2b` = untouched baseline) + the Samyo files merged in. The old
+  commit `dd98c2b` = untouched baseline) + the Sangyo files merged in. The old
   `perfume-theme/` subfolder is gone; every path in these docs is now from the root.
 - Wiring: `layout/theme.liquid` renders `perfume-head` before `</head>` (fonts, tokens,
   and Dawn's font variables mapped to Cormorant / Instrument Sans so Dawn's own pages
-  match); `config/settings_data.json` scheme-1 = Samyo paper/ink; our
+  match); `config/settings_data.json` scheme-1 = Sangyo paper/ink; our
   `templates/index.json`, `sections/header-group.json`, `sections/footer-group.json`
-  replace Dawn's. Samyo CSS sizes switched from rem to px (Dawn's 1rem = 10px) and
-  Samyo sections reset Dawn's global heading colour/letter-spacing.
+  replace Dawn's. Sangyo CSS sizes switched from rem to px (Dawn's 1rem = 10px) and
+  Sangyo sections reset Dawn's global heading colour/letter-spacing.
 - Showcase: the chosen bottle is now centred on the stage (was left of centre);
   waiting bottles line up to its right; name and caption centred.
 - Lint: `bash dev/check.sh` runs theme check on the whole theme with
@@ -379,9 +417,9 @@ CSS/JS can't hide a fix.
   inner line does). Footer wordmark default is now "eau de samyo".
 - Phones: caption hidden; arrows get their own row under the bottle.
 
-## Update 2026-11-21: wordmark fix, "samyó", hero ideas 1–6
+## Update 2026-11-21: wordmark fix, "sangyó", hero ideas 1–6
 
-- Footer wordmark default "eau de samyó"; header logo default "samyó". The wordmark's
+- Footer wordmark default "eau de sangyó"; header logo default "sangyó". The wordmark's
   per-letter masks are now larger than the glyphs (padding + negative margin), so
   descenders, the accent and tight letters are never clipped; size 250vw/len.
 - Hero gained settings (all **off in templates/index.json** until the owner picks):
@@ -414,7 +452,7 @@ Idea pages and a Codex prompt for every idea: `docs/prompts/` (README lists what
 is built). Previews: `dev/*-ideas.html`, `dev/note-icons.html`.
 
 - **Showcase** (`perfume-showcase`):
-  - heading "The Samyó edit" (kicker "Featured fragrances") replaces "Smell it
+  - heading "The Sangyó edit" (kicker "Featured fragrances") replaces "Smell it
     before you buy it";
   - bold-caps brand above a big serif name;
   - the stage fills the top-right and the left column is wider;
@@ -495,7 +533,7 @@ is built). Previews: `dev/*-ideas.html`, `dev/note-icons.html`.
 
 ## Update 2026-11-21: product page, collection page, scent guide
 
-Templates now use Samyo sections (Dawn's originals stay in the theme, unused;
+Templates now use Sangyo sections (Dawn's originals stay in the theme, unused;
 Dawn's old templates are not kept in git history yet because nothing is committed).
 
 - **Product page** (`templates/product.json`):
@@ -655,9 +693,9 @@ The cart drawer gained:
 ## Update 2026-11-21: fragrance discovery, Phase 1 (approved plan)
 
 Plan: `docs/DISCOVERY-PLAN.md`. The owner approved:
-- the product page is canonical when Samyó sells the perfume, otherwise the profile
+- the product page is canonical when Sangyó sells the perfume, otherwise the profile
   page;
-- Scent DNA uses Samyó's own 1–5 assessment, labelled;
+- Scent DNA uses Sangyó's own 1–5 assessment, labelled;
 - the team fills in the data.
 
 Data model: `docs/METAFIELDS.md` › Fragrance profiles (`fragrance_profile`,
@@ -673,7 +711,7 @@ New sections (all in `assets/perfume-discovery.css/js`):
 | `perfume-journey` | Opening → Heart → Dry-down as tabs on a line with three even dots (the line ends at the last dot); the background changes; notes as **real photos**; long lists show 10 then "Show all n notes"; swipe on phones |
 | `perfume-performance-lab` | Longevity range on a 0–12h scale. Projection: a silhouette inside three soft concentric scent rings labelled Intimate (in a hug), Moderate (arm's length), Strong (across a room); rings up to the level fill, the level's ring breathes and a ripple spreads to it. Sillage: the same silhouette with ribbons of scent flowing behind and fading (Soft 1 short, Moderate 2, Heavy 3 long). Level buttons preview each level, this perfume's is marked "This perfume"; captions, ring labels and the scent colour are settings. Motion is transform/opacity only, pauses on hover and keyboard focus, none under reduced motion. Basis chip per metric, "Not yet evaluated" when empty |
 | `perfume-wear-guide` | When to wear it: day↔night line, four Philippine situations (hot day, office, rain, evening) rated Great/Good/Careful, six occasions |
-| `perfume-where-to-buy` | Samyó sizes, ₱ and Add to bag first; brand site; retailer offers and CJ offers with "Affiliate link" labels, rel="sponsored" and a disclosure |
+| `perfume-where-to-buy` | Sangyó sizes, ₱ and Add to bag first; brand site; retailer offers and CJ offers with "Affiliate link" labels, rel="sponsored" and a disclosure |
 | `perfume-details` | Fold-out rows: description, observations, sources, pages |
 
 Also in this update:
@@ -765,13 +803,13 @@ Also in this update:
 ## Update 2026-11-21: homepage sections + Journal
 
 Homepage order (`templates/index.json`): hero, showcase, families, **Shop by brand**,
-**Why Samyó**, **Journal**, **FAQ**. The old brands marquee (`perfume-brands`) is kept
+**Why Sangyó**, **Journal**, **FAQ**. The old brands marquee (`perfume-brands`) is kept
 but switched off (`"disabled": true`); turn it back on in the editor if wanted.
 
 | Section | What it does |
 |---|---|
 | `perfume-shop-brands` | Brand tiles: the name large on a tint and the count; on hover the brand's bottle rises in. Each block picks the brand **collection** (name, link, count, picture = block image › collection image › first product photo); no collection → `/collections/<name>`. Phones: swipe row. Homepage blocks: 10 brands, pictures only for the 3 we have photos of. |
-| `perfume-why` | "Why Samyó": heading + text + link, then a hairline grid of promises (line icon that draws in, title, line, optional link) and a faint large "samyó" behind. Defaults only repeat true things (announcement claims, site features). |
+| `perfume-why` | "Why Sangyó": heading + text + link, then a hairline grid of promises (line icon that draws in, title, line, optional link) and a faint large "sangyó" behind. Defaults only repeat true things (announcement claims, site features). |
 | `perfume-journal` | Homepage Journal: newest article as a feature, the next ones as rows; blog picker (falls back to `blogs.journal`); hidden when empty. |
 | `perfume-faq` | Accordion on native `<details>` (works without JS; "one open at a time" via `name`), sticky intro + contact link, optional FAQPage JSON-LD. Default answers point to checkout/policies for store-specific facts. |
 | `perfume-main-blog` | Blog page (`templates/blog.json`): big title, intro, tag chips (current marked), feature + 3-column grid, paginated. |
@@ -782,7 +820,7 @@ Preview: `dev/journal.html`, `dev/article.html` with **example articles made up 
 preview** (`DEMO_ARTICLES` in `dev/render-preview.mjs`, banner says so); the store writes
 its own. Comments on articles are not shown yet.
 
-## Update 2026-11-22: the "eau de samyó" logo (idea 5, "The spray")
+## Update 2026-11-22: the "eau de sangyó" logo (idea 5, "The spray")
 
 - Header (`perfume-header`, no logo image set, `logo_style: spray`): a small italic
   prefix (`logo_prefix`, "eau de") + the name in **Italiana** + a fine resting mist of
@@ -797,9 +835,9 @@ its own. Comments on articles are not shown yet.
 - Ideas page: `dev/logo-ideas.html` (10 concepts). `dev/name-ideas.html` is unused
   (the owner kept the name).
 
-## Update 2026-11-22: Samyó edit heading and entrance
+## Update 2026-11-22: Sangyó edit heading and entrance
 
-- "Featured fragrances / The Samyó edit" now sits centred across the top of the
+- "Featured fragrances / The Sangyó edit" now sits centred across the top of the
   showcase (desktop: its own grid row; the stage is row 2). Heading size defaults
   48px desktop / 36px phone.
 - Background perfume name about 20% smaller (`--ps-bgname` × 1.3, cap 220vw/len).
@@ -809,14 +847,14 @@ its own. Comments on articles are not shown yet.
   uses "Background name blur").
 - Entrance no longer pins the page (the pinned version showed an empty screen for a
   screen of scrolling). It plays by itself (~2.6s) once the section's top passes 70%
-  of the screen: "The Samyó edit" appears large in the centre and glides up to the
+  of the screen: "The Sangyó edit" appears large in the centre and glides up to the
   top centre, shrinking (`--h-dx/--h-dy/--h-s`); the bottle rises, the kicker and
   details fade in; last, after a short pause, the perfume's background name appears
   in the centre and drifts up to its resting place a little above centre (`top: 24%`
   of the stage) (`--n-*`). ~3.4s in all. Interaction ends it early;
   reduced motion and the theme editor skip it.
 
-## Update 2026-11-22: Samyó edit panel (notes line, price by the name)
+## Update 2026-11-22: Sangyó edit panel (notes line, price by the name)
 
 - Notes: new setting "Notes style", default **One line**: the note photos overlap in
   a row beside one italic line ("bergamot, Sichuan pepper, lavender & vanilla").
@@ -972,7 +1010,7 @@ folder (and into git) before relying on it; deleting that session deletes the fo
   `dev/tools/prepare-brand-tiles.mjs`. No product labels have been regenerated.
   Original photos, selected alternatives and crop rectangles are in
   `dev/source-photos/brand-tiles/sources.json`; images/rights: CREDITS.md.
-- The owner requested **10 compact notes ideas** and **10 Why Samyó ideas**.
+- The owner requested **10 compact notes ideas** and **10 Why Sangyó ideas**.
   Previews: `dev/notes-ideas.html` and `dev/why-ideas.html`, linked to each other;
   Desktop/Phone toggles and working tabs/accordions. The selected idea is in the
   URL hash. These are proposals: the existing journey and Why section are still
@@ -1034,7 +1072,7 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Owner rejected the three scent-family papers in the footer. Removed their
   rendered markup, schema blocks, preset/group entries and CSS. The new footer
   design is labelled Editorial; invitation, scent finder, newsletter, menus and
-  large `eau de samyó` wordmark remain.
+  large `eau de sangyó` wordmark remain.
 - Owner asked for 10 animation ideas specifically for the footer wordmark. Ideas
   are advisory pending a choice; no new wordmark animation has been selected.
 - This checkout was already on `angelo/rose-centre` with other changes in progress;
