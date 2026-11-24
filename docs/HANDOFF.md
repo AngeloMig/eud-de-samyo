@@ -1,5 +1,52 @@
 # Handoff: Samyo perfume theme
 
+## Update 2026-11-25: Why Samyó, Seal layout
+
+- `perfume-why` has a new **Layout** setting: Seal (new default, used on the home
+  page) or Grid (the previous design, unchanged). Owner picked idea 6 of 10.
+- Seal: heading centred; a round seal (an open ring of text around a dark
+  centre with a word or logo; no hairline circles, owner removed them); promises either side, first half left, rest
+  right, on shared rows via `grid-template-rows: subgrid` so pairs line up. Phones:
+  seal on top, promises in one left-aligned column.
+- Motion (transform/opacity only): ring turns into place and the centre grows in on
+  reveal, then promises move out from the seal; centre "breathes" (scale 1→1.035);
+  ring motion setting: spins (40s) and turns further with scroll (default) / slow
+  spin / scroll only / still.
+  Breathing pauses on hover and focus-within. **The ring keeps spinning on hover:
+  the owner asked for no interruption (2026-11-25), an exception to the "moving
+  content pauses on hover" rule; it still stops under reduced motion.** All motion
+  is off under reduced motion.
+  Hovering or focusing a promise swaps the centre to that promise's icon.
+- Promises (Seal layout): icon on a small disc matching the centre; optional small
+  label above each title (new block setting, both layouts); hovering/focusing one
+  leans it toward the seal and nudges its link arrow (the others don't fade:
+  owner removed that, 2026-11-25)
+  (inner `.pw__pt-in`, so it never fights the reveal on the `<li>`). Phones: seal
+  on top, promises in a 2 x 2 grid (subgrid rows). Home page links: Authenticity
+  (`/pages/authenticity`, create it per SETUP.md), shipping policy, scent guide,
+  Find your scent. Delivery line shortened (same meaning).
+- Brand pass: stagger 90ms (brand range 60–90ms), colour defaults now the tokens'
+  stone `#E8E4DC` / ink `#292521`. Each promise is a flex column with its link
+  pushed to the bottom, so links line up across a row (desktop pairs and the phone
+  2 x 2 grid).
+- Background (both layouts, owner picked ideas 5 + 9 of 10): pastel tiles (hero
+  colours, opacity pulse), paper grain (inline SVG noise data URI, no remote asset)
+  and 10 faint botanical line drawings (`snippets/perfume-why-botanical.liquid`)
+  floating 9s; each a checkbox. Tiles and drawings pause on hover/focus-within and
+  stay still under reduced motion; phones show fewer, fainter ones.
+- Centre style setting: Embossed (default; lit disc, raised word/logo/icons via
+  gradient, inset shadows, text-shadow and drop-shadow) or Flat.
+- New settings: ring text (upcased, a " · " joiner is added), centre word, centre
+  logo (image), ring motion. Big faint word is now Grid layout only.
+- The ring text is deliberately open (owner's choice): natural 0.34em spacing, so it
+  stops short and leaves a gap as it orbits; Liquid shrinks long text so it never
+  overlaps itself.
+- New files: `assets/perfume-why.js` (icon swap, scroll ring),
+  `snippets/perfume-why-icon.liquid` (icons shared by promises and the centre).
+- Checked in Chromium at 1440 / 900 / 390 px, reduced motion and JS off, with a
+  hand-mirrored test page (liquidjs wasn't available to run `dev/render-preview.mjs`).
+  Re-run the preview renderer locally to refresh `dev/home.html`.
+
 ## Update 2026-11-23: Basic plan and reload persistence
 
 - Calculator now defaults the monthly Shopify Basic cost to ₱1,550, from

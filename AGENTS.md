@@ -61,6 +61,8 @@ Image tools (new cut-outs): `docs/HANDOFF.md` → "Image pipeline".
   focus, 44px touch targets on phones. Moving content pauses on hover and keyboard
   focus and stops under reduced motion; the owner chose no visible Pause buttons
   (2026-11-21), so don't add them back.
+  Exception: the Why Samyó seal ring keeps spinning on hover (owner, 2026-11-25);
+  it still stops under reduced motion.
 - **Never** label an unbranded stock bottle as a real brand's perfume, and never copy
   brand photos from brand websites yourself. Product photos come from the owner
   (see `docs/CREDITS.md` for the conditions on the current ones).
