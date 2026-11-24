@@ -78,14 +78,25 @@ perfume-hero {
    (clip-path wipe); the one going out lifts a little and fades. Only clip-path,
    opacity and transform move. The script's swashes reach outside the line box, so
    that line's mask opens up once the intro is done. */
+.phh__left {
+  min-width: 0; /* long script words must not widen the column */
+}
+
 .phh__rot {
   display: inline-grid;
   font-family: var(--phh-script);
-  font-size: 1.55em;
+  justify-items: start; /* each word keeps its own width, for the fit */
+  font-size: 2.05em;
   letter-spacing: 0;
-  line-height: 0.6;
-  margin-left: 0.04em;
+  line-height: 0.45;
+  margin-left: -0.04em;
   vertical-align: baseline;
+}
+
+/* A larger first letter, like a hand-drawn initial. The script may touch "like"
+   and the line above a little (owner's choice); it never leaves the column. */
+.phh__rw::first-letter {
+  font-size: 1.4em;
 }
 
 /* Each word is sized on its own (--w-fit, set by perfume-hero.js) so short words

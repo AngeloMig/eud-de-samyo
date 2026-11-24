@@ -7,7 +7,8 @@
   purpose at first, then owner asked: summer, Sunday morning, your first date, rain
   in Manila — normal grammar) and **Time per word** (2–6 s, default 3).
   Fix pass after the live check (clipped, flicker/overlap, small, tilted): no tilt,
-  script at 1.55em on the same baseline as "like", wipe edges 1em outside the glyphs
+  script at 2.05em (first letter 1.4x, may touch "like" and the line above, owner's
+  choice) on the same baseline as "like", wipe edges 1em outside the glyphs
   (swashes never clipped), incoming word starts only after the outgoing one has
   faded (measured: never two words visible), each word fitted on its own
   (`--w-fit`) so short words stay large. The handwritten accent is

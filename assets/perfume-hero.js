@@ -88,20 +88,21 @@
       const lead = line.querySelector('.phh__lead');
       const fit = () => {
         const room = line.clientWidth;
-        const space = parseFloat(getComputedStyle(line).fontSize) * 0.3;
+        const space = parseFloat(getComputedStyle(line).fontSize) * 0.1;
         const leadWidth = lead ? lead.offsetWidth + space : 0;
         const free = Math.max(1, room - leadWidth);
         words.forEach((w) => {
           w.style.setProperty('--w-fit', 1);
           const need = w.offsetWidth;
-          w.style.setProperty('--w-fit', need > free ? Math.max(0.45, (free / need) * 0.94).toFixed(3) : 1);
+          w.style.setProperty('--w-fit', need > free ? Math.max(0.25, (free / need) * 0.94).toFixed(3) : 1);
         });
         // Still on its own line? Shrink the widest words a little more.
-        const wrapped = () => lead && rot.offsetTop > lead.offsetTop + lead.offsetHeight * 0.5;
+        // Wrapped = the word starts left of where the lead ends (it went to a new line).
+        const wrapped = () => lead && rot.getBoundingClientRect().left < lead.getBoundingClientRect().right - 1;
         for (let i = 0; i < 8 && wrapped(); i++) {
           words.forEach((w) => {
             const f = parseFloat(w.style.getPropertyValue('--w-fit')) || 1;
-            if (w.offsetWidth >= rot.offsetWidth - 2) w.style.setProperty('--w-fit', Math.max(0.45, f * 0.92).toFixed(3));
+            if (w.offsetWidth >= rot.offsetWidth - 2) w.style.setProperty('--w-fit', Math.max(0.25, f * 0.92).toFixed(3));
           });
         }
       };
