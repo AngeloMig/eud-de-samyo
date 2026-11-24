@@ -5,8 +5,9 @@
   store is allowed to use it. Pauses on hover and focus; reduced motion shows a
   static, wrapping list.
 
-  Style "Crossing ribbons": two tilted bands cross in an X inside their own band (so
-  they never cover the sections around them): the houses on an ink ribbon one way,
+  Style "Crossing ribbons": two tilted bands cross in an X. Default: they sit on
+  the seam between the section above and the one below (zero-height section; the
+  hero and showcase make room, see perfume-brands.css); or inside their own band: the houses on an ink ribbon one way,
   a second ribbon of words (e.g. notes, in the handwritten font) the other way.
 
   Styles: assets/perfume-brands.css. CSS-only motion (the list is rendered twice,
@@ -57,7 +58,7 @@
       {%- if word != blank -%}<li class="pb__item"><span class="pb__word">{{ word | escape }}</span><span class="pb__mark" aria-hidden="true">·</span></li>{%- endif -%}
     {%- endfor -%}
   {%- endcapture -%}
-  <section id="{{ bid }}" class="pb pb--ribbons" aria-labelledby="{{ bid }}-heading">
+  <section id="{{ bid }}" class="pb pb--ribbons{% if section.settings.ribbon_overlap %} pb--overlap{% endif %}" aria-labelledby="{{ bid }}-heading">
     <p class="pf-visually-hidden" id="{{ bid }}-heading">{{ section.settings.kicker | default: 'Brands' | escape }}</p>
     <div class="pb__ribbons">
       {%- if words_html != blank -%}
@@ -130,6 +131,7 @@
     { "type": "header", "content": "Crossing ribbons" },
     { "type": "text", "id": "ribbon_words", "label": "Second ribbon words", "info": "Comma-separated, in the handwritten font, e.g. notes. Empty: one ribbon only.", "default": "bergamot, iris, vanilla, cedar, lavender, pink pepper, orange, tobacco, amber, rose" },
     { "type": "color", "id": "ribbon_color", "label": "Second ribbon colour", "default": "#D8D1C5" },
+    { "type": "checkbox", "id": "ribbon_overlap", "label": "Sit on the seam between sections", "info": "The ribbons cross the line between the sections above and below, which make room for them (hero and featured showcase). Off: the ribbons get their own band.", "default": true },
     { "type": "header", "content": "Colours and spacing" },
     { "type": "color", "id": "background_color", "label": "Background", "info": "Crossing ribbons: also the colour of the band behind them, and of the names on the ink ribbon.", "default": "#F1EEE9" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },

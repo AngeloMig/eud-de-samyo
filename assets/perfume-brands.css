@@ -210,6 +210,53 @@ a.pb__link:hover .pb__name {
   }
 }
 
+/* ---------- Ribbons on the seam ("Sit on the seam", default) ----------
+   The section takes no height: the ribbons are centred on the line between the
+   section above and the one below, clipped only at the sides. Half the ribbon
+   band (--pb-half) is the room each neighbour makes: the hero lifts its slogan and
+   trust line, the showcase adds it to its top padding. The hero's tiles may go
+   under the ribbons (owner's choice). */
+:root {
+  --pb-half: calc(50px + 4.6vw);
+}
+
+@media screen and (max-width: 749px) {
+  :root {
+    --pb-half: calc(34px + 6vw);
+  }
+}
+
+.section-perfume-brands:has(.pb--overlap) {
+  height: 0;
+  overflow-x: clip;
+  overflow-y: visible;
+  position: relative;
+  z-index: 6;
+}
+
+.pb--overlap {
+  background: transparent;
+  height: 0;
+  overflow: visible;
+  padding: 0;
+}
+
+.pb--overlap .pb__ribbons {
+  height: 0;
+}
+
+.pb--overlap .pb__rb {
+  top: 0;
+}
+
+.section-perfume-hero:has(+ .section-perfume-brands .pb--overlap) .phh__left {
+  padding-bottom: calc(var(--phh-gutter, 30px) + var(--pb-half));
+}
+
+.section-perfume-brands:has(.pb--overlap) + .section-perfume-showcase .ps {
+  padding-top: calc(var(--ps-pt, 0px) + var(--pb-half));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pb__track {
     animation: none;
@@ -232,16 +279,20 @@ a.pb__link:hover .pb__name {
     mask-image: none;
   }
 
-  .pb__ribbons {
+  .pb--ribbons:not(.pb--overlap) .pb__ribbons {
     height: auto;
     padding-block: 12px;
   }
 
-  .pb__rb {
+  .pb--ribbons:not(.pb--overlap) .pb__rb {
     left: 0;
     position: relative;
     right: 0;
     top: 0;
     transform: none;
+  }
+
+  .pb--overlap .pb__list {
+    flex-wrap: nowrap;
   }
 }

@@ -12,6 +12,14 @@
   1440 / 1024 / 390 px, the ribbons never leave the band, so the hero above and the
   showcase below are never covered. Pauses on hover/focus; reduced motion shows the
   lists flat and wrapped.
+- Then (owner): **ribbons sit on the seam** (new checkbox "Sit on the seam between
+  sections", default on). The section takes no height (`overflow-x: clip`), the
+  ribbons centre on the hero/showcase line, and both neighbours make room with
+  `--pb-half` (50px + 4.6vw; phones 34px + 6vw) via `:has()` rules in
+  perfume-brands.css: the hero lifts its slogan + trust line, the showcase adds it
+  to its top padding. Hero tiles may go under the ribbons (owner's choice).
+  Measured at 1440 / 1024 / 390: hero and showcase touch (0 gap), the hero text ends
+  above the ribbons and the showcase kicker starts below them.
 
 ## Update 2026-11-25: hero rotating word
 

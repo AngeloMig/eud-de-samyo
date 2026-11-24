@@ -374,6 +374,7 @@
       ],
       "settings": {
         "style": "ribbons",
+        "ribbon_overlap": true,
         "name_size": 44,
         "name_size_mobile": 26,
         "speed": 50,
