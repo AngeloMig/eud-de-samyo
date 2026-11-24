@@ -16,7 +16,9 @@
   else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
   cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
   asked for at 600 x 780 instead of 240), else the note's name large on its colour. Full-bleed photos get a paper chip
-  behind the label. Bergamot and amber cut-outs weren't clean, so they stay uncut.
+  behind the label. Cut-out fit by note: cedar, pepper, cinnamon fill the card
+  (`--fill`, label chip); lavender, iris, rose stand on the bottom edge (`--stem`,
+  label at the top, zoom from the bottom instead of drifting). Bergamot and amber cut-outs weren't clean, so they stay uncut.
   No free-licence photo exists yet for patchouli, ambrette or sage (searched
   2026-11-25); upload one in the tile settings to use them.
 - Home page notes, checked 2026-11-25, picked from each perfume's published list so

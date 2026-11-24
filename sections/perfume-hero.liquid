@@ -266,8 +266,19 @@
                 elsif note_file != blank
                   assign note_kind = 'cut'
                 endif
+                # How a cut-out sits: textures fill the card, stemmed flowers stand on
+                # its bottom edge, everything else floats whole in the middle.
+                assign note_fit = ''
+                if note_kind == 'cut'
+                  case note_art
+                    when 'cedar', 'pepper', 'cinnamon'
+                      assign note_fit = ' phh-note--fill'
+                    when 'lavender', 'iris', 'rose'
+                      assign note_fit = ' phh-note--stem'
+                  endcase
+                endif
               -%}
-              <li class="phh-note phh-note--{{ note_kind }}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
+              <li class="phh-note phh-note--{{ note_kind }}{{ note_fit }}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
                 <span class="phh-note__media">
                   {%- if note_upload != blank -%}
                     {{ note_upload | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 12vw, 30vw', loading: 'lazy', alt: '' }}

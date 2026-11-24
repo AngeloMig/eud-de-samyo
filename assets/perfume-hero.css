@@ -566,12 +566,14 @@ perfume-header {
 
 @media (prefers-reduced-motion: no-preference) {
   .phh--float .phh-tile:not(.phh-tile--cover) .phh-tile__pose,
-  .phh--float .phh-note .phh-note__cut {
+  .phh--float .phh-note:not(.phh-note--fill, .phh-note--stem) .phh-note__cut {
     animation: phh-drift var(--bob, 8s) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
   }
 
   .phh--float .phh-tile--cover .phh-tile__pose,
-  .phh--float .phh-note--full img {
+  .phh--float .phh-note--full img,
+  .phh--float .phh-note--fill .phh-note__cut,
+  .phh--float .phh-note--stem .phh-note__cut {
     animation: phh-zoom calc(var(--bob, 8s) * 1.6) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
   }
 
@@ -653,6 +655,27 @@ perfume-header {
   width: 78%;
 }
 
+/* Textures (cedar, pepper, cinnamon) fill the whole card. */
+.phh-note--fill .phh-note__media .phh-note__cut {
+  filter: none;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Stemmed flowers (lavender, iris, rose) stand on the card's bottom edge. */
+.phh-note--stem .phh-note__media .phh-note__cut {
+  bottom: 0;
+  filter: drop-shadow(0 6px 10px rgba(41, 37, 33, 0.14));
+  height: 92%;
+  left: 0;
+  object-fit: contain;
+  object-position: 50% 100%;
+  position: absolute;
+  transform-origin: 50% 100%;
+  width: 100%;
+}
+
 /* The theme's note photo, filling the tile instead of a small disc. */
 .phh-note__media .pf-note-photo {
   aspect-ratio: auto;
@@ -669,12 +692,19 @@ perfume-header {
 }
 
 /* Full-bleed photos: the label sits on a small paper chip so it stays readable. */
-.phh-note--full .phh-note__label {
+.phh-note--full .phh-note__label,
+.phh-note--fill .phh-note__label {
   background: color-mix(in srgb, var(--tile-bg) 88%, #fff);
   bottom: 8px;
   left: 8px;
   padding: 6px 9px 7px;
   right: auto;
+}
+
+/* Flowers standing on the bottom edge: the label moves to the top. */
+.phh-note--stem .phh-note__label {
+  bottom: auto;
+  top: 12px;
 }
 
 /* No photo yet: the name, large, on the note's colour. */
