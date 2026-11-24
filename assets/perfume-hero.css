@@ -93,7 +93,7 @@ perfume-hero {
    sit far outside the glyphs so the script's swashes are never clipped. */
 .phh__rw {
   align-self: baseline;
-  clip-path: inset(-1em 100% -1em -1em);
+  clip-path: inset(-1em 100% -1em 0);
   font-size: calc(1em * var(--w-fit, 1));
   grid-area: 1 / 1;
   opacity: 0;
@@ -104,6 +104,12 @@ perfume-hero {
 .phh__rw.is-on {
   clip-path: inset(-1em -1em -1em -1em);
   opacity: 1;
+}
+
+/* A word that is neither showing nor fading out is fully hidden, so the script's
+   long entry strokes and i-dots (drawn outside the word's box) can never peek. */
+.phh__rw:not(.is-on):not(.is-out) {
+  visibility: hidden;
 }
 
 /* In: written left to right, only after the outgoing word has gone (no overlap).
