@@ -9,7 +9,6 @@
   Cursor: a dot follows the mouse over the hero (eased), and grows with a label over
   linked tiles. Mouse and trackpad only; off with reduced motion.
 
-  Floating tiles: the grid's lean follows the mouse (--phh-mx / --phh-my).
   Hover notes: hovering or focusing a perfume tile shows its notes in random free
   cells; the scent tiles step back until the pointer or focus leaves.
 */
@@ -24,7 +23,6 @@
       this.abort = new AbortController();
       this.intro();
       this.bindCursor();
-      this.bindFloat();
       this.bindNotes();
     }
 
@@ -69,32 +67,6 @@
         this.classList.remove('is-pre');
         document.documentElement.classList.remove('pf-intro-pre');
       });
-    }
-
-    // Floating tiles: the grid leans with the mouse (each tile by its own depth, CSS).
-    bindFloat() {
-      const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
-      const grid = this.querySelector('.phh__grid');
-      if (!grid || !this.classList.contains('phh--float') || !fine.matches || reduced.matches) return;
-      const signal = this.abort.signal;
-      this.addEventListener(
-        'pointermove',
-        (e) => {
-          if (e.pointerType !== 'mouse') return;
-          const r = this.getBoundingClientRect();
-          grid.style.setProperty('--phh-mx', ((e.clientX - r.left) / r.width - 0.5).toFixed(3));
-          grid.style.setProperty('--phh-my', ((e.clientY - r.top) / r.height - 0.5).toFixed(3));
-        },
-        { signal }
-      );
-      this.addEventListener(
-        'pointerleave',
-        () => {
-          grid.style.setProperty('--phh-mx', 0);
-          grid.style.setProperty('--phh-my', 0);
-        },
-        { signal }
-      );
     }
 
     // Hover notes: a perfume tile's notes take random free cells (scent tiles' cells

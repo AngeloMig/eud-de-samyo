@@ -544,52 +544,60 @@ perfume-header {
   }
 }
 
-/* ---------- Floating tiles (setting) ----------
-   Each tile bobs on the `translate` property and leans with the mouse on `transform`
-   (set from assets/perfume-hero.js), so neither touches the intro or hover motion
-   on the inner elements. Pauses while the grid is hovered or focused. */
+/* ---------- Moving images (setting "float_tiles") ----------
+   The tiles never move, so the grid stays perfectly aligned. Only the image inside
+   each tile moves, on the separate `translate` / `scale` properties so the intro,
+   pose and hover transforms are untouched: cut-outs (contain) drift a few px up and
+   down, full-bleed photos (cover) zoom very slowly. Pauses while the grid is hovered
+   or focused; off under reduced motion. */
 .phh-tile,
 .phh-note {
-  transition:
-    transform 1.2s var(--phh-ease),
-    opacity 0.45s ease;
+  transition: opacity 0.45s ease;
 }
 
-.phh--float .phh-tile,
-.phh--float .phh-note {
-  transform: translate(calc(var(--phh-mx, 0) * var(--dp, 10) * 1px), calc(var(--phh-my, 0) * var(--dp, 10) * 1px));
-}
-
-.phh-tile:nth-child(1) { --dp: 8; --bob: 7s; }
-.phh-tile:nth-child(2) { --dp: 16; --bob: 8.5s; }
-.phh-tile:nth-child(3) { --dp: 12; --bob: 7.6s; }
-.phh-tile:nth-child(4) { --dp: 20; --bob: 9s; }
-.phh-tile:nth-child(5) { --dp: 26; --bob: 8s; }
-.phh-tile:nth-child(6) { --dp: 10; --bob: 8.8s; }
-.phh-tile:nth-child(7) { --dp: 14; --bob: 7.2s; }
-.phh-note { --dp: 18; --bob: 8s; }
+.phh-tile:nth-child(1) { --bob: 7s; }
+.phh-tile:nth-child(2) { --bob: 9s; }
+.phh-tile:nth-child(3) { --bob: 7.6s; }
+.phh-tile:nth-child(4) { --bob: 8.4s; }
+.phh-tile:nth-child(5) { --bob: 9.6s; }
+.phh-tile:nth-child(6) { --bob: 8.8s; }
+.phh-tile:nth-child(7) { --bob: 7.2s; }
+.phh-note { --bob: 8s; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .phh--float .phh-tile,
-  .phh--float .phh-note {
-    animation: phh-bob var(--bob, 8s) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.1s) infinite alternate;
+  .phh--float .phh-tile:not(.phh-tile--cover) .phh-tile__pose,
+  .phh--float .phh-note .phh-note__cut {
+    animation: phh-drift var(--bob, 8s) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
   }
 
-  .phh--float .phh__grid:hover .phh-tile,
-  .phh--float .phh__grid:hover .phh-note,
-  .phh--float .phh__grid:focus-within .phh-tile,
-  .phh--float .phh__grid:focus-within .phh-note {
+  .phh--float .phh-tile--cover .phh-tile__pose,
+  .phh--float .phh-note--full img {
+    animation: phh-zoom calc(var(--bob, 8s) * 1.6) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
+  }
+
+  .phh--float .phh__grid:hover *,
+  .phh--float .phh__grid:focus-within * {
     animation-play-state: paused;
   }
 }
 
-@keyframes phh-bob {
+@keyframes phh-drift {
   from {
-    translate: 0 -6px;
+    translate: 0 -4px;
   }
 
   to {
-    translate: 0 8px;
+    translate: 0 4px;
+  }
+}
+
+@keyframes phh-zoom {
+  from {
+    scale: 1;
+  }
+
+  to {
+    scale: 1.05;
   }
 }
 
@@ -637,6 +645,14 @@ perfume-header {
   width: 100%;
 }
 
+/* Bundled cut-outs sit whole on the note's colour, like the bottles. */
+.phh-note__media .phh-note__cut {
+  filter: drop-shadow(0 10px 14px rgba(41, 37, 33, 0.18));
+  height: 78%;
+  object-fit: contain;
+  width: 78%;
+}
+
 /* The theme's note photo, filling the tile instead of a small disc. */
 .phh-note__media .pf-note-photo {
   aspect-ratio: auto;
@@ -650,6 +666,15 @@ perfume-header {
   left: 0;
   top: 0;
   width: 100% !important;
+}
+
+/* Full-bleed photos: the label sits on a small paper chip so it stays readable. */
+.phh-note--full .phh-note__label {
+  background: color-mix(in srgb, var(--tile-bg) 88%, #fff);
+  bottom: 8px;
+  left: 8px;
+  padding: 6px 9px 7px;
+  right: auto;
 }
 
 /* No photo yet: the name, large, on the note's colour. */
@@ -700,10 +725,5 @@ perfume-header {
 
   .phh-cursor {
     display: none;
-  }
-
-  .phh-tile,
-  .phh-note {
-    transform: none !important;
   }
 }

@@ -3,10 +3,11 @@
 ## Update 2026-11-25: hero floating tiles + hover notes
 
 - Owner picked hero idea 2 (floating tiles) of 10, plus hover notes.
-- **Floating tiles** (section setting, default on): each `<li>` bobs on the CSS
-  `translate` property and leans with the mouse on `transform` (`--phh-mx/--phh-my`
-  from `perfume-hero.js`), so the intro and hover motion on inner elements are
-  untouched. Pauses while the grid is hovered/focused; off under reduced motion.
+- **Moving images** (setting id `float_tiles`, default on): the tiles never move,
+  so the grid stays perfectly aligned (owner, 2026-11-25: no misalignment). Only the
+  image inside moves, on the `translate` / `scale` properties: cut-outs drift ±4px,
+  full-bleed photos zoom 1 → 1.05 slowly. Pauses while the grid is hovered/focused;
+  off under reduced motion. (The first version moved the tiles; removed.)
 - **Hover notes**: new tile setting "Notes shown on hover" (perfume tiles, up to 3,
   comma-separated). Hovering/focusing a perfume tile fades the scent tiles
   (`.phh-tile--scent`: tiles not linking to a product) and wipes its notes into
@@ -14,7 +15,8 @@
   **real photos only (owner: no icons)**: the tile's own "Note 1/2/3 photo" upload,
   else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
   cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
-  asked for at 600 x 780 instead of 240), else the note's name large on its colour.
+  asked for at 600 x 780 instead of 240), else the note's name large on its colour. Full-bleed photos get a paper chip
+  behind the label. Bergamot and amber cut-outs weren't clean, so they stay uncut.
   No free-licence photo exists yet for patchouli, ambrette or sage (searched
   2026-11-25); upload one in the tile settings to use them.
 - Home page notes, checked 2026-11-25, picked from each perfume's published list so

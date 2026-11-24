@@ -13,7 +13,8 @@
   up out of masks one after another; the tiles wipe in from the bottom one by one with
   their image settling from a slight zoom; the slogan and header fade in.
   A dot cursor follows the pointer over the hero and grows over linked tiles (mouse
-  only). Floating tiles (setting): tiles bob gently and shift with the mouse.
+  only). Floating tiles (setting): the tiles stay locked to the grid; only the image
+  inside each one moves (cut-outs drift a few px, full photos zoom very slowly).
   Hover notes: a perfume tile with "Notes shown on hover" swaps the scent tiles for
   its notes, placed in random free cells, while it is hovered or focused.
   Reduced motion: no intro, no cursor, no floating; notes still swap, without motion.
@@ -190,12 +191,14 @@
                 assign note_file = ''
                 assign note_art = note_key
                 case note_key
-                  when 'lemon', 'cinnamon', 'vanilla', 'iris', 'lavender', 'orange', 'rose', 'cardamom'
-                    assign note_file = 'sample-scent-' | append: note_key | append: '.webp'
                   when 'pink_pepper', 'black_pepper', 'sichuan_pepper'
                     assign note_art = 'pepper'
                   when 'cedarwood', 'virginia_cedar'
                     assign note_art = 'cedar'
+                endcase
+                case note_art
+                  when 'lemon', 'cinnamon', 'vanilla', 'iris', 'lavender', 'orange', 'rose', 'cardamom', 'pepper', 'cedar', 'tobacco'
+                    assign note_file = 'sample-scent-' | append: note_art | append: '.webp'
                 endcase
                 case note_key
                   when 'lemon'
@@ -258,8 +261,10 @@
                   endif
                 endif
                 assign note_kind = 'text'
-                if note_upload != blank or note_file != blank or note_photo != blank
-                  assign note_kind = 'photo'
+                if note_upload != blank or note_photo != blank
+                  assign note_kind = 'full'
+                elsif note_file != blank
+                  assign note_kind = 'cut'
                 endif
               -%}
               <li class="phh-note phh-note--{{ note_kind }}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
@@ -267,7 +272,7 @@
                   {%- if note_upload != blank -%}
                     {{ note_upload | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 12vw, 30vw', loading: 'lazy', alt: '' }}
                   {%- elsif note_file != blank -%}
-                    <img src="{{ note_file | asset_url }}" alt="" loading="lazy">
+                    <img class="phh-note__cut" src="{{ note_file | asset_url }}" alt="" loading="lazy">
                   {%- elsif note_photo != blank -%}
                     {{ note_photo }}
                   {%- endif -%}
@@ -457,8 +462,8 @@
     {
       "type": "checkbox",
       "id": "float_tiles",
-      "label": "Floating tiles",
-      "info": "Tiles bob gently and shift with the mouse. Off under reduced motion.",
+      "label": "Moving images",
+      "info": "The tiles stay aligned; the image inside each one drifts or zooms very slowly. Off under reduced motion.",
       "default": true
     },
     {
