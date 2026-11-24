@@ -72,6 +72,58 @@ perfume-hero {
   transition-delay: calc(var(--phh-delay) + var(--i) * 85ms * var(--phh-k));
 }
 
+/* ---------- Rotating word (setting) ----------
+   Every word sits in the same grid cell, so the heading never reflows: the cell is
+   as wide as the longest word. The word coming in is written left to right
+   (clip-path wipe); the one going out lifts a little and fades. Only clip-path,
+   opacity and transform move. The script's swashes reach outside the line box, so
+   that line's mask opens up once the intro is done. */
+.phh__rot {
+  display: inline-grid;
+  font-family: var(--phh-script);
+  font-size: calc(1.08em * var(--rot-fit, 1));
+  letter-spacing: 0;
+  line-height: 1;
+  transform: rotate(-3deg) translateY(0.04em);
+  transform-origin: 0 70%;
+  vertical-align: baseline;
+}
+
+.phh__rw {
+  clip-path: inset(-0.4em 100% -0.5em -0.3em);
+  grid-area: 1 / 1;
+  padding-right: 0.12em;
+  white-space: nowrap;
+}
+
+.phh__rw.is-on {
+  clip-path: inset(-0.4em -0.3em -0.5em -0.3em);
+}
+
+.phh__rot.is-ready .phh__rw {
+  transition:
+    clip-path 1.25s cubic-bezier(0.45, 0.05, 0.3, 1) 0.18s,
+    opacity 0.6s ease,
+    transform 0.9s var(--phh-ease);
+}
+
+.phh__rot.is-ready .phh__rw.is-out {
+  clip-path: inset(-0.4em -0.3em -0.5em -0.3em);
+  opacity: 0;
+  transform: translateY(-0.18em);
+  transition:
+    opacity 0.55s ease,
+    transform 0.8s var(--phh-ease);
+}
+
+.phh:not(.is-pre) .phh__line--rot {
+  overflow: visible;
+}
+
+html.pf-intro-pre .phh[data-intro='true'] .phh__line--rot {
+  overflow: hidden;
+}
+
 .phh__accent {
   color: color-mix(in srgb, var(--phh-ink) 72%, transparent);
   font-family: var(--phh-script);

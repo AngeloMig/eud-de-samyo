@@ -17,7 +17,11 @@
   inside each one moves (cut-outs drift a few px, full photos zoom very slowly).
   Hover notes: a perfume tile with "Notes shown on hover" swaps the scent tiles for
   its notes, placed in random free cells, while it is hovered or focused.
-  Reduced motion: no intro, no cursor, no floating; notes still swap, without motion.
+  Rotating words (setting): the heading's last word takes turns with a list of words,
+  each written in by a left-to-right wipe in the handwritten font; pauses on hover,
+  while the heading is hovered, focus is in the hero, when off screen or the tab is hidden.
+  Reduced motion: no intro, no cursor, no moving images, no rotation; notes still
+  swap, without motion.
 
   Script: assets/perfume-hero.js (<perfume-hero>). Styles: assets/perfume-hero.css.
 {%- endcomment -%}
@@ -25,6 +29,10 @@
   assign sid = 'PerfumeHero-' | append: section.id
   assign tiles = section.blocks | where: 'type', 'tile'
   assign heading_lines = section.settings.heading | newline_to_br | split: '<br />'
+  assign rot_words = ''
+  if section.settings.rotating_words != blank
+    assign rot_words = section.settings.rotating_words | split: ','
+  endif
 -%}
 
 {{ 'perfume-hero.css' | asset_url | stylesheet_tag }}
@@ -64,7 +72,30 @@
       {%- for line in heading_lines -%}
         {%- assign clean_line = line | strip_newlines | strip -%}
         {%- if clean_line != blank -%}
-          <span class="phh__line" style="--i: {{ forloop.index0 }};"><span>{{ clean_line | escape }}</span></span>
+          {%- if forloop.last and rot_words.size > 0 -%}
+            {%- comment -%}
+              Rotating word: the line's last word and the setting's words share one grid
+              cell (no reflow while they change). Screen readers only read the heading's
+              own word; the others are decorative.
+            {%- endcomment -%}
+            {%- liquid
+              assign line_words = clean_line | split: ' '
+              assign last_word = line_words | last
+              assign lead_text = clean_line | remove_last: last_word | strip
+            -%}
+            <span class="phh__line phh__line--rot" style="--i: {{ forloop.index0 }};"><span>
+              {%- if lead_text != blank -%}<span class="phh__lead">{{ lead_text | escape }}</span> {% endif -%}
+              <span class="phh__rot" data-phh-rot data-interval="{{ section.settings.rotate_interval | times: 1000 }}">
+                <span class="phh__rw is-on">{{ last_word | escape }}</span>
+                {%- for w in rot_words -%}
+                  {%- assign rw = w | strip -%}
+                  {%- if rw != blank -%}<span class="phh__rw" aria-hidden="true">{{ rw | escape }}</span>{%- endif -%}
+                {%- endfor -%}
+              </span>
+            </span></span>
+          {%- else -%}
+            <span class="phh__line" style="--i: {{ forloop.index0 }};"><span>{{ clean_line | escape }}</span></span>
+          {%- endif -%}
           {%- unless forloop.last %} {% endunless -%}
         {%- endif -%}
       {%- endfor -%}
@@ -374,6 +405,22 @@
       "id": "accent",
       "label": "Handwritten accent",
       "default": "lemon, cinnamon & a little musk"
+    },
+    {
+      "type": "text",
+      "id": "rotating_words",
+      "label": "Rotating words",
+      "info": "Comma-separated, e.g. summer, your first date. They take turns with the heading's last word, written in the handwritten font. Empty: off."
+    },
+    {
+      "type": "range",
+      "id": "rotate_interval",
+      "label": "Time per word",
+      "min": 2,
+      "max": 6,
+      "step": 0.5,
+      "unit": "s",
+      "default": 3
     },
     {
       "type": "text",

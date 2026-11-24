@@ -1,5 +1,20 @@
 # Handoff: Sangyo perfume theme
 
+## Update 2026-11-25: hero rotating word
+
+- Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;
+  home page: summer, sunday morning, your first date, rain in manila — lowercase on
+  purpose) and **Time per word** (2–6 s, default 3). The handwritten accent is
+  cleared on the home page so the rotating word is the only script.
+- The heading's last word ("you") and the list share one inline-grid cell, so the
+  heading never reflows; screen readers only read "you". Incoming word: clip-path
+  wipe left→right (written in), outgoing: lift + fade; reset without transition.
+- Fit: if the longest word doesn't fit beside the lead ("like"), all words scale
+  down together (`--rot-fit`), re-checked after fonts load and on resize.
+- Starts after the intro; holds while the **heading** is hovered (not the whole hero:
+  it fills the screen), while focus is in the hero, off screen or in a hidden tab;
+  off under reduced motion.
+
 ## Update 2026-11-25: hero intro smoothing
 
 - Heading lines no longer show their tops before sliding in: each `.phh__line` mask
