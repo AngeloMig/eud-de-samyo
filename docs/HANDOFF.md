@@ -15,13 +15,16 @@
   else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
   cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
   asked for at 600 x 780 instead of 240), else the note's name large on its colour.
-  **Need photos: patchouli (Sauvage), ambrette (Homme Intense), sage (The One)**: no
-  free-licence photo found on 2026-11-25; upload them in the tile settings.
-- Home page notes, checked 2026-11-25: Sauvage EDP bergamot, vanilla, patchouli
-  (dior.com); Dior Homme Intense iris, ambrette, cedar (dior.com); Stronger With You
-  Intensely pink pepper, lavender, vanilla (Sephora key notes; Armani's page doesn't
-  list them); The One EDP orange, sage, tobacco (D&G says orange, herbaceous, woody;
-  sage/tobacco from Notino/Sephora) — **owner to confirm The One and SWYI**.
+  No free-licence photo exists yet for patchouli, ambrette or sage (searched
+  2026-11-25); upload one in the tile settings to use them.
+- Home page notes, checked 2026-11-25, picked from each perfume's published list so
+  every note has a real photo (owner asked for photos, not icons): Sauvage EDP
+  bergamot, Sichuan pepper, vanilla (dior.com names bergamot, Sichuan pepper,
+  vanilla); Dior Homme Intense iris, lavender, cedar (dior.com: iris, cedar;
+  lavender from the published pyramid); Stronger With You Intensely pink pepper,
+  lavender, vanilla (Sephora key notes); The One EDP orange, tobacco, amber (D&G:
+  orange; John Lewis base notes tobacco, amber, cedarwood). Patchouli, ambrette and
+  sage were dropped for lack of photos; add them back with uploads if wanted.
 
 ## Update 2026-11-25: renamed Samyo → Sangyó
 
