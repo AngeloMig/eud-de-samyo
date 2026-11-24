@@ -1,5 +1,18 @@
 # Handoff: Sangyo perfume theme
 
+## Update 2026-11-25: crossing ribbons under the hero
+
+- `perfume-brands` has a new **Style** setting: One line (previous) or Crossing
+  ribbons (owner picked marquee idea 1 of 10). The home page now shows it, enabled,
+  right after the hero (it was disabled at the bottom).
+- Ribbons: the houses on an ink ribbon (−4°) and a second ribbon of words in the
+  handwritten font (+4°, setting "Second ribbon words", default a list of notes,
+  colour setting) moving the other way. Both sit inside their own band, sized
+  `ribbon + 11vw` (phones 5° and `+ 20vw`), which clips the ends: measured at
+  1440 / 1024 / 390 px, the ribbons never leave the band, so the hero above and the
+  showcase below are never covered. Pauses on hover/focus; reduced motion shows the
+  lists flat and wrapped.
+
 ## Update 2026-11-25: hero rotating word
 
 - Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;

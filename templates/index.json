@@ -372,8 +372,16 @@
         "brand_7",
         "brand_8"
       ],
-      "settings": {},
-      "disabled": true
+      "settings": {
+        "style": "ribbons",
+        "name_size": 44,
+        "name_size_mobile": 26,
+        "speed": 50,
+        "background_color": "#F7F5F0",
+        "text_color": "#292521",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     },
     "shop_brands": {
       "type": "perfume-shop-brands",
@@ -871,13 +879,13 @@
   },
   "order": [
     "hero",
+    "brands",
     "showcase",
     "families",
     "shop_brands",
     "decants",
     "why",
     "journal",
-    "faq",
-    "brands"
+    "faq"
   ]
 }

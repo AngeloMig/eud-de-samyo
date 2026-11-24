@@ -5,12 +5,18 @@
   store is allowed to use it. Pauses on hover and focus; reduced motion shows a
   static, wrapping list.
 
+  Style "Crossing ribbons": two tilted bands cross in an X inside their own band (so
+  they never cover the sections around them): the houses on an ink ribbon one way,
+  a second ribbon of words (e.g. notes, in the handwritten font) the other way.
+
   Styles: assets/perfume-brands.css. CSS-only motion (the list is rendered twice,
   the copy hidden from assistive tech, and the track moves by exactly one copy).
 {%- endcomment -%}
 {%- liquid
   assign bid = 'PerfumeBrands-' | append: section.id
   assign brands = section.blocks | where: 'type', 'brand'
+  assign pb_style = section.settings.style | default: 'line'
+  assign ribbon_words = section.settings.ribbon_words | split: ','
 -%}
 
 {{ 'perfume-brands.css' | asset_url | stylesheet_tag }}
@@ -24,6 +30,7 @@
     --pb-speed: {{ section.settings.speed }}s;
     --pb-pt: {{ section.settings.padding_top }}px;
     --pb-pb: {{ section.settings.padding_bottom }}px;
+    --pb-ribbon2: {{ section.settings.ribbon_color }};
   }
 {%- endstyle -%}
 
@@ -43,6 +50,37 @@
   {%- endfor -%}
 {%- endcapture -%}
 
+{%- if pb_style == 'ribbons' -%}
+  {%- capture words_html -%}
+    {%- for w in ribbon_words -%}
+      {%- assign word = w | strip -%}
+      {%- if word != blank -%}<li class="pb__item"><span class="pb__word">{{ word | escape }}</span><span class="pb__mark" aria-hidden="true">·</span></li>{%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  <section id="{{ bid }}" class="pb pb--ribbons" aria-labelledby="{{ bid }}-heading">
+    <p class="pf-visually-hidden" id="{{ bid }}-heading">{{ section.settings.kicker | default: 'Brands' | escape }}</p>
+    <div class="pb__ribbons">
+      {%- if words_html != blank -%}
+        <div class="pb__rb pb__rb--b" aria-hidden="true">
+          <div class="pb__viewport">
+            <div class="pb__track pb__track--rev">
+              <ul class="pb__list" role="list">{{ words_html }}</ul>
+              <ul class="pb__list pb__list--copy" role="list">{{ words_html }}</ul>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      <div class="pb__rb pb__rb--a">
+        <div class="pb__viewport">
+          <div class="pb__track">
+            <ul class="pb__list" role="list">{{ list_html }}</ul>
+            <ul class="pb__list pb__list--copy" role="list" aria-hidden="true" inert>{{ list_html }}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- else -%}
 <section id="{{ bid }}" class="pb" aria-labelledby="{{ bid }}-heading">
   <div class="pb__head">
     {%- if section.settings.kicker != blank -%}
@@ -63,6 +101,7 @@
     </div>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
 {
@@ -72,13 +111,27 @@
   "max_blocks": 24,
   "disabled_on": { "groups": ["header", "footer"] },
   "settings": [
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        { "value": "line", "label": "One line" },
+        { "value": "ribbons", "label": "Crossing ribbons" }
+      ],
+      "default": "line"
+    },
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "The houses we carry" },
     { "type": "text", "id": "link_label", "label": "Link label", "default": "All brands" },
     { "type": "url", "id": "link", "label": "Link" },
     { "type": "range", "id": "name_size", "label": "Name size, desktop", "min": 24, "max": 96, "step": 2, "unit": "px", "default": 56 },
     { "type": "range", "id": "name_size_mobile", "label": "Name size, mobile", "min": 20, "max": 64, "step": 2, "unit": "px", "default": 34 },
     { "type": "range", "id": "speed", "label": "One loop takes", "min": 15, "max": 90, "step": 5, "unit": "s", "default": 45 },
-    { "type": "color", "id": "background_color", "label": "Background", "default": "#F1EEE9" },
+    { "type": "header", "content": "Crossing ribbons" },
+    { "type": "text", "id": "ribbon_words", "label": "Second ribbon words", "info": "Comma-separated, in the handwritten font, e.g. notes. Empty: one ribbon only.", "default": "bergamot, iris, vanilla, cedar, lavender, pink pepper, orange, tobacco, amber, rose" },
+    { "type": "color", "id": "ribbon_color", "label": "Second ribbon colour", "default": "#D8D1C5" },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "info": "Crossing ribbons: also the colour of the band behind them, and of the names on the ink ribbon.", "default": "#F1EEE9" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
