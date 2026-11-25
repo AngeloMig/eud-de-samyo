@@ -366,7 +366,7 @@
       pop.className = 'pvp__pop';
       pop.setAttribute('aria-hidden', 'true');
       root.appendChild(pop);
-      let popLi = null;
+      let popLi = null, lastLi = null;
       const fill = (li) => {
         const forEl = li.querySelector('.pvp__for');
         const btn = li.querySelector('[data-add]');
@@ -374,7 +374,10 @@
         const blocked = btn.getAttribute('aria-disabled') === 'true';
         const act = picked ? t('PopRemove') : blocked ? (li.querySelector('[data-tip]')?.textContent.trim() || t('Full')) : t('PopAdd');
         const img = li.querySelector('.pvp__scent-img img');
-        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt=""></span>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
+        const notes = [...(li.querySelector('template[data-notes]')?.content.querySelectorAll('.pvp__pn') || [])];
+        const noteArt = notes.length ? `<span class="pvp__pop-notes">${notes.map((n, i) => `<span class="pvp__pn" style="--i:${i}">${n.innerHTML}</span>`).join('')}</span>` : '';
+        pop.classList.toggle('has-notes', notes.length > 0);
+        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
           <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
           <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
           ${act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
@@ -386,8 +389,13 @@
         if (py + h > innerHeight - 8) py = y - h - g;
         pop.style.translate = `${Math.max(8, px)}px ${Math.max(8, py)}px`;
       };
-      const show = (li, x, y) => { popLi = li; fill(li); pop.classList.add('is-on'); place(x, y); };
-      const hide = () => { popLi = null; pop.classList.remove('is-on'); };
+      const show = (li, x, y) => {
+        const wasOn = pop.classList.contains('is-on') && lastLi && lastLi !== li;
+        popLi = li; lastLi = li; fill(li); pop.classList.add('is-on'); place(x, y);
+        if (wasOn) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
+      };
+      let hideT;
+      const hide = () => { clearTimeout(hideT); hideT = setTimeout(() => { if (!popLi) pop.classList.remove('is-on'); }, 60); popLi = null; };
       scents.forEach((li) => {
         li.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') show(li, e.clientX, e.clientY); });
         li.addEventListener('pointermove', (e) => { if (popLi === li) place(e.clientX, e.clientY); });

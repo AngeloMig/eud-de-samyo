@@ -184,6 +184,42 @@
               {%- assign media = p.featured_media -%}
               <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vendor="{{ p.vendor | escape }}" data-vials="{{ vials | strip }}">
                 <span class="pvp__num" data-num aria-hidden="true" hidden></span>
+                {%- if section.settings.pop_notes -%}
+                  {%- comment -%} Pop-up note pictures (owner 2026-11-26): the perfume's own notes, top → base, never invented. {%- endcomment -%}
+                  {%- liquid
+                    assign n_profile = p.metafields.fragrance.profile.value
+                    assign n_top = n_profile.top_notes.value | default: p.metafields.fragrance.top_notes.value
+                    assign n_mid = n_profile.middle_notes.value | default: p.metafields.fragrance.middle_notes.value
+                    assign n_base = n_profile.base_notes.value | default: p.metafields.fragrance.base_notes.value
+                    assign n_count = 0
+                  -%}
+                  <template data-notes>
+                    {%- for list in (1..3) -%}
+                      {%- liquid
+                        case list
+                          when 1
+                            assign n_group = n_top
+                          when 2
+                            assign n_group = n_mid
+                          else
+                            assign n_group = n_base
+                        endcase
+                      -%}
+                      {%- for note in n_group -%}
+                        {%- if n_count >= 5 -%}{%- break -%}{%- endif -%}
+                        {%- assign n_count = n_count | plus: 1 -%}
+                        {%- assign n_art = note.art.value -%}
+                        <span class="pvp__pn" data-name="{{ note.name.value | escape }}">
+                          {%- if note.image.value != blank -%}
+                            {{ note.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
+                          {%- else -%}
+                            {%- render 'perfume-note-art', note: n_art -%}
+                          {%- endif -%}
+                        </span>
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  </template>
+                {%- endif -%}
                 <span class="pvp__scent-img" aria-hidden="true">
                   {%- if media != blank -%}
                     {{ media.preview_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(min-width: 990px) 15vw, 40vw', alt: '', loading: 'lazy' }}
@@ -295,6 +331,7 @@
       "default": "compact",
       "info": "Compact matches the Try trio grid on product pages. On touch screens the tiles show a short name and price."
     },
+    { "type": "checkbox", "id": "pop_notes", "label": "Pop-up: show note pictures", "default": true, "info": "Up to five of the perfume's notes (top, heart, base) resting on the photo. Perfumes without notes just show the photo." },
     { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add" },
     { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },

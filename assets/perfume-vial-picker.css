@@ -801,7 +801,7 @@
   position: fixed;
   top: 0;
   transition: opacity 0.2s ease;
-  width: 240px;
+  width: 260px;
   z-index: 60;
 }
 
@@ -822,6 +822,77 @@
   object-fit: contain;
   position: absolute;
   width: 100%;
+}
+
+/* Note pictures resting on the photo's bottom edge (owner 2026-11-26) */
+.pvp__pop.has-notes .pvp__pop-img {
+  margin-bottom: 30px;
+  overflow: visible;
+}
+
+.pvp__pop-notes {
+  bottom: -21px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  left: 8px;
+  position: absolute;
+  right: 8px;
+}
+
+.pvp__pn {
+  animation: pvp-pn 0.5s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 55ms + 80ms);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px #fff, 0 3px 10px rgba(41, 37, 33, 0.14);
+  display: block;
+  height: 42px;
+  overflow: hidden;
+  width: 42px;
+}
+
+.pvp__pn > img,
+.pvp__pn .pf-note-art {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+@keyframes pvp-pn {
+  from {
+    opacity: 0;
+    scale: 0.85;
+    translate: 0 6px;
+  }
+}
+
+.pvp__pop-names {
+  border-bottom: 1px solid color-mix(in srgb, var(--pvp-ink) 12%, transparent);
+  color: color-mix(in srgb, var(--pvp-ink) 70%, transparent);
+  font-size: 11.5px;
+  line-height: 1.35;
+  margin: 0 0 10px !important;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.pvp__pop.is-swap .pvp__pop-img > img {
+  animation: pvp-swap 0.4s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+
+@keyframes pvp-swap {
+  from {
+    opacity: 0;
+    translate: 0 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pvp__pn,
+  .pvp__pop.is-swap .pvp__pop-img > img {
+    animation: none;
+  }
 }
 
 .pvp__pop.is-on {

@@ -1414,3 +1414,9 @@ Sync errors are under the theme's GitHub chip → View logs.
   and aria logic is unchanged. With a mouse a pop-up follows the pointer (vendor, gender tag,
   name, set price / struck solo / Save tag, "Click to add / take it out"); touch screens get a
   short name + price caption instead. Choose **Full cards** to get the old layout back.
+- Pop-up note pictures (take 02, owner 2026-11-26): setting `pop_notes` (default on).
+  Each tile carries a `<template data-notes>` with up to five of the perfume's notes
+  (profile metaobject first, else `fragrance.top/middle/base_notes`; the note's own image,
+  else `perfume-note-art`). The pictures rest on the bottom edge of the pop-up photo with the
+  names below; they pop in one by one and the photo cross-fades when moving tile to tile.
+  Perfumes without notes show just the photo. Notes are still empty in Shopify (2026-11-26).
