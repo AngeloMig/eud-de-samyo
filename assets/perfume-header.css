@@ -98,6 +98,20 @@ perfume-header {
   opacity: 1;
 }
 
+.ph--logo-none::before {
+  display: none;
+}
+
+/* Blur version (idea 10): the page behind the logo corner is blurred, with a light cream
+   veil; same curved corner shape, fading out to the right and down. */
+.ph--logo-blur::before {
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  background: color-mix(in srgb, var(--ph-paper) 35%, transparent);
+  -webkit-mask: radial-gradient(ellipse 100% 100% at 0 0, #000 40%, rgba(0, 0, 0, 0.6) 58%, transparent 78%);
+  mask: radial-gradient(ellipse 100% 100% at 0 0, #000 40%, rgba(0, 0, 0, 0.6) 58%, transparent 78%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ph::before {
     transition: none;

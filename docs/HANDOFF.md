@@ -1465,4 +1465,4 @@ Sync errors are under the theme's GitHub chip → View logs.
   off under reduced motion).
 - Logo fade (owner, idea 07 from the logo-backdrop ideas, 2026-11-26): `.ph::before` is a
   cream radial fade in the top-left corner only (behind the logo), shown once scrolled past
-  40px (`.is-down`), hidden over dark sections (`.is-on-dark`).
+  40px (`.is-down`), hidden over dark sections (`.is-on-dark`). Setting `logo_backdrop`: fade (default) / blur (idea 10, same corner) / none.
