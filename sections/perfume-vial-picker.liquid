@@ -66,6 +66,8 @@
   data-t-remove="{{ section.settings.remove_label | escape }}"
   data-t-add-scent="{{ section.settings.add_scent_label | escape }}"
   data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
+  data-t-filled="{{ section.settings.filled_label | escape }}"
+  data-t-bar="{{ section.settings.bar_count_label | escape }}"
   data-t-less="{{ section.settings.less_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
   data-t-error="{{ section.settings.error_label | escape }}"
@@ -150,6 +152,14 @@
           {%- if section.settings.swap_note != blank -%}
             <p class="pvp__swap"><span class="pvp__swap-icon" aria-hidden="true">i</span><span>{{ section.settings.swap_note | escape }}</span></p>
           {%- endif -%}
+          {%- if section.settings.show_fills -%}
+            <div class="pvp__fills" role="group" aria-label="{{ section.settings.fills_label | escape }}" data-fills>
+              <span class="pvp__fills-t">{{ section.settings.fills_label | escape }}</span>
+              {%- if section.settings.fill_low_label != blank -%}<button type="button" class="pvp__fill" data-fill="low"><span aria-hidden="true">₱</span>{{ section.settings.fill_low_label | escape }}</button>{%- endif -%}
+              {%- if section.settings.fill_brand_label != blank -%}<button type="button" class="pvp__fill" data-fill="brand"><span aria-hidden="true">◎</span>{{ section.settings.fill_brand_label | escape }}</button>{%- endif -%}
+              {%- if section.settings.fill_surprise_label != blank -%}<button type="button" class="pvp__fill" data-fill="surprise"><span aria-hidden="true">✦</span>{{ section.settings.fill_surprise_label | escape }}</button>{%- endif -%}
+            </div>
+          {%- endif -%}
           <ul class="pvp__scents" role="list" data-scents>
             {%- assign shown = 0 -%}
             {%- for p in pool limit: 100 -%}
@@ -170,7 +180,8 @@
               {%- if vials == blank -%}{%- continue -%}{%- endif -%}
               {%- assign shown = shown | plus: 1 -%}
               {%- assign media = p.featured_media -%}
-              <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vials="{{ vials | strip }}">
+              <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vendor="{{ p.vendor | escape }}" data-vials="{{ vials | strip }}">
+                <span class="pvp__num" data-num aria-hidden="true" hidden></span>
                 <span class="pvp__scent-img" aria-hidden="true">
                   {%- if media != blank -%}
                     {{ media.preview_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(min-width: 990px) 15vw, 40vw', alt: '', loading: 'lazy' }}
@@ -225,6 +236,14 @@
 
       {%- comment -%} The tray: your vials, each with its price, and the total {%- endcomment -%}
       <aside class="pvp__tray" aria-labelledby="{{ vid }}-tray">
+        {%- comment -%} Phones: a bar that opens the tray as a drawer (perfume-vial-picker.js). {%- endcomment -%}
+        <button type="button" class="pvp__bar" data-bar aria-expanded="false" aria-controls="{{ vid }}-body">
+          <span class="pvp__bar-vials" data-bar-vials aria-hidden="true"></span>
+          <span class="pvp__bar-text"><b data-bar-total></b><span data-bar-n></span></span>
+          <span class="pvp__bar-label">{{ section.settings.tray_label | escape }}</span>
+          <span class="pvp__bar-chev" aria-hidden="true"></span>
+        </button>
+        <div class="pvp__tray-body" id="{{ vid }}-body" data-tray-body><div class="pvp__tray-in">
         <h2 class="pvp__tray-h" id="{{ vid }}-tray">{{ section.settings.tray_label | escape }}</h2>
         <p class="pvp__tray-set" data-set-name></p>
         <ol class="pvp__slots" data-slots role="list"></ol>
@@ -236,6 +255,7 @@
           <button type="submit" class="pvp__submit" data-submit disabled>{{ section.settings.add_label | escape }}</button>
         </form>
         {%- if section.settings.trust != blank -%}<p class="pvp__trust">{{ section.settings.trust | escape }}</p>{%- endif -%}
+        </div></div>
       </aside>
     </div>
   </div>
@@ -262,6 +282,13 @@
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
     { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
+    { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },
+    { "type": "text", "id": "fill_low_label", "label": "Quick fill: lowest price", "info": "Empty hides this button.", "default": "Lowest price" },
+    { "type": "text", "id": "fill_brand_label", "label": "Quick fill: one of each brand", "default": "One of each brand" },
+    { "type": "text", "id": "fill_surprise_label", "label": "Quick fill: random", "default": "Surprise me" },
+    { "type": "text", "id": "filled_label", "label": "Announced after a quick fill", "info": "[n] = vials filled.", "default": "Filled [n] vials. Swap any you like." },
+    { "type": "text", "id": "bar_count_label", "label": "Phone bar: progress", "info": "[n] = picked, [total] = vials.", "default": "[n] of [total] picked" },
     { "type": "text", "id": "for_men_label", "label": "Label: for men", "info": "Shown when a perfume has the tag men (or Shopify's Target gender: Male). Empty hides it.", "default": "For men" },
     { "type": "text", "id": "for_women_label", "label": "Label: for women", "info": "Tag women (or Target gender: Female).", "default": "For women" },
     { "type": "text", "id": "for_unisex_label", "label": "Label: unisex", "info": "Tag unisex (or both genders set).", "default": "Unisex" },

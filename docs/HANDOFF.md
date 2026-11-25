@@ -1392,3 +1392,17 @@ Sync errors are under the theme's GitHub chip → View logs.
   (also "for men"/"for women"), else Shopify's Target gender category metafield
   (`shopify.target-gender`; both genders = Unisex). No data → no tag. Labels are
   section settings (for_men_label, for_women_label, for_unisex_label).
+
+## Update 2026-11-26: decant builder ideas 1, 6, 10 (owner picks)
+
+- **Picked = highlighted (1):** picked scents no longer blur/fade; they get an ink
+  outline, the photo grows 5%, and a number badge (`[data-num]`) matching their vial in
+  the tray (hidden when repeats are allowed, where the "× n" count shows instead).
+- **Phone drawer (6):** at ≤989px the tray is a fixed dark drawer at the bottom: a bar
+  (`[data-bar]`) with a vial per slot (amber when filled), the total, "n of total
+  picked" and "Your vials ⌄"; tapping opens the tray body (`[data-tray-body]`, inert
+  while closed, Esc closes). The section keeps 96px extra bottom padding so content
+  isn't hidden. Desktop unchanged (sticky tray).
+- **Quick fill (10):** buttons above the scents: Lowest price, One of each brand
+  (random per brand, then cheapest), Surprise me (random). Settings: show_fills,
+  fills_label, fill_*_label (empty hides one), filled_label, bar_count_label.

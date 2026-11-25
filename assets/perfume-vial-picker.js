@@ -38,6 +38,9 @@
     const totalEl = root.querySelector('[data-total]');
     const submit = root.querySelector('[data-submit]');
     const form = root.querySelector('[data-form]');
+    const barEl = root.querySelector('[data-bar]');
+    const trayBody = root.querySelector('[data-tray-body]');
+    const mq = matchMedia('(max-width: 989px)');
     if (!setInputs.length || !slotsEl) return;
 
     // Each scent's vials: { "1": { id, price, available }, ... }
@@ -156,6 +159,13 @@
         badge.hidden = n === 0 || !repeats;
         badge.textContent = '× ' + n;
         li.classList.toggle('is-picked', n > 0);
+        // Its vial number in the tray (1, 2, 3), so card and tray match (owner).
+        const num = li.querySelector('[data-num]');
+        if (num) {
+          const at = picks.findIndex((p) => p.li === li);
+          num.hidden = repeats || at < 0;
+          num.textContent = at < 0 ? '' : String(at + 1);
+        }
         li.classList.toggle('is-off', !v);
         // With a set discount: the price in this set, the solo price struck through and
         // the % off, so the saving is obvious (owner). Without one: the vial price.
@@ -215,6 +225,15 @@
       }
       totalEl.textContent = money(sub - off);
       submit.disabled = !full;
+
+      // Phone bar: a little vial per slot (filled ones amber), the total and progress.
+      if (barEl) {
+        const vials = root.querySelector('[data-bar-vials]');
+        vials.innerHTML = Array.from({ length: Math.min(count, 10) }, (_, i) => `<i class="${i < picks.length ? 'on' : ''}"></i>`).join('');
+        root.querySelector('[data-bar-total]').textContent = money(sub - off);
+        root.querySelector('[data-bar-n]').textContent = (t('Bar') || '[n] of [total] picked').replace('[n]', picks.length).replace('[total]', count);
+        barEl.classList.toggle('is-full', full);
+      }
 
       if (focusSlot != null) {
         const target = slotsEl.children[Math.min(focusSlot, slotsEl.children.length - 1)];
@@ -340,6 +359,52 @@
         picks.push({ li, name: li.dataset.scent });
       });
     }
+    // Quick fills (owner): lowest price, one of each brand, or a random mix.
+    root.querySelectorAll('[data-fill]').forEach((b) => b.addEventListener('click', () => {
+      const set = current();
+      const count = parseInt(set.dataset.count, 10) || 1;
+      const size = set.dataset.size;
+      const avail = scents.filter((li) => vialOf(li, size));
+      const byPrice = avail.slice().sort((a, c) => vialOf(a, size).price - vialOf(c, size).price);
+      let pick = [];
+      if (b.dataset.fill === 'low') pick = byPrice;
+      else if (b.dataset.fill === 'surprise') {
+        pick = avail.slice();
+        for (let i = pick.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pick[i], pick[j]] = [pick[j], pick[i]]; }
+      } else {
+        const seen = new Set();
+        const shuffled = avail.slice().sort(() => Math.random() - 0.5);
+        const first = shuffled.filter((li) => !seen.has(li.dataset.vendor) && seen.add(li.dataset.vendor));
+        pick = first.concat(byPrice.filter((li) => !first.includes(li)));
+      }
+      if (!repeats) pick = pick.filter((li, i) => pick.indexOf(li) === i);
+      let list2 = pick.slice(0, count);
+      if (repeats && list2.length < count && list2.length) while (list2.length < count) list2.push(list2[list2.length % pick.length]);
+      picks = list2.map((li) => ({ li, name: li.dataset.scent }));
+      draw();
+      [...slotsEl.children].forEach((sl) => sl.classList.add('is-new'));
+      statusEl.textContent = (t('Filled') || 'Filled [n] vials.').replace('[n]', picks.length);
+      if (barEl && mq.matches) setOpen(true);
+    }));
+
+    // Phones: the tray is a drawer behind a bar; desktop shows it open as before.
+    function setOpen(open) {
+      if (!barEl) return;
+      const drawer = mq.matches;
+      root.classList.toggle('is-tray-open', drawer && open);
+      barEl.setAttribute('aria-expanded', String(!drawer || open));
+      if (trayBody) trayBody.inert = drawer && !open;
+    }
+    if (barEl) {
+      barEl.addEventListener('click', () => setOpen(!root.classList.contains('is-tray-open')));
+      const sync = () => setOpen(false);
+      mq.addEventListener ? mq.addEventListener('change', sync) : mq.addListener(sync);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && root.classList.contains('is-tray-open')) { setOpen(false); barEl.focus(); }
+      });
+      sync();
+    }
+
     prefill();
     draw();
   }
