@@ -938,7 +938,16 @@
   overflow: visible;
 }
 
+/* Keep the bottle (often a white-backed photo) clear of the note circles (owner: tops were
+   cut off). */
+.pvp__pop.has-notes .pvp__pop-img > img {
+  height: calc(100% - 36px);
+  inset: 8px 0 28px;
+  z-index: 1;
+}
+
 .pvp__pop-notes {
+  z-index: 2;
   bottom: -21px;
   display: flex;
   gap: 6px;
