@@ -1461,7 +1461,7 @@ Sync errors are under the theme's GitHub chip → View logs.
   its parked panel. Quick fill is a compact one-line row (34px pills; 44px on phones, label
   hidden there).
 - Header on scroll (owner 2026-11-26): `perfume-header.js` adds `.is-scrolled` while the page is scrolling (removed 260ms after it stops);
-  the logo box moves up to 10px from the top and the links box to 0 (translate only, 0.6s,
+  the logo box moves up to 10px from the top (links box stays still, owner) (translate only, 0.6s,
   off under reduced motion).
 - Logo fade (owner, idea 07 from the logo-backdrop ideas, 2026-11-26): `.ph::before` is a
   cream radial fade in the top-left corner only (behind the logo), shown once scrolled past
