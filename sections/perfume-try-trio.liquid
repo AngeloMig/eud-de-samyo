@@ -114,6 +114,7 @@
     data-count="{{ count }}"
     data-size="{{ size }}"
     data-discount="{{ section.settings.discount }}"
+    data-set-sizes="{{ section.settings.set_sizes | escape }}"
     data-set-key="{{ set_key }}"
     data-set-label="{{ set_label | escape }}"
     data-picker="{{ picker_url }}"
@@ -285,6 +286,7 @@
       "default": "1"
     },
     { "type": "range", "id": "discount", "label": "Set discount", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify (Discounts) that a single set of this size gets, because that is what checkout charges. 0% hides the Bought separately and You save lines." },
+    { "type": "text", "id": "set_sizes", "label": "Sizes the set discounts cover", "info": "Comma-separated, e.g. 1, 2. Other sizes show — in the pop-up's set column.", "default": "1, 2" },
     { "type": "collection", "id": "collection", "label": "Perfumes to choose from", "info": "Leave empty to use all products. A perfume shows when it has a variant for the vial size, e.g. 1 ml." },
     { "type": "range", "id": "limit", "label": "Perfumes in the grid", "min": 6, "max": 24, "step": 6, "default": 12 },
     { "type": "page", "id": "picker_page", "label": "Decant builder page", "info": "Where Continue goes, with the picked perfumes. Default: the page with handle build-your-set." },

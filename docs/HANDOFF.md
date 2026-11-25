@@ -1300,3 +1300,7 @@ Sync errors are under the theme's GitHub chip → View logs.
   `?set=3x<size>&scent=<handle>`). Sizes block settings: show_set_nudge, trio_discount
   (26), six_discount (30), nudge_text, nudge_link. One `<p data-pp-nudge="<variant id>">`
   per small size; perfume-product.js `showNudge()` shows the chosen one.
+- Try trio grid (owner, later): tiles 76 × 101 px (64 px on phones, 5 across), sorted
+  lowest to highest vial price (JS), pop-up shown whenever there's a mouse/trackpad
+  (`any-hover`), any width; pop-up's set column only for the sizes in `set_sizes`
+  (default "1, 2"), others "—".

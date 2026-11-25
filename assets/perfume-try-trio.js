@@ -16,9 +16,12 @@
     const size = root.dataset.size || '1';
     const off = (parseInt(root.dataset.discount, 10) || 0) / 100;
     const own = root.dataset.own;
+    // Sizes the store's set discounts cover (others show "—" in the pop-up's set column).
+    const setSizes = (root.dataset.setSizes || '1,2').split(',').map((x) => x.trim().replace(/\s*ml$/i, ''));
     const currency = root.dataset.currency || 'PHP';
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const touch = matchMedia('(hover: none)').matches;
+    // Touch only = no mouse or trackpad at all (a touch laptop still gets the pop-up).
+    const touch = !matchMedia('(any-hover: hover)').matches;
 
     let fmt, fmt0;
     try { fmt = new Intl.NumberFormat(document.documentElement.lang || 'en-PH', { style: 'currency', currency }); }
@@ -38,6 +41,15 @@
     const pop = $('[data-pop]');
     const hint = $('[data-hint]');
     const tiles = [...root.querySelectorAll('[data-tile]')];
+    // Lowest to highest price for the set's vial size (owner).
+    {
+      const priceOf = (b) => {
+        const m = (';' + (b.dataset.vials || '')).match(new RegExp(';' + root.dataset.size + ':\\d+:(\\d+):'));
+        return m ? Number(m[1]) : Infinity;
+      };
+      const list = root.querySelector('[data-grid]');
+      tiles.sort((a, b) => priceOf(a) - priceOf(b)).forEach((b) => list.appendChild(b.closest('li')));
+    }
 
     const parseVials = (str) => {
       const out = {};
@@ -196,7 +208,8 @@
       const rows = UP.map((z) => {
         const v = s.vials[z];
         if (!v) return '';
-        return `<tr><td>${z} ml</td><td>${money(v.price)}</td><td class="ptt__pop-set">${money(inSet(v.price))}</td></tr>`;
+        const inSets = setSizes.includes(String(z));
+        return `<tr><td>${z} ml</td><td>${money(v.price)}</td><td class="ptt__pop-set">${inSets && off ? money(inSet(v.price)) : '—'}</td></tr>`;
       }).join('');
       pop.innerHTML = `<div class="ptt__pop-h">${s.img ? `<img src="${s.img}" alt="" width="46" height="62">` : ''}<div><small>${esc(s.vendor)}</small><b>${esc(s.name)}</b></div></div>
         <table><thead><tr><th>${esc(t('Vial'))}</th><th>${esc(t('Alone'))}</th><th>${esc(t('InSet'))}</th></tr></thead><tbody>${rows}</tbody></table>
