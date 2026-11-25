@@ -24,7 +24,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Grouped as a pyramid" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Grouped as a pyramid" from dev/note-chip-ideas.html.
 What it does: Top / Heart / Base rows.
 Needs a tier per note: add note_N_tier select (top/heart/base) to the showcase block; only group when tiers are set.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -38,7 +38,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Strength dots" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Strength dots" from dev/note-chip-ideas.html.
 What it does: Three dots per note for prominence.
 Only from a real source; empty = no dots.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -52,7 +52,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Real ingredient photos" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Real ingredient photos" from dev/note-chip-ideas.html.
 What it does: Small round photos instead of drawings.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -65,7 +65,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Coloured by scent family" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Coloured by scent family" from dev/note-chip-ideas.html.
 What it does: Each chip takes its family colour.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -78,7 +78,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Tap a note to learn it" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Tap a note to learn it" from dev/note-chip-ideas.html.
 What it does: Chips become buttons; one plain sentence shows under the row.
 Sentences come from a note metaobject or block text, never generated.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -92,7 +92,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Big illustrated tiles" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Big illustrated tiles" from dev/note-chip-ideas.html.
 What it does: Square tiles with large drawings.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -105,7 +105,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "One sentence instead of chips" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "One sentence instead of chips" from dev/note-chip-ideas.html.
 What it does: An editorial sentence with underlined notes.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -118,7 +118,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "On a wear timeline" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "On a wear timeline" from dev/note-chip-ideas.html.
 What it does: Notes on a Spray / 1 hour / 3 hours+ line.
 Label the times as typical, not measured.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -132,7 +132,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Hairline, text only" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea "Hairline, text only" from dev/note-chip-ideas.html.
 What it does: Outlined pills, italic name only.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -145,7 +145,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea ""Also in…" on hover" from dev/note-chip-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css, snippets/perfume-note-art.liquid). Build idea ""Also in…" on hover" from dev/note-chip-ideas.html.
 What it does: Other store perfumes with the same note.
 Match on note handles across the showcase blocks or a metaobject reference.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.

@@ -10,7 +10,8 @@
 {%- endcomment -%}
 {%- comment -%}
   Real photos win over drawings ("no icons"):
-  - a transparent cut-out in assets/ (lemon) on a disc in the note's colour;
+  - a transparent cut-out in assets/ (lemon, cedar, pepper, tobacco) on a disc in
+    the note's colour;
   - Unsplash photos (free Unsplash licence, linked from Unsplash's image CDN as its
     guidelines ask; list in docs/CREDITS.md), cropped round.
   Patchouli and tonka have no suitable free photo yet (2026-11-22: Unsplash only
@@ -38,11 +39,13 @@
       when 'vetiver'
         assign photo_url = 'https://images.unsplash.com/photo-1563364664-399838d1394c?w=240&h=240&fit=crop&q=70&auto=format'
       when 'cedar'
-        assign photo_url = 'https://images.unsplash.com/photo-1515446134809-993c501ca304?w=240&h=240&fit=crop&q=70&auto=format'
+        assign photo_file = 'sample-scent-cedar.webp'
+        assign photo_tint = '#E3D3BC'
       when 'bergamot'
         assign photo_url = 'https://images.unsplash.com/photo-1612253167527-0598073d2979?w=240&h=240&fit=crop&q=70&auto=format'
       when 'pepper'
-        assign photo_url = 'https://images.unsplash.com/photo-1652128288742-df890f000a56?w=240&h=240&fit=crop&q=70&auto=format'
+        assign photo_file = 'sample-scent-pepper.webp'
+        assign photo_tint = '#F1DCD6'
       when 'rose'
         assign photo_url = 'https://images.unsplash.com/photo-1585768750637-ada36319a484?w=240&h=240&fit=crop&q=70&auto=format'
       when 'jasmine'
@@ -66,7 +69,8 @@
       when 'mineral'
         assign photo_url = 'https://images.unsplash.com/photo-1614759258004-39da973d3268?w=240&h=240&fit=crop&q=70&auto=format'
       when 'tobacco'
-        assign photo_url = 'https://images.unsplash.com/photo-1618843916388-29bb8a13b4fd?w=240&h=240&fit=crop&q=70&auto=format'
+        assign photo_file = 'sample-scent-tobacco.webp'
+        assign photo_tint = '#E6D2BC'
     endcase
   endunless
 -%}

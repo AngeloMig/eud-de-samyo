@@ -1468,7 +1468,7 @@
     ]
   },
   {
-    "name": "Samyó delivery",
+    "name": "Sangyó delivery",
     "settings": [
       {
         "type": "paragraph",
@@ -1525,7 +1525,7 @@
     ]
     },
   {
-    "name": "Samyó vial sizes",
+    "name": "Sangyó vial sizes",
     "settings": [
       { "type": "paragraph", "content": "Used by the vial size guide on the homepage decants and the vial picker. Measure your own vials, cap included, and enter the height in millimetres." },
       { "type": "range", "id": "pf_vial_h_1", "label": "1 ml vial height", "min": 20, "max": 120, "step": 1, "unit": "mm", "default": 40 },

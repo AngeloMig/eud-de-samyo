@@ -39,7 +39,9 @@
         },
         "sizes": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "hide_set_sizes": false
+          }
         },
         "buy": {
           "type": "buy_buttons",
@@ -264,7 +266,7 @@
           "settings": {
             "title": "Shipping and delivery",
             "source": "custom",
-            "content": "<p>Delivery fees apply below ₱10,000. Samyó covers standard delivery on orders of ₱10,000 and above after discounts.</p>",
+            "content": "<p>Delivery fees apply below ₱10,000. Sangyó covers standard delivery on orders of ₱10,000 and above after discounts.</p>",
             "delivery_rates": true
           }
         },
@@ -303,10 +305,17 @@
     "compare": {
       "type": "perfume-compare",
       "settings": {}
+    },
+    "trio": {
+      "type": "perfume-try-trio",
+      "settings": {
+        "discount": 26
+      }
     }
   },
   "order": [
     "main",
+    "trio",
     "nav",
     "dna",
     "journey",

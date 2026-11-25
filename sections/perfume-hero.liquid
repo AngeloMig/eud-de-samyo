@@ -13,7 +13,15 @@
   up out of masks one after another; the tiles wipe in from the bottom one by one with
   their image settling from a slight zoom; the slogan and header fade in.
   A dot cursor follows the pointer over the hero and grows over linked tiles (mouse
-  only). Reduced motion: no intro, no cursor.
+  only). Floating tiles (setting): the tiles stay locked to the grid; only the image
+  inside each one moves (cut-outs drift a few px, full photos zoom very slowly).
+  Hover notes: a perfume tile with "Notes shown on hover" swaps the scent tiles for
+  its notes, placed in random free cells, while it is hovered or focused.
+  Rotating words (setting): the heading's last word takes turns with a list of words,
+  each written in by a left-to-right wipe in the handwritten font; pauses on hover,
+  while the heading is hovered, focus is in the hero, when off screen or the tab is hidden.
+  Reduced motion: no intro, no cursor, no moving images, no rotation; notes still
+  swap, without motion.
 
   Script: assets/perfume-hero.js (<perfume-hero>). Styles: assets/perfume-hero.css.
 {%- endcomment -%}
@@ -21,6 +29,10 @@
   assign sid = 'PerfumeHero-' | append: section.id
   assign tiles = section.blocks | where: 'type', 'tile'
   assign heading_lines = section.settings.heading | newline_to_br | split: '<br />'
+  assign rot_words = ''
+  if section.settings.rotating_words != blank
+    assign rot_words = section.settings.rotating_words | split: ','
+  endif
 -%}
 
 {{ 'perfume-hero.css' | asset_url | stylesheet_tag }}
@@ -37,9 +49,13 @@
   }
 {%- endstyle -%}
 
+{%- if section.settings.animate_intro -%}
+  {%- comment -%} Start state before the hero is parsed, so its end state never flashes first. {%- endcomment -%}
+  <script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('pf-intro-pre');</script>
+{%- endif -%}
 <perfume-hero
   id="{{ sid }}"
-  class="phh{% if section.settings.labels_on_touch %} phh--labels-touch{% endif %}{% if section.settings.intro_speed == 'fast' %} phh--fast{% endif %}"
+  class="phh{% if section.settings.labels_on_touch %} phh--labels-touch{% endif %}{% if section.settings.intro_speed == 'fast' %} phh--fast{% endif %}{% if section.settings.float_tiles %} phh--float{% endif %}"
   data-speed="{{ section.settings.intro_speed }}"
   data-intro="{{ section.settings.animate_intro }}"
   data-preloader="{{ section.settings.show_preloader }}"
@@ -56,7 +72,30 @@
       {%- for line in heading_lines -%}
         {%- assign clean_line = line | strip_newlines | strip -%}
         {%- if clean_line != blank -%}
-          <span class="phh__line" style="--i: {{ forloop.index0 }};"><span>{{ clean_line | escape }}</span></span>
+          {%- if forloop.last and rot_words.size > 0 -%}
+            {%- comment -%}
+              Rotating word: the line's last word and the setting's words share one grid
+              cell (no reflow while they change). Screen readers only read the heading's
+              own word; the others are decorative.
+            {%- endcomment -%}
+            {%- liquid
+              assign line_words = clean_line | split: ' '
+              assign last_word = line_words | last
+              assign lead_text = clean_line | remove_last: last_word | strip
+            -%}
+            <span class="phh__line phh__line--rot" style="--i: {{ forloop.index0 }};"><span>
+              {%- if lead_text != blank -%}<span class="phh__lead">{{ lead_text | escape }}</span> {% endif -%}
+              <span class="phh__rot" data-phh-rot data-interval="{{ section.settings.rotate_interval | times: 1000 }}">
+                <span class="phh__rw is-on">{{ last_word | escape }}</span>
+                {%- for w in rot_words -%}
+                  {%- assign rw = w | strip -%}
+                  {%- if rw != blank -%}<span class="phh__rw" aria-hidden="true">{{ rw | escape }}</span>{%- endif -%}
+                {%- endfor -%}
+              </span>
+            </span></span>
+          {%- else -%}
+            <span class="phh__line" style="--i: {{ forloop.index0 }};"><span>{{ clean_line | escape }}</span></span>
+          {%- endif -%}
           {%- unless forloop.last %} {% endunless -%}
         {%- endif -%}
       {%- endfor -%}
@@ -110,9 +149,18 @@
             assign img_loading = 'eager'
           endif
           assign img_alt = block.settings.label
+          # A tile with hover notes is a perfume: hovering it swaps the scent tiles for its
+          # notes. Tiles that don't open a product (scents) make way while notes show.
+          assign tile_role = ' phh-tile--scent'
+          if block.settings.hover_notes != blank
+            assign tile_role = ' phh-tile--perfume'
+          elsif block.settings.link contains 'products'
+            assign tile_role = ''
+          endif
         -%}
         <li
-          class="phh-tile phh-tile--{{ block.settings.image_fit }} phh-tile--{{ block.settings.image_position }}"
+          class="phh-tile phh-tile--{{ block.settings.image_fit }} phh-tile--{{ block.settings.image_position }}{{ tile_role }}"
+          {% if block.settings.hover_notes != blank %}data-notes="{{ block.id }}"{% endif %}
           style="--i: {{ forloop.index0 }}; --tile-bg: {{ block.settings.background_color }}; --tile-scale: {{ block.settings.image_scale | divided_by: 100.0 }}; --tilt: {{ block.settings.image_tilt }}deg;"
           {{ block.shopify_attributes }}
         >
@@ -158,6 +206,151 @@
             {%- endif -%}
           {%- if has_link -%}</a>{%- else -%}</div>{%- endif -%}
         </li>
+      {%- endfor -%}
+
+      {%- comment -%}
+        Hover hint: a slowly turning round badge in the empty top-right cell, shown
+        only when a tile has hover notes, on desktop with a mouse. Fades while
+        notes show. Decorative (the tiles are links with their own labels).
+      {%- endcomment -%}
+      {%- assign has_hover_notes = false -%}
+      {%- for block in tiles limit: 7 -%}
+        {%- if block.settings.hover_notes != blank -%}{%- assign has_hover_notes = true -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if section.settings.show_hint and has_hover_notes and section.settings.hint_text != blank -%}
+        {%- assign hint = section.settings.hint_text | strip | upcase | append: ' · ' -%}
+        <li class="phh-hint" aria-hidden="true">
+          <span class="phh-hint__badge">
+            <svg class="phh-hint__ring" viewBox="0 0 200 200" focusable="false">
+              <defs><path id="{{ sid }}-hint" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
+              <text textLength="486" lengthAdjust="spacing"><textPath href="#{{ sid }}-hint" textLength="486" lengthAdjust="spacing">{{ hint | escape }}</textPath></text>
+            </svg>
+            <svg class="phh-hint__arrow" viewBox="0 0 24 24" focusable="false"><path d="M17 7 7 17M7 9v8h8"/></svg>
+          </span>
+        </li>
+      {%- endif -%}
+
+      {%- comment -%}
+        Each perfume's notes, shown in random free cells while that perfume is hovered or
+        focused (assets/perfume-hero.js). Decorative: the product page lists the notes.
+        Real photos only: the tile's own note upload, the bundled cut-out, or the theme's
+        licensed note photo; with none, the note's name on its colour.
+      {%- endcomment -%}
+      {%- for block in tiles limit: 7 -%}
+        {%- if block.settings.hover_notes != blank -%}
+          {%- assign hover_notes = block.settings.hover_notes | split: ',' -%}
+          {%- assign note_index = 0 -%}
+          {%- for raw_note in hover_notes -%}
+            {%- assign note_name = raw_note | strip -%}
+            {%- if note_name != blank and note_index < 3 -%}
+              {%- liquid
+                assign note_key = note_name | downcase | replace: ' ', '_' | replace: '-', '_'
+                assign note_file = ''
+                assign note_art = note_key
+                case note_key
+                  when 'pink_pepper', 'black_pepper', 'sichuan_pepper'
+                    assign note_art = 'pepper'
+                  when 'cedarwood', 'virginia_cedar'
+                    assign note_art = 'cedar'
+                endcase
+                case note_art
+                  when 'lemon', 'cinnamon', 'vanilla', 'iris', 'lavender', 'orange', 'rose', 'cardamom', 'pepper', 'cedar', 'tobacco'
+                    assign note_file = 'sample-scent-' | append: note_art | append: '.webp'
+                endcase
+                case note_key
+                  when 'lemon'
+                    assign note_tint = '#F2E27E'
+                  when 'bergamot'
+                    assign note_tint = '#E4E8B4'
+                  when 'orange'
+                    assign note_tint = '#F6D2A6'
+                  when 'vanilla'
+                    assign note_tint = '#EFE6D2'
+                  when 'cinnamon'
+                    assign note_tint = '#E2A07E'
+                  when 'iris'
+                    assign note_tint = '#DCD6E4'
+                  when 'lavender'
+                    assign note_tint = '#D8D0E8'
+                  when 'rose'
+                    assign note_tint = '#F0CBD0'
+                  when 'cardamom'
+                    assign note_tint = '#D5DDBA'
+                  when 'pink_pepper', 'pepper', 'sichuan_pepper', 'black_pepper'
+                    assign note_tint = '#F1CBC4'
+                  when 'patchouli'
+                    assign note_tint = '#CFC1A7'
+                  when 'cedar', 'cedarwood', 'virginia_cedar'
+                    assign note_tint = '#DCCAB0'
+                  when 'tobacco'
+                    assign note_tint = '#D9BC9C'
+                  when 'amber'
+                    assign note_tint = '#E9C99A'
+                  when 'sage'
+                    assign note_tint = '#D0D9C3'
+                  when 'ambrette'
+                    assign note_tint = '#EAD9CF'
+                  else
+                    assign note_tint = '#E6DFD4'
+                endcase
+              -%}
+              {%- liquid
+                # Real photos only: the merchant's own upload, else the bundled cut-out,
+                # else the theme's licensed note photo (perfume-note-art, shown larger).
+                # No photo at all: the note's name on its colour (no drawing).
+                case note_index
+                  when 0
+                    assign note_upload = block.settings.note_image_1
+                  when 1
+                    assign note_upload = block.settings.note_image_2
+                  else
+                    assign note_upload = block.settings.note_image_3
+                endcase
+                assign note_photo = ''
+                if note_upload == blank and note_file == blank
+                  capture note_photo
+                    render 'perfume-note-art', note: note_art
+                  endcapture
+                  if note_photo contains 'pf-note-photo'
+                    assign note_photo = note_photo | replace: 'w=240&h=240', 'w=600&h=780' | replace: 'width="240" height="240"', 'width="600" height="780"'
+                  else
+                    assign note_photo = ''
+                  endif
+                endif
+                assign note_kind = 'text'
+                if note_upload != blank or note_photo != blank
+                  assign note_kind = 'full'
+                elsif note_file != blank
+                  assign note_kind = 'cut'
+                endif
+                # How a cut-out sits: textures fill the card, stemmed flowers stand on
+                # its bottom edge, everything else floats whole in the middle.
+                assign note_fit = ''
+                if note_kind == 'cut'
+                  case note_art
+                    when 'pepper', 'cinnamon'
+                      assign note_fit = ' phh-note--fill'
+                    when 'lavender', 'iris', 'rose'
+                      assign note_fit = ' phh-note--stem'
+                  endcase
+                endif
+              -%}
+              <li class="phh-note phh-note--{{ note_kind }}{{ note_fit }}" data-for="{{ block.id }}" aria-hidden="true" style="--tile-bg: {{ note_tint }}; --j: {{ note_index }};">
+                <span class="phh-note__media">
+                  {%- if note_upload != blank -%}
+                    {{ note_upload | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 990px) 12vw, 30vw', loading: 'lazy', alt: '' }}
+                  {%- elsif note_file != blank -%}
+                    <img class="phh-note__cut" src="{{ note_file | asset_url }}" alt="" loading="lazy">
+                  {%- elsif note_photo != blank -%}
+                    {{ note_photo }}
+                  {%- endif -%}
+                </span>
+                <span class="phh-note__label"><span class="phh-note__kicker">Note</span><span class="phh-note__name">{{ note_name | capitalize | escape }}</span></span>
+              </li>
+              {%- assign note_index = note_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
       {%- endfor -%}
     </ul>
   </div>
@@ -234,6 +427,22 @@
       "id": "accent",
       "label": "Handwritten accent",
       "default": "lemon, cinnamon & a little musk"
+    },
+    {
+      "type": "text",
+      "id": "rotating_words",
+      "label": "Rotating words",
+      "info": "Comma-separated, e.g. summer, your first date. They take turns with the heading's last word, written in the handwritten font. Empty: off."
+    },
+    {
+      "type": "range",
+      "id": "rotate_interval",
+      "label": "Time per word",
+      "min": 2,
+      "max": 6,
+      "step": 0.5,
+      "unit": "s",
+      "default": 3
     },
     {
       "type": "text",
@@ -333,6 +542,27 @@
       "id": "preloader_color",
       "label": "Preloader bar",
       "default": "#3C3C3C"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hint",
+      "label": "Show the hover badge",
+      "info": "A slowly turning round badge in the empty corner of the grid, inviting people to hover a bottle. Desktop with a mouse only; needs tiles with hover notes.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "hint_text",
+      "label": "Hover badge text",
+      "info": "Goes once around the badge; about 25–40 characters.",
+      "default": "Hover a bottle · discover its notes"
+    },
+    {
+      "type": "checkbox",
+      "id": "float_tiles",
+      "label": "Moving images",
+      "info": "The tiles stay aligned; the image inside each one drifts or zooms very slowly. Off under reduced motion.",
+      "default": true
     },
     {
       "type": "checkbox",
@@ -537,6 +767,15 @@
           "label": "Vertical label",
           "info": "Short text for the vertical label, e.g. Dior · Sauvage. Empty: small label · label."
         },
+        {
+          "type": "text",
+          "id": "hover_notes",
+          "label": "Notes shown on hover",
+          "info": "Perfume tiles only: up to 3, comma-separated, from the brand's official list, e.g. bergamot, vanilla, patchouli. Hovering the tile shows them in place of the scent tiles."
+        },
+        { "type": "image_picker", "id": "note_image_1", "label": "Note 1 photo", "info": "Optional. Replaces the built-in photo of the first note." },
+        { "type": "image_picker", "id": "note_image_2", "label": "Note 2 photo" },
+        { "type": "image_picker", "id": "note_image_3", "label": "Note 3 photo" },
         {
           "type": "url",
           "id": "link",

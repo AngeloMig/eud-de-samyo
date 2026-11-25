@@ -147,16 +147,12 @@
       this.stage.addEventListener('dragstart', (e) => e.preventDefault(), { signal });
     }
 
-    // ---------- Product + Add to bag in the header (phones: bottom bar) ----------
+    // ---------- Product + Add to bag: bar at the bottom of the screen ----------
     bindSticky(signal) {
       const bar = this.querySelector('[data-pp-sticky]');
       const target = this.querySelector('.pp__buy');
       if (!bar || !target) return;
-      // Line up with the header's boxes (the Bag box) on desktop.
-      const place = () => {
-        const bag = document.querySelector('.ph__bag');
-        if (bag) bar.style.setProperty('--pp-sticky-top', `${Math.max(0, bag.getBoundingClientRect().top)}px`);
-      };
+      const place = () => {}; // the bar sits at the bottom now (CSS); kept so callers stay simple
       const show = (on) => {
         bar.classList.toggle('is-shown', on);
         bar.inert = !on;
@@ -225,6 +221,7 @@
         this.querySelectorAll('[data-pp-price], [data-pp-aff-price], [data-pp-price-copy]').forEach((el) => (el.textContent = offer.price || ''));
       }
       if (v) this.querySelectorAll('[data-pp-sticky-variant]').forEach((el) => (el.textContent = v.title));
+      this.showNudge(v);
       if (stock) {
         const known = offer && typeof offer.in_stock === 'boolean';
         stock.hidden = !known;
@@ -238,6 +235,13 @@
         url.searchParams.set('variant', v.id);
         window.history.replaceState({}, '', url.toString());
       }
+    }
+
+    // "Save more in a trio / six" line under the sizes: only for the chosen 1/2 ml vial.
+    showNudge(v) {
+      this.querySelectorAll('[data-pp-nudge]').forEach((el) => {
+        el.hidden = !v || String(v.id) !== el.dataset.ppNudge;
+      });
     }
 
     apply(v) {
@@ -261,6 +265,7 @@
         if (input) input.value = v.id;
         this.querySelectorAll('[data-pp-price-copy]').forEach((el) => (el.textContent = v.price));
         this.querySelectorAll('[data-pp-sticky-variant]').forEach((el) => (el.textContent = v.title));
+        this.showNudge(v);
         this.querySelectorAll('form input[name="id"]').forEach((x) => (x.value = v.id));
         if (this.dataset.url) {
           const url = new URL(window.location.href);

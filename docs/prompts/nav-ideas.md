@@ -24,7 +24,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Shop links apart from utilities" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Shop links apart from utilities" from dev/nav-ideas.html.
 What it does: Shop links in one bar; Search and Account become 36px icon boxes next to the Bag, after a small gap.
 Keep text labels for screen readers (visually hidden).
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -38,7 +38,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Brands mega panel" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Brands mega panel" from dev/nav-ideas.html.
 What it does: Hovering a menu item with child links opens a white panel under the bar, A–Z with letter marks, plus an optional featured image.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -51,7 +51,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Scent notes dropdown in family colours" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Scent notes dropdown in family colours" from dev/nav-ideas.html.
 What it does: Hovering Scent notes lists the families with a colour dot and the product count of each collection.
 Reuse the sub-menu panel; colour from a new color setting per family (or collection metafield); counts from collection.products_count.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -65,7 +65,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "An image peeks out under each link" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "An image peeks out under each link" from dev/nav-ideas.html.
 What it does: Hovering a link wipes in a small picture under it.
 One image picker per link via blocks keyed by menu item title (like the Menu feature block).
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -79,7 +79,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "A dark block glides between links" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "A dark block glides between links" from dev/nav-ideas.html.
 What it does: A charcoal block slides from link to link on hover; text turns white.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -92,7 +92,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Search opens inside the bar" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Search opens inside the bar" from dev/nav-ideas.html.
 What it does: Search turns the bar into a serif search field with suggestion links.
 Next step if wanted: live results from /search/suggest.json (predictive search).
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -106,7 +106,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Peek into the bag" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Peek into the bag" from dev/nav-ideas.html.
 What it does: Bag shows the items, subtotal and Checkout.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -119,7 +119,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Small index numbers" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Small index numbers" from dev/nav-ideas.html.
 What it does: Tiny 01, 02, 03 before each shop link.
 CSS counter only, a checkbox setting.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -133,7 +133,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Serif italic shop links" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Serif italic shop links" from dev/nav-ideas.html.
 What it does: Shop links in Cormorant italic, utilities small and grey.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -146,7 +146,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Hides on scroll down, returns on scroll up" from dev/nav-ideas.html.
+Sangyo theme (sections/perfume-header.liquid, assets/perfume-header.css/js). Build idea "Hides on scroll down, returns on scroll up" from dev/nav-ideas.html.
 What it does: Header slides away while reading down, back on any scroll up.
 Only for the sticky (non-overlay) header; transform only; never hide while the menu or drawer is open.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.

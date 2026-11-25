@@ -1,5 +1,5 @@
 /*
- * Samyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
+ * Sangyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
  * Settings > Files with the same names before using this template.
  */
 {
@@ -16,6 +16,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dior-sauvage-eau-de-parfum",
+            "hover_notes": "bergamot, lavender, vanilla",
             "image": "shopify://shop_images/samyo-dior-sauvage-edp.webp",
             "kicker": "Dior",
             "label": "Sauvage Eau de Parfum",
@@ -44,6 +45,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/emporio-armani-stronger-with-you-intensely",
+            "hover_notes": "pink pepper, lavender, vanilla",
             "image": "shopify://shop_images/samyo-armani-stronger-with-you-intensely.webp",
             "kicker": "Emporio Armani",
             "label": "Stronger With You Intensely",
@@ -72,6 +74,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dior-homme-intense",
+            "hover_notes": "iris, lavender, cedar",
             "image": "shopify://shop_images/samyo-dior-homme-intense.webp",
             "kicker": "Dior",
             "label": "Homme Intense",
@@ -100,6 +103,7 @@
             "image_scale": 80,
             "image_tilt": 0,
             "link": "/products/dolce-gabbana-the-one",
+            "hover_notes": "orange, tobacco, amber",
             "image": "shopify://shop_images/samyo-dg-the-one.webp",
             "kicker": "Dolce & Gabbana",
             "label": "The One",
@@ -125,6 +129,9 @@
         "button2_link": "/pages/find-your-scent",
         "show_preloader": true,
         "heading": "Find the perfume\nthat smells\nlike you",
+        "accent": "",
+        "rotating_words": "summer, Sunday morning, your first date, rain in Manila",
+        "rotate_interval": 3,
         "slogan": "Designer fragrances, delivered across the Philippines",
         "trust_points": "100% authentic designer fragrances\nSecure checkout\nScent notes for every perfume, before you buy",
         "label_style": "spine"
@@ -365,8 +372,17 @@
         "brand_7",
         "brand_8"
       ],
-      "settings": {},
-      "disabled": true
+      "settings": {
+        "style": "ribbons",
+        "ribbon_overlap": true,
+        "name_size": 44,
+        "name_size_mobile": 26,
+        "speed": 50,
+        "background_color": "#F7F5F0",
+        "text_color": "#292521",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     },
     "shop_brands": {
       "type": "perfume-shop-brands",
@@ -745,30 +761,40 @@
           "type": "promise",
           "settings": {
             "icon": "seal",
+            "label": "Authentic",
             "title": "Authentic designer fragrances",
-            "text": "Genuine bottles from the houses you know."
+            "text": "Genuine bottles from the houses you know.",
+            "link_label": "About authenticity",
+            "link": "/pages/authenticity"
           }
         },
         "promise_2": {
           "type": "promise",
           "settings": {
             "icon": "truck",
+            "label": "Delivery",
             "title": "Free delivery on ₱10,000+",
-            "text": "Standard delivery on Samyó orders of ₱10,000 and above after discounts. Smaller orders pay delivery at checkout."
+            "text": "On orders of ₱10,000 and up after discounts. Smaller orders pay delivery at checkout.",
+            "link_label": "Delivery details",
+            "link": "/policies/shipping-policy"
           }
         },
         "promise_3": {
           "type": "promise",
           "settings": {
             "icon": "notes",
+            "label": "Notes",
             "title": "Notes before you buy",
-            "text": "Top, heart and base notes, how it wears and when to wear it."
+            "text": "Top, heart and base notes, how it wears and when to wear it.",
+            "link_label": "Scent guide",
+            "link": "/pages/scent-guide"
           }
         },
         "promise_4": {
           "type": "promise",
           "settings": {
             "icon": "compass",
+            "label": "Guidance",
             "title": "Help choosing",
             "text": "Not sure what you like? Four questions point you to a scent.",
             "link_label": "Find your scent",
@@ -783,6 +809,8 @@
         "promise_4"
       ],
       "settings": {
+        "layout": "seal",
+        "ring_motion": "both",
         "link": "/collections/all"
       }
     },
@@ -804,7 +832,7 @@
           "type": "question",
           "settings": {
             "question": "How much is delivery?",
-            "answer": "<p>Customers pay delivery on Samyó orders below ₱10,000. Standard delivery is free on orders of ₱10,000 and above after discounts. Partner retailers have their own delivery policies.</p>",
+            "answer": "<p>Customers pay delivery on Sangyó orders below ₱10,000. Standard delivery is free on orders of ₱10,000 and above after discounts. Partner retailers have their own delivery policies.</p>",
             "delivery_rates": true
           }
         },
@@ -852,13 +880,13 @@
   },
   "order": [
     "hero",
+    "brands",
     "showcase",
     "families",
     "shop_brands",
     "decants",
     "why",
     "journal",
-    "faq",
-    "brands"
+    "faq"
   ]
 }

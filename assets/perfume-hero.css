@@ -55,18 +55,114 @@ perfume-hero {
   max-width: 11.5em;
 }
 
-/* Each line is a mask; its text slides up into it. Padding keeps descenders. */
+/* Each line is a mask; its text slides up into it. Padding above and below keeps
+   Cormorant's tall ascenders and descenders inside the mask (line-height is < 1). */
 .phh__line {
   display: block;
-  margin-bottom: -0.14em;
+  margin: -0.16em 0 -0.16em;
   overflow: hidden;
-  padding-bottom: 0.14em;
+  padding: 0.16em 0;
 }
 
 .phh__line > span {
   display: block;
-  transition: transform calc(1.15s * var(--phh-k)) var(--phh-ease);
+  transition:
+    transform calc(1.15s * var(--phh-k)) var(--phh-ease),
+    opacity calc(0.9s * var(--phh-k)) ease;
   transition-delay: calc(var(--phh-delay) + var(--i) * 85ms * var(--phh-k));
+}
+
+/* ---------- Rotating word (setting) ----------
+   Every word sits in the same grid cell, so the heading never reflows: the cell is
+   as wide as the longest word. The word coming in is written left to right
+   (clip-path wipe); the one going out lifts a little and fades. Only clip-path,
+   opacity and transform move. The script's swashes reach outside the line box, so
+   that line's mask opens up once the intro is done. */
+.phh__left {
+  min-width: 0; /* long script words must not widen the column */
+}
+
+/* The big script may dip into the buttons: the heading sits below them, so the
+   solid button covers it (owner, 2026-11-25). */
+.phh__heading {
+  position: relative;
+  z-index: 0;
+}
+
+.phh__actions,
+.phh__foot {
+  position: relative;
+  z-index: 1;
+}
+
+.phh__rot {
+  display: inline-grid;
+  font-family: var(--phh-script);
+  justify-items: start; /* each word keeps its own width, for the fit */
+  /* Same size to the eye as the heading (owner, 2026-11-25): Cormorant's lowercase
+     is ~0.39em tall, Mrs Saint Delafield's ~0.235em, so the script needs 1.66x the
+     font-size for its letters to stand as tall as "like". */
+  font-size: 1.66em;
+  letter-spacing: 0;
+  line-height: 0.45;
+  margin-left: -0.04em;
+  vertical-align: baseline;
+}
+
+/* A slightly larger first letter, like a hand-drawn initial, kept small so the
+   word still reads the same size as the heading. */
+.phh__rw::first-letter {
+  font-size: 1.15em;
+}
+
+/* Each word is sized on its own (--w-fit, set by perfume-hero.js) so short words
+   stay large and only long phrases shrink to fit beside "like". The wipe's edges
+   sit far outside the glyphs so the script's swashes are never clipped. */
+.phh__rw {
+  align-self: baseline;
+  clip-path: inset(-1em 100% -1em 0);
+  font-size: calc(1em * var(--w-fit, 1));
+  grid-area: 1 / 1;
+  opacity: 0;
+  padding-right: 0.08em;
+  white-space: nowrap;
+}
+
+.phh__rw.is-on {
+  clip-path: inset(-1em -1em -1em -1em);
+  opacity: 1;
+}
+
+/* A word that is neither showing nor fading out is fully hidden, so the script's
+   long entry strokes and i-dots (drawn outside the word's box) can never peek. */
+.phh__rw:not(.is-on):not(.is-out) {
+  visibility: hidden;
+}
+
+/* In: written left to right, only after the outgoing word has gone (no overlap).
+   Out: fades and lifts slightly. A word is put back to "unwritten" without any
+   transition by perfume-hero.js. */
+.phh__rot.is-ready .phh__rw.is-on {
+  transition:
+    clip-path 1.3s cubic-bezier(0.45, 0.05, 0.3, 1) 0.45s,
+    opacity 0.01s linear 0.45s;
+}
+
+.phh__rot.is-ready .phh__rw.is-out {
+  clip-path: inset(-1em -1em -1em -1em);
+  opacity: 0;
+  transform: translateY(-0.12em);
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s var(--phh-ease);
+}
+
+.phh:not(.is-pre) .phh__line--rot {
+  overflow: visible;
+}
+
+html.pf-intro-pre .phh[data-intro='true'] .phh__line--rot {
+  overflow: hidden;
 }
 
 .phh__accent {
@@ -342,19 +438,28 @@ perfume-hero {
   }
 }
 
-/* ---------- Intro: start states ---------- */
-.phh.is-pre .phh__line > span {
-  transform: translateY(108%);
+/* ---------- Intro: start states ----------
+   Matched both by .is-pre (inline script after the section) and by
+   html.pf-intro-pre (tiny script before it), so the hero never paints in its end
+   state first. The text starts fully below its mask (100% + room for ascenders). */
+.phh.is-pre .phh__line > span,
+html.pf-intro-pre .phh[data-intro='true'] .phh__line > span {
+  opacity: 0;
+  transform: translateY(calc(100% + 0.5em));
 }
 
-.phh.is-pre .phh__accent {
+.phh.is-pre .phh__accent,
+html.pf-intro-pre .phh[data-intro='true'] .phh__accent {
   opacity: 0;
   transform: translateY(14px) rotate(-4deg);
 }
 
 .phh.is-pre .phh__slogan,
 .phh.is-pre .phh__actions,
-.phh.is-pre .phh__trust {
+.phh.is-pre .phh__trust,
+html.pf-intro-pre .phh[data-intro='true'] .phh__slogan,
+html.pf-intro-pre .phh[data-intro='true'] .phh__actions,
+html.pf-intro-pre .phh[data-intro='true'] .phh__trust {
   opacity: 0;
   transform: translateY(12px);
 }
@@ -380,11 +485,13 @@ perfume-hero {
   }
 }
 
-.phh.is-pre .phh-tile__inner {
+.phh.is-pre .phh-tile__inner,
+html.pf-intro-pre .phh[data-intro='true'] .phh-tile__inner {
   clip-path: inset(100% 0 0 0);
 }
 
-.phh.is-pre .phh-tile__media {
+.phh.is-pre .phh-tile__media,
+html.pf-intro-pre .phh[data-intro='true'] .phh-tile__media {
   transform: translateY(12%) scale(1.18);
 }
 
@@ -542,6 +649,299 @@ perfume-header {
   .phh--labels-touch .phh-tile__name {
     font-size: 14px;
   }
+}
+
+/* ---------- Moving images (setting "float_tiles") ----------
+   The tiles never move, so the grid stays perfectly aligned. Only the image inside
+   each tile moves, on the separate `translate` / `scale` properties so the intro,
+   pose and hover transforms are untouched: cut-outs (contain) drift a few px up and
+   down, full-bleed photos (cover) zoom very slowly. Pauses while the grid is hovered
+   or focused; off under reduced motion. */
+.phh-tile,
+.phh-note {
+  transition: opacity 0.45s ease;
+}
+
+.phh-tile:nth-child(1) { --bob: 7s; }
+.phh-tile:nth-child(2) { --bob: 9s; }
+.phh-tile:nth-child(3) { --bob: 7.6s; }
+.phh-tile:nth-child(4) { --bob: 8.4s; }
+.phh-tile:nth-child(5) { --bob: 9.6s; }
+.phh-tile:nth-child(6) { --bob: 8.8s; }
+.phh-tile:nth-child(7) { --bob: 7.2s; }
+.phh-note { --bob: 8s; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .phh--float .phh-tile:not(.phh-tile--cover) .phh-tile__pose,
+  .phh--float .phh-note:not(.phh-note--fill, .phh-note--stem) .phh-note__cut {
+    animation: phh-drift var(--bob, 8s) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
+  }
+
+  .phh--float .phh-tile--cover .phh-tile__pose,
+  .phh--float .phh-note--full img,
+  .phh--float .phh-note--fill .phh-note__cut,
+  .phh--float .phh-note--stem .phh-note__cut {
+    animation: phh-zoom calc(var(--bob, 8s) * 1.6) var(--phh-ease-io, ease-in-out) calc(var(--i, var(--j, 0)) * -1.3s) infinite alternate;
+  }
+
+  .phh--float .phh__grid:hover *,
+  .phh--float .phh__grid:focus-within * {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes phh-drift {
+  from {
+    translate: 0 -4px;
+  }
+
+  to {
+    translate: 0 4px;
+  }
+}
+
+@keyframes phh-zoom {
+  from {
+    scale: 1;
+  }
+
+  to {
+    scale: 1.05;
+  }
+}
+
+/* ---------- Hover badge ----------
+   A slowly turning round badge in the empty top-right cell (row 1, column 3),
+   pointing down-left at the bottles. Desktop with a mouse only. It fades while a
+   perfume's notes show, and waits for the intro. */
+.phh-hint {
+  display: grid;
+  grid-area: 1 / 3;
+  pointer-events: none;
+  place-items: center;
+  transition: opacity 0.6s ease 0.2s;
+}
+
+.phh-hint__badge {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 78%;
+}
+
+.phh-hint__ring {
+  fill: var(--phh-ink);
+  height: 100%;
+  inset: 0;
+  overflow: visible;
+  position: absolute;
+  width: 100%;
+}
+
+.phh-hint__ring text {
+  font-family: var(--phh-sans);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.phh-hint__arrow {
+  fill: none;
+  height: 22%;
+  stroke: var(--phh-ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+  width: 22%;
+}
+
+.phh__grid.is-notes .phh-hint,
+.phh.is-pre .phh-hint,
+html.pf-intro-pre .phh[data-intro='true'] .phh-hint {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .phh-hint__ring {
+    animation: phh-hint-spin 22s linear infinite;
+  }
+
+  .phh-hint__arrow {
+    animation: phh-hint-nudge 2.4s var(--phh-ease-io) infinite alternate;
+  }
+
+  .phh__grid:hover .phh-hint__ring,
+  .phh__grid:focus-within .phh-hint__ring,
+  .phh__grid:hover .phh-hint__arrow,
+  .phh__grid:focus-within .phh-hint__arrow {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes phh-hint-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes phh-hint-nudge {
+  from {
+    transform: translate(2px, -2px);
+  }
+
+  to {
+    transform: translate(-3px, 3px);
+  }
+}
+
+@media (hover: none), (max-width: 989px) {
+  .phh-hint {
+    display: none;
+  }
+}
+
+/* ---------- Hover notes ----------
+   While a perfume tile is hovered or focused, the scent tiles step back and that
+   perfume's notes wipe up in random free cells (placed by assets/perfume-hero.js). */
+.phh__grid.is-notes .phh-tile--scent {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.phh-note {
+  display: none;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.phh-note.is-placed {
+  display: block;
+}
+
+.phh-note__media,
+.phh-note__label {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 0.8s var(--phh-ease);
+  transition-delay: calc(var(--j, 0) * 70ms);
+}
+
+.phh-note__media {
+  align-items: center;
+  background: var(--tile-bg);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: absolute;
+}
+
+.phh-note__media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.12);
+  transition: transform 1.2s var(--phh-ease);
+  width: 100%;
+}
+
+/* Bundled cut-outs sit whole on the note's colour, like the bottles. */
+.phh-note__media .phh-note__cut {
+  filter: drop-shadow(0 10px 14px rgba(41, 37, 33, 0.18));
+  height: 78%;
+  object-fit: contain;
+  width: 78%;
+}
+
+/* Textures (cedar, pepper, cinnamon) fill the whole card. */
+.phh-note--fill .phh-note__media .phh-note__cut {
+  filter: none;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Stemmed flowers (lavender, iris, rose) stand on the card's bottom edge. */
+.phh-note--stem .phh-note__media .phh-note__cut {
+  bottom: 0;
+  filter: drop-shadow(0 6px 10px rgba(41, 37, 33, 0.14));
+  height: 92%;
+  left: 0;
+  object-fit: contain;
+  object-position: 50% 100%;
+  position: absolute;
+  transform-origin: 50% 100%;
+  width: 100%;
+}
+
+/* The theme's note photo, filling the tile instead of a small disc. */
+.phh-note__media .pf-note-photo {
+  aspect-ratio: auto;
+  border-radius: 0;
+  inset: 0;
+  position: absolute;
+}
+
+.phh-note__media .pf-note-photo img {
+  height: 100% !important;
+  left: 0;
+  top: 0;
+  width: 100% !important;
+}
+
+/* Full-bleed photos: the label sits on a small paper chip so it stays readable. */
+.phh-note--full .phh-note__label,
+.phh-note--fill .phh-note__label {
+  background: color-mix(in srgb, var(--tile-bg) 88%, #fff);
+  bottom: 8px;
+  left: 8px;
+  padding: 6px 9px 7px;
+  right: auto;
+}
+
+/* Flowers standing on the bottom edge: the label moves to the top. */
+.phh-note--stem .phh-note__label {
+  bottom: auto;
+  top: 12px;
+}
+
+/* No photo yet: the name, large, on the note's colour. */
+.phh-note--text .phh-note__name {
+  font-size: clamp(28px, 2.6vw, 44px);
+  font-style: italic;
+}
+
+.phh-note__label {
+  bottom: 12px;
+  display: grid;
+  gap: 2px;
+  left: 12px;
+  position: absolute;
+  right: 12px;
+}
+
+.phh-note__kicker {
+  font-family: var(--pf-font-sans);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.phh-note__name {
+  font-family: var(--pf-font-serif);
+  font-size: 22px;
+  line-height: 1;
+}
+
+.phh-note.is-on .phh-note__media,
+.phh-note.is-on .phh-note__label {
+  clip-path: inset(0 0 0 0);
+}
+
+.phh-note.is-on .phh-note__media img {
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -117,7 +117,7 @@
       <dd>
         {%- assign cj = item.metafields.samyo.affiliate_offers.value -%}
         {%- if item != blank and cj == blank -%}
-          <span class="pcmp__price">{% if item.price_varies %}From {% endif %}{{ item.price_min | money }} at Samyó</span>
+          <span class="pcmp__price">{% if item.price_varies %}From {% endif %}{{ item.price_min | money }} at Sangyó</span>
           <a class="pcmp__link" href="{{ item.url }}">View</a>
         {%- elsif cj != blank -%}
           <span class="pcmp__price">From {{ cj.first.price | escape }} at {{ item.metafields.samyo.retailer.value | default: 'partner' | escape }}</span>

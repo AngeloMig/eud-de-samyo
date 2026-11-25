@@ -1,4 +1,239 @@
-# Handoff: Samyo perfume theme
+# Handoff: Sangyo perfume theme
+
+## Update 2026-11-25: crossing ribbons under the hero
+
+- `perfume-brands` has a new **Style** setting: One line (previous) or Crossing
+  ribbons (owner picked marquee idea 1 of 10). The home page now shows it, enabled,
+  right after the hero (it was disabled at the bottom).
+- Ribbons: the houses on an ink ribbon (−4°) and a second ribbon of words in the
+  handwritten font (+4°, setting "Second ribbon words", default a list of notes,
+  colour setting) moving the other way. Both sit inside their own band, sized
+  `ribbon + 11vw` (phones 5° and `+ 20vw`), which clips the ends: measured at
+  1440 / 1024 / 390 px, the ribbons never leave the band, so the hero above and the
+  showcase below are never covered. Pauses on hover/focus; reduced motion shows the
+  lists flat and wrapped.
+- Then (owner): **ribbons sit on the seam** (new checkbox "Sit on the seam between
+  sections", default on). The section takes no height (`overflow-x: clip`), the
+  ribbons centre on the hero/showcase line, and both neighbours make room with
+  `--pb-half` (50px + 4.6vw; phones 34px + 6vw) via `:has()` rules in
+  perfume-brands.css: the hero lifts its slogan + trust line, the showcase adds it
+  to its top padding. Hero tiles may go under the ribbons (owner's choice).
+  Measured at 1440 / 1024 / 390: hero and showcase touch (0 gap), the hero text ends
+  above the ribbons and the showcase kicker starts below them.
+- Edge wedges removed (owner): the tilt is now `atan2(ribbon height, 112vw) × 0.92`
+  (fallback 2° / 3° on phones), so the ribbons overlap edge to edge at any width;
+  ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
+  1024 / 390: no gap between ribbons at either edge, text still clear.
+
+## Pricing rule for 1 ml and 2 ml decants (owner, 2026-11-25): always follow this
+
+When the base price of a 1 ml or 2 ml vial changes (or a new perfume is added):
+
+1. **Shopify variant price = base price + 35%** (base × 1.35, rounded to ₱5). This is
+   the solo price a customer pays for one vial on its own.
+2. **Leave the discounts alone.** They apply on top automatically:
+   - **Try trio · 26% off**: 3+ vials (1 ml and 2 ml variants)
+   - **Six-vial set · 30% off**: 6+ vials
+   Add any new perfume's 1 ml and 2 ml variants to both discounts in Shopify →
+   Discounts, or they won't get the set price.
+3. Theme settings stay at 26% / 30% (Try trio section, builder Set blocks, product
+   page Sizes block) so the prices shown match checkout.
+
+Check: base × 1.35 × 0.74 ≈ base (trio ≈ base price); base × 1.35 × 0.70 ≈ 94.5% of
+base (a six vial is about 5.5% under base). Note: the prices set on 2026-11-25 used
+base ÷ 0.7 instead, so a six never goes under base; the owner's rule going forward is
++35%.
+
+## Decision 2026-11-25: decant pricing and the Try trio section (owner)
+
+- **Pricing rule:** a 1, 2 or 5 ml vial bought on its own costs **30% more** than the
+  same vial inside a set (Try trio etc.). In Shopify: the vial variant price is the
+  "on its own" price; the set gets a **23%** discount (1 − 1/1.3), set on the set block
+  in perfume-vial-picker *and* as a matching automatic discount, so checkout charges it.
+  Show both prices and "You save ₱…" wherever a set is sold.
+- **Try trio section (built 2026-11-25, live on main; owner picked idea 10):** its own
+  section directly under the product information. The home-page style ink ribbon
+  ("Try *trio* · 3 × 1 ml · try before the bottle", one baseline for script and caps)
+  runs over the slots, with this perfume pinned in slot 1. Under it is a 6 × 2 grid of
+  every product in the decant collection (3 across on phones). Hovering a tile shows a
+  pop-up next to the mouse with the on-its-own and set prices for 1/2/5 ml; clicking a
+  tile adds or removes it. The button goes "Pick 2 more" → "Pick 1 more" → "Add trio to
+  bag · ₱…" → "Added ✓"; when the trio is full the other tiles dim and say "Remove one
+  to swap". No repeats. It hides on perfumes without a 1 ml variant.
+  Preview: claude.ai artifact "Sangyó: Try trio section, built out".
+- When the trio is full, the main button becomes **"Continue with your trio →"** and opens
+  the decant builder page (the section's page setting, like `picker_page` on the product
+  section, falling back to `pages['build-your-set']`) with
+  `?set=3x1&scent=<handle>,<handle>,<handle>`, so people see the other sets and sizes.
+  A small "Or add to bag now · ₱…" link adds the trio directly. Ribbon speed: slow (the
+  owner found 30s for 8 phrase repeats too fast; preview uses 56s).
+- **Files:** `sections/perfume-try-trio.liquid`, `assets/perfume-try-trio.css`,
+  `assets/perfume-try-trio.js`; placed in `templates/product.json` right after `main`
+  (id `trio`). Settings: set name, vials (2–5), size (1/2/5 ml), discount (default 23%),
+  collection, tile limit (6–24), builder page, ribbon text (`*word*` = script) and speed,
+  every label, colours, padding. Hidden on products without an available vial in the
+  set's size. Cart lines match the builder exactly. Prices in the section are exact
+  (centavos show when the % gives them, as in the builder).
+  Ribbon straddles the seam with the product section (half over its 72px bottom
+  padding); tilt = −min(3°, atan2(0.85 × band height, 100vw)) so it always covers the
+  seam edge to edge (no cream/lilac wedge), fallback −1°.
+  **Discount = 0%** (2026-11-25, checked in Shopify admin): the only active vial
+  discount is "Six-vial set · 10% off" (automatic, the 1 ml and 2 ml variants of the 10
+  perfumes, minimum 6 items, doesn't combine). A single Try trio gets nothing, so the
+  section shows 0% and hides the compare lines. The 10% seen in the bag came from a
+  bag with 9 vials. The owner's "30% dearer on its own" rule is
+  not met yet: open question (raise the Shopify discount to 23%, or keep 10% and raise
+  the 1/2/5 ml variant prices ~17%).
+  To do in Shopify: and the builder page
+  (handle `build-your-set`, or pick it in the section) with a 3 × 1 ml Set block.
+- **Builder (done, live):** `assets/perfume-vial-picker.js` now takes a comma-separated
+  `?scent=` list and fills the vials in that order (unknown handles, sizes it isn't
+  offered in and duplicates when repeats are off are skipped; leftover vials fill as
+  before). A single `?scent=<handle>` works exactly as it did.
+
+## Update 2026-11-25: hero hover badge
+
+- Owner picked hover-hint idea 4 (seal badge). A turning ring of text with an arrow sits
+  in the empty grid cell beside the lemon tile (row 1, column 3), inviting people to
+  hover a bottle. Settings: **Show the hover badge** (`show_hint`) and **Hover badge
+  text** (`hint_text`). Only renders when at least one tile has hover notes.
+- It fades out while notes are showing and during the intro, pauses on grid hover or
+  focus, stops under reduced motion, and is hidden on touch screens and below 990px.
+  `aria-hidden` (decorative; the notes themselves stay keyboard reachable).
+
+## Update 2026-11-25: hero rotating word
+
+- Size (owner, later the same day): the script word is 1.66em with a 1.15em first
+  letter, so its lowercase matches Cormorant's x-height (0.39em vs the script's
+  ~0.235em) and it reads the same size as the heading. Was 2.05em with a 1.4em initial.
+
+- Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;
+  home page: summer, sunday morning, your first date, rain in manila — lowercase on
+  purpose at first, then owner asked: summer, Sunday morning, your first date, rain
+  in Manila — normal grammar) and **Time per word** (2–6 s, default 3).
+  Fix pass after the live check (clipped, flicker/overlap, small, tilted): no tilt,
+  script at 2.05em (first letter 1.4x, may touch "like" and the line above, owner's
+  choice) on the same baseline as "like", wipe edges 1em outside the glyphs
+  (swashes never clipped), incoming word starts only after the outgoing one has
+  faded (measured: never two words visible), each word fitted on its own
+  (`--w-fit`) so short words stay large. The handwritten accent is
+  cleared on the home page so the rotating word is the only script.
+- The heading's last word ("you") and the list share one inline-grid cell, so the
+  heading never reflows; screen readers only read "you". Incoming word: clip-path
+  wipe left→right (written in), outgoing: lift + fade; reset without transition.
+- Fit: each word that doesn't fit beside the lead ("like") scales down on its own
+  (`--w-fit`), re-checked after fonts load and on resize.
+- Starts after the intro; holds while the **heading** is hovered (not the whole hero:
+  it fills the screen), while focus is in the hero, off screen or in a hidden tab;
+  off under reduced motion.
+
+## Update 2026-11-25: hero intro smoothing
+
+- Heading lines no longer show their tops before sliding in: each `.phh__line` mask
+  has 0.16em padding above and below (Cormorant overflows its 0.92 line-height), and
+  the start state is `translateY(calc(100% + .5em))` plus opacity 0, fading in as it
+  rises.
+- No end-state flash: a one-line script *before* `<perfume-hero>` adds
+  `html.pf-intro-pre`, and every intro start state also matches
+  `html.pf-intro-pre .phh[data-intro='true']`. The original inline script after the
+  section (is-pre + 4s fallback, a danger zone in AGENTS.md) is unchanged; both
+  classes are removed on reveal or by the fallback.
+
+## Update 2026-11-25: hero floating tiles + hover notes
+
+- Owner picked hero idea 2 (floating tiles) of 10, plus hover notes.
+- **Moving images** (setting id `float_tiles`, default on): the tiles never move,
+  so the grid stays perfectly aligned (owner, 2026-11-25: no misalignment). Only the
+  image inside moves, on the `translate` / `scale` properties: cut-outs drift ±4px,
+  full-bleed photos zoom 1 → 1.05 slowly. Pauses while the grid is hovered/focused;
+  off under reduced motion. (The first version moved the tiles; removed.)
+- **Hover notes**: new tile setting "Notes shown on hover" (perfume tiles, up to 3,
+  comma-separated). Hovering/focusing a perfume tile fades the scent tiles
+  (`.phh-tile--scent`: tiles not linking to a product) and wipes its notes into
+  random free cells of the 4 x 3 grid (scent cells + empty cells). Note visual,
+  **real photos only (owner: no icons)**: the tile's own "Note 1/2/3 photo" upload,
+  else the bundled cut-out (lemon, cinnamon, vanilla, iris, lavender, orange, rose,
+  cardamom), else the licensed Unsplash photo from `perfume-note-art` (captured and
+  asked for at 600 x 780 instead of 240), else the note's name large on its colour. Full-bleed photos get a paper chip
+  behind the label. Cut-out fit by note: pepper, cinnamon fill the card
+  (`--fill`, label chip); lavender, iris, rose stand on the bottom edge (`--stem`,
+  label at the top, zoom from the bottom instead of drifting). Bergamot and amber cut-outs weren't clean, so they stay uncut.
+  No free-licence photo exists yet for patchouli, ambrette or sage (searched
+  2026-11-25); upload one in the tile settings to use them.
+- Home page notes, checked 2026-11-25, picked from each perfume's published list so
+  every note has a real photo (owner asked for photos, not icons): Sauvage EDP
+  bergamot, lavender, vanilla (dior.com: bergamot, vanilla; lavender from the
+  published pyramid; Sichuan pepper dropped because it showed the same peppercorn
+  photo as Stronger With You's pink pepper); Dior Homme Intense iris, lavender, cedar (dior.com: iris, cedar;
+  lavender from the published pyramid); Stronger With You Intensely pink pepper,
+  lavender, vanilla (Sephora key notes); The One EDP orange, tobacco, amber (D&G:
+  orange; John Lewis base notes tobacco, amber, cedarwood). Patchouli, ambrette and
+  sage were dropped for lack of photos; add them back with uploads if wanted.
+
+## Update 2026-11-25: renamed Samyo → Sangyó
+
+- The owner has the name **Sangyó** registered with the DTI, so every customer-facing
+  name in the theme, docs and dev previews now says Sangyó / sangyó (logo text,
+  footer wordmark "eau de sangyó", Why Sangyó, ring text, FAQ and delivery copy,
+  setting labels). Plain "Sangyo" in code comments.
+- **Kept on purpose (technical IDs, never shown as the brand):** image file names
+  `samyo-*.webp` (Shopify Files referenced by name in templates), metafield namespace
+  `samyo.*` (`retailer`, `price_checked`, `affiliate_offers`), setting ids
+  `show_samyo` / `samyo_note`, CSS class `pwb__row--samyo`, JS global
+  `SamyoShipping`, localStorage keys `samyo-*`, the repo name and the owner's local
+  folder `~/Samyo/feeds`. Renaming any of these breaks saved data or image links;
+  images could still be renamed before their first upload.
+- Placeholder contact email `hello@samyo.shop` is unchanged until the owner confirms
+  the new address/domain.
+- Copy that leaned on the old meaning ("to breathe in a scent"): the footer slogan
+  "breathe it in" and the Why seal's breathing centre. Check they still fit Sangyó.
+
+## Update 2026-11-25: Why Sangyó, Seal layout
+
+- `perfume-why` has a new **Layout** setting: Seal (new default, used on the home
+  page) or Grid (the previous design, unchanged). Owner picked idea 6 of 10.
+- Seal: heading centred; a round seal (an open ring of text around a dark
+  centre with a word or logo; no hairline circles, owner removed them); promises either side, first half left, rest
+  right, on shared rows via `grid-template-rows: subgrid` so pairs line up. Phones:
+  seal on top, promises in one left-aligned column.
+- Motion (transform/opacity only): ring turns into place and the centre grows in on
+  reveal, then promises move out from the seal; centre "breathes" (scale 1→1.035);
+  ring motion setting: spins (40s) and turns further with scroll (default) / slow
+  spin / scroll only / still.
+  Breathing pauses on hover and focus-within. **The ring keeps spinning on hover:
+  the owner asked for no interruption (2026-11-25), an exception to the "moving
+  content pauses on hover" rule; it still stops under reduced motion.** All motion
+  is off under reduced motion.
+  Hovering or focusing a promise swaps the centre to that promise's icon.
+- Promises (Seal layout): icon on a small disc matching the centre; optional small
+  label above each title (new block setting, both layouts); hovering/focusing one
+  leans it toward the seal and nudges its link arrow (the others don't fade:
+  owner removed that, 2026-11-25)
+  (inner `.pw__pt-in`, so it never fights the reveal on the `<li>`). Phones: seal
+  on top, promises in a 2 x 2 grid (subgrid rows). Home page links: Authenticity
+  (`/pages/authenticity`, create it per SETUP.md), shipping policy, scent guide,
+  Find your scent. Delivery line shortened (same meaning).
+- Brand pass: stagger 90ms (brand range 60–90ms), colour defaults now the tokens'
+  stone `#E8E4DC` / ink `#292521`. Each promise is a flex column with its link
+  pushed to the bottom, so links line up across a row (desktop pairs and the phone
+  2 x 2 grid).
+- Background (both layouts, owner picked ideas 5 + 9 of 10): pastel tiles (hero
+  colours, opacity pulse), paper grain (inline SVG noise data URI, no remote asset)
+  and 10 faint botanical line drawings (`snippets/perfume-why-botanical.liquid`)
+  floating 9s; each a checkbox. Tiles and drawings pause on hover/focus-within and
+  stay still under reduced motion; phones show fewer, fainter ones.
+- Centre style setting: Embossed (default; lit disc, raised word/logo/icons via
+  gradient, inset shadows, text-shadow and drop-shadow) or Flat.
+- New settings: ring text (upcased, a " · " joiner is added), centre word, centre
+  logo (image), ring motion. Big faint word is now Grid layout only.
+- The ring text is deliberately open (owner's choice): natural 0.34em spacing, so it
+  stops short and leaves a gap as it orbits; Liquid shrinks long text so it never
+  overlaps itself.
+- New files: `assets/perfume-why.js` (icon swap, scroll ring),
+  `snippets/perfume-why-icon.liquid` (icons shared by promises and the centre).
+- Checked in Chromium at 1440 / 900 / 390 px, reduced motion and JS off, with a
+  hand-mirrored test page (liquidjs wasn't available to run `dev/render-preview.mjs`).
+  Re-run the preview renderer locally to refresh `dev/home.html`.
 
 ## Update 2026-11-25: wholesale costs and proposed 11-scent rotation
 
@@ -128,7 +363,7 @@
 - Local implementation: buyer pays standard delivery below ₱10,000; free standard
   delivery from **₱10,000 after discounts**, before shipping/tax. Affiliate
   retailer purchases are excluded. No commit, push or live checkout change made.
-- New global **Samyó delivery** settings control the origin, threshold, four
+- New global **Sangyó delivery** settings control the origin, threshold, four
   estimated rates and explanatory copy. Working assumption: Metro Manila origin;
   owner has not confirmed dispatch city. Rates: NCR ₱85, Other Luzon ₱178,
   Visayas ₱212, Mindanao ₱234, based on GoGo Xpress's small-pouch pricing plus fuel.
@@ -179,7 +414,7 @@ also helps people research a scent before buying. Design direction:
   `docs/product-page.md` there.
 - Typography: Cormorant Garamond (Hermès-like display serif), Instrument Sans (body),
   Mrs Saint Delafield (signature script, sparingly). All OFL, via Google Fonts.
-- Store name chosen: **Samyo** (Filipino: to breathe in a scent). samyo.com is taken;
+- Store name first chosen: **Samyo** (Filipino: to breathe in a scent), renamed to **Sangyó** on 2026-11-25 (see the top update). samyo.com is taken;
   samyo.shop / .store / .net were available on 2026-11-20 (not registered; no
   trademark check done).
 
@@ -334,14 +569,14 @@ Queued by the owner, not built yet (items 2–3 done below):
 ## Update 2026-11-21: now a complete Shopify theme
 
 - The repo root is the theme: Shopify Dawn v16.2.0 (downloaded with the owner's OK,
-  commit `dd98c2b` = untouched baseline) + the Samyo files merged in. The old
+  commit `dd98c2b` = untouched baseline) + the Sangyo files merged in. The old
   `perfume-theme/` subfolder is gone; every path in these docs is now from the root.
 - Wiring: `layout/theme.liquid` renders `perfume-head` before `</head>` (fonts, tokens,
   and Dawn's font variables mapped to Cormorant / Instrument Sans so Dawn's own pages
-  match); `config/settings_data.json` scheme-1 = Samyo paper/ink; our
+  match); `config/settings_data.json` scheme-1 = Sangyo paper/ink; our
   `templates/index.json`, `sections/header-group.json`, `sections/footer-group.json`
-  replace Dawn's. Samyo CSS sizes switched from rem to px (Dawn's 1rem = 10px) and
-  Samyo sections reset Dawn's global heading colour/letter-spacing.
+  replace Dawn's. Sangyo CSS sizes switched from rem to px (Dawn's 1rem = 10px) and
+  Sangyo sections reset Dawn's global heading colour/letter-spacing.
 - Showcase: the chosen bottle is now centred on the stage (was left of centre);
   waiting bottles line up to its right; name and caption centred.
 - Lint: `bash dev/check.sh` runs theme check on the whole theme with
@@ -386,9 +621,9 @@ CSS/JS can't hide a fix.
   inner line does). Footer wordmark default is now "eau de samyo".
 - Phones: caption hidden; arrows get their own row under the bottle.
 
-## Update 2026-11-21: wordmark fix, "samyó", hero ideas 1–6
+## Update 2026-11-21: wordmark fix, "sangyó", hero ideas 1–6
 
-- Footer wordmark default "eau de samyó"; header logo default "samyó". The wordmark's
+- Footer wordmark default "eau de sangyó"; header logo default "sangyó". The wordmark's
   per-letter masks are now larger than the glyphs (padding + negative margin), so
   descenders, the accent and tight letters are never clipped; size 250vw/len.
 - Hero gained settings (all **off in templates/index.json** until the owner picks):
@@ -421,7 +656,7 @@ Idea pages and a Codex prompt for every idea: `docs/prompts/` (README lists what
 is built). Previews: `dev/*-ideas.html`, `dev/note-icons.html`.
 
 - **Showcase** (`perfume-showcase`):
-  - heading "The Samyó edit" (kicker "Featured fragrances") replaces "Smell it
+  - heading "The Sangyó edit" (kicker "Featured fragrances") replaces "Smell it
     before you buy it";
   - bold-caps brand above a big serif name;
   - the stage fills the top-right and the left column is wider;
@@ -502,7 +737,7 @@ is built). Previews: `dev/*-ideas.html`, `dev/note-icons.html`.
 
 ## Update 2026-11-21: product page, collection page, scent guide
 
-Templates now use Samyo sections (Dawn's originals stay in the theme, unused;
+Templates now use Sangyo sections (Dawn's originals stay in the theme, unused;
 Dawn's old templates are not kept in git history yet because nothing is committed).
 
 - **Product page** (`templates/product.json`):
@@ -662,9 +897,9 @@ The cart drawer gained:
 ## Update 2026-11-21: fragrance discovery, Phase 1 (approved plan)
 
 Plan: `docs/DISCOVERY-PLAN.md`. The owner approved:
-- the product page is canonical when Samyó sells the perfume, otherwise the profile
+- the product page is canonical when Sangyó sells the perfume, otherwise the profile
   page;
-- Scent DNA uses Samyó's own 1–5 assessment, labelled;
+- Scent DNA uses Sangyó's own 1–5 assessment, labelled;
 - the team fills in the data.
 
 Data model: `docs/METAFIELDS.md` › Fragrance profiles (`fragrance_profile`,
@@ -680,7 +915,7 @@ New sections (all in `assets/perfume-discovery.css/js`):
 | `perfume-journey` | Opening → Heart → Dry-down as tabs on a line with three even dots (the line ends at the last dot); the background changes; notes as **real photos**; long lists show 10 then "Show all n notes"; swipe on phones |
 | `perfume-performance-lab` | Longevity range on a 0–12h scale. Projection: a silhouette inside three soft concentric scent rings labelled Intimate (in a hug), Moderate (arm's length), Strong (across a room); rings up to the level fill, the level's ring breathes and a ripple spreads to it. Sillage: the same silhouette with ribbons of scent flowing behind and fading (Soft 1 short, Moderate 2, Heavy 3 long). Level buttons preview each level, this perfume's is marked "This perfume"; captions, ring labels and the scent colour are settings. Motion is transform/opacity only, pauses on hover and keyboard focus, none under reduced motion. Basis chip per metric, "Not yet evaluated" when empty |
 | `perfume-wear-guide` | When to wear it: day↔night line, four Philippine situations (hot day, office, rain, evening) rated Great/Good/Careful, six occasions |
-| `perfume-where-to-buy` | Samyó sizes, ₱ and Add to bag first; brand site; retailer offers and CJ offers with "Affiliate link" labels, rel="sponsored" and a disclosure |
+| `perfume-where-to-buy` | Sangyó sizes, ₱ and Add to bag first; brand site; retailer offers and CJ offers with "Affiliate link" labels, rel="sponsored" and a disclosure |
 | `perfume-details` | Fold-out rows: description, observations, sources, pages |
 
 Also in this update:
@@ -772,13 +1007,13 @@ Also in this update:
 ## Update 2026-11-21: homepage sections + Journal
 
 Homepage order (`templates/index.json`): hero, showcase, families, **Shop by brand**,
-**Why Samyó**, **Journal**, **FAQ**. The old brands marquee (`perfume-brands`) is kept
+**Why Sangyó**, **Journal**, **FAQ**. The old brands marquee (`perfume-brands`) is kept
 but switched off (`"disabled": true`); turn it back on in the editor if wanted.
 
 | Section | What it does |
 |---|---|
 | `perfume-shop-brands` | Brand tiles: the name large on a tint and the count; on hover the brand's bottle rises in. Each block picks the brand **collection** (name, link, count, picture = block image › collection image › first product photo); no collection → `/collections/<name>`. Phones: swipe row. Homepage blocks: 10 brands, pictures only for the 3 we have photos of. |
-| `perfume-why` | "Why Samyó": heading + text + link, then a hairline grid of promises (line icon that draws in, title, line, optional link) and a faint large "samyó" behind. Defaults only repeat true things (announcement claims, site features). |
+| `perfume-why` | "Why Sangyó": heading + text + link, then a hairline grid of promises (line icon that draws in, title, line, optional link) and a faint large "sangyó" behind. Defaults only repeat true things (announcement claims, site features). |
 | `perfume-journal` | Homepage Journal: newest article as a feature, the next ones as rows; blog picker (falls back to `blogs.journal`); hidden when empty. |
 | `perfume-faq` | Accordion on native `<details>` (works without JS; "one open at a time" via `name`), sticky intro + contact link, optional FAQPage JSON-LD. Default answers point to checkout/policies for store-specific facts. |
 | `perfume-main-blog` | Blog page (`templates/blog.json`): big title, intro, tag chips (current marked), feature + 3-column grid, paginated. |
@@ -789,7 +1024,7 @@ Preview: `dev/journal.html`, `dev/article.html` with **example articles made up 
 preview** (`DEMO_ARTICLES` in `dev/render-preview.mjs`, banner says so); the store writes
 its own. Comments on articles are not shown yet.
 
-## Update 2026-11-22: the "eau de samyó" logo (idea 5, "The spray")
+## Update 2026-11-22: the "eau de sangyó" logo (idea 5, "The spray")
 
 - Header (`perfume-header`, no logo image set, `logo_style: spray`): a small italic
   prefix (`logo_prefix`, "eau de") + the name in **Italiana** + a fine resting mist of
@@ -804,9 +1039,9 @@ its own. Comments on articles are not shown yet.
 - Ideas page: `dev/logo-ideas.html` (10 concepts). `dev/name-ideas.html` is unused
   (the owner kept the name).
 
-## Update 2026-11-22: Samyó edit heading and entrance
+## Update 2026-11-22: Sangyó edit heading and entrance
 
-- "Featured fragrances / The Samyó edit" now sits centred across the top of the
+- "Featured fragrances / The Sangyó edit" now sits centred across the top of the
   showcase (desktop: its own grid row; the stage is row 2). Heading size defaults
   48px desktop / 36px phone.
 - Background perfume name about 20% smaller (`--ps-bgname` × 1.3, cap 220vw/len).
@@ -816,14 +1051,14 @@ its own. Comments on articles are not shown yet.
   uses "Background name blur").
 - Entrance no longer pins the page (the pinned version showed an empty screen for a
   screen of scrolling). It plays by itself (~2.6s) once the section's top passes 70%
-  of the screen: "The Samyó edit" appears large in the centre and glides up to the
+  of the screen: "The Sangyó edit" appears large in the centre and glides up to the
   top centre, shrinking (`--h-dx/--h-dy/--h-s`); the bottle rises, the kicker and
   details fade in; last, after a short pause, the perfume's background name appears
   in the centre and drifts up to its resting place a little above centre (`top: 24%`
   of the stage) (`--n-*`). ~3.4s in all. Interaction ends it early;
   reduced motion and the theme editor skip it.
 
-## Update 2026-11-22: Samyó edit panel (notes line, price by the name)
+## Update 2026-11-22: Sangyó edit panel (notes line, price by the name)
 
 - Notes: new setting "Notes style", default **One line**: the note photos overlap in
   a row beside one italic line ("bergamot, Sichuan pepper, lavender & vanilla").
@@ -979,7 +1214,7 @@ folder (and into git) before relying on it; deleting that session deletes the fo
   `dev/tools/prepare-brand-tiles.mjs`. No product labels have been regenerated.
   Original photos, selected alternatives and crop rectangles are in
   `dev/source-photos/brand-tiles/sources.json`; images/rights: CREDITS.md.
-- The owner requested **10 compact notes ideas** and **10 Why Samyó ideas**.
+- The owner requested **10 compact notes ideas** and **10 Why Sangyó ideas**.
   Previews: `dev/notes-ideas.html` and `dev/why-ideas.html`, linked to each other;
   Desktop/Phone toggles and working tabs/accordions. The selected idea is in the
   URL hash. These are proposals: the existing journey and Why section are still
@@ -1041,7 +1276,7 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Owner rejected the three scent-family papers in the footer. Removed their
   rendered markup, schema blocks, preset/group entries and CSS. The new footer
   design is labelled Editorial; invitation, scent finder, newsletter, menus and
-  large `eau de samyó` wordmark remain.
+  large `eau de sangyó` wordmark remain.
 - Owner asked for 10 animation ideas specifically for the footer wordmark. Ideas
   are advisory pending a choice; no new wordmark animation has been selected.
 - This checkout was already on `angelo/rose-centre` with other changes in progress;
@@ -1101,3 +1336,54 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Validation: all ten play and reset with visible lettering and no leftover
   decorative nodes; all ten fit the 390px preview; reduced-motion simulation
   creates no animations or temporary artwork. Renderer, JS syntax and schemas pass.
+
+## Update 2026-11-25: product sticky bar at the bottom
+
+- The product page's sticky "name · size · price · Add to bag" bar (`.pp-sticky`,
+  assets/perfume-product.css + bindSticky in perfume-product.js) now sits at the
+  bottom centre of the screen on desktop too (was in the header row, where it covered
+  the navigation; owner). Phones unchanged (full-width bottom bar).
+
+## Update 2026-11-25: Try trio vial cards + pricing plan (owner: solo = +35%)
+
+- Vial cards in the Try trio now show "In trio ₱… save ₱…" (when the section discount
+  is above 0) and a "Solo" row with the 1/2/5 ml prices (hidden on phones). Cards grow
+  with their content and share the row height, so long names never spill out.
+- Owner rule (replaces the 30% note above): a vial bought **solo costs 35% more** than
+  in a trio → trio discount **26%** (1 − 1/1.35 = 25.9%). Needs, in Shopify: an
+  automatic 26% discount for 3+ vials, 1/2/5 ml variant prices = solo prices, the
+  product page showing those sizes (main section → Sizes block → turn off "Hide decant
+  sizes sold only in sets"), and the section + builder set discounts set to match.
+  Pending the owner's go-ahead (see chat 2026-11-25).
+
+## Update 2026-11-25 (later): new decant pricing is live in Shopify
+
+- Done in Shopify admin with the owner's go-ahead: every 1/2/5 ml variant of the 10
+  perfumes raised 35% (rounded to ₱5) = the solo price; 10 ml and bottles unchanged.
+- Discounts (automatic, don't combine; Shopify gives the best one): **Try trio · 26% off**
+  (1 and 2 ml variants, min 3 items, new) and **Six-vial set · 30% off** (was 10%, min 6).
+  Note: they count vials in the bag, not sets, so any 3+ small vials get 26%.
+- Theme matched: Try trio section discount 26; builder sets Try/Wear trio 26% ("26% off"
+  badge), Discovery/Wardrobe six 30%; product page now sells 1/2/5 ml solo
+  (variant picker `hide_set_sizes` = false in templates/product.json).
+- Try trio cards: the solo list is gone; "1 ml · ₱410" with a tiny green "−₱…" (what it
+  saves in a trio). Grid stays 6 across down to 560px, 4 across on phones.
+- Product page: when a solo 1 ml or 2 ml vial is chosen, a line under the sizes shows
+  that vial's price in a trio and in six, with "Build a trio →" (builder,
+  `?set=3x<size>&scent=<handle>`). Sizes block settings: show_set_nudge, trio_discount
+  (26), six_discount (30), nudge_text, nudge_link. One `<p data-pp-nudge="<variant id>">`
+  per small size; perfume-product.js `showNudge()` shows the chosen one.
+- Try trio grid (owner, later): tiles 76 × 101 px (64 px on phones, 5 across), sorted
+  lowest to highest vial price (JS), pop-up shown whenever there's a mouse/trackpad
+  (`any-hover`), any width; pop-up's set column only for the sizes in `set_sizes`
+  (default "1, 2"), others "—".
+- Pricing correction (owner, same night): 1 ml and 2 ml solo prices = original price
+  ÷ 0.7, rounded up to ₱5, so a six-vial set (30%) never goes below the original
+  ("base") price; trio (26%) sits just above it. 5 ml stays at original × 1.35.
+  Current 1/2 ml: DHI 525/975, Eros 265/460, Oud Wood 880/1690, Sauvage 515/960,
+  SWYI 440/800, Terre 275/480, The One 265/460, Uomo 410/750, Wood Sage 440/800,
+  Y 490/905.
+- Try trio "You save" now shows the % too: "You save ₱143 (26%)".
+- Builder scent cards (owner): for a set with a discount, each perfume shows its price
+  in that set, the solo price struck through, and a green tag "Save ₱… · 26%"
+  (setting `less_label`). Sets without a discount show the plain vial price as before.

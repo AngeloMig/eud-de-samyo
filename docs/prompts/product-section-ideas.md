@@ -34,7 +34,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Size pills show the price per ml" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Size pills show the price per ml" from dev/product-section-ideas.html.
 What it does: ₱/ml under each size from the variant price and the ml in its title.
 Parse the number before 'ml' in the variant title; skip when absent.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -48,7 +48,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Notes grouped Top · Heart · Base" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Notes grouped Top · Heart · Base" from dev/product-section-ideas.html.
 What it does: Chips in three rows.
 Same as note-chip idea 1.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -62,7 +62,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Scent family tag in its colour" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Scent family tag in its colour" from dev/product-section-ideas.html.
 What it does: A coloured family tag above the name linking to the family.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -75,7 +75,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "What EDP means, on tap" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "What EDP means, on tap" from dev/product-section-ideas.html.
 What it does: An info button explaining the concentration in one general line.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -88,7 +88,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Our take", clearly labelled" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Our take", clearly labelled" from dev/product-section-ideas.html.
 What it does: One staff sentence in the script font under an OUR TAKE label.
 Empty = nothing shows.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -102,7 +102,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "When to wear it" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "When to wear it" from dev/product-section-ideas.html.
 What it does: Day/Night and weather tags from the owner's own wear notes.
 Empty data shows "not assessed yet".
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -116,7 +116,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Try a 5 ml decant first" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Try a 5 ml decant first" from dev/product-section-ideas.html.
 What it does: A link to a decant product under Add to bag.
 Product picker per block; hidden when empty.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -130,7 +130,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Delivery and authenticity line" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Delivery and authenticity line" from dev/product-section-ideas.html.
 What it does: One quiet line of owner-set text under the button.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -143,7 +143,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Payment options you accept" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Payment options you accept" from dev/product-section-ideas.html.
 What it does: Payment names/icons from shop.enabled_payment_types.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -156,7 +156,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Save for later (heart)" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Save for later (heart)" from dev/product-section-ideas.html.
 What it does: A wishlist heart next to the name.
 localStorage wrapped in try/catch, or an app hook.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -170,7 +170,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Full details drawer" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Full details drawer" from dev/product-section-ideas.html.
 What it does: A side drawer with description, pyramid and sizes.
 Reuse the cart drawer's styles (assets/perfume-cart-drawer.css).
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -184,7 +184,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Similar vibe" link" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Similar vibe" link" from dev/product-section-ideas.html.
 What it does: One editor-picked product link per perfume.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -197,7 +197,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Names strip under the bottles" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Names strip under the bottles" from dev/product-section-ideas.html.
 What it does: All perfume names under the stage; click to jump.
 Reuse go(index) in perfume-showcase.js.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -211,7 +211,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Background colour per perfume" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Background colour per perfume" from dev/product-section-ideas.html.
 What it does: Soft cross-fade of each block's background colour.
 Cross-fade with an opacity layer, not a background-color transition.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -225,7 +225,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Bottle tilts toward the cursor" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Bottle tilts toward the cursor" from dev/product-section-ideas.html.
 What it does: A few degrees of tilt toward the mouse on desktop.
 Pointer: fine only; rAF; reduced motion = off.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -239,7 +239,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Loupe on the label" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Loupe on the label" from dev/product-section-ideas.html.
 What it does: Round magnifier over the bottle.
 Only with 900px+ images.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -253,7 +253,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Notes drift out of the bottle" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Notes drift out of the bottle" from dev/product-section-ideas.html.
 What it does: Note icons float out and settle into the chips when a perfume becomes active.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -266,7 +266,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Progress ring on the arrow" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Progress ring on the arrow" from dev/product-section-ideas.html.
 What it does: A thin ring fills around Next during autoplay.
 Drive it from the existing autoplay timer.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -280,7 +280,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Drag" cursor on the stage" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea ""Drag" cursor on the stage" from dev/product-section-ideas.html.
 What it does: The dot cursor grows into DRAG over the bottles.
 Share the hero's cursor code.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -294,7 +294,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Gift message at Add to bag" from dev/product-section-ideas.html.
+Sangyo theme (sections/perfume-showcase.liquid, assets/perfume-showcase.css/js). Build idea "Gift message at Add to bag" from dev/product-section-ideas.html.
 What it does: A gift tick that reveals a note field saved as a line item property.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.

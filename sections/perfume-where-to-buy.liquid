@@ -1,6 +1,6 @@
 {%- comment -%}
-  Where to buy: every honest way to get the perfume, Samyó first.
-  1. Samyó (when sold here): sizes with ₱ prices and stock, Add to bag (adds in place
+  Where to buy: every honest way to get the perfume, Sangyó first.
+  1. Sangyó (when sold here): sizes with ₱ prices and stock, Add to bag (adds in place
      and opens the cart drawer; assets/perfume-card.js). Decant sizes sold only in sets
      (setting, default 1, 2 and 5 ml) are left out and linked to the vial picker
      instead, the same as the product page. A decant perfume keeps this row even when
@@ -93,7 +93,7 @@
       {%- assign form_id = 'PerfumeBuyForm-' | append: section.id -%}
       <article class="pwb__row pwb__row--samyo">
         <div class="pwb__who">
-          <p class="pwb__merchant">Samyó</p>
+          <p class="pwb__merchant">Sangyó</p>
           <p class="pwb__meta">{{ section.settings.samyo_note | escape }}</p>
         </div>
         {%- form 'product', sold, id: form_id, class: 'pwb__form', data-pcard-add: 'true' -%}
@@ -211,8 +211,8 @@
   "settings": [
     { "type": "text", "id": "kicker", "label": "Kicker", "default": "Where to buy" },
     { "type": "text", "id": "heading", "label": "Heading", "info": "[name] becomes the fragrance name.", "default": "Get [name]" },
-    { "type": "text", "id": "samyo_note", "label": "Samyó line", "default": "Authentic, shipped from the Philippines" },
-    { "type": "text", "id": "set_sizes", "label": "Decant sizes sold only in sets", "info": "Variant names, separated by commas. Left out of the Samyó row and linked to the vial picker. Empty: show every size.", "default": "1 ml, 2 ml, 5 ml" },
+    { "type": "text", "id": "samyo_note", "label": "Sangyó line", "default": "Authentic, shipped from the Philippines" },
+    { "type": "text", "id": "set_sizes", "label": "Decant sizes sold only in sets", "info": "Variant names, separated by commas. Left out of the Sangyó row and linked to the vial picker. Empty: show every size.", "default": "1 ml, 2 ml, 5 ml" },
     { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Empty: the page with the handle build-your-set." },
     { "type": "text", "id": "sets_text", "label": "Decant sets line", "info": "[price] = the cheapest set-only size.", "default": "Smaller sizes, from [price] a vial, come in decant sets." },
     { "type": "text", "id": "sets_link", "label": "Decant sets link", "default": "Build a set" },

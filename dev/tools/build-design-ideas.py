@@ -115,6 +115,6 @@ for v in range(1,11):
     body = f'<main class="why" data-v="{v}"><div class="why__layout">{intro}{photo}{benefits}</div></main>'
     (DEV/f'why-idea-{v}.html').write_text(document(why_ideas[v-1][0], 'why-ideas.css', body))
 
-shell('Compact notes', 'notes', notes_ideas, 'My picks: 1 for a balanced compact layout; 8 for the shortest strip; 2 for every stage visible at once.', ('Why Samyó ideas', 'why-ideas.html'), 'Uses the existing Dior Homme Intense preview notes. These are design options; the current product template remains available at product.html.')
-shell('Why Samyó', 'why', why_ideas, 'My picks: 1 for clarity; 3 for a stronger perfume identity.', ('Compact notes ideas', 'notes-ideas.html'), 'All 10 options use the current section’s copy and benefits. These previews let you choose a direction before it is applied.')
+shell('Compact notes', 'notes', notes_ideas, 'My picks: 1 for a balanced compact layout; 8 for the shortest strip; 2 for every stage visible at once.', ('Why Sangyó ideas', 'why-ideas.html'), 'Uses the existing Dior Homme Intense preview notes. These are design options; the current product template remains available at product.html.')
+shell('Why Sangyó', 'why', why_ideas, 'My picks: 1 for clarity; 3 for a stronger perfume identity.', ('Compact notes ideas', 'notes-ideas.html'), 'All 10 options use the current section’s copy and benefits. These previews let you choose a direction before it is applied.')
 print('Built dev/notes-ideas.html, dev/why-ideas.html and 20 individual previews.')

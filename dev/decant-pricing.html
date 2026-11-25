@@ -348,7 +348,7 @@
 <details class="grp" id="g-aff" style="margin-top:44px">
  <summary><span class="t">Full-bottle affiliate earnings (separate)</span><span class="meta">CJ · FragranceX</span></summary>
  <div class="gbody">
-  <p class="how"><b>How to read this:</b> your commission on each full bottle FragranceX sells through your CJ link. It is separate from decant profit; Samyó never holds this stock.</p>
+  <p class="how"><b>How to read this:</b> your commission on each full bottle FragranceX sells through your CJ link. It is separate from decant profit; Sangyó never holds this stock.</p>
   <p class="sub">Earnings = FragranceX price × your commission rate. Enter the rate from your CJ account; until then nothing is assumed.</p>
   <div class="inp" id="aff-in"></div>
   <div class="tablewrap" style="margin-top:12px"><table id="t-aff"></table></div>
@@ -831,7 +831,7 @@ function renderPicker(s,L){
   t+=`<div class="ln"><span>Shopify transaction fee<small>${pct(s.shop)} of ${p2(r.paymentTotal)} (items + customer-paid delivery)</small></span><span>${p2(r.charges.shopify)}</span></div>`;
   t+=`<div class="ln"><span>Refund & replacement reserve<small>${pct(s.allow)} of the ${p2(r.price)} item total; money set aside for leaks, refunds or replacements</small></span><span>${p2(r.charges.reserve)}</span></div>`;
   t+=`<div class="ln"><span>Delivery we cover<small>${r.delivery.free?'Free-delivery threshold reached after discounts.':'Customer pays standard delivery below the threshold.'}${s.deliv?' Includes '+p2(s.deliv)+' extra delivery support.':''}</small></span><span>${p2(r.charges.delivery)}</span></div>`;
-  t+=`<div class="ln"><span>Item protection (estimate)<small>Parcel cover paid by Samyó, separate from delivery</small></span><span>${p2(r.charges.protection)}</span></div>`;
+  t+=`<div class="ln"><span>Item protection (estimate)<small>Parcel cover paid by Sangyó, separate from delivery</small></span><span>${p2(r.charges.protection)}</span></div>`;
   t+=`<div class="ln tot"><span>All variable costs</span><span>${p2(r.cost)}</span></div>`;
   t+=`<p class="big">${p2(r.contrib)}</p><span class="k">contribution · ${pct(r.m)} of the price</span>`;
   if(r.promoOff)t+=`<div class="ln"><span>Contribution before the additional discount</span><span>${p2(base.contrib)} · ${pct(base.m)}</span></div><div class="ln"><span>Contribution change</span><span>${p2(r.contrib-base.contrib)}</span></div>`;

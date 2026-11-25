@@ -82,7 +82,7 @@
 <div class="flow">
  <div class="step"><b>Discover</b><p>Homepage section, a TikTok/Reel, or the "Find your scent" quiz suggests 3 scents.</p></div>
  <div class="step"><b>Pick a set</b><p>Choose a size and bundle; pick the scents (any mix of the 5–10 on offer).</p></div>
- <div class="step"><b>Unbox</b><p>Vials in a Samyó envelope with a scent card each: notes, how to wear it, QR to the full bottle.</p></div>
+ <div class="step"><b>Unbox</b><p>Vials in a Sangyó envelope with a scent card each: notes, how to wear it, QR to the full bottle.</p></div>
  <div class="step"><b>Wear a week</b><p>Day 7 email/SMS: "Which one did you love?" One tap to vote.</p></div>
  <div class="step"><b>Upgrade</b><p>Their favourite as a 10 ml from you, with the set's price as credit (for example ₱150 off).</p></div>
  <div class="step"><b>Own it</b><p>Or the full bottle via the partner link (labelled; you earn a commission).</p></div>
@@ -150,7 +150,7 @@ function vial(ml){
    <rect x="${x}" y="${top+capH}" width="${W}" height="${H-capH}" rx="${ml>=5?6:4}" fill="#f6f1e8" stroke="rgba(41,37,33,.25)"/>
    <rect x="${x+1}" y="${liq}" width="${W-2}" height="${base-liq-1}" rx="${ml>=5?5:3}" fill="url(#a${ml})" opacity=".9"/>
    <rect x="${x}" y="${top+capH}" width="${W}" height="${H-capH}" rx="${ml>=5?6:4}" fill="url(#g${ml})"/>
-   ${ml>=5?`<rect x="${x}" y="${top+capH+H*0.42}" width="${W}" height="${H*0.22}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/><text x="60" y="${top+capH+H*0.55}" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="${ml>=10?9:8}" fill="#292521">samyó</text>`:`<rect x="${x}" y="${top+capH+H*0.45}" width="${W}" height="${Math.max(10,H*0.18)}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/>`}
+   ${ml>=5?`<rect x="${x}" y="${top+capH+H*0.42}" width="${W}" height="${H*0.22}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/><text x="60" y="${top+capH+H*0.55}" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="${ml>=10?9:8}" fill="#292521">sangyó</text>`:`<rect x="${x}" y="${top+capH+H*0.45}" width="${W}" height="${Math.max(10,H*0.18)}" fill="#fbf8f2" stroke="rgba(41,37,33,.15)"/>`}
    ${spray?`<rect x="${60-W*0.32}" y="${top+capH-6}" width="${W*0.64}" height="7" fill="url(#m${ml})"/><rect x="${60-W*0.42}" y="${top}" width="${W*0.84}" height="${capH-6}" rx="3" fill="${ml>=5?'#292521':'url(#m'+ml+')'}"/>`:`<rect x="${60-W*0.45}" y="${top}" width="${W*0.9}" height="${capH}" rx="2" fill="#292521"/>`}
   </svg>`;
 }

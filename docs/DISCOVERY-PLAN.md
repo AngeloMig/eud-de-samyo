@@ -51,7 +51,7 @@ section, and the current one is underlined.
 | 2 | `perfume-scent-dna` | 1 | **Signature visual:** an SVG "scent flower". Each characteristic is a translucent petal, sized by its score; overlapping petals blend. **Interaction:** tap or hover a petal to highlight it and show a one-line explanation, its notes and how it shapes the scent. **Data rule:** scores only from a documented basis, shown on the page. Without scores: elegant descriptive tags. |
 | 3 | `perfume-journey` | 1 | Three selectable stages: Opening, Heart, Dry-down. **Interaction:** choosing one shifts the background, enlarges its notes and shows an editorial line. **Phones:** swipe between stages. **Times:** no durations unless a source gives them. |
 | 4 | `perfume-performance-lab` | 1 | **Longevity:** a range bar ("5–8 hours", only if known) plus the caveat. **Projection:** a bottle with soft expanding rings (Intimate / Moderate / Strong), clearly not a measured distance. **Sillage:** an animated trail. A plain-language note on the difference between projection and sillage. **Basis label on every metric:** Brand information, Editorial wear test, Community estimate, or Not yet evaluated. |
-| 5 | `perfume-where-to-buy` | 1 | **Samyó:** sizes, ₱ price, stock, Add to bag. **Official brand site:** a link, marked as affiliate only when approved. **Partner retailers:** merchant, verified price and date, availability, link. Affiliate links are labelled and disclosed; ordinary links are not. |
+| 5 | `perfume-where-to-buy` | 1 | **Sangyó:** sizes, ₱ price, stock, Add to bag. **Official brand site:** a link, marked as affiliate only when approved. **Partner retailers:** merchant, verified price and date, availability, link. Affiliate links are labelled and disclosed; ordinary links are not. |
 | 6 | `perfume-climate` | 2 | **"Made for your climate?"** Selector: Hot day, Office, Rainy day, Evening. Each shows suitability, the characteristics behind it, how to apply, and when it may overwhelm. Labelled as editorial advice. |
 | 7 | `perfume-occasions` | 2 | Six occasions with drawn icons. Tap one to open a panel explaining why it suits (or doesn't). |
 | 8 | `perfume-similar` | 2 | **"If you love this, explore these."** Ranked by a published method: shared notes count most, then same family, then shared characteristics, then occasions. Each card says why ("shares bergamot and pepper"). |
@@ -99,7 +99,7 @@ product metafields stay readable as a fallback while you migrate.
 - Performance: the three metrics as stacked cards; rings and trail at half size.
 - Climate and Occasions: chip selectors, panels below them.
 - Compare: two stacked columns, or swipe between the fragrances.
-- Where to buy: Samyó first. Retailers are rows with 44px tap targets. The sticky
+- Where to buy: Sangyó first. Retailers are rows with 44px tap targets. The sticky
   buy bar (already built) stays.
 - No horizontal overflow (checked at 375px for every section). Large motion is cut
   down on small screens.
@@ -141,7 +141,7 @@ product metafields stay readable as a fallback while you migrate.
 
 1. **Canonical strategy** (section 2): the product page when sold here, the profile
    page otherwise. Is that OK?
-2. **Score basis for Scent DNA:** Samyó's own editorial assessment, on the 1–5
+2. **Score basis for Scent DNA:** Sangyó's own editorial assessment, on the 1–5
    scale above, labelled on the page. Is that OK, or do you have licensed data?
 3. **Who fills the data:** you or the team, per perfume, in Shopify. Pages show
    "not yet evaluated" until filled.

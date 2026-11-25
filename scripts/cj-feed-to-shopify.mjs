@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Turns a CJ (Commission Junction) product feed from an affiliate advertiser such as
-// FragranceX into a Shopify product import CSV for Samyo's AFFILIATE listings:
+// FragranceX into a Shopify product import CSV for Sangyo's AFFILIATE listings:
 // products whose button says "Buy at FragranceX" and goes to your CJ tracking link.
-// They are not sold by Samyo, so nothing here sets real prices or stock.
+// They are not sold by Sangyo, so nothing here sets real prices or stock.
 //
 // Local tool, not part of the theme (scripts/ is in .shopifyignore). No dependencies.
 // How to get the feed and import the result: docs/CJ-FEED.md.
@@ -244,7 +244,7 @@ for (const g of groups.values()) {
         o.size,
         o.sku,
         o.barcode,
-        '0.00', // not sold by Samyo: the retailer's price lives in the offers metafield
+        '0.00', // not sold by Sangyo: the retailer's price lives in the offers metafield
         'deny',
         'manual',
         'FALSE',

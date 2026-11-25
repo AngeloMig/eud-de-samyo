@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vial labels · Samyó</title>
+<title>Vial labels · Sangyó</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
 <style>
@@ -44,7 +44,7 @@
   .lbl .line1, .lbl .line2 { display:block; max-width:100%; white-space:nowrap; overflow:hidden; text-transform:uppercase; font-family:'Instrument Sans',sans-serif; }
   .lbl .line1 { font-weight:600; font-size:calc(var(--h) * .135); letter-spacing:.2em; line-height:1.15; }
   .lbl .line2 { font-weight:500; font-size:calc(var(--h) * .11); letter-spacing:.24em; line-height:1.15; opacity:.62; }
-  /* White + gold (default): "samyó" and the type/size line in gold. */
+  /* White + gold (default): "sangyó" and the type/size line in gold. */
   .gold .lbl .mark, .gold .lbl .line2 { color:#b08a3e; }
   .gold .lbl .line2 { opacity:1; }
   .dark .lbl { --bg:#26221f; --fg:#f2ead8; }
@@ -131,7 +131,7 @@ function drawRows() {
 const TYPE = { EDP: 'Eau de Parfum', EDT: 'Eau de Toilette', EDC: 'Eau de Cologne', Cologne: 'Cologne', Elixir: 'Elixir', Parfum: 'Parfum' };
 function label(p, ml, w, h) {
   const type = TYPE[p[2]] || p[2];
-  return `<div class="lbl" style="--w:${w}mm;--h:${h}mm"><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="line1">${esc(p[0])} · ${esc(p[1])}</span><span class="line2">${esc(type)} · ${ml} ml${S.batch ? ' · ' + esc(S.batch) : ''}</span></div>`;
+  return `<div class="lbl" style="--w:${w}mm;--h:${h}mm"><span class="logo"><span class="pre">eau de </span><span class="mark">sangyó</span></span><span class="line1">${esc(p[0])} · ${esc(p[1])}</span><span class="line2">${esc(type)} · ${ml} ml${S.batch ? ' · ' + esc(S.batch) : ''}</span></div>`;
 }
 
 const PAGE = { w: 210, h: 297, m: 8, gap: 2 };

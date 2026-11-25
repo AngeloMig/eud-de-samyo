@@ -1,0 +1,349 @@
+{%- comment -%}
+  Try trio (product page, directly under the product information).
+
+  "Not sure yet? Start with three." This perfume sits in vial one of a small set
+  (default Try trio, 3 × 1 ml); shoppers pick the others from a grid of every perfume
+  that comes in that vial size. An ink ribbon (same look as the home page) runs over it.
+
+  - Prices: a vial variant's own price is the "on its own" price. The set's discount
+    (setting) gives the "in a set" price. It must equal the store's automatic discount
+    for one set of this size, or the section and the bag disagree. As of 2026-11-25 the
+    store has none for 3 vials ("Six-vial set · 10% off" needs 6+ vials), so it's 0%.
+  - Grid: products from the collection setting (else all products) that have an
+    available variant for the vial size (option value "1 ml", "2 ml", "5 ml"), up to
+    the tile limit, image only. Hover: a pop-up by the mouse with the name and the
+    1/2/5 ml prices on their own and in a set. Click/tap: add or remove.
+  - Button: "Pick 2 more" (scrolls to the grid) → "Continue with your trio", a link to
+    the decant builder page with ?set=3x1&scent=a,b,c (assets/perfume-vial-picker.js
+    fills the vials) → plus "Or add to bag now", which adds the vials the way the
+    builder does (one line per vial, "Set: Try trio · 3 × 1 ml", hidden _set id).
+  - Hidden when this product has no available variant in the vial size.
+  - Without JavaScript: the ribbon, the words and a link to the builder with this
+    perfume in it; the grid only shows once the script runs.
+
+  Styles: assets/perfume-try-trio.css. Script: assets/perfume-try-trio.js.
+{%- endcomment -%}
+{%- liquid
+  assign sid = 'TryTrio-' | append: section.id
+  assign size = section.settings.size
+  assign count = section.settings.count
+  assign want = size | append: 'ml'
+  assign sizes = '1,2,5' | split: ','
+
+  assign own_vial = nil
+  for v in product.variants
+    assign o1 = v.option1 | downcase | remove: ' '
+    assign o2 = v.option2 | downcase | remove: ' '
+    assign o3 = v.option3 | downcase | remove: ' '
+    if v.available
+      if o1 == want or o2 == want or o3 == want
+        assign own_vial = v
+        break
+      endif
+    endif
+  endfor
+
+  capture own_vials
+    for z in sizes
+      assign wz = z | append: 'ml'
+      for v in product.variants
+        assign o1 = v.option1 | downcase | remove: ' '
+        assign o2 = v.option2 | downcase | remove: ' '
+        assign o3 = v.option3 | downcase | remove: ' '
+        if o1 == wz or o2 == wz or o3 == wz
+          echo z | append: ':' | append: v.id | append: ':' | append: v.price | append: ':' | append: v.available | append: ';'
+          break
+        endif
+      endfor
+    endfor
+  endcapture
+
+  assign pool = section.settings.collection.products
+  if pool == blank or pool.size == 0
+    assign pool = collections.all.products
+  endif
+
+  assign picker_url = section.settings.picker_page.url
+  if picker_url == blank
+    assign picker_url = pages['build-your-set'].url
+  endif
+  if picker_url == blank
+    assign picker_url = '/pages/decant-builder'
+  endif
+  assign set_key = count | append: 'x' | append: size
+  assign set_label = section.settings.set_title | append: ' ' | append: section.settings.set_title_italic | strip | append: ' · ' | append: count | append: ' × ' | append: size | append: ' ml'
+
+  case size
+    when '1'
+      assign vial_img = 'sample-decant-square.webp'
+    when '2'
+      assign vial_img = 'sample-decant-clear.webp'
+    else
+      assign vial_img = 'sample-decant-amber.webp'
+  endcase
+-%}
+
+{%- if product != blank and own_vial != nil -%}
+  {{ 'perfume-try-trio.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'perfume-try-trio.js' | asset_url }}" defer="defer"></script>
+
+  {%- style -%}
+    #{{ sid }} {
+      --ptt-bg: {{ section.settings.background_color }};
+      --ptt-ink: {{ section.settings.text_color }};
+      --ptt-slot: {{ section.settings.slot_color }};
+      --ptt-ribbon: {{ section.settings.ribbon_color }};
+      --ptt-ribbon-text: {{ section.settings.ribbon_text_color }};
+      --ptt-save: {{ section.settings.save_color }};
+      --ptt-speed: {{ section.settings.ribbon_speed }}s;
+      --ptt-pt: {{ section.settings.padding_top }}px;
+      --ptt-pb: {{ section.settings.padding_bottom }}px;
+    }
+  {%- endstyle -%}
+
+  <section
+    id="{{ sid }}"
+    class="ptt"
+    aria-labelledby="{{ sid }}-h"
+    data-ptt
+    data-own="{{ product.handle | escape }}"
+    data-own-name="{{ product.title | escape }}"
+    data-own-vendor="{{ product.vendor | escape }}"
+    data-own-vials="{{ own_vials | strip }}"
+    {%- if product.featured_media != blank %} data-own-img="{{ product.featured_media.preview_image | image_url: width: 160 }}"{% endif %}
+    data-count="{{ count }}"
+    data-size="{{ size }}"
+    data-discount="{{ section.settings.discount }}"
+    data-set-sizes="{{ section.settings.set_sizes | escape }}"
+    data-set-key="{{ set_key }}"
+    data-set-label="{{ set_label | escape }}"
+    data-picker="{{ picker_url }}"
+    data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+    data-cart-add="{{ routes.cart_add_url }}"
+    data-cart="{{ routes.cart_url }}"
+    data-vial="{{ vial_img | asset_url }}"
+    data-t-pick="{{ section.settings.pick_label | escape }}"
+    data-t-continue="{{ section.settings.continue_label | escape }}"
+    data-t-add-now="{{ section.settings.add_now_label | escape }}"
+    data-t-adding="{{ section.settings.adding_label | escape }}"
+    data-t-added="{{ section.settings.added_label | escape }}"
+    data-t-error="{{ section.settings.error_label | escape }}"
+    data-t-save="{{ section.settings.save_label | escape }}"
+    data-t-save-so-far="{{ section.settings.save_so_far_label | escape }}"
+    data-t-of="{{ section.settings.of_label | escape }}"
+    data-t-full="{{ section.settings.full_label | escape }}"
+    data-t-hint="{{ section.settings.hint_label | escape }}"
+    data-t-hint-touch="{{ section.settings.hint_touch_label | escape }}"
+    data-t-hint-full="{{ section.settings.hint_full_label | escape }}"
+    data-t-pin="{{ section.settings.pin_label | escape }}"
+    data-t-save-short="{{ section.settings.save_short_label | escape }}"
+    data-t-empty="{{ section.settings.empty_label | escape }}"
+    data-t-remove="{{ section.settings.remove_label | escape }}"
+    data-t-alone="{{ section.settings.alone_label | escape }}"
+    data-t-in-set="{{ section.settings.in_set_label | escape }}"
+    data-t-vial="{{ section.settings.vial_label | escape }}"
+    data-t-pop-note="{{ section.settings.pop_note | escape }}"
+    data-t-pop-add="{{ section.settings.pop_add_label | escape }}"
+    data-t-pop-remove="{{ section.settings.pop_remove_label | escape }}"
+    data-t-pop-full="{{ section.settings.pop_full_label | escape }}"
+    data-t-added-one="{{ section.settings.added_one_label | escape }}"
+    data-t-removed-one="{{ section.settings.removed_one_label | escape }}"
+  >
+    {%- if section.settings.show_ribbon and section.settings.ribbon_text != blank -%}
+      {%- capture phrase -%}
+        {%- assign parts = section.settings.ribbon_text | split: '*' -%}
+        {%- for part in parts -%}
+          {%- if part == blank -%}{%- continue -%}{%- endif -%}
+          {%- assign odd = forloop.index0 | modulo: 2 -%}
+          {%- if odd == 1 -%}<em>{{ part | strip | escape }}</em>{%- else -%}<span>{{ part | strip | escape }}</span>{%- endif -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+      <div class="ptt__rib" aria-hidden="true">
+        {%- for r in (1..2) -%}
+          <span class="ptt__rib-t">{%- for i in (1..8) -%}{{ phrase }}{%- endfor -%}</span>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="ptt__wrap">
+      <div class="ptt__left">
+        {%- if section.settings.kicker != blank -%}<p class="ptt__kick">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="ptt__h" id="{{ sid }}-h">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="ptt__lede">{{ section.settings.text | replace: '[product]', product.title | escape }}</p>
+        {%- endif -%}
+
+        <div class="ptt__sum" data-sum hidden>
+          <p class="ptt__row"><span>{{ section.settings.separately_label | escape }}</span><s data-alone></s></p>
+          <p class="ptt__row ptt__row--tot"><span>{{ section.settings.set_price_label | escape }}</span><span><b data-total></b> <small data-n></small></span></p>
+          <p class="ptt__save" data-save></p>
+        </div>
+
+        <div class="ptt__cta">
+          <a class="ptt__btn" data-cta data-state="pick" href="{{ picker_url }}?set={{ set_key }}&amp;scent={{ product.handle | url_encode }}">{{ section.settings.nojs_label | escape }} <span aria-hidden="true">→</span></a>
+          <button type="button" class="ptt__link" data-add-now hidden></button>
+          <button type="button" class="ptt__link" data-clear hidden>{{ section.settings.clear_label | escape }}</button>
+        </div>
+        <p class="ptt__status" data-status role="status"></p>
+      </div>
+
+      <div class="ptt__right">
+        <ol class="ptt__slots" data-slots role="list" style="--n: {{ count }};">
+          <li class="ptt__slot ptt__slot--on">
+            <span class="ptt__pin">{{ section.settings.pin_label | escape }}</span>
+            <img src="{{ vial_img | asset_url }}" alt="" width="40" height="160" loading="lazy"><b class="ptt__slot-n">{{ product.title | escape }}</b>
+          </li>
+          {%- assign rest = count | minus: 1 -%}
+          {%- for i in (1..rest) -%}
+            <li class="ptt__slot ptt__slot--empty"><span class="ptt__slot-in"><span class="ptt__plus" aria-hidden="true">+</span><small>{{ section.settings.empty_label | escape }}</small></span></li>
+          {%- endfor -%}
+        </ol>
+
+        <div class="ptt__grid-h" data-grid-h hidden>
+          <h3 class="ptt__grid-t">{{ section.settings.grid_heading | escape }}</h3>
+          <p class="ptt__grid-hint" data-hint></p>
+        </div>
+        <ul class="ptt__grid" data-grid role="list" hidden>
+          {%- assign shown = 0 -%}
+          {%- for p in pool limit: 100 -%}
+            {%- if shown >= section.settings.limit -%}{%- break -%}{%- endif -%}
+            {%- capture vials -%}
+              {%- for z in sizes -%}
+                {%- assign wz = z | append: 'ml' -%}
+                {%- for v in p.variants -%}
+                  {%- assign o1 = v.option1 | downcase | remove: ' ' -%}
+                  {%- assign o2 = v.option2 | downcase | remove: ' ' -%}
+                  {%- assign o3 = v.option3 | downcase | remove: ' ' -%}
+                  {%- if o1 == wz or o2 == wz or o3 == wz -%}
+                    {{- z }}:{{ v.id }}:{{ v.price }}:{{ v.available }};
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- comment -%} Only perfumes with an available vial in the set's size. {%- endcomment -%}
+            {%- assign vials = vials | strip -%}
+            {%- assign probe = ';' | append: vials -%}
+            {%- assign key = ';' | append: size | append: ':' -%}
+            {%- unless probe contains key -%}{%- continue -%}{%- endunless -%}
+            {%- assign avail_part = probe | split: key | last | split: ';' | first -%}
+            {%- unless avail_part contains ':true' -%}{%- continue -%}{%- endunless -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <li class="ptt__item">
+              <button
+                type="button"
+                class="ptt__tile"
+                data-tile
+                data-handle="{{ p.handle | escape }}"
+                data-name="{{ p.title | escape }}"
+                data-vendor="{{ p.vendor | escape }}"
+                data-vials="{{ vials }}"
+                {%- if p.featured_media != blank %} data-img="{{ p.featured_media.preview_image | image_url: width: 160 }}"{% endif %}
+                aria-pressed="false"
+                aria-label="{{ p.vendor | escape }} {{ p.title | escape }}"
+              >
+                {%- if p.featured_media != blank -%}
+                  {{ p.featured_media.preview_image | image_url: width: 300 | image_tag: widths: '150, 220, 300', sizes: '(min-width: 990px) 8vw, 28vw', alt: '', loading: 'lazy', class: 'ptt__tile-img' }}
+                {%- else -%}
+                  <span class="ptt__tile-mono">{{ p.vendor | default: p.title | escape }}</span>
+                {%- endif -%}
+                <span class="ptt__tick" aria-hidden="true">✓</span>
+              </button>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+    <div class="ptt__pop" data-pop aria-hidden="true"></div>
+    <p class="ptt__live" data-live aria-live="polite"></p>
+  </section>
+{%- elsif request.design_mode -%}
+  <div class="page-width" style="padding: 24px 0; font-size: 14px; opacity: .7;">
+    Try trio: hidden on this product. It shows on perfumes that have a {{ size }} ml variant.
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Try trio",
+  "tag": "div",
+  "class": "section-perfume-try-trio",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "The set" },
+    { "type": "text", "id": "set_title", "label": "Set name", "default": "Try" },
+    { "type": "text", "id": "set_title_italic", "label": "Set name, italic part", "default": "trio" },
+    { "type": "range", "id": "count", "label": "Vials in the set", "min": 2, "max": 5, "step": 1, "default": 3, "info": "Match a Set block on the decant builder page." },
+    {
+      "type": "select",
+      "id": "size",
+      "label": "Vial size",
+      "options": [
+        { "value": "1", "label": "1 ml" },
+        { "value": "2", "label": "2 ml" },
+        { "value": "5", "label": "5 ml" }
+      ],
+      "default": "1"
+    },
+    { "type": "range", "id": "discount", "label": "Set discount", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify (Discounts) that a single set of this size gets, because that is what checkout charges. 0% hides the Bought separately and You save lines." },
+    { "type": "text", "id": "set_sizes", "label": "Sizes the set discounts cover", "info": "Comma-separated, e.g. 1, 2. Other sizes show — in the pop-up's set column.", "default": "1, 2" },
+    { "type": "collection", "id": "collection", "label": "Perfumes to choose from", "info": "Leave empty to use all products. A perfume shows when it has a variant for the vial size, e.g. 1 ml." },
+    { "type": "range", "id": "limit", "label": "Perfumes in the grid", "min": 6, "max": 24, "step": 6, "default": 12 },
+    { "type": "page", "id": "picker_page", "label": "Decant builder page", "info": "Where Continue goes, with the picked perfumes. Default: the page with handle build-your-set." },
+
+    { "type": "header", "content": "Ribbon" },
+    { "type": "checkbox", "id": "show_ribbon", "label": "Show the ribbon", "default": true },
+    { "type": "text", "id": "ribbon_text", "label": "Ribbon text", "info": "Put *stars* around words for the script style.", "default": "Try *trio* · 3 × 1 ml · try before the bottle ·" },
+    { "type": "range", "id": "ribbon_speed", "label": "Ribbon speed (seconds per loop)", "min": 20, "max": 120, "step": 2, "unit": "s", "default": 56, "info": "Higher is slower." },
+
+    { "type": "header", "content": "Words" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Not sure yet?" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Start with three." },
+    { "type": "textarea", "id": "text", "label": "Text", "info": "[product] = this perfume's name.", "default": "Three 1 ml vials, hand-poured from authentic bottles. [product] is already in. Pick two more below." },
+    { "type": "text", "id": "separately_label", "label": "Bought separately", "default": "Bought separately" },
+    { "type": "text", "id": "set_price_label", "label": "Set price", "default": "Trio price" },
+    { "type": "text", "id": "of_label", "label": "Progress", "info": "[n] = picked, [total] = vials.", "default": "[n] of [total]" },
+    { "type": "text", "id": "save_so_far_label", "label": "Savings while picking", "info": "[price] = what they save, [percent] = the same as a %.", "default": "You save [price] ([percent]%) so far" },
+    { "type": "text", "id": "save_label", "label": "Savings when complete", "default": "You save [price] ([percent]%)" },
+    { "type": "text", "id": "pick_label", "label": "Button while picking", "info": "[n] = vials still to pick.", "default": "Pick [n] more" },
+    { "type": "text", "id": "continue_label", "label": "Button when complete", "default": "Continue with your trio" },
+    { "type": "text", "id": "add_now_label", "label": "Add now link", "info": "[price] = the set price.", "default": "Or add to bag now · [price]" },
+    { "type": "text", "id": "adding_label", "label": "While adding", "default": "Adding…" },
+    { "type": "text", "id": "added_label", "label": "After adding", "default": "Added to your bag ✓" },
+    { "type": "text", "id": "error_label", "label": "Add to bag error", "default": "Couldn't add the trio. Please try again." },
+    { "type": "text", "id": "clear_label", "label": "Start over", "default": "Start over" },
+    { "type": "text", "id": "nojs_label", "label": "Button without JavaScript", "default": "Build your trio" },
+    { "type": "text", "id": "pin_label", "label": "Label on this perfume's vial", "default": "This perfume" },
+    { "type": "text", "id": "save_short_label", "label": "On a vial: saving (tooltip)", "info": "[price] = what this vial saves in the set. The card shows −[price] next to the price.", "default": "[price] less in a trio" },
+    { "type": "text", "id": "empty_label", "label": "Empty vial", "default": "Pick a scent" },
+    { "type": "text", "id": "remove_label", "label": "Remove button (for screen readers)", "default": "Remove" },
+    { "type": "text", "id": "full_label", "label": "When the set is full", "default": "Your trio is full. Remove one to swap." },
+    { "type": "text", "id": "added_one_label", "label": "Announced when added", "info": "[name] = the perfume.", "default": "[name] added." },
+    { "type": "text", "id": "removed_one_label", "label": "Announced when removed", "default": "[name] removed." },
+
+    { "type": "header", "content": "Grid and pop-up" },
+    { "type": "text", "id": "grid_heading", "label": "Grid heading", "default": "Every perfume you can try" },
+    { "type": "text", "id": "hint_label", "label": "Hint (mouse)", "default": "Hover for prices · click to add" },
+    { "type": "text", "id": "hint_touch_label", "label": "Hint (touch screens)", "default": "Tap to add" },
+    { "type": "text", "id": "hint_full_label", "label": "Hint when full", "default": "Trio full · click one to take it out" },
+    { "type": "text", "id": "vial_label", "label": "Pop-up: size column", "default": "Vial" },
+    { "type": "text", "id": "alone_label", "label": "Pop-up: on its own", "default": "On its own" },
+    { "type": "text", "id": "in_set_label", "label": "Pop-up: in a set", "default": "In a set" },
+    { "type": "text", "id": "pop_note", "label": "Pop-up note", "default": "The Try trio uses 1 ml vials." },
+    { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add to your trio" },
+    { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
+    { "type": "text", "id": "pop_full_label", "label": "Pop-up: full", "default": "Trio full · remove one to swap" },
+
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#F7F5F0" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" },
+    { "type": "color", "id": "slot_color", "label": "Filled vial card", "default": "#DFD9E6" },
+    { "type": "color", "id": "ribbon_color", "label": "Ribbon", "default": "#292521" },
+    { "type": "color", "id": "ribbon_text_color", "label": "Ribbon text", "default": "#FFFFFF" },
+    { "type": "color", "id": "save_color", "label": "Savings text", "default": "#3D7A4C" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 64 }
+  ],
+  "presets": [{ "name": "Try trio" }]
+}
+{% endschema %}

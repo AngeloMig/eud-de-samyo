@@ -123,6 +123,146 @@ a.pb__link:hover .pb__name {
   }
 }
 
+/* ---------- Style "Crossing ribbons" ----------
+   Two tilted ribbons cross in an X inside their own band. The band is as tall as
+   the tilt needs at any width (width x tan 4deg, plus a ribbon), and clips the
+   ribbon ends, so nothing above or below is ever covered. */
+.pb--ribbons {
+  --pb-rb-h: calc(var(--pb-size) * 1.1 + 44px);
+  /* Tilt from the ribbon's own height and the screen width, so the two ribbons
+     still overlap at the far edges at any width (no wedge of background between
+     them). Fallback for browsers without atan2(): a gentle fixed tilt. */
+  --pb-tilt: 2deg;
+  --pb-tilt: calc(atan2(var(--pb-rb-h), 112vw) * 0.92);
+}
+
+.pb__ribbons {
+  height: calc(var(--pb-rb-h) + 11vw);
+  position: relative;
+}
+
+.pb__rb {
+  left: -6%;
+  position: absolute;
+  right: -6%;
+  top: 50%;
+}
+
+.pb__rb .pb__viewport {
+  border: 0;
+  mask-image: none;
+  padding-block: 22px;
+}
+
+.pb__rb--a {
+  background: var(--pb-ink);
+  color: var(--pb-bg);
+  transform: translateY(-50%) rotate(calc(var(--pb-tilt) * -1));
+  z-index: 2;
+}
+
+.pb__rb--b {
+  background: var(--pb-ribbon2);
+  color: var(--pb-ink);
+  transform: translateY(-50%) rotate(var(--pb-tilt));
+  z-index: 1;
+}
+
+.pb__rb .pb__name {
+  line-height: 1.1;
+}
+
+.pb__word {
+  font-family: var(--pf-font-script, 'Mrs Saint Delafield', cursive);
+  font-size: calc(var(--pb-size) * 1.05);
+  line-height: 1.1;
+  padding: 0 clamp(18px, 2.2vw, 36px);
+  white-space: nowrap;
+}
+
+.pb__rb--b .pb__mark {
+  font-size: calc(var(--pb-size) * 0.5);
+}
+
+.pb__track--rev {
+  animation-direction: reverse;
+  animation-duration: calc(var(--pb-speed) * 1.15);
+}
+
+/* On the ink ribbon the hover dim is inverted: the name under the pointer stays
+   full, the others step back a little. */
+.pb__rb--a .pb__list:hover .pb__name {
+  opacity: 0.55;
+}
+
+@media screen and (max-width: 749px) {
+  .pb--ribbons {
+    --pb-rb-h: calc(var(--pb-size-m) * 1.1 + 30px);
+    --pb-tilt: 3deg;
+    --pb-tilt: calc(atan2(var(--pb-rb-h), 112vw) * 0.92);
+  }
+
+  .pb__ribbons {
+    height: calc(var(--pb-rb-h) + 20vw);
+  }
+
+  .pb__rb .pb__viewport {
+    padding-block: 15px;
+  }
+
+  .pb__word {
+    font-size: calc(var(--pb-size-m) * 1.05);
+  }
+}
+
+/* ---------- Ribbons on the seam ("Sit on the seam", default) ----------
+   The section takes no height: the ribbons are centred on the line between the
+   section above and the one below, clipped only at the sides. Half the ribbon
+   band (--pb-half) is the room each neighbour makes: the hero lifts its slogan and
+   trust line, the showcase adds it to its top padding. The hero's tiles may go
+   under the ribbons (owner's choice). */
+:root {
+  /* With the width-based tilt the whole crossing is about two ribbons tall. */
+  --pb-half: 108px;
+}
+
+@media screen and (max-width: 749px) {
+  :root {
+    --pb-half: 66px;
+  }
+}
+
+.section-perfume-brands:has(.pb--overlap) {
+  height: 0;
+  overflow-x: clip;
+  overflow-y: visible;
+  position: relative;
+  z-index: 6;
+}
+
+.pb--overlap {
+  background: transparent;
+  height: 0;
+  overflow: visible;
+  padding: 0;
+}
+
+.pb--overlap .pb__ribbons {
+  height: 0;
+}
+
+.pb--overlap .pb__rb {
+  top: 0;
+}
+
+.section-perfume-hero:has(+ .section-perfume-brands .pb--overlap) .phh__left {
+  padding-bottom: calc(var(--phh-gutter, 30px) + var(--pb-half));
+}
+
+.section-perfume-brands:has(.pb--overlap) + .section-perfume-showcase .ps {
+  padding-top: calc(var(--ps-pt, 0px) + var(--pb-half));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pb__track {
     animation: none;
@@ -143,5 +283,22 @@ a.pb__link:hover .pb__name {
 
   .pb__viewport {
     mask-image: none;
+  }
+
+  .pb--ribbons:not(.pb--overlap) .pb__ribbons {
+    height: auto;
+    padding-block: 12px;
+  }
+
+  .pb--ribbons:not(.pb--overlap) .pb__rb {
+    left: 0;
+    position: relative;
+    right: 0;
+    top: 0;
+    transform: none;
+  }
+
+  .pb--overlap .pb__list {
+    flex-wrap: nowrap;
   }
 }

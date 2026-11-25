@@ -1,0 +1,289 @@
+/* Try trio (sections/perfume-try-trio.liquid). Sizes in px (Dawn: 1rem = 10px). */
+.ptt {
+  --ptt-line: rgba(38, 34, 31, 0.16);
+  --ptt-sand: var(--pf-sand, #d8d1c5);
+  --ptt-soft: var(--pf-ink-soft, #5e5750);
+  --ptt-ease: var(--pf-ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  position: relative;
+  background: var(--ptt-bg);
+  color: var(--ptt-ink);
+  padding: var(--ptt-pt) 0 var(--ptt-pb);
+  overflow-x: clip;
+  font-family: var(--pf-font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* Ribbon: every word on one baseline; two copies loop seamlessly.
+   It straddles the line with the product section above (half over each), and its
+   tilt is worked out from the screen width so the band always covers that line from
+   edge to edge: the steepest angle that never shows a gap (owner, 2026-11-25).
+   Rise across the screen = 85% of the band height; capped at 3deg on narrow screens. */
+.ptt {
+  --ptt-rib-h: 48px;
+  --ptt-tilt: -1deg;
+}
+@supports (rotate: atan2(1px, 1px)) {
+  .ptt { --ptt-tilt: calc(-1 * min(3deg, atan2(calc(var(--ptt-rib-h) * 0.85), 100vw))); }
+}
+.ptt__rib {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  height: var(--ptt-rib-h);
+  margin: calc(-1 * (var(--ptt-pt) + var(--ptt-rib-h) / 2)) -24px 34px;
+  background: var(--ptt-ribbon);
+  color: var(--ptt-ribbon-text);
+  white-space: nowrap;
+  overflow: hidden;
+  rotate: var(--ptt-tilt);
+}
+.ptt__rib-t {
+  display: flex;
+  flex: none;
+  align-items: baseline;
+  gap: 24px;
+  padding-right: 24px;
+  font: 600 13px/1 var(--pf-font-sans);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: ptt-mq var(--ptt-speed, 56s) linear infinite;
+}
+.ptt__rib-t em {
+  margin: 0 -6px 0 -10px;
+  translate: 0 1px;
+  font: 400 34px/1 var(--pf-font-script);
+  font-style: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #e7d6b9;
+}
+.ptt__rib:hover .ptt__rib-t { animation-play-state: paused; }
+@keyframes ptt-mq { to { transform: translateX(-100%); } }
+
+.ptt__wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr);
+  gap: 44px;
+  align-items: start;
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--pf-gutter, 24px);
+}
+.ptt__kick {
+  margin: 0;
+  font: 600 11px/1 var(--pf-font-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ptt-soft);
+}
+.ptt__h {
+  margin: 10px 0 0;
+  font: 500 46px/1.02 var(--pf-font-serif);
+  letter-spacing: -0.01em;
+  color: inherit;
+}
+.ptt__lede { margin: 12px 0 0; max-width: 380px; font-size: 14px; color: var(--ptt-soft); }
+
+.ptt__sum { display: grid; gap: 6px; max-width: 380px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--ptt-line); font-size: 13px; }
+.ptt__sum[hidden] { display: none; }
+.ptt__row { display: flex; justify-content: space-between; align-items: baseline; margin: 0; color: var(--ptt-soft); }
+.ptt__row s { color: var(--ptt-soft); }
+.ptt__row[hidden] { display: none; }
+.ptt__row--tot { margin-top: 4px; font: 500 30px/1 var(--pf-font-serif); color: var(--ptt-ink); }
+.ptt__row--tot b { font-weight: 500; }
+.ptt__row--tot small { font: 13px var(--pf-font-sans); color: var(--ptt-soft); }
+.ptt__save { min-height: 20px; margin: 0; font-weight: 600; color: var(--ptt-save); }
+
+.ptt__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 18px; }
+.ptt__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 22px;
+  border-radius: 4px;
+  background: var(--ptt-ink);
+  color: var(--ptt-bg);
+  font: 600 12px/1 var(--pf-font-sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.3s, box-shadow 0.4s;
+}
+.ptt__btn span { opacity: 0.6; }
+.ptt__btn[data-state='ready'] { box-shadow: 0 0 0 4px rgba(41, 37, 33, 0.12); }
+.ptt__btn[data-state='added'] { background: var(--ptt-save); }
+.ptt__link {
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 600 11px/1 var(--pf-font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  cursor: pointer;
+}
+.ptt__link[hidden] { display: none; }
+.ptt__link:disabled { opacity: 0.6; cursor: default; }
+.ptt__status { min-height: 20px; margin: 10px 0 0; font-size: 13px; color: var(--ptt-soft); }
+.ptt__status.is-warn { color: #a1665a; }
+.ptt :focus-visible { outline: 2px solid var(--ptt-ink); outline-offset: 3px; }
+
+/* Vials */
+.ptt__slots { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.ptt__slot { position: relative; min-height: 172px; border-radius: 16px; font-size: 12px; text-align: center; color: var(--ptt-soft); }
+/* A filled vial: picture, name, then its price with a tiny "−₱…" (the trio saving).
+   Content flows (no fixed height), so long names never spill out; the row's
+   cards share the tallest height. */
+.ptt__slot--on { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; padding: 30px 10px 12px; background: var(--ptt-slot); }
+.ptt__slot--on img { display: block; flex: none; width: auto; height: 72px; margin: 0 auto 6px; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.14)); }
+.ptt__slot-n { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font: 500 16px/1.1 var(--pf-font-serif); color: var(--ptt-ink); }
+.ptt__slot-p { font-size: 12px; color: var(--ptt-soft); }
+.ptt__slot-p b { font-weight: 600; color: var(--ptt-ink); }
+.ptt__slot-p em { margin-left: 2px; font-size: 9.5px; font-style: normal; font-weight: 600; color: var(--ptt-save); white-space: nowrap; vertical-align: 1px; }
+.ptt__slot-in { display: block; }
+.ptt__pin { position: absolute; top: 10px; left: 12px; font: 600 9px/1 var(--pf-font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ptt-soft); }
+.ptt__x {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--ptt-line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ptt-ink);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+.ptt__x::after { content: ''; position: absolute; inset: -7px; } /* 44px target */
+.ptt__x:hover { border-color: var(--ptt-ink); }
+.ptt__slot--empty { border: 1.5px dashed var(--ptt-sand); color: var(--ptt-sand); transition: border-color 0.3s, color 0.3s, background-color 0.3s; }
+.ptt__slot--empty:hover, .ptt__slot--empty:focus-within { border-color: var(--ptt-ink); color: var(--ptt-ink); background: rgba(255, 255, 255, 0.6); }
+.ptt__slot--empty > .ptt__slot-in { display: grid; place-items: center; height: 100%; }
+.ptt__slot-btn { display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 16px; background: none; color: inherit; cursor: pointer; }
+.ptt__plus { font: 300 34px/1 var(--pf-font-sans); }
+.ptt__slot--empty small { display: block; margin-top: 6px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; }
+.ptt__slot.is-new { animation: ptt-in 0.45s var(--ptt-ease); }
+@keyframes ptt-in { from { opacity: 0.4; scale: 0.92; } }
+
+/* Grid: image only */
+.ptt__grid-h { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 20px 0 10px; }
+.ptt__grid-h[hidden], .ptt__grid[hidden] { display: none; }
+.ptt__grid-t { margin: 0; font: 600 12px/1 var(--pf-font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ptt-soft); }
+.ptt__grid-hint { margin: 0; font-size: 12px; color: var(--ptt-soft); }
+.ptt__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 76px)); gap: 8px; margin: 0; padding: 0; list-style: none; } /* small tiles (owner) */
+.ptt__item { min-width: 0; }
+.ptt__tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  padding: 6px 4px;
+  overflow: hidden;
+  border: 1px solid var(--ptt-line);
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s, translate 0.35s var(--ptt-ease), box-shadow 0.35s, opacity 0.3s;
+}
+.ptt__tile:hover, .ptt__tile:focus-visible { border-color: var(--ptt-ink); translate: 0 -3px; box-shadow: 0 14px 26px rgba(41, 37, 33, 0.1); }
+.ptt__tile-img { position: absolute; inset: 6px 6%; width: 88%; height: calc(100% - 12px); object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.12)); }
+.ptt__tile-mono { font: 500 12px/1.1 var(--pf-font-serif); color: var(--ptt-soft); }
+.ptt__tick {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ptt-ink);
+  color: #fff;
+  font-size: 9px;
+  line-height: 1;
+  opacity: 0;
+  scale: 0.6;
+  transition: opacity 0.3s, scale 0.4s var(--ptt-ease);
+}
+.ptt__tile.is-in { border-color: var(--ptt-ink); background: #fbfaf7; }
+.ptt__tile.is-in .ptt__tick { opacity: 1; scale: 1; }
+.ptt__grid.is-full .ptt__tile:not(.is-in) { opacity: 0.5; }
+
+/* Pop-up by the mouse */
+.ptt__pop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 250px;
+  padding: 14px 16px;
+  border: 1px solid var(--ptt-line);
+  border-radius: 16px;
+  background: #fff;
+  color: var(--ptt-ink);
+  box-shadow: 0 24px 50px rgba(41, 37, 33, 0.2);
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.94;
+  transform-origin: var(--ox, 0) var(--oy, 0);
+  transition: opacity 0.2s, scale 0.3s var(--ptt-ease);
+}
+.ptt__pop.is-on { opacity: 1; scale: 1; }
+.ptt__pop-h { display: flex; align-items: center; gap: 12px; }
+.ptt__pop-h img { width: 46px; height: 62px; object-fit: contain; }
+.ptt__pop-h small { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ptt-soft); }
+.ptt__pop-h b { display: block; font: 500 19px/1.05 var(--pf-font-serif); }
+.ptt__pop table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 12px; }
+.ptt__pop th { padding: 4px 0; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-align: left; text-transform: uppercase; color: var(--ptt-soft); }
+.ptt__pop td { padding: 5px 0; border-top: 1px solid var(--ptt-line); }
+.ptt__pop th:last-child, .ptt__pop td:last-child { text-align: right; }
+.ptt__pop-set { font-weight: 600; color: var(--ptt-save); }
+.ptt__pop-note { margin: 6px 0 0; font-size: 11px; color: var(--ptt-soft); }
+.ptt__pop-act { display: flex; align-items: center; gap: 8px; margin: 10px 0 0; font-size: 12px; font-weight: 600; }
+.ptt__pop-act i { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--ptt-ink); color: #fff; font-size: 13px; font-style: normal; }
+.ptt__pop-act.is-muted { color: var(--ptt-soft); }
+.ptt__pop-act.is-muted i { background: var(--ptt-sand); }
+.ptt__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 989px) {
+  .ptt__wrap { grid-template-columns: 1fr; gap: 26px; }
+  .ptt__h { font-size: 38px; }
+  .ptt__slot { min-height: 160px; }
+  .ptt__slot--on { padding-top: 40px; }
+  .ptt__slot--on img { height: 60px; }
+  .ptt__slot-n { font-size: 15px; }
+  .ptt__pin { display: none; }
+  .ptt__grid-h { flex-direction: column; gap: 6px; padding-top: 22px; }
+}
+@media (max-width: 559px) {
+  .ptt__grid { grid-template-columns: repeat(5, minmax(0, 64px)); gap: 6px; }
+  .ptt__tile { border-radius: 10px; }
+}
+@media (max-width: 749px) {
+  .ptt__slots { gap: 8px; }
+  .ptt__slot-n { font-size: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ptt__rib-t { animation: none; }
+  .ptt__slot.is-new { animation: none; }
+  .ptt__tile, .ptt__tick, .ptt__pop, .ptt__btn { transition: none; }
+  .ptt__tile:hover, .ptt__tile:focus-visible { translate: none; }
+}
+
+/* The pop-up needs a mouse or trackpad: hidden only when there is none (any width). */
+@media (any-hover: none) { .ptt__pop { display: none; } }

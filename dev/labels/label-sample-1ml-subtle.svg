@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" width="1200" height="960" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif">
-  <title>Samyó vial labels with subtle design: 1 ml, Dior</title>
+  <title>Sangyó vial labels with subtle design: 1 ml, Dior</title>
   <defs>
     <filter id="sh" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity=".2"/></filter>
     <!-- Fine diagonal hairlines, like a perfume box texture -->
@@ -28,7 +28,7 @@
       <rect x="12" y="12" width="576" height="176" rx="5" fill="none" stroke="#26221f" stroke-opacity=".28" stroke-width="2"/>
       <g transform="translate(40 0)">
         <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-        <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+        <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">sangyó</text>
       </g>
       <line x1="262" y1="48" x2="262" y2="152" stroke="#26221f" stroke-opacity=".3" stroke-width="2"/>
       <rect x="256" y="94" width="12" height="12" transform="rotate(45 262 100)" fill="#c9a45a"/>
@@ -56,7 +56,7 @@
     <rect x="18" y="18" width="564" height="164" rx="3" fill="none" stroke="#d9b46a" stroke-opacity=".22" stroke-width="1.5"/>
     <g transform="translate(40 0)">
       <text x="0" y="84" font-size="30" font-style="italic" fill="#d9b46a" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-      <text x="0" y="146" font-size="64" fill="#f2ead8" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+      <text x="0" y="146" font-size="64" fill="#f2ead8" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">sangyó</text>
     </g>
     <line x1="262" y1="48" x2="262" y2="152" stroke="#d9b46a" stroke-opacity=".55" stroke-width="2"/>
     <g transform="translate(294 0)">
@@ -75,7 +75,7 @@
     <rect x="0" y="0" width="8" height="200" rx="4" fill="#c9a45a"/>
     <g transform="translate(40 0)">
       <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-      <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+      <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">sangyó</text>
     </g>
     <line x1="262" y1="48" x2="262" y2="152" stroke="#26221f" stroke-opacity=".3" stroke-width="2"/>
     <g transform="translate(294 0)">

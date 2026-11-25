@@ -11,7 +11,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 | 3 | "What does it smell like?" note tips | Open |
 | 4 | Subtle paper texture | Open |
 | 5 | Big statement with images in the words | Open |
-| 6 | Numbered "Why Samyó" cards | Open |
+| 6 | Numbered "Why Sangyó" cards | Open |
 | 7 | Draggable best-sellers rail | Open |
 | 8 | Accord bars on product pages | Open |
 | 9 | Second image on hover | Open |
@@ -34,7 +34,7 @@ Rules for every prompt (from AGENTS.md): read `AGENTS.md` and `docs/HANDOFF.md` 
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Sticky buy bar" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Sticky buy bar" from dev/design-ideas.html.
 What it does: A slim bar with bottle, name and Add to bag when the main button scrolls away on product pages.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -47,7 +47,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "One colour per scent family" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "One colour per scent family" from dev/design-ideas.html.
 What it does: Family colours used on tiles, chips and collection pages.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -60,7 +60,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea ""What does it smell like?" note tips" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea ""What does it smell like?" note tips" from dev/design-ideas.html.
 What it does: One plain sentence per note on hover/tap, from the note metaobject.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -73,7 +73,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Subtle paper texture" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Subtle paper texture" from dev/design-ideas.html.
 What it does: A very light SVG grain over paper backgrounds.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -86,20 +86,20 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Big statement with images in the words" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Big statement with images in the words" from dev/design-ideas.html.
 What it does: NOHO-style large sentence with small pictures inline.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
 ```
 
-## 6. Numbered "Why Samyó" cards
+## 6. Numbered "Why Sangyó" cards
 
 **Status:** Open
 
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Numbered "Why Samyó" cards" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Numbered "Why Sangyó" cards" from dev/design-ideas.html.
 What it does: Three or four numbered promises; only true claims.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -112,7 +112,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Draggable best-sellers rail" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Draggable best-sellers rail" from dev/design-ideas.html.
 What it does: A drag/swipe row of product cards with a progress line.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -125,7 +125,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Accord bars on product pages" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Accord bars on product pages" from dev/design-ideas.html.
 What it does: Scent-profile bars labelled with their source.
 Never invent values.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -139,7 +139,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Second image on hover" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Second image on hover" from dev/design-ideas.html.
 What it does: Bottle, then bottle with box on hover.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -152,7 +152,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "The dot cursor everywhere" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "The dot cursor everywhere" from dev/design-ideas.html.
 What it does: Hero cursor on cards (View) and carousels (Drag).
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -165,7 +165,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Page-change wipe" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Page-change wipe" from dev/design-ideas.html.
 What it does: A quick charcoal wipe between pages.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -178,7 +178,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Gift option at Add to bag" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Gift option at Add to bag" from dev/design-ideas.html.
 What it does: Gift wrap + note toggle.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -191,7 +191,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea ""Pairs well with"" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea ""Pairs well with"" from dev/design-ideas.html.
 What it does: Perfumes that share notes.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -204,7 +204,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Reviews in the signature hand" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Reviews in the signature hand" from dev/design-ideas.html.
 What it does: One verified review line in the script font.
 Verified reviews only.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
@@ -218,7 +218,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Notes marquee" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Notes marquee" from dev/design-ideas.html.
 What it does: A slow ribbon of note names with a pause control.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -231,7 +231,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Seasonal edits for the Philippines" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Seasonal edits for the Philippines" from dev/design-ideas.html.
 What it does: Tabs such as Summer heat, Rainy season, Night out.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -244,7 +244,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Thumb-friendly bottom bar on phones" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Thumb-friendly bottom bar on phones" from dev/design-ideas.html.
 What it does: Shop, Notes, Search and Bag at the bottom on phones.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -257,7 +257,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Floating "Find your scent" bubble" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Floating "Find your scent" bubble" from dev/design-ideas.html.
 What it does: A floating quiz button that hides on scroll down.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -270,7 +270,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "Refined prices and numbers" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "Refined prices and numbers" from dev/design-ideas.html.
 What it does: Serif tabular prices with a small PHP mark.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.
@@ -283,7 +283,7 @@ Done when: it matches the preview card, works with keyboard and on a 375px phone
 Prompt for Codex:
 
 ```text
-Samyo theme (new perfume-* sections/snippets as needed). Build idea "A dark "evening" section" from dev/design-ideas.html.
+Sangyo theme (new perfume-* sections/snippets as needed). Build idea "A dark "evening" section" from dev/design-ideas.html.
 What it does: One near-black section for night and oud perfumes.
 Make it a theme-editor setting (default off unless the owner chose it) and follow the rules in AGENTS.md.
 Done when: it matches the preview card, works with keyboard and on a 375px phone, has a reduced-motion path, dev/check.sh passes and docs/HANDOFF.md notes the change.

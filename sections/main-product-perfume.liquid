@@ -1,6 +1,6 @@
 {%- comment -%}
-  Samyo product page (templates/product.json), laid out like the High Spirits
-  product page and dressed like the homepage's "Samyó edit":
+  Sangyo product page (templates/product.json), laid out like the High Spirits
+  product page and dressed like the homepage's "Sangyó edit":
   breadcrumbs, then an info column (brand, name, concentration, price, notes,
   sizes, Add to bag) beside a carousel of bottles on the perfume's own tint: the
   chosen one large, the others smaller and faded to its right, the name big and
@@ -23,7 +23,7 @@
   when product.metafields.samyo.affiliate_offers has offers, the price, stock and
   button come from the offer for the chosen size, and the button is "Buy at
   FragranceX" (rel="sponsored", new tab) with the disclosure under it. No Add to bag,
-  quantity or structured data (Samyo doesn't sell it, so no ₱0 offer for Google).
+  quantity or structured data (Sangyo doesn't sell it, so no ₱0 offer for Google).
   Exception: a perfume with decant sizes (Sizes block, "sizes sold only in sets") is
   sold here; its full-bottle offers show in Where to buy, not in this box.
 
@@ -135,7 +135,7 @@
   assign base_notes = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
 
   # Affiliate listing: the offer for the chosen size (or the first one). A perfume
-  # Samyo sells as decants stays a Samyo product (Add to bag); its full-bottle offers
+  # Sangyo sells as decants stays a Sangyo product (Add to bag); its full-bottle offers
   # then show in the Where to buy section instead (sections/perfume-where-to-buy.liquid).
   assign offers = product.metafields.samyo.affiliate_offers.value
   assign is_aff = false
@@ -350,6 +350,35 @@
                     </div>
                   </fieldset>
                 {%- endfor -%}
+                {%- comment -%}
+                  Solo 1/2 ml chosen: show what that vial costs in a trio and in a six (the
+                  store's automatic set discounts, settings below), with a link to the
+                  builder that starts the set with this perfume. One line per size; the
+                  script shows the one for the chosen variant.
+                {%- endcomment -%}
+                {%- if block.settings.show_set_nudge -%}
+                  {%- liquid
+                    assign nudge_url = block.settings.picker_page.url
+                    if nudge_url == blank
+                      assign nudge_url = pages['build-your-set'].url
+                    endif
+                    assign trio_keep = 100 | minus: block.settings.trio_discount
+                    assign six_keep = 100 | minus: block.settings.six_discount
+                  -%}
+                  {%- if nudge_url != blank -%}
+                    {%- for v in product.variants -%}
+                      {%- assign vk = v.title | downcase | remove: ' ' -%}
+                      {%- unless vk == '1ml' or vk == '2ml' -%}{%- continue -%}{%- endunless -%}
+                      {%- assign vz = vk | remove: 'ml' -%}
+                      {%- assign trio_each = v.price | times: trio_keep | divided_by: 100 | money -%}
+                      {%- assign six_each = v.price | times: six_keep | divided_by: 100 | money -%}
+                      <p class="pp__set-nudge" data-pp-nudge="{{ v.id }}"{% unless v.id == current_variant.id %} hidden{% endunless %}>
+                        <span>{{ block.settings.nudge_text | replace: '[trio_price]', trio_each | replace: '[six_price]', six_each | replace: '[trio]', block.settings.trio_discount | replace: '[six]', block.settings.six_discount | escape }}</span>
+                        <a href="{{ nudge_url }}?set=3x{{ vz }}&amp;scent={{ product.handle | url_encode }}">{{ block.settings.nudge_link | escape }} <span aria-hidden="true">→</span></a>
+                      </p>
+                    {%- endfor -%}
+                  {%- endif -%}
+                {%- endif -%}
                 {%- if hidden_count > 0 and picker_url != blank -%}
                   {%- assign hidden_price = hidden_min | money -%}
                   <p class="pp__sets-link">
@@ -670,7 +699,13 @@
         { "type": "text", "id": "set_sizes", "label": "Sizes sold only in sets", "info": "Variant names, separated by commas.", "default": "1 ml, 2 ml, 5 ml" },
         { "type": "page", "id": "picker_page", "label": "Vial picker page", "info": "Leave empty to use the page with the handle build-your-set." },
         { "type": "text", "id": "picker_text", "label": "Line under the sizes", "info": "[price] = the cheapest hidden size.", "default": "Smaller sizes, from [price] a vial, come in decant sets." },
-        { "type": "text", "id": "picker_link_label", "label": "Link", "default": "Build a set with this scent" }
+        { "type": "text", "id": "picker_link_label", "label": "Link", "default": "Build a set with this scent" },
+        { "type": "header", "content": "When a 1 ml or 2 ml vial is chosen" },
+        { "type": "checkbox", "id": "show_set_nudge", "label": "Suggest a trio or six to save more", "default": true },
+        { "type": "range", "id": "trio_discount", "label": "Trio discount", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 26, "info": "Match the automatic discount in Shopify (Try trio)." },
+        { "type": "range", "id": "six_discount", "label": "Six-vial discount", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 30, "info": "Match the automatic discount in Shopify (Six-vial set)." },
+        { "type": "text", "id": "nudge_text", "label": "Line", "info": "[trio_price] / [six_price] = this vial in a trio / six; [trio] / [six] = the %.", "default": "Save more: [trio_price] a vial in a trio, [six_price] in six." },
+        { "type": "text", "id": "nudge_link", "label": "Link", "default": "Build a trio" }
       ]
     },
     {

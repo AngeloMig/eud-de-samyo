@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Label preview · Samyó</title>
+<title>Label preview · Sangyó</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&display=swap" rel="stylesheet">
 <style>
@@ -85,7 +85,7 @@
   <p class="sub">Business-card size, 90 × 55 mm (10 per A4 sheet). Front: the set and its scents. Back: how to use, safety, and that the perfumes are decanted by you (not by the brands).</p>
   <div class="cards">
     <div class="card">
-      <div class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></div>
+      <div class="logo"><span class="pre">eau de </span><span class="mark">sangyó</span></div>
       <div class="set">Try <em>trio</em> <span class="k">· 3 × 1 ml</span></div>
       <ol>
         <li>Dior · Sauvage <span>Eau de Parfum</span></li>
@@ -103,11 +103,11 @@
       <div class="k">Safety</div>
       <p class="small">Flammable. Keep away from heat and flame. For external use only. Avoid eyes. Keep out of reach of children.</p>
       <div class="rule"></div>
-      <p class="small">Decanted by hand from authentic full bottles by <b>Samyó</b>. Samyó is not affiliated with or endorsed by the brands named.</p>
+      <p class="small">Decanted by hand from authentic full bottles by <b>Sangyó</b>. Sangyó is not affiliated with or endorsed by the brands named.</p>
       <div class="foot"><div class="small"><b>[your website]</b> · <b>[@instagram]</b> · Pulilan, Bulacan</div></div>
     </div>
     <div class="card" style="--bg:#26221f;--fg:#f2ead8">
-      <div class="logo"><span class="pre" style="color:#d9b46a">eau de </span><span class="mark">samyó</span></div>
+      <div class="logo"><span class="pre" style="color:#d9b46a">eau de </span><span class="mark">sangyó</span></div>
       <div class="set">Discovery <em>six</em> <span class="k" style="color:#d9b46a;opacity:1">· 6 × 1 ml · 10% off</span></div>
       <ol>
         <li>Dior · Sauvage <span>EDP</span></li>
@@ -122,11 +122,11 @@
 </main>
 
 <script>
-const label = (o) => `<div class="lbl${o.big ? ' big' : ''}" style="--bg:${o.bg};--fg:${o.fg};${o.mark ? `--mark:${o.mark};` : ''}${o.l2 ? `--l2:${o.l2};--l2o:1;` : ''}${o.edge ? `--edge:${o.edge};` : ''}"><span class="edge"></span><span class="logo"><span class="pre">eau de </span><span class="mark">samyó</span></span><span class="l1">${o.l1 || 'Dior · Sauvage'}</span><span class="l2">${o.l2t || 'Eau de Parfum · 1 ml'}</span></div>`;
+const label = (o) => `<div class="lbl${o.big ? ' big' : ''}" style="--bg:${o.bg};--fg:${o.fg};${o.mark ? `--mark:${o.mark};` : ''}${o.l2 ? `--l2:${o.l2};--l2o:1;` : ''}${o.edge ? `--edge:${o.edge};` : ''}"><span class="edge"></span><span class="logo"><span class="pre">eau de </span><span class="mark">sangyó</span></span><span class="l1">${o.l1 || 'Dior · Sauvage'}</span><span class="l2">${o.l2t || 'Eau de Parfum · 1 ml'}</span></div>`;
 const COL = [
   { n: 'Classic white', bg: '#ffffff', fg: '#26221f', note: 'Cleanest, least ink.' },
   { n: 'Cream', bg: '#f4ede0', fg: '#26221f', note: 'Warmer, matches the website.' },
-  { n: 'White + gold', bg: '#ffffff', fg: '#26221f', mark: '#b08a3e', l2: '#b08a3e', note: '"samyó" and the size line in gold.' },
+  { n: 'White + gold', bg: '#ffffff', fg: '#26221f', mark: '#b08a3e', l2: '#b08a3e', note: '"sangyó" and the size line in gold.' },
   { n: 'White + gold edge', bg: '#ffffff', fg: '#26221f', edge: '#c9a45a', note: 'A thin gold frame.' },
   { n: 'Charcoal & gold', bg: '#26221f', fg: '#f2ead8', mark: '#e9d9b0', l2: '#d9b46a', note: 'Matches the Discovery six card. Heavy ink.' },
   { n: 'Gold', bg: '#d9b46a', fg: '#26221f', note: 'Bold; uses a lot of yellow ink.' },
@@ -149,8 +149,8 @@ const SEALS = [
   { t: 'strip', bg: '#26221f', fg: '#f2ead8', n: 'Strip · charcoal' },
 ];
 document.getElementById('seals').innerHTML = SEALS.map((s) => s.t === 'round'
-  ? `<figure><div class="round" style="--bg:${s.bg};--fg:${s.fg};${s.ring ? `--ring:${s.ring}` : ''}"><div><span class="small">sealed by</span><span class="mark">samyó</span><span class="small">by hand</span></div></div><figcaption><b>${s.n}</b> · 18 mm</figcaption></figure>`
-  : `<figure><div class="strip" style="--bg:${s.bg};--fg:${s.fg}"><span class="small">Sealed</span><span class="cut"></span><span class="mark">samyó</span><span class="cut"></span><span class="small">by hand</span></div><figcaption><b>${s.n}</b> · 44 × 8 mm</figcaption></figure>`).join('');
+  ? `<figure><div class="round" style="--bg:${s.bg};--fg:${s.fg};${s.ring ? `--ring:${s.ring}` : ''}"><div><span class="small">sealed by</span><span class="mark">sangyó</span><span class="small">by hand</span></div></div><figcaption><b>${s.n}</b> · 18 mm</figcaption></figure>`
+  : `<figure><div class="strip" style="--bg:${s.bg};--fg:${s.fg}"><span class="small">Sealed</span><span class="cut"></span><span class="mark">sangyó</span><span class="cut"></span><span class="small">by hand</span></div><figcaption><b>${s.n}</b> · 44 × 8 mm</figcaption></figure>`).join('');
 </script>
 </body>
 </html>

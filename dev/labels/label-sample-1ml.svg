@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" font-family="'Instrument Sans', 'Helvetica Neue', Arial, sans-serif">
-  <title>Samyó vial label samples: 1 ml, Dior</title>
+  <title>Sangyó vial label samples: 1 ml, Dior</title>
   <defs>
     <linearGradient id="amber" x1="0" x2="1">
       <stop offset="0" stop-color="#7a3410"/>
@@ -29,7 +29,7 @@
     <rect width="600" height="200" rx="10" fill="#fff"/>
     <g transform="translate(36 0)">
       <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-      <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+      <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">sangyó</text>
     </g>
     <line x1="258" y1="40" x2="258" y2="160" stroke="#26221f" stroke-opacity=".35" stroke-width="2"/>
     <g transform="translate(290 0)">
@@ -45,7 +45,7 @@
     <rect width="600" height="200" rx="10" fill="#26221f"/>
     <g transform="translate(36 0)">
       <text x="0" y="84" font-size="30" font-style="italic" fill="#d9b46a" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-      <text x="0" y="146" font-size="64" fill="#f2ead8" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">samyó</text>
+      <text x="0" y="146" font-size="64" fill="#f2ead8" font-family="'Cormorant Garamond', Georgia, serif" letter-spacing="1">sangyó</text>
     </g>
     <line x1="258" y1="40" x2="258" y2="160" stroke="#d9b46a" stroke-opacity=".6" stroke-width="2"/>
     <g transform="translate(290 0)">
@@ -59,7 +59,7 @@
   <!-- C: centred, minimal -->
   <g transform="translate(60 720)" filter="url(#sh)">
     <rect width="600" height="130" rx="10" fill="#fff"/>
-    <text x="300" y="58" text-anchor="middle" font-size="40" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif"><tspan font-style="italic" font-size="28">eau de </tspan>samyó</text>
+    <text x="300" y="58" text-anchor="middle" font-size="40" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif"><tspan font-style="italic" font-size="28">eau de </tspan>sangyó</text>
     <text x="300" y="104" text-anchor="middle" font-size="24" font-weight="600" letter-spacing="5" fill="#26221f">DIOR · 1 ML</text>
   </g>
   <text x="60" y="878" font-size="15" fill="#26221f">C · Minimal, centred (no perfume name)</text>
@@ -77,7 +77,7 @@
         <rect width="600" height="200" fill="#fff"/>
         <g transform="translate(36 0)">
           <text x="0" y="84" font-size="30" font-style="italic" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">eau de</text>
-          <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">samyó</text>
+          <text x="0" y="146" font-size="64" fill="#26221f" font-family="'Cormorant Garamond', Georgia, serif">sangyó</text>
         </g>
         <line x1="258" y1="40" x2="258" y2="160" stroke="#26221f" stroke-opacity=".35" stroke-width="2"/>
         <g transform="translate(290 0)">

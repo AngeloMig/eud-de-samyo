@@ -1,22 +1,39 @@
 {%- comment -%}
-  Why Samyó: the store's promises in one calm band. A heading and short line on the
-  left (with an optional link), the promises on the right in a hairline grid, each
-  with a small line icon, a title, a line of text and an optional link. A large,
-  faint word sits behind (e.g. the brand name).
+  Why Sangyó: the store's promises in one calm band. Two layouts (setting "Layout"):
 
+  - Grid: a heading and short line on the left (with an optional link), the promises
+    on the right in a hairline grid.
+  - Seal: the heading centred above a round seal (ring of text + a dark centre with a
+    word or logo); the promises sit either side of it, first half left, rest right.
+    The ring spins slowly and turns further as you scroll (or only one of those, or
+    stays still), its centre
+    "breathes", and hovering or focusing a promise shows that promise's icon in the
+    centre. Everything stops under reduced motion; breathing pauses on hover and
+    keyboard focus, the ring keeps turning (owner's choice, 2026-11-25).
+
+  Each promise: a small line icon, a title, a line of text and an optional link.
   Only promises that are true for the store: the defaults repeat what the header's
   announcement already says (authentic fragrances, free delivery over ₱10,000) and
   what the site itself does (notes on every perfume, the Find your scent quiz).
 
-  Styles: assets/perfume-why.css. Reveal: assets/perfume-reveal.js.
+  Background (both layouts): optional pastel tiles, paper grain and faint floating
+  botanical line drawings (snippets/perfume-why-botanical.liquid), behind everything.
+
+  Styles: assets/perfume-why.css. Reveal: assets/perfume-reveal.js. Seal behaviour:
+  assets/perfume-why.js. Icons: snippets/perfume-why-icon.liquid.
 {%- endcomment -%}
 {%- liquid
   assign wid = 'PerfumeWhy-' | append: section.id
   assign promises = section.blocks | where: 'type', 'promise'
+  assign layout = section.settings.layout | default: 'grid'
+  assign motion = section.settings.ring_motion | default: 'both'
 -%}
 
 {{ 'perfume-why.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'perfume-reveal.js' | asset_url }}" defer="defer"></script>
+{%- if layout == 'seal' -%}
+  <script src="{{ 'perfume-why.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 {%- style -%}
   #{{ wid }} {
@@ -27,76 +44,218 @@
   }
 {%- endstyle -%}
 
-<section id="{{ wid }}" class="pw" aria-labelledby="{{ wid }}-h">
-  {%- if section.settings.big_word != blank -%}
+<section
+  id="{{ wid }}"
+  class="pw pw--{{ layout }}{% if layout == 'seal' and section.settings.center_style != 'flat' %} pw--emboss{% endif %}"
+  aria-labelledby="{{ wid }}-h"
+  {% if layout == 'seal' %}data-ring-motion="{{ motion }}"{% endif %}
+>
+  {%- if section.settings.botanicals or section.settings.grain or section.settings.tiles -%}
+    <div class="pw__bg" aria-hidden="true">
+      {%- if section.settings.tiles -%}
+        {%- for n in (1..7) -%}<span class="pw__tile pw__tile--{{ n }}"></span>{%- endfor -%}
+      {%- endif -%}
+      {%- if section.settings.grain -%}<span class="pw__grain"></span>{%- endif -%}
+      {%- if section.settings.botanicals -%}
+        {%- for n in (1..10) -%}
+          {%- assign shape = n | minus: 1 | modulo: 6 -%}
+          <span class="pw__leaf pw__leaf--{{ n }}">{%- render 'perfume-why-botanical', shape: shape -%}</span>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if layout == 'grid' and section.settings.big_word != blank -%}
     <p class="pw__word" aria-hidden="true">{{ section.settings.big_word | escape }}</p>
   {%- endif -%}
 
-  <div class="pw__wrap">
-    <div class="pw__intro" data-pf-reveal="rise">
-      {%- if section.settings.kicker != blank -%}<p class="pf-kicker pw__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
-      <h2 class="pw__h" id="{{ wid }}-h">{{ section.settings.heading | escape }}</h2>
-      {%- if section.settings.text != blank -%}<div class="pw__text">{{ section.settings.text }}</div>{%- endif -%}
-      {%- if section.settings.link_label != blank and section.settings.link != blank -%}
-        <a class="pf-link pw__link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+  {%- if layout == 'seal' -%}
+    {%- liquid
+      assign half = promises.size | plus: 1 | divided_by: 2
+      assign rows = half | at_least: 1
+      assign ring = section.settings.ring_text | strip | upcase
+      if ring != blank
+        assign ring = ring | append: ' · '
+      endif
+      assign ring_chars = ring.size | at_least: 1
+      assign ring_fs = 715.0 | divided_by: ring_chars | at_most: 13 | at_least: 8
+    -%}
+    <div class="pw__wrap pw__wrap--seal">
+      <div class="pw__intro pw__intro--center" data-pf-reveal="rise">
+        {%- if section.settings.kicker != blank -%}<p class="pf-kicker pw__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="pw__h" id="{{ wid }}-h">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}<div class="pw__text">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+          <a class="pf-link pw__link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+        {%- endif -%}
+      </div>
+
+      <div class="pw__stage" style="--pw-rows: {{ rows }};">
+        <div class="pw-seal pw-seal--{{ section.settings.center_style | default: 'emboss' }}" data-pf-reveal="pw-seal" aria-hidden="true">
+          <div class="pw-seal__ring">
+            <div class="pw-seal__spin">
+              <div class="pw-seal__orbit">
+              <svg viewBox="0 0 300 300" focusable="false">
+                <defs>
+                  <path id="{{ wid }}-arc" d="M150,150 m-122,0 a122,122 0 1,1 244,0 a122,122 0 1,1 -244,0"/>
+                </defs>
+                {%- if ring != blank -%}
+                  <text class="pw-seal__text" style="font-size: {{ ring_fs }}px;">
+                    <textPath href="#{{ wid }}-arc">{{ ring | escape }}</textPath>
+                  </text>
+                {%- endif -%}
+              </svg>
+              </div>
+            </div>
+          </div>
+          <div class="pw-seal__core">
+            <div class="pw-seal__breath">
+              <div class="pw-seal__face">
+                {%- if section.settings.center_image != blank -%}
+                  {{
+                    section.settings.center_image
+                    | image_url: width: 400
+                    | image_tag: class: 'pw-seal__logo', loading: 'lazy', widths: '200, 300, 400', sizes: '160px', alt: ''
+                  }}
+                {%- elsif section.settings.center_word != blank -%}
+                  <span class="pw-seal__word">{{ section.settings.center_word | escape }}</span>
+                {%- endif -%}
+              </div>
+              {%- for block in promises -%}
+                <span class="pw-seal__glyph" data-pw-glyph="{{ forloop.index0 }}">
+                  {%- render 'perfume-why-icon', icon: block.settings.icon -%}
+                </span>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+
+        {%- if promises.size > 0 -%}
+          {%- for side in (1..2) -%}
+            {%- if side == 1 -%}
+              {%- assign from = 0 -%}{%- assign upto = half -%}
+            {%- else -%}
+              {%- assign from = half -%}{%- assign upto = promises.size -%}
+            {%- endif -%}
+            {%- if upto > from -%}
+              <ul class="pw__side pw__side--{{ side }}" role="list">
+                {%- for block in promises -%}
+                  {%- assign i = forloop.index0 -%}
+                  {%- if i >= from and i < upto -%}
+                    <li
+                      class="pw__pt"
+                      style="--i: {{ i }};"
+                      data-pf-reveal="pw-out"
+                      data-pw-i="{{ i }}"
+                      {{ block.shopify_attributes }}
+                    >
+                      <div class="pw__pt-in">
+                        <span class="pw__icon" aria-hidden="true">{%- render 'perfume-why-icon', icon: block.settings.icon -%}</span>
+                        {%- if block.settings.label != blank -%}<p class="pw__label">{{ block.settings.label | escape }}</p>{%- endif -%}
+                        <h3 class="pw__title">{{ block.settings.title | escape }}</h3>
+                        {%- if block.settings.text != blank -%}<p class="pw__line">{{ block.settings.text | escape }}</p>{%- endif -%}
+                        {%- if block.settings.link != blank and block.settings.link_label != blank -%}
+                          <a class="pw__more" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+                        {%- endif -%}
+                      </div>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- else -%}
+    <div class="pw__wrap">
+      <div class="pw__intro" data-pf-reveal="rise">
+        {%- if section.settings.kicker != blank -%}<p class="pf-kicker pw__kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="pw__h" id="{{ wid }}-h">{{ section.settings.heading | escape }}</h2>
+        {%- if section.settings.text != blank -%}<div class="pw__text">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.settings.link_label != blank and section.settings.link != blank -%}
+          <a class="pf-link pw__link" href="{{ section.settings.link }}">{{ section.settings.link_label | escape }}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if promises.size > 0 -%}
+        <ul class="pw__grid" role="list">
+          {%- for block in promises -%}
+            <li class="pw__item" style="--i: {{ forloop.index0 }};" data-pf-reveal="rise" {{ block.shopify_attributes }}>
+              <span class="pw__icon" aria-hidden="true">{%- render 'perfume-why-icon', icon: block.settings.icon -%}</span>
+              {%- if block.settings.label != blank -%}<p class="pw__label">{{ block.settings.label | escape }}</p>{%- endif -%}
+              <h3 class="pw__title">{{ block.settings.title | escape }}</h3>
+              {%- if block.settings.text != blank -%}<p class="pw__line">{{ block.settings.text | escape }}</p>{%- endif -%}
+              {%- if block.settings.link != blank and block.settings.link_label != blank -%}
+                <a class="pw__more" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
       {%- endif -%}
     </div>
-
-    {%- if promises.size > 0 -%}
-      <ul class="pw__grid" role="list">
-        {%- for block in promises -%}
-          <li class="pw__item" style="--i: {{ forloop.index0 }};" data-pf-reveal="rise" {{ block.shopify_attributes }}>
-            <span class="pw__icon" aria-hidden="true">
-              <svg viewBox="0 0 32 32" focusable="false">
-                {%- case block.settings.icon -%}
-                  {%- when 'seal' -%}
-                    <circle cx="16" cy="13" r="8"/><path d="m12.5 13 2.5 2.5 4.5-5M11 19.5 9 28l7-3 7 3-2-8.5"/>
-                  {%- when 'truck' -%}
-                    <path d="M3 9h15v13H3zM18 13h6l5 5v4H18"/><circle cx="8.5" cy="23.5" r="2.5"/><circle cx="23.5" cy="23.5" r="2.5"/>
-                  {%- when 'notes' -%}
-                    <path d="M16 4c4 6 8 10 8 15a8 8 0 0 1-16 0c0-5 4-9 8-15Z"/><path d="M12.5 19.5a3.5 3.5 0 0 0 3.5 3.5"/>
-                  {%- when 'compass' -%}
-                    <circle cx="16" cy="16" r="12"/><path d="m20.5 11.5-3 6-6 3 3-6Z"/>
-                  {%- when 'gift' -%}
-                    <path d="M5 12h22v5H5zM7 17h18v11H7zM16 12v16M16 12c-2-5-7-5-7-2s4 2 7 2c3 0 7 1 7-2s-5-3-7 2"/>
-                  {%- when 'card' -%}
-                    <rect x="3" y="7" width="26" height="18" rx="2"/><path d="M3 12h26M8 20h6"/>
-                  {%- when 'chat' -%}
-                    <path d="M5 7h22v14H13l-6 5v-5H5Z"/><path d="M10 13h12M10 17h8"/>
-                  {%- else -%}
-                    <path d="M7 14V9h5M7 9c2.5-3 5.5-4.5 9-4.5A11.5 11.5 0 1 1 4.5 16"/>
-                {%- endcase -%}
-              </svg>
-            </span>
-            <h3 class="pw__title">{{ block.settings.title | escape }}</h3>
-            {%- if block.settings.text != blank -%}<p class="pw__line">{{ block.settings.text | escape }}</p>{%- endif -%}
-            {%- if block.settings.link != blank and block.settings.link_label != blank -%}
-              <a class="pw__more" href="{{ block.settings.link }}">{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- endif -%}
-  </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
-  "name": "Why Samyó",
+  "name": "Why Sangyó",
   "tag": "div",
   "class": "section-perfume-why",
   "disabled_on": { "groups": ["header", "footer"] },
   "max_blocks": 6,
   "settings": [
     { "type": "paragraph", "content": "Only promises that are true for your store." },
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Why Samyó" },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "seal", "label": "Seal (promises around a round seal)" },
+        { "value": "grid", "label": "Grid (heading left, promises right)" }
+      ],
+      "default": "seal"
+    },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Why Sangyó" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Designer perfume, chosen with care" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Every perfume comes with its notes, how it wears and when to wear it, so you know what it smells like before it arrives.</p>" },
     { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop all perfumes" },
     { "type": "url", "id": "link", "label": "Link" },
-    { "type": "text", "id": "big_word", "label": "Large faint word behind", "info": "Leave empty to hide.", "default": "samyó" },
-    { "type": "color", "id": "background_color", "label": "Background", "default": "#E8E3DB" },
-    { "type": "color", "id": "text_color", "label": "Text", "default": "#26221F" },
+    { "type": "text", "id": "big_word", "label": "Large faint word behind", "info": "Grid layout only. Leave empty to hide.", "default": "sangyó" },
+    { "type": "header", "content": "Seal" },
+    { "type": "paragraph", "content": "Used by the Seal layout. Hovering or focusing a promise shows its icon in the centre." },
+    { "type": "text", "id": "ring_text", "label": "Ring text", "info": "Runs around the seal and leaves an open gap; a dot is added at the end. Longer text is set smaller.", "default": "Authentic · Designer · Perfume · Sangyó · Philippines" },
+    { "type": "text", "id": "center_word", "label": "Centre word", "default": "sangyó" },
+    {
+      "type": "select",
+      "id": "center_style",
+      "label": "Centre style",
+      "options": [
+        { "value": "emboss", "label": "Embossed (pressed seal)" },
+        { "value": "flat", "label": "Flat" }
+      ],
+      "default": "emboss"
+    },
+    { "type": "image_picker", "id": "center_image", "label": "Centre logo", "info": "Replaces the centre word. A light logo with a transparent background works best on the dark centre." },
+    {
+      "type": "select",
+      "id": "ring_motion",
+      "label": "Ring motion",
+      "options": [
+        { "value": "both", "label": "Spins, faster as you scroll" },
+        { "value": "spin", "label": "Slow spin" },
+        { "value": "scroll", "label": "Turns only as you scroll" },
+        { "value": "still", "label": "Still" }
+      ],
+      "default": "both"
+    },
+    { "type": "header", "content": "Background" },
+    { "type": "checkbox", "id": "botanicals", "label": "Floating botanicals", "info": "Faint line drawings of ingredients that drift slowly behind the section.", "default": true },
+    { "type": "checkbox", "id": "grain", "label": "Paper grain", "default": true },
+    { "type": "checkbox", "id": "tiles", "label": "Pastel tiles", "info": "The hero's colour blocks, faded at the edges.", "default": true },
+    { "type": "header", "content": "Colours and spacing" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#E8E4DC" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#292521" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 96 }
   ],
@@ -121,6 +280,7 @@
           ],
           "default": "seal"
         },
+        { "type": "text", "id": "label", "label": "Small label", "info": "One or two words above the title, e.g. Delivery.", "default": "Authentic" },
         { "type": "text", "id": "title", "label": "Title", "default": "Authentic designer fragrances" },
         { "type": "text", "id": "text", "label": "Line", "default": "Genuine bottles from the houses you know." },
         { "type": "text", "id": "link_label", "label": "Link label" },
@@ -130,12 +290,12 @@
   ],
   "presets": [
     {
-      "name": "Why Samyó",
+      "name": "Why Sangyó",
       "blocks": [
-        { "type": "promise", "settings": { "icon": "seal", "title": "Authentic designer fragrances", "text": "Genuine bottles from the houses you know." } },
-        { "type": "promise", "settings": { "icon": "truck", "title": "Free delivery on ₱10,000+", "text": "Delivered across the Philippines; the fee for smaller orders shows at checkout." } },
-        { "type": "promise", "settings": { "icon": "notes", "title": "Notes before you buy", "text": "Top, heart and base notes, how it wears and when to wear it." } },
-        { "type": "promise", "settings": { "icon": "compass", "title": "Help choosing", "text": "Not sure what you like? Four questions point you to a scent.", "link_label": "Find your scent" } }
+        { "type": "promise", "settings": { "icon": "seal", "label": "Authentic", "title": "Authentic designer fragrances", "text": "Genuine bottles from the houses you know." } },
+        { "type": "promise", "settings": { "icon": "truck", "label": "Delivery", "title": "Free delivery on ₱10,000+", "text": "On orders of ₱10,000 and up after discounts. Smaller orders pay delivery at checkout." } },
+        { "type": "promise", "settings": { "icon": "notes", "label": "Notes", "title": "Notes before you buy", "text": "Top, heart and base notes, how it wears and when to wear it." } },
+        { "type": "promise", "settings": { "icon": "compass", "label": "Guidance", "title": "Help choosing", "text": "Not sure what you like? Four questions point you to a scent.", "link_label": "Find your scent" } }
       ]
     }
   ]
