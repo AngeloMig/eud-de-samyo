@@ -67,7 +67,7 @@
 
 <perfume-header
   id="PerfumeHeader-{{ section.id }}"
-  class="ph{% if overlay %} ph--overlay{% else %} ph--sticky{% endif %} ph--hover-{{ section.settings.hover_style }} ph--logo-{{ section.settings.logo_backdrop | default: 'fade' }}"
+  class="ph{% if overlay %} ph--overlay{% else %} ph--sticky{% endif %} ph--hover-{{ section.settings.hover_style }} ph--logo-{{ section.settings.logo_backdrop | default: 'blur' }}"
   data-cart-url="{{ routes.cart_url }}"
   {% if section.settings.adapt_dark %}data-adapt-dark{% endif %}
   {% if section.settings.blend %}data-blend{% endif %}
@@ -414,7 +414,7 @@
         { "value": "blur", "label": "Blur (corner)" },
         { "value": "none", "label": "Nothing" }
       ],
-      "default": "fade",
+      "default": "blur",
       "info": "Keeps the logo readable over photos and headings. Only the top-left corner, behind the logo."
     },
     { "type": "text", "id": "nav_label", "label": "Menu name for screen readers", "default": "Main" },
