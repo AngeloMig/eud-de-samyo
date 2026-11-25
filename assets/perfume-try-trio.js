@@ -125,7 +125,8 @@
       $('[data-total]').textContent = money(total);
       $('[data-n]').textContent = t('Of').replace('[n]', n).replace('[total]', count);
       const saveKey = n < count ? 'SaveSoFar' : 'Save';
-      $('[data-save]').textContent = alone > total ? t(saveKey).replace('[price]', money(alone - total)) : '';
+      const pct = alone ? Math.round(((alone - total) / alone) * 100) : 0;
+      $('[data-save]').textContent = alone > total ? t(saveKey).replace('[price]', money(alone - total)).replace('[percent]', pct) : '';
 
       tiles.forEach((b) => {
         const on = picks.includes(b.dataset.handle);

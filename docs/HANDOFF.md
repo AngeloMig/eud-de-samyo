@@ -1304,3 +1304,10 @@ Sync errors are under the theme's GitHub chip → View logs.
   lowest to highest vial price (JS), pop-up shown whenever there's a mouse/trackpad
   (`any-hover`), any width; pop-up's set column only for the sizes in `set_sizes`
   (default "1, 2"), others "—".
+- Pricing correction (owner, same night): 1 ml and 2 ml solo prices = original price
+  ÷ 0.7, rounded up to ₱5, so a six-vial set (30%) never goes below the original
+  ("base") price; trio (26%) sits just above it. 5 ml stays at original × 1.35.
+  Current 1/2 ml: DHI 525/975, Eros 265/460, Oud Wood 880/1690, Sauvage 515/960,
+  SWYI 440/800, Terre 275/480, The One 265/460, Uomo 410/750, Wood Sage 440/800,
+  Y 490/905.
+- Try trio "You save" now shows the % too: "You save ₱143 (26%)".
