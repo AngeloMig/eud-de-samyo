@@ -805,6 +805,25 @@
   z-index: 60;
 }
 
+.pvp__pop-img {
+  background: var(--pvp-card, #f7f5f1);
+  border-radius: 10px;
+  display: block;
+  height: 170px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.pvp__pop-img img {
+  height: calc(100% - 20px);
+  inset: 10px 0;
+  margin: 0 auto;
+  object-fit: contain;
+  position: absolute;
+  width: 100%;
+}
+
 .pvp__pop.is-on {
   opacity: 1;
 }

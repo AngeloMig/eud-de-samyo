@@ -373,7 +373,8 @@
         const picked = li.classList.contains('is-picked');
         const blocked = btn.getAttribute('aria-disabled') === 'true';
         const act = picked ? t('PopRemove') : blocked ? (li.querySelector('[data-tip]')?.textContent.trim() || t('Full')) : t('PopAdd');
-        pop.innerHTML = `<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
+        const img = li.querySelector('.pvp__scent-img img');
+        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt=""></span>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
           <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
           <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
           ${act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
