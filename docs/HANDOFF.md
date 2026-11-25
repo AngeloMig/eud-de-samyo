@@ -25,6 +25,24 @@
   ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
   1024 / 390: no gap between ribbons at either edge, text still clear.
 
+## Decision 2026-11-25: decant pricing and the Try trio section (owner)
+
+- **Pricing rule:** a 1, 2 or 5 ml vial bought on its own costs **30% more** than the
+  same vial inside a set (Try trio etc.). In Shopify: the vial variant price is the
+  "on its own" price; the set gets a **23%** discount (1 − 1/1.3), set on the set block
+  in perfume-vial-picker *and* as a matching automatic discount, so checkout charges it.
+  Show both prices and "You save ₱…" wherever a set is sold.
+- **Try trio section (planned, owner picked hover-hint round idea 10):** its own
+  section directly under the product information. The home-page style ink ribbon
+  ("Try *trio* · 3 × 1 ml · try before the bottle", one baseline for script and caps)
+  runs over the slots, with this perfume pinned in slot 1. Under it is a 6 × 2 grid of
+  every product in the decant collection (3 across on phones). Hovering a tile shows a
+  pop-up next to the mouse with the on-its-own and set prices for 1/2/5 ml; clicking a
+  tile adds or removes it. The button goes "Pick 2 more" → "Pick 1 more" → "Add trio to
+  bag · ₱…" → "Added ✓"; when the trio is full the other tiles dim and say "Remove one
+  to swap". No repeats. It hides on perfumes without a 1 ml variant.
+  Preview: claude.ai artifact "Sangyó: Try trio section, built out".
+
 ## Update 2026-11-25: hero hover badge
 
 - Owner picked hover-hint idea 4 (seal badge). A turning ring of text with an arrow sits
