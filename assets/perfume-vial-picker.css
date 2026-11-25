@@ -820,6 +820,10 @@
   opacity: 0.7;
 }
 
+.pvp__scent[hidden] {
+  display: none !important;
+}
+
 .pvp__scent.is-gf-in {
   animation: pvp-gf 0.45s cubic-bezier(0.22, 0.7, 0.2, 1) both;
   animation-delay: calc(var(--gi, 0) * 25ms);
