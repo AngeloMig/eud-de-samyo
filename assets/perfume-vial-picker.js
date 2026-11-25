@@ -359,6 +359,46 @@
         picks.push({ li, name: li.dataset.scent });
       });
     }
+    // Compact tiles: a pop-up by the mouse with the scent's details (owner). Touch
+    // screens get the short caption under each tile instead (CSS).
+    if (root.classList.contains('pvp--compact') && matchMedia('(any-hover: hover)').matches) {
+      const pop = document.createElement('div');
+      pop.className = 'pvp__pop';
+      pop.setAttribute('aria-hidden', 'true');
+      root.appendChild(pop);
+      let popLi = null;
+      const fill = (li) => {
+        const forEl = li.querySelector('.pvp__for');
+        const btn = li.querySelector('[data-add]');
+        const picked = li.classList.contains('is-picked');
+        const blocked = btn.getAttribute('aria-disabled') === 'true';
+        const act = picked ? t('PopRemove') : blocked ? (li.querySelector('[data-tip]')?.textContent.trim() || t('Full')) : t('PopAdd');
+        pop.innerHTML = `<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
+          <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
+          <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
+          ${act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
+      };
+      const place = (x, y) => {
+        const w = pop.offsetWidth, h = pop.offsetHeight, g = 16;
+        let px = x + g, py = y + g;
+        if (px + w > innerWidth - 8) px = x - w - g;
+        if (py + h > innerHeight - 8) py = y - h - g;
+        pop.style.translate = `${Math.max(8, px)}px ${Math.max(8, py)}px`;
+      };
+      const show = (li, x, y) => { popLi = li; fill(li); pop.classList.add('is-on'); place(x, y); };
+      const hide = () => { popLi = null; pop.classList.remove('is-on'); };
+      scents.forEach((li) => {
+        li.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') show(li, e.clientX, e.clientY); });
+        li.addEventListener('pointermove', (e) => { if (popLi === li) place(e.clientX, e.clientY); });
+        li.addEventListener('pointerleave', hide);
+        const btn = li.querySelector('[data-add]');
+        btn.addEventListener('focus', () => { if (!btn.matches(':focus-visible')) return; const r = li.getBoundingClientRect(); show(li, r.right - 6, r.top + 6); });
+        btn.addEventListener('blur', hide);
+        btn.addEventListener('click', () => { if (popLi === li) requestAnimationFrame(() => fill(li)); });
+      });
+      window.addEventListener('scroll', () => popLi && hide(), { passive: true });
+    }
+
     // Quick fills (owner): lowest price, one of each brand, or a random mix.
     root.querySelectorAll('[data-fill]').forEach((b) => b.addEventListener('click', () => {
       const set = current();

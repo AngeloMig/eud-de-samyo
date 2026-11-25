@@ -49,7 +49,7 @@
 
 <section
   id="{{ vid }}"
-  class="pvp"
+  class="pvp{% if section.settings.card_style == 'compact' %} pvp--compact{% endif %}"
   aria-labelledby="{{ vid }}-h"
   data-pvp
   data-repeats="{{ section.settings.allow_repeats }}"
@@ -67,6 +67,8 @@
   data-t-add-scent="{{ section.settings.add_scent_label | escape }}"
   data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
   data-t-filled="{{ section.settings.filled_label | escape }}"
+  data-t-pop-add="{{ section.settings.pop_add_label | escape }}"
+  data-t-pop-remove="{{ section.settings.pop_remove_label | escape }}"
   data-t-bar="{{ section.settings.bar_count_label | escape }}"
   data-t-less="{{ section.settings.less_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
@@ -282,6 +284,19 @@
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
     { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Scent cards",
+      "options": [
+        { "value": "compact", "label": "Compact tiles (photo only, details on hover)" },
+        { "value": "cards", "label": "Full cards" }
+      ],
+      "default": "compact",
+      "info": "Compact matches the Try trio grid on product pages. On touch screens the tiles show a short name and price."
+    },
+    { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add" },
+    { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
     { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },
     { "type": "text", "id": "fill_low_label", "label": "Quick fill: lowest price", "info": "Empty hides this button.", "default": "Lowest price" },

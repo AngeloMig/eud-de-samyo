@@ -650,6 +650,224 @@
   opacity: 0.6;
 }
 
+/* ---------- Compact tiles (setting card_style = compact; owner 2026-11-26) ----------
+   Same small photo-only tiles as the Try trio on product pages. The whole tile is the
+   Add / Remove button (the real button, stretched over it). With a mouse, details show
+   in a pop-up (perfume-vial-picker.js); on touch screens a short caption sits below. */
+.pvp--compact .pvp__scents {
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, 84px);
+}
+
+.pvp--compact .pvp__scent {
+  border: 1px solid color-mix(in srgb, var(--pvp-ink) 14%, transparent);
+  border-radius: 12px;
+  display: block;
+  padding: 0;
+  transition: border-color 0.3s ease, translate 0.35s cubic-bezier(0.22, 0.7, 0.2, 1), box-shadow 0.35s ease;
+}
+
+.pvp--compact .pvp__scent:hover {
+  border-color: var(--pvp-ink, #292521);
+  box-shadow: 0 12px 22px rgba(41, 37, 33, 0.1);
+  translate: 0 -3px;
+}
+
+.pvp--compact .pvp__scent.is-picked {
+  border-color: var(--pvp-ink, #292521);
+  box-shadow: 0 0 0 1px var(--pvp-ink, #292521);
+}
+
+.pvp--compact .pvp__scent-img {
+  aspect-ratio: 3 / 4;
+  background: var(--pvp-card, #fff);
+  border-radius: 11px;
+  margin: 0;
+  position: relative;
+  right: auto;
+  top: auto;
+}
+
+.pvp--compact .pvp__scent-img img {
+  inset: 6px 7%;
+  height: calc(100% - 12px);
+  position: absolute;
+  width: 86%;
+}
+
+.pvp--compact .pvp__scent-mono {
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+.pvp--compact .pvp__scent-vendor,
+.pvp--compact .pvp__scent-name,
+.pvp--compact .pvp__vial-price,
+.pvp--compact .pvp__for {
+  display: none;
+}
+
+.pvp--compact .pvp__add {
+  -webkit-tap-highlight-color: transparent;
+  background: none;
+  border: 0;
+  border-radius: 12px;
+  color: transparent;
+  font-size: 0;
+  inset: 0;
+  margin: 0;
+  min-height: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.pvp--compact .pvp__add:hover:not(:disabled),
+.pvp--compact .pvp__add.is-remove {
+  background: none;
+  color: transparent;
+}
+
+.pvp--compact .pvp__add:focus-visible {
+  outline-offset: 2px;
+}
+
+.pvp--compact .pvp__num {
+  font-size: 10px;
+  height: 20px;
+  right: 5px;
+  top: 5px;
+  width: 20px;
+}
+
+.pvp--compact .pvp__count {
+  z-index: 2;
+}
+
+/* Touch screens: a short caption under the photo (no hover to show the pop-up). */
+@media (any-hover: none) {
+  .pvp--compact .pvp__scent {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 8px;
+  }
+
+  .pvp--compact .pvp__scent-name {
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    font-size: 12px;
+    line-height: 1.15;
+    margin: 4px 6px 0;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .pvp--compact .pvp__vial-price {
+    display: block;
+    font-size: 11px;
+    margin: 2px 4px 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pvp--compact .pvp__vial-price s,
+  .pvp--compact .pvp__vial-price .pvp__off {
+    display: none;
+  }
+}
+
+/* Pop-up next to the mouse */
+.pvp__pop {
+  background: #fff;
+  border: 1px solid color-mix(in srgb, var(--pvp-ink) 14%, transparent);
+  border-radius: 14px;
+  box-shadow: 0 20px 44px rgba(41, 37, 33, 0.18);
+  color: var(--pvp-ink, #292521);
+  left: 0;
+  opacity: 0;
+  padding: 12px 14px;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transition: opacity 0.2s ease;
+  width: 240px;
+  z-index: 60;
+}
+
+.pvp__pop.is-on {
+  opacity: 1;
+}
+
+.pvp__pop p {
+  margin: 0;
+}
+
+.pvp__pop-top {
+  align-items: center;
+  display: flex;
+  font-size: 10px;
+  font-weight: 600;
+  gap: 6px;
+  justify-content: space-between;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.pvp__pop-for {
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  font-size: 9px;
+  padding: 2px 6px 1px;
+}
+
+.pvp__pop-n {
+  font-family: var(--pf-font-serif);
+  font-size: 19px;
+  line-height: 1.1;
+  margin: 4px 0 6px !important;
+}
+
+.pvp__pop-p {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.pvp__pop-p s {
+  font-weight: 400;
+  margin-left: 2px;
+  opacity: 0.55;
+}
+
+.pvp__pop-act {
+  align-items: center;
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 8px;
+  margin-top: 10px !important;
+}
+
+.pvp__pop-act i {
+  align-items: center;
+  background: var(--pvp-ink, #292521);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  font-size: 13px;
+  font-style: normal;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.pvp__pop-act.is-muted {
+  opacity: 0.65;
+}
+
 /* Phone bar: hidden on desktop. */
 .pvp__bar {
   display: none;
@@ -1066,6 +1284,11 @@
 }
 
 @media screen and (max-width: 749px) {
+  .pvp--compact .pvp__scents {
+    gap: 6px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .pvp {
     padding-left: 16px;
     padding-right: 16px;

@@ -1406,3 +1406,11 @@ Sync errors are under the theme's GitHub chip → View logs.
 - **Quick fill (10):** buttons above the scents: Lowest price, One of each brand
   (random per brand, then cheapest), Surprise me (random). Settings: show_fills,
   fills_label, fill_*_label (empty hides one), filled_label, bar_count_label.
+
+### Decant builder: compact tiles (owner, 2026-11-26)
+- Builder idea 05: `perfume-vial-picker` setting **Scent cards** (`card_style`, default
+  `compact`) adds `.pvp--compact`: 84px photo-only tiles like the Try trio grid (4 across on
+  phones). The real Add/Remove button is stretched over each tile, so all toggle, blocked-tip
+  and aria logic is unchanged. With a mouse a pop-up follows the pointer (vendor, gender tag,
+  name, set price / struck solo / Save tag, "Click to add / take it out"); touch screens get a
+  short name + price caption instead. Choose **Full cards** to get the old layout back.
