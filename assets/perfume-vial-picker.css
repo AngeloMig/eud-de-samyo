@@ -656,7 +656,8 @@
    in a pop-up (perfume-vial-picker.js); on touch screens a short caption sits below. */
 .pvp--compact .pvp__scents {
   gap: 8px;
-  grid-template-columns: repeat(auto-fill, 84px);
+  /* Tiles stretch so every row runs edge to edge (owner: strict alignment). */
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
 }
 
 .pvp--compact .pvp__scent {
