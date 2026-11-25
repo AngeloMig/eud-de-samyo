@@ -66,6 +66,7 @@
   data-t-remove="{{ section.settings.remove_label | escape }}"
   data-t-add-scent="{{ section.settings.add_scent_label | escape }}"
   data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
+  data-t-less="{{ section.settings.less_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
   data-t-error="{{ section.settings.error_label | escape }}"
   data-t-added="{{ section.settings.added_label | escape }}"
@@ -234,6 +235,7 @@
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
     { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    { "type": "text", "id": "less_label", "label": "Saving on each scent (sets with a discount)", "info": "[price] = what one vial saves in the set, [percent] = the set's discount.", "default": "Save [price] · [percent]%" },
     { "type": "text", "id": "unavailable_label", "label": "Scent not offered in a size", "default": "Not in this size" },
     { "type": "text", "id": "add_scent_label", "label": "Add scent button", "default": "Add" },
     { "type": "text", "id": "tray_label", "label": "Tray heading", "default": "Your vials" },

@@ -26,6 +26,7 @@
       fmt0 = fmt;
     }
     // Whole pesos without ".00"; centavos only when there are some (e.g. ₱814.50).
+    const esc = (x) => String(x || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const money = (cents) => (Math.round(cents) % 100 === 0 ? fmt0 : fmt).format(cents / 100);
 
     const setInputs = [...root.querySelectorAll('.pvp__set input')];
@@ -156,9 +157,19 @@
         badge.textContent = '× ' + n;
         li.classList.toggle('is-picked', n > 0);
         li.classList.toggle('is-off', !v);
-        li.querySelector('[data-vial-price]').textContent = v
-          ? t('PerVial').replace('[price]', money(v.price)).replace('[size]', size)
-          : t('Unavailable');
+        // With a set discount: the price in this set, the solo price struck through and
+        // the % off, so the saving is obvious (owner). Without one: the vial price.
+        const priceEl = li.querySelector('[data-vial-price]');
+        const pct = Math.round(discountOf(set) * 100);
+        if (!v) priceEl.textContent = t('Unavailable');
+        else if (pct > 0) {
+          const inSet = afterDiscount(v.price, set);
+          priceEl.innerHTML = `${esc(t('PerVial').replace('[price]', money(inSet)).replace('[size]', size))} <s>${esc(money(v.price))}</s> <span class="pvp__off">${esc((t('Less') || 'Save [price] · [percent]%').replace('[price]', money(v.price - inSet)).replace('[percent]', pct))}</span>`;
+          priceEl.setAttribute('aria-label', `${t('PerVial').replace('[price]', money(inSet)).replace('[size]', size)}, ${money(v.price)} on its own, ${money(v.price - inSet)} (${pct}%) less`);
+        } else {
+          priceEl.textContent = t('PerVial').replace('[price]', money(v.price)).replace('[size]', size);
+          priceEl.removeAttribute('aria-label');
+        }
         const btn = li.querySelector('[data-add]');
         const toggle = !repeats && n > 0;
         // Set full: the button stays reachable and explains itself instead of going dead.

@@ -1311,3 +1311,6 @@ Sync errors are under the theme's GitHub chip → View logs.
   SWYI 440/800, Terre 275/480, The One 265/460, Uomo 410/750, Wood Sage 440/800,
   Y 490/905.
 - Try trio "You save" now shows the % too: "You save ₱143 (26%)".
+- Builder scent cards (owner): for a set with a discount, each perfume shows its price
+  in that set, the solo price struck through, and a green tag "Save ₱… · 26%"
+  (setting `less_label`). Sets without a discount show the plain vial price as before.
