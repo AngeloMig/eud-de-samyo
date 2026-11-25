@@ -217,8 +217,9 @@
                       {%- for note in n_group -%}
                         {%- if n_count >= 5 -%}{%- break -%}{%- endif -%}
                         {%- assign n_count = n_count | plus: 1 -%}
-                        {%- assign n_art = note.art.value -%}
-                        <span class="pvp__pn" data-name="{{ note.name.value | escape }}">
+                        {%- assign n_name = note.name.value | default: note -%}
+                        {%- assign n_art = note.art.value | default: n_name -%}
+                        <span class="pvp__pn" data-name="{{ n_name | escape }}" data-i="{{ n_name | slice: 0 | upcase | escape }}">
                           {%- if note.image.value != blank -%}
                             {{ note.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
                           {%- else -%}

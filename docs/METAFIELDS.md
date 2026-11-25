@@ -11,9 +11,15 @@ guess: the theme shows "not assessed yet" for empty performance data.
 |---|---|---|---|
 | Concentration | `fragrance.concentration` | Single line text, choices: Eau de Cologne, Eau de Toilette, Eau de Parfum, Parfum, Extrait de Parfum | Showcase (now), product page |
 | Fragrance family | `fragrance.fragrance_family` | Single line text, choices: Fresh, Citrus, Floral, Woody, Amber, Gourmand, Aromatic, Spicy, Musky | Product page, filters |
-| Top notes | `fragrance.top_notes` | List of metaobject references → `fragrance_note` | Product page |
-| Heart notes | `fragrance.middle_notes` | List of metaobject references → `fragrance_note` | Product page |
-| Base notes | `fragrance.base_notes` | List of metaobject references → `fragrance_note` | Product page |
+| Top notes | `fragrance.top_notes` | **List of single line text** (live store, 2026-11-26) or list of metaobject references → `fragrance_note` | Product page, builder pop-up |
+| Heart notes | `fragrance.middle_notes` | same | Product page, builder pop-up |
+| Base notes | `fragrance.base_notes` | same | Product page, builder pop-up |
+
+The live store uses plain text lists: type each note as the brand names it ("Calabrian
+bergamot", "Pink pepper"). The theme picks the note picture from the name
+(snippets/perfume-note-art.liquid matches words like bergamot, pepper, cedar); a note with
+no matching picture shows its first letter in the builder. The metaobject version still
+works if you ever switch (name, art, image, description per note).
 | Scent profile | `fragrance.scent_profile` | Metaobject reference → `scent_profile` | Product page |
 | Performance | `fragrance.performance` | Metaobject reference → `fragrance_performance` | Product page |
 | Best seasons | `fragrance.best_seasons` | List of single line text (Dry season, Rainy season, All year) | Product page |

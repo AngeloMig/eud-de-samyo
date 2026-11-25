@@ -1425,3 +1425,8 @@ Sync errors are under the theme's GitHub chip → View logs.
   Filtering hides every other tile, picked ones too (they stay in the tray) and keeps the tile size fixed; Quick fill
   then fills from that group. Each compact tile shows a tiny coloured label (For men / women
   / unisex) from the same tags (men, women, unisex) or Shopify's Target gender.
+- Notes data (2026-11-26): `fragrance.top_notes / middle_notes / base_notes` are created on the
+  live store as **lists of single line text** (not metaobjects; ~54 note entries by hand was
+  too slow). Every notes reader now accepts plain text (`x.name.value | default: x`), and
+  `perfume-note-art` maps free text to a picture key. Entered from brand-published pyramids
+  (sources in the chat / docs/CREDITS.md note); Bleu de Chanel skipped (not a decant yet).

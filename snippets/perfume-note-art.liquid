@@ -19,7 +19,69 @@
   A fragrance_note metaobject's own image still wins where the section passes it.
   Pass style: 'drawing' to force the drawing.
 {%- endcomment -%}
+{%- comment -%}
+  Notes can also be plain text (fragrance.*_notes as a list of single line text,
+  2026-11-26): a free-text name like "Calabrian bergamot" or "Pink pepper" is
+  matched to the nearest built-in picture. No match (e.g. "Bamboo") renders nothing.
+{%- endcomment -%}
 {%- liquid
+  assign nk = note | downcase | strip | replace: '-', ' '
+  assign known = ',lemon,orange,bergamot,grapefruit,mint,apple,lavender,rose,jasmine,orange_blossom,iris,vanilla,cinnamon,pepper,cardamom,cedar,vetiver,patchouli,musk,amber,tonka,mineral,tobacco,'
+  assign probe = ',' | append: nk | append: ','
+  unless known contains probe
+    assign note = ''
+    if nk contains 'rosewood' or nk contains 'ambroxan'
+      assign note = ''
+    elsif nk contains 'orange blossom' or nk contains 'neroli'
+      assign note = 'orange_blossom'
+    elsif nk contains 'bergamot'
+      assign note = 'bergamot'
+    elsif nk contains 'grapefruit'
+      assign note = 'grapefruit'
+    elsif nk contains 'orange'
+      assign note = 'orange'
+    elsif nk contains 'lemon' or nk contains 'citron'
+      assign note = 'lemon'
+    elsif nk contains 'mint'
+      assign note = 'mint'
+    elsif nk contains 'apple'
+      assign note = 'apple'
+    elsif nk contains 'lavender'
+      assign note = 'lavender'
+    elsif nk contains 'jasmine'
+      assign note = 'jasmine'
+    elsif nk contains 'rose'
+      assign note = 'rose'
+    elsif nk contains 'iris'
+      assign note = 'iris'
+    elsif nk contains 'vanilla'
+      assign note = 'vanilla'
+    elsif nk contains 'cinnamon'
+      assign note = 'cinnamon'
+    elsif nk contains 'cardamom'
+      assign note = 'cardamom'
+    elsif nk contains 'pepper'
+      assign note = 'pepper'
+    elsif nk contains 'cedar'
+      assign note = 'cedar'
+    elsif nk contains 'vetiver'
+      assign note = 'vetiver'
+    elsif nk contains 'patchouli'
+      assign note = 'patchouli'
+    elsif nk contains 'musk'
+      assign note = 'musk'
+    elsif nk contains 'tonka'
+      assign note = 'tonka'
+    elsif nk contains 'tobacco'
+      assign note = 'tobacco'
+    elsif nk contains 'amber'
+      assign note = 'amber'
+    elsif nk contains 'salt' or nk contains 'flint' or nk contains 'mineral'
+      assign note = 'mineral'
+    endif
+  else
+    assign note = nk
+  endunless
   assign photo_file = ''
   assign photo_url = ''
   assign photo_tint = ''

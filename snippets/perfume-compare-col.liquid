@@ -33,7 +33,8 @@
       if c_notes != blank
         assign c_notes = c_notes | append: ' · '
       endif
-      assign c_notes = c_notes | append: nn.name.value
+      assign n_name = nn.name.value | default: nn
+      assign c_notes = c_notes | append: n_name
     endfor
   endfor
   assign lmin = profile.longevity_min_h.value

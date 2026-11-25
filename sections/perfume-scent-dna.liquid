@@ -176,9 +176,9 @@
     <div class="pdna__empty" data-pf-reveal="rise">
       <ul class="pd-tags" role="list">
         {%- if family != blank -%}<li class="is-strong">{{ family | escape }}</li>{%- endif -%}
-        {%- for nn in tag_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
-        {%- for nn in mid_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
-        {%- for nn in low_notes -%}<li>{{ nn.name.value | escape }}</li>{%- endfor -%}
+        {%- for nn in tag_notes -%}{%- assign n_name = nn.name.value | default: nn -%}<li>{{ n_name | escape }}</li>{%- endfor -%}
+        {%- for nn in mid_notes -%}{%- assign n_name = nn.name.value | default: nn -%}<li>{{ n_name | escape }}</li>{%- endfor -%}
+        {%- for nn in low_notes -%}{%- assign n_name = nn.name.value | default: nn -%}<li>{{ n_name | escape }}</li>{%- endfor -%}
       </ul>
       <p class="pd-basis">{{ section.settings.empty_text | escape }}</p>
     </div>

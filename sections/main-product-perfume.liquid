@@ -294,8 +294,8 @@
                 {%- for note in group -%}
                   {%- if chip_count >= max_chips -%}{%- break -%}{%- endif -%}
                   {%- assign chip_count = chip_count | plus: 1 -%}
-                  {%- assign note_name = note.name.value -%}
-                  {%- assign note_art = note.art.value -%}
+                  {%- assign note_name = note.name.value | default: note -%}
+                  {%- assign note_art = note.art.value | default: note_name -%}
                   <li class="pp-chip" style="--n: {{ chip_count }};">
                     <span class="pp-chip__art" aria-hidden="true">
                       {%- if note.image.value != blank -%}

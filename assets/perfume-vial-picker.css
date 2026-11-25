@@ -949,6 +949,19 @@
   width: 100%;
 }
 
+.pvp__pn--txt {
+  align-items: center;
+  background: #efe9df;
+  display: flex;
+  font-family: var(--pf-font-serif);
+  font-size: 18px;
+  justify-content: center;
+}
+
+.pvp__pn--txt b {
+  font-weight: 400;
+}
+
 @keyframes pvp-pn {
   from {
     opacity: 0;

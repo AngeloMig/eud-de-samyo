@@ -375,7 +375,7 @@
         const act = picked ? t('PopRemove') : blocked ? (li.querySelector('[data-tip]')?.textContent.trim() || t('Full')) : t('PopAdd');
         const img = li.querySelector('.pvp__scent-img img');
         const notes = [...(li.querySelector('template[data-notes]')?.content.querySelectorAll('.pvp__pn') || [])];
-        const noteArt = notes.length ? `<span class="pvp__pop-notes">${notes.map((n, i) => `<span class="pvp__pn" style="--i:${i}">${n.innerHTML}</span>`).join('')}</span>` : '';
+        const noteArt = notes.length ? `<span class="pvp__pop-notes">${notes.map((n, i) => `<span class="pvp__pn${n.innerHTML.trim() ? '' : ' pvp__pn--txt'}" style="--i:${i}">${n.innerHTML.trim() || `<b>${esc(n.dataset.i || '')}</b>`}</span>`).join('')}</span>` : '';
         pop.classList.toggle('has-notes', notes.length > 0);
         pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
           <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>

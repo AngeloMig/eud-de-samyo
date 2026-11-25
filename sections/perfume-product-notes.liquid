@@ -82,8 +82,8 @@
             {%- if group != blank and group.size > 0 -%}
               <ul class="ppn__notes" role="list">
                 {%- for note in group -%}
-                  {%- assign note_name = note.name.value -%}
-                  {%- assign note_art = note.art.value -%}
+                  {%- assign note_name = note.name.value | default: note -%}
+                  {%- assign note_art = note.art.value | default: note_name -%}
                   {%- assign note_desc = note.description.value -%}
                   <li class="ppn__note">
                     <span class="ppn__note-art" aria-hidden="true">
