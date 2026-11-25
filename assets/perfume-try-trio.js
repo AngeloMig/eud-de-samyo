@@ -103,6 +103,7 @@
       const alone = chosen.reduce((a, s) => a + vial(s).price, 0);
       const total = inSet(alone);
       $('[data-alone]').textContent = money(alone);
+      $('[data-alone]').parentElement.hidden = !off; // no set discount: nothing to compare
       $('[data-total]').textContent = money(total);
       $('[data-n]').textContent = t('Of').replace('[n]', n).replace('[total]', count);
       const saveKey = n < count ? 'SaveSoFar' : 'Save';

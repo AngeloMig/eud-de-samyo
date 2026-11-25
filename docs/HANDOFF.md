@@ -58,9 +58,11 @@
   Ribbon straddles the seam with the product section (half over its 72px bottom
   padding); tilt = −min(3°, atan2(0.85 × band height, 100vw)) so it always covers the
   seam edge to edge (no cream/lilac wedge), fallback −1°.
-  **Discount = 10%** (2026-11-25): the live bag showed the store's automatic discount
-  takes 10% off a decant set, so the section uses 10% to match (23% made it show
-  ₱893.20 while the bag charged ₱1,044). The owner's "30% dearer on its own" rule is
+  **Discount = 0%** (2026-11-25, checked in Shopify admin): the only active vial
+  discount is "Six-vial set · 10% off" (automatic, the 1 ml and 2 ml variants of the 10
+  perfumes, minimum 6 items, doesn't combine). A single Try trio gets nothing, so the
+  section shows 0% and hides the compare lines. The 10% seen in the bag came from a
+  bag with 9 vials. The owner's "30% dearer on its own" rule is
   not met yet: open question (raise the Shopify discount to 23%, or keep 10% and raise
   the 1/2/5 ml variant prices ~17%).
   To do in Shopify: and the builder page

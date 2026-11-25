@@ -7,7 +7,8 @@
 
   - Prices: a vial variant's own price is the "on its own" price. The set's discount
     (setting) gives the "in a set" price. It must equal the store's automatic discount
-    for decant sets (10% as of 2026-11-25), or the section and the bag disagree.
+    for one set of this size, or the section and the bag disagree. As of 2026-11-25 the
+    store has none for 3 vials ("Six-vial set · 10% off" needs 6+ vials), so it's 0%.
   - Grid: products from the collection setting (else all products) that have an
     available variant for the vial size (option value "1 ml", "2 ml", "5 ml"), up to
     the tile limit, image only. Hover: a pop-up by the mouse with the name and the
@@ -282,7 +283,7 @@
       ],
       "default": "1"
     },
-    { "type": "range", "id": "discount", "label": "Set discount", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 10, "info": "Must match the automatic discount in Shopify (Discounts), which is what checkout charges. 10% = what the store gives decant sets now. 23% would make a vial on its own 30% dearer than in the set." },
+    { "type": "range", "id": "discount", "label": "Set discount", "min": 0, "max": 30, "step": 1, "unit": "%", "default": 0, "info": "Must match an automatic discount in Shopify (Discounts) that a single set of this size gets, because that is what checkout charges. 0% hides the Bought separately and You save lines." },
     { "type": "collection", "id": "collection", "label": "Perfumes to choose from", "info": "Leave empty to use all products. A perfume shows when it has a variant for the vial size, e.g. 1 ml." },
     { "type": "range", "id": "limit", "label": "Perfumes in the grid", "min": 6, "max": 24, "step": 6, "default": 12 },
     { "type": "page", "id": "picker_page", "label": "Decant builder page", "info": "Where Continue goes, with the picked perfumes. Default: the page with handle build-your-set." },

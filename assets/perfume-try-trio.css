@@ -90,6 +90,7 @@
 .ptt__sum[hidden] { display: none; }
 .ptt__row { display: flex; justify-content: space-between; align-items: baseline; margin: 0; color: var(--ptt-soft); }
 .ptt__row s { color: var(--ptt-soft); }
+.ptt__row[hidden] { display: none; }
 .ptt__row--tot { margin-top: 4px; font: 500 30px/1 var(--pf-font-serif); color: var(--ptt-ink); }
 .ptt__row--tot b { font-weight: 500; }
 .ptt__row--tot small { font: 13px var(--pf-font-sans); color: var(--ptt-soft); }

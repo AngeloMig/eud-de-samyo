@@ -307,7 +307,7 @@
     "trio": {
       "type": "perfume-try-trio",
       "settings": {
-        "discount": 10
+        "discount": 0
       }
     }
   },
