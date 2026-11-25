@@ -76,6 +76,34 @@ perfume-header {
   line-height: 1;
 }
 
+/* Logo fade (owner idea 07, 2026-11-26): once the page is scrolled, a cream fade sits
+   behind the logo corner only: deepest at the left edge, curving up towards the right,
+   so photos and headings never run through the logo. */
+.ph::before {
+  background:
+    radial-gradient(ellipse 100% 100% at 0 0, var(--ph-paper) 38%, color-mix(in srgb, var(--ph-paper) 70%, transparent) 58%, transparent 78%);
+  content: '';
+  height: calc(var(--ph-gap) + var(--ph-box) + 70px);
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transition: opacity 0.5s ease;
+  width: min(560px, 70vw);
+  z-index: -1;
+}
+
+.ph.is-down:not(.is-on-dark)::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph::before {
+    transition: none;
+  }
+}
+
 /* Scrolled: logo 10px from the top, links box at 0 (owner 2026-11-26). */
 .ph__logo,
 .ph__nav {
