@@ -39,7 +39,9 @@
         },
         "sizes": {
           "type": "variant_picker",
-          "settings": {}
+          "settings": {
+            "hide_set_sizes": false
+          }
         },
         "buy": {
           "type": "buy_buttons",
@@ -307,7 +309,7 @@
     "trio": {
       "type": "perfume-try-trio",
       "settings": {
-        "discount": 0
+        "discount": 26
       }
     }
   },

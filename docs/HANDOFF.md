@@ -1282,3 +1282,16 @@ Sync errors are under the theme's GitHub chip → View logs.
   product page showing those sizes (main section → Sizes block → turn off "Hide decant
   sizes sold only in sets"), and the section + builder set discounts set to match.
   Pending the owner's go-ahead (see chat 2026-11-25).
+
+## Update 2026-11-25 (later): new decant pricing is live in Shopify
+
+- Done in Shopify admin with the owner's go-ahead: every 1/2/5 ml variant of the 10
+  perfumes raised 35% (rounded to ₱5) = the solo price; 10 ml and bottles unchanged.
+- Discounts (automatic, don't combine; Shopify gives the best one): **Try trio · 26% off**
+  (1 and 2 ml variants, min 3 items, new) and **Six-vial set · 30% off** (was 10%, min 6).
+  Note: they count vials in the bag, not sets, so any 3+ small vials get 26%.
+- Theme matched: Try trio section discount 26; builder sets Try/Wear trio 26% ("26% off"
+  badge), Discovery/Wardrobe six 30%; product page now sells 1/2/5 ml solo
+  (variant picker `hide_set_sizes` = false in templates/product.json).
+- Try trio cards: the solo list is gone; "1 ml · ₱410" with a tiny green "−₱…" (what it
+  saves in a trio). Grid stays 6 across down to 560px, 4 across on phones.

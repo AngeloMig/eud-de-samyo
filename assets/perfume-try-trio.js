@@ -65,19 +65,14 @@
     function slotHTML(s, i) {
       const v = vial(s);
       const name = (s.name || '').replace(/ Eau de Parfum$/i, ' EDP').replace(/ Eau de Toilette$/i, ' EDT');
-      // In the set: its price, and what it saves against buying that vial on its own.
+      // Its price on its own, with a tiny "−₱…" next to it: what it saves in the set.
       let price = '';
       if (v) {
-        const set = inSet(v.price);
-        price = off
-          ? `<span class="ptt__slot-p"><span>${esc(t('InTrio'))}</span> <b>${money(set)}</b>${v.price > set ? ` <em>${esc(t('SaveShort').replace('[price]', money(v.price - set)))}</em>` : ''}</span>`
-          : `<span class="ptt__slot-p">${size} ml · <b>${money(v.price)}</b></span>`;
+        const less = v.price - inSet(v.price);
+        price = `<span class="ptt__slot-p">${size} ml · <b>${money(v.price)}</b>${off && less > 0 ? ` <em title="${esc(t('SaveShort').replace('[price]', money(less)))}">−${money(less)}</em>` : ''}</span>`;
       }
-      // Every size of it bought on its own.
-      const solo = UP.map((z) => s.vials[z] && s.vials[z].available ? `<span>${z} ml <b>${money(s.vials[z].price)}</b></span>` : '').filter(Boolean).join('');
       return `${s.handle === own ? `<span class="ptt__pin">${esc(t('Pin'))}</span>` : ''}
         <img src="${vialImg}" alt="" width="40" height="160"><b class="ptt__slot-n">${esc(name)}</b>${price}
-        ${solo && t('Solo') ? `<span class="ptt__solo"><small>${esc(t('Solo'))}</small>${solo}</span>` : ''}
         <button type="button" class="ptt__x" data-i="${i}" aria-label="${esc(t('Remove'))}: ${esc(s.name)}">×</button>`;
     }
     const esc = (x) => String(x || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
