@@ -147,16 +147,12 @@
       this.stage.addEventListener('dragstart', (e) => e.preventDefault(), { signal });
     }
 
-    // ---------- Product + Add to bag in the header (phones: bottom bar) ----------
+    // ---------- Product + Add to bag: bar at the bottom of the screen ----------
     bindSticky(signal) {
       const bar = this.querySelector('[data-pp-sticky]');
       const target = this.querySelector('.pp__buy');
       if (!bar || !target) return;
-      // Line up with the header's boxes (the Bag box) on desktop.
-      const place = () => {
-        const bag = document.querySelector('.ph__bag');
-        if (bag) bar.style.setProperty('--pp-sticky-top', `${Math.max(0, bag.getBoundingClientRect().top)}px`);
-      };
+      const place = () => {}; // the bar sits at the bottom now (CSS); kept so callers stay simple
       const show = (on) => {
         bar.classList.toggle('is-shown', on);
         bar.inert = !on;

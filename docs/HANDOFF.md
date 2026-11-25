@@ -1263,3 +1263,10 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Validation: all ten play and reset with visible lettering and no leftover
   decorative nodes; all ten fit the 390px preview; reduced-motion simulation
   creates no animations or temporary artwork. Renderer, JS syntax and schemas pass.
+
+## Update 2026-11-25: product sticky bar at the bottom
+
+- The product page's sticky "name · size · price · Add to bag" bar (`.pp-sticky`,
+  assets/perfume-product.css + bindSticky in perfume-product.js) now sits at the
+  bottom centre of the screen on desktop too (was in the header row, where it covered
+  the navigation; owner). Phones unchanged (full-width bottom bar).

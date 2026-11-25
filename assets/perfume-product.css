@@ -777,25 +777,28 @@
   }
 }
 
-/* ---------- Product + Add to bag in the header row (desktop), bottom bar (phones) ---------- */
+/* ---------- Product + Add to bag: a bar at the bottom of the screen ----------
+   Bottom on every screen (owner, 2026-11-25): in the header row it covered the
+   navigation. */
 .pp-sticky {
   align-items: center;
   background: #fff;
+  bottom: 18px;
+  box-shadow: 0 10px 34px rgba(38, 34, 31, 0.16);
   color: var(--pp-ink);
   display: flex;
   gap: 12px;
-  height: 36px;
+  height: 56px;
   left: 50%;
-  max-width: calc(100% - 520px);
+  max-width: calc(100% - 40px);
   opacity: 0;
-  padding-left: 6px;
+  padding: 0 8px;
   pointer-events: none;
   position: fixed;
-  top: var(--pp-sticky-top, 30px);
-  transform: translate(-50%, -10px);
+  transform: translate(-50%, 16px);
   transition: opacity 0.3s ease, transform 0.5s var(--pp-ease-out), visibility 0s linear 0.5s;
   visibility: hidden;
-  width: 600px;
+  width: 640px;
   z-index: 60;
 }
 
@@ -810,8 +813,8 @@
 .pp-sticky__img {
   display: block;
   flex: none;
-  height: 30px;
-  width: 24px;
+  height: 40px;
+  width: 30px;
 }
 
 .pp-sticky__img img {
@@ -845,10 +848,10 @@
 }
 
 .pp .pp-sticky__btn {
-  align-self: stretch;
+  align-self: center;
   flex: none;
-  min-height: 36px;
-  padding: 0 18px;
+  min-height: 44px;
+  padding: 0 20px;
   text-decoration: none;
 }
 
