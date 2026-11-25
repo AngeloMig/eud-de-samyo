@@ -399,6 +399,8 @@
     "contribution": 552197.16,
     "margin": 0.4766016407660315,
     "leftoverWaste": 4550.49,
+    "netContribution": 547646.67,
+    "fullyCostedMargin": 0.47267411093731804,
     "ads": 6000,
     "fixedCost": 1550,
     "missingFixedCosts": [
@@ -408,8 +410,8 @@
     "operatingBeforeTax": 540096.67,
     "pouredMl": 5900,
     "bottlesPerScent": 6,
-    "margin45": 509275.65,
-    "margin50": 567206.33,
+    "margin45": 513826.14,
+    "margin50": 571756.82,
     "adSensitivity": [
       {
         "ads": 6000,
