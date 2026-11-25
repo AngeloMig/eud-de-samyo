@@ -612,6 +612,7 @@
 }
 
 .pvp__fills-t {
+  min-width: 86px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -749,6 +750,91 @@
 @media (any-hover: hover) {
   .pvp--compact .pvp__tip {
     display: none;
+  }
+}
+
+/* Tiny Men / Women / Unisex label on each tile (owner 2026-11-26) */
+.pvp--compact .pvp__for {
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  border-radius: 99px;
+  bottom: 5px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pvp-ink) 12%, transparent);
+  display: block;
+  font-size: 7.5px;
+  font-weight: 600;
+  left: 50%;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 3px 6px 2px;
+  pointer-events: none;
+  text-transform: uppercase;
+  top: auto;
+  translate: -50% 0;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.pvp--compact .pvp__for::before {
+  border-radius: 50%;
+  content: '';
+  display: inline-block;
+  height: 5px;
+  margin-right: 4px;
+  vertical-align: 1px;
+  width: 5px;
+}
+
+.pvp__for--men::before,
+.pvp__gf-dot--men { background: #3b5b86; }
+.pvp__for--women::before,
+.pvp__gf-dot--women { background: #b4587a; }
+.pvp__for--unisex::before,
+.pvp__gf-dot--unisex { background: #a88a3c; }
+
+.pvp__gf-dot {
+  border-radius: 50%;
+  display: inline-block;
+  height: 7px;
+  margin-right: 6px;
+  width: 7px;
+}
+
+.pvp__gf-n {
+  font-size: 10px;
+  margin-left: 5px;
+  opacity: 0.55;
+}
+
+.pvp__gf {
+  margin-bottom: -6px;
+}
+
+.pvp__fill[aria-pressed='true'] {
+  background: var(--pvp-ink, #292521);
+  border-color: var(--pvp-ink, #292521);
+  color: #fff;
+}
+
+.pvp__fill[aria-pressed='true'] .pvp__gf-n {
+  opacity: 0.7;
+}
+
+.pvp__scent.is-gf-in {
+  animation: pvp-gf 0.45s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--gi, 0) * 25ms);
+}
+
+@keyframes pvp-gf {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pvp__scent.is-gf-in {
+    animation: none;
   }
 }
 

@@ -408,12 +408,60 @@
       window.addEventListener('scroll', () => popLi && hide(), { passive: true });
     }
 
+    // Men / Women / Unisex filter (owner 2026-11-26). Reads each tile's label class.
+    scents.forEach((li) => {
+      const m = (li.querySelector('.pvp__for')?.className || '').match(/pvp__for--(\w+)/);
+      li.dataset.for = m ? m[1] : '';
+    });
+    const gf = root.querySelector('[data-gf]');
+    let gfOn = '';
+    if (gf) {
+      const btns = [...gf.querySelectorAll('[data-gf-v]')];
+      let groups = 0;
+      btns.forEach((b) => {
+        const v = b.dataset.gfV;
+        if (!v) return;
+        const n = scents.filter((li) => li.dataset.for === v).length;
+        const nEl = b.querySelector('[data-gf-n]');
+        if (nEl) nEl.textContent = n;
+        b.hidden = n === 0;
+        if (n) groups++;
+      });
+      gf.hidden = groups < 1;
+      // Keep tiles the same size while filtered (auto-fit would stretch the few left).
+      const ulEl = scents[0]?.parentElement;
+      const lockCols = () => {
+        if (!ulEl) return;
+        ulEl.style.gridTemplateColumns = '';
+        if (!gfOn) return;
+        const shown = scents.filter((li) => !li.hidden);
+        scents.forEach((li) => { li.dataset.h = li.hidden ? '1' : ''; li.hidden = false; });
+        const w = scents[0].getBoundingClientRect().width;
+        scents.forEach((li) => { li.hidden = li.dataset.h === '1'; });
+        if (w && shown.length < scents.length) ulEl.style.gridTemplateColumns = `repeat(auto-fill, ${w}px)`;
+      };
+      addEventListener('resize', lockCols, { passive: true });
+      btns.forEach((b) => b.addEventListener('click', () => {
+        gfOn = b.dataset.gfV;
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        scents.forEach((li) => {
+          const out = gfOn !== '' && li.dataset.for !== gfOn && !li.classList.contains('is-picked');
+          li.hidden = out;
+        });
+        lockCols();
+        scents.filter((li) => !li.hidden).forEach((li, i) => {
+          li.classList.remove('is-gf-in'); void li.offsetWidth; li.style.setProperty('--gi', i); li.classList.add('is-gf-in');
+        });
+      }));
+    }
+
     // Quick fills (owner): lowest price, one of each brand, or a random mix.
     root.querySelectorAll('[data-fill]').forEach((b) => b.addEventListener('click', () => {
       const set = current();
       const count = parseInt(set.dataset.count, 10) || 1;
       const size = set.dataset.size;
-      const avail = scents.filter((li) => vialOf(li, size));
+      // With a filter on, fill from that group (owner).
+      const avail = scents.filter((li) => vialOf(li, size) && (!gfOn || li.dataset.for === gfOn));
       const byPrice = avail.slice().sort((a, c) => vialOf(a, size).price - vialOf(c, size).price);
       let pick = [];
       if (b.dataset.fill === 'low') pick = byPrice;

@@ -155,6 +155,15 @@
             <p class="pvp__swap"><span class="pvp__swap-icon" aria-hidden="true">i</span><span>{{ section.settings.swap_note | escape }}</span></p>
           {%- endif -%}
           {%- if section.settings.show_fills -%}
+            {%- if section.settings.show_gender_filter -%}
+              <div class="pvp__fills pvp__gf" role="group" aria-label="{{ section.settings.gf_label | escape }}" data-gf hidden>
+                <span class="pvp__fills-t">{{ section.settings.gf_label | escape }}</span>
+                <button type="button" class="pvp__fill" data-gf-v="" aria-pressed="true">{{ section.settings.gf_all_label | escape }}</button>
+                {%- if section.settings.gf_men_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="men" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--men" aria-hidden="true"></i>{{ section.settings.gf_men_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+                {%- if section.settings.gf_women_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="women" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--women" aria-hidden="true"></i>{{ section.settings.gf_women_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+                {%- if section.settings.gf_unisex_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="unisex" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--unisex" aria-hidden="true"></i>{{ section.settings.gf_unisex_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+              </div>
+            {%- endif -%}
             <div class="pvp__fills" role="group" aria-label="{{ section.settings.fills_label | escape }}" data-fills>
               <span class="pvp__fills-t">{{ section.settings.fills_label | escape }}</span>
               {%- if section.settings.fill_low_label != blank -%}<button type="button" class="pvp__fill" data-fill="low"><span aria-hidden="true">₱</span>{{ section.settings.fill_low_label | escape }}</button>{%- endif -%}
@@ -336,6 +345,12 @@
     { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
     { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },
+    { "type": "checkbox", "id": "show_gender_filter", "label": "Show the Men / Women / Unisex filter", "default": true, "info": "Uses the same tags as the labels below (men, women, unisex). Buttons with no perfumes hide themselves." },
+    { "type": "text", "id": "gf_label", "label": "Filter heading", "default": "Show" },
+    { "type": "text", "id": "gf_all_label", "label": "Filter: all", "default": "All" },
+    { "type": "text", "id": "gf_men_label", "label": "Filter: men", "default": "Men" },
+    { "type": "text", "id": "gf_women_label", "label": "Filter: women", "default": "Women" },
+    { "type": "text", "id": "gf_unisex_label", "label": "Filter: unisex", "default": "Unisex" },
     { "type": "text", "id": "fill_low_label", "label": "Quick fill: lowest price", "info": "Empty hides this button.", "default": "Lowest price" },
     { "type": "text", "id": "fill_brand_label", "label": "Quick fill: one of each brand", "default": "One of each brand" },
     { "type": "text", "id": "fill_surprise_label", "label": "Quick fill: random", "default": "Surprise me" },
