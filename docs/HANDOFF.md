@@ -1435,3 +1435,18 @@ Sync errors are under the theme's GitHub chip → View logs.
   work if switched on). The pre-fill note is a small one-line hint (no box). Tiles show a
   ♂ / ♀ / unisex icon (blue / rose / gold) instead of the text tag; the pop-up shows icon +
   label.
+- Notes entered 2026-11-26 (Shopify bulk editor). Top / Heart / Base, from brand pages or
+  brand-supplied retailer copy (Sephora, Lookfantastic, Ulta, John Lewis, Harrods):
+  Light Blue: Sicilian lemon, Granny Smith apple, Bluebell / Jasmine, Bamboo, White rose / Cedarwood, Amber, Musk.
+  Bright Crystal: Yuzu, Pomegranate, Iced accord / Peony, Magnolia, Lotus flower / Plant amber, Musk, Mahogany.
+  Eros EDT: Mint, Green apple, Lemon / Tonka bean, Ambroxan, Geranium / Vanilla, Vetiver, Oakmoss, Cedarwood.
+  The One for Men EDP: Tarocco orange, Basil, Bergamot / Clary sage, Orange blossom, Lavender / Tobacco, Amber, Cedarwood.
+  Terre d'Hermès EDT: Orange, Grapefruit / Pepper, Flint / Cedar, Vetiver, Patchouli.
+  Uomo Born in Roma EDT: Violet leaf, Ginger, Citron / Clary sage, Peppermint, Mineral salt / Vetiver, Guaiac wood, Leather.
+  Stronger With You Intensely: Pink pepper, Chestnut / Lavender, Sage / Vanilla, Amberwood.
+  Wood Sage & Sea Salt: Ambrette seed / Sea salt / Sage.
+  Y EDP: Apple, Bergamot, Ginger / Sage, Juniper, Geranium / Tonka bean, Amberwood, Olibanum.
+  Sauvage EDP (Dior lists only these): Calabrian bergamot / (none) / Vanilla, Patchouli.
+  Dior Homme Intense: Lavender / Iris, Ambrette, Pear / Virginia cedar, Vetiver.
+  Oud Wood: Rosewood, Cardamom, Pink pepper / Oud, Sandalwood, Vetiver / Tonka bean, Amber, Patchouli.
+  Bleu de Chanel: not entered (no decants yet).
