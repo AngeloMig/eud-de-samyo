@@ -32,7 +32,7 @@
   "on its own" price; the set gets a **23%** discount (1 − 1/1.3), set on the set block
   in perfume-vial-picker *and* as a matching automatic discount, so checkout charges it.
   Show both prices and "You save ₱…" wherever a set is sold.
-- **Try trio section (planned, owner picked hover-hint round idea 10):** its own
+- **Try trio section (built 2026-11-25, live on main; owner picked idea 10):** its own
   section directly under the product information. The home-page style ink ribbon
   ("Try *trio* · 3 × 1 ml · try before the bottle", one baseline for script and caps)
   runs over the slots, with this perfume pinned in slot 1. Under it is a 6 × 2 grid of
@@ -48,6 +48,15 @@
   `?set=3x1&scent=<handle>,<handle>,<handle>`, so people see the other sets and sizes.
   A small "Or add to bag now · ₱…" link adds the trio directly. Ribbon speed: slow (the
   owner found 30s for 8 phrase repeats too fast; preview uses 56s).
+- **Files:** `sections/perfume-try-trio.liquid`, `assets/perfume-try-trio.css`,
+  `assets/perfume-try-trio.js`; placed in `templates/product.json` right after `main`
+  (id `trio`). Settings: set name, vials (2–5), size (1/2/5 ml), discount (default 23%),
+  collection, tile limit (6–24), builder page, ribbon text (`*word*` = script) and speed,
+  every label, colours, padding. Hidden on products without an available vial in the
+  set's size. Cart lines match the builder exactly. Prices in the section are exact
+  (centavos show when the % gives them, as in the builder).
+  To do in Shopify: the 23% automatic discount for the Try trio, and the builder page
+  (handle `build-your-set`, or pick it in the section) with a 3 × 1 ml Set block.
 - **Builder (done, live):** `assets/perfume-vial-picker.js` now takes a comma-separated
   `?scent=` list and fills the vials in that order (unknown handles, sizes it isn't
   offered in and duplicates when repeats are off are skipped; leftover vials fill as

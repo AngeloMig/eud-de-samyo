@@ -303,10 +303,15 @@
     "compare": {
       "type": "perfume-compare",
       "settings": {}
+    },
+    "trio": {
+      "type": "perfume-try-trio",
+      "settings": {}
     }
   },
   "order": [
     "main",
+    "trio",
     "nav",
     "dna",
     "journey",
