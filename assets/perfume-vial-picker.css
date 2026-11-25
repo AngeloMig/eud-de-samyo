@@ -630,11 +630,42 @@
   cursor: pointer;
   display: inline-flex;
   font: inherit;
-  font-size: 13px;
-  gap: 8px;
-  min-height: 44px;
-  padding: 0 16px;
+  font-size: 12px;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 12px;
   transition: border-color 0.25s ease, translate 0.3s ease;
+  white-space: nowrap;
+}
+
+/* Phones (owner 2026-11-26): Quick fill is one compact row, label hidden; buttons keep a
+   44px tap target. */
+@media screen and (max-width: 749px) {
+  .pvp__fills:not(.pvp__gf) {
+    flex-wrap: nowrap;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .pvp__fills:not(.pvp__gf)::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pvp__fills:not(.pvp__gf) .pvp__fills-t {
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+  }
+
+  .pvp__fill {
+    flex: 1 0 auto;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 10px;
+  }
 }
 
 .pvp__fill:hover {
@@ -746,11 +777,10 @@
   z-index: 2;
 }
 
-/* With a mouse the pop-up already says "Remove one to add this". */
-@media (any-hover: hover) {
-  .pvp--compact .pvp__tip {
-    display: none;
-  }
+/* The pop-up / tap card already says "Remove one to add this"; the hidden tooltips also
+   widened the page on phones (pushed the drawer off the right edge). */
+.pvp--compact .pvp__tip {
+  display: none;
 }
 
 /* Men / Women / Unisex icon on each tile (owner 2026-11-26): icon only on the tile,

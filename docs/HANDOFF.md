@@ -1455,3 +1455,8 @@ Sync errors are under the theme's GitHub chip → View logs.
   (capture-phase click on the tile, so the real toggle runs only from the card). The open
   drawer keeps "Add set to bag" sticky at its bottom, and once the set is full the closed bar
   shows an "Add to bag" button (setting `bar_add_label`).
+- Phone overflow fix (2026-11-26): the hidden `.pvp__tip` tooltips stuck out past the right
+  edge and made phone pages ~28px wider, pushing the drawer off-screen. They're hidden for
+  compact tiles now (the pop-up / tap card says the same). `.pcd` (cart drawer) also clips
+  its parked panel. Quick fill is a compact one-line row (34px pills; 44px on phones, label
+  hidden there).
