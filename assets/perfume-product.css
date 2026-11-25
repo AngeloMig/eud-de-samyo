@@ -288,6 +288,25 @@
   padding: 0;
 }
 
+.pp__set-nudge {
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--pp-soft);
+}
+.pp__set-nudge[hidden] { display: none; }
+.pp__set-nudge > span { margin-right: 6px; }
+.pp__set-nudge a {
+  align-items: center;
+  color: var(--pp-ink);
+  display: inline-flex;
+  min-height: 44px; /* touch target */
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
 .pp__sets-link {
   font-size: 13px;
   line-height: 1.5;

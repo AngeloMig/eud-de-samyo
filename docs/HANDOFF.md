@@ -1295,3 +1295,8 @@ Sync errors are under the theme's GitHub chip → View logs.
   (variant picker `hide_set_sizes` = false in templates/product.json).
 - Try trio cards: the solo list is gone; "1 ml · ₱410" with a tiny green "−₱…" (what it
   saves in a trio). Grid stays 6 across down to 560px, 4 across on phones.
+- Product page: when a solo 1 ml or 2 ml vial is chosen, a line under the sizes shows
+  that vial's price in a trio and in six, with "Build a trio →" (builder,
+  `?set=3x<size>&scent=<handle>`). Sizes block settings: show_set_nudge, trio_discount
+  (26), six_discount (30), nudge_text, nudge_link. One `<p data-pp-nudge="<variant id>">`
+  per small size; perfume-product.js `showNudge()` shows the chosen one.

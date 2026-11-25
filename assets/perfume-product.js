@@ -221,6 +221,7 @@
         this.querySelectorAll('[data-pp-price], [data-pp-aff-price], [data-pp-price-copy]').forEach((el) => (el.textContent = offer.price || ''));
       }
       if (v) this.querySelectorAll('[data-pp-sticky-variant]').forEach((el) => (el.textContent = v.title));
+      this.showNudge(v);
       if (stock) {
         const known = offer && typeof offer.in_stock === 'boolean';
         stock.hidden = !known;
@@ -234,6 +235,13 @@
         url.searchParams.set('variant', v.id);
         window.history.replaceState({}, '', url.toString());
       }
+    }
+
+    // "Save more in a trio / six" line under the sizes: only for the chosen 1/2 ml vial.
+    showNudge(v) {
+      this.querySelectorAll('[data-pp-nudge]').forEach((el) => {
+        el.hidden = !v || String(v.id) !== el.dataset.ppNudge;
+      });
     }
 
     apply(v) {
@@ -257,6 +265,7 @@
         if (input) input.value = v.id;
         this.querySelectorAll('[data-pp-price-copy]').forEach((el) => (el.textContent = v.price));
         this.querySelectorAll('[data-pp-sticky-variant]').forEach((el) => (el.textContent = v.title));
+        this.showNudge(v);
         this.querySelectorAll('form input[name="id"]').forEach((x) => (x.value = v.id));
         if (this.dataset.url) {
           const url = new URL(window.location.href);
