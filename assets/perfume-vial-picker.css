@@ -266,14 +266,15 @@
 
 /* Step 2: how to change the starting scents */
 .pvp__swap {
-  align-items: flex-start;
-  background: color-mix(in srgb, var(--pvp-ink) 5%, transparent);
+  /* Compact one-liner (owner 2026-11-26): no box, small and muted. */
+  align-items: center;
+  color: color-mix(in srgb, var(--pvp-ink) 68%, transparent);
   display: flex;
-  font-size: 13.5px;
-  gap: 10px;
-  line-height: 1.5;
-  margin: 0 0 14px;
-  padding: 12px 14px;
+  font-size: 12px;
+  gap: 8px;
+  line-height: 1.4;
+  margin: -4px 0 14px;
+  padding: 0;
 }
 
 .pvp__swap-icon {
@@ -282,12 +283,11 @@
   border-radius: 50%;
   display: inline-flex;
   flex: 0 0 auto;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
-  height: 20px;
+  height: 16px;
   justify-content: center;
-  margin-top: 1px;
-  width: 20px;
+  width: 16px;
 }
 
 /* Step 2: scents, one group per tier */
@@ -753,44 +753,67 @@
   }
 }
 
-/* Tiny Men / Women / Unisex label on each tile (owner 2026-11-26) */
+/* Men / Women / Unisex icon on each tile (owner 2026-11-26): icon only on the tile,
+   icon + label in the pop-up. The label text stays for screen readers. */
 .pvp--compact .pvp__for {
-  background: rgba(255, 255, 255, 0.92);
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
   border: 0;
-  border-radius: 99px;
+  border-radius: 50%;
   bottom: 5px;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pvp-ink) 12%, transparent);
-  display: block;
-  font-size: 7.5px;
-  font-weight: 600;
-  left: 50%;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  padding: 3px 6px 2px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pvp-ink) 12%, transparent), 0 2px 6px rgba(41, 37, 33, 0.1);
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  left: 5px;
+  padding: 0;
   pointer-events: none;
-  text-transform: uppercase;
   top: auto;
-  translate: -50% 0;
-  white-space: nowrap;
+  width: 20px;
   z-index: 2;
 }
 
-.pvp--compact .pvp__for::before {
-  border-radius: 50%;
-  content: '';
-  display: inline-block;
-  height: 5px;
-  margin-right: 4px;
-  vertical-align: 1px;
-  width: 5px;
+.pvp--compact .pvp__for .pvp__for-t {
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
-.pvp__for--men::before,
-.pvp__gf-dot--men { background: #3b5b86; }
-.pvp__for--women::before,
-.pvp__gf-dot--women { background: #b4587a; }
-.pvp__for--unisex::before,
-.pvp__gf-dot--unisex { background: #a88a3c; }
+.pvp__for-ic {
+  display: block;
+  flex: none;
+  height: 13px;
+  width: 13px;
+}
+
+.pvp__for--men,
+.pvp__gf-dot--men { color: #3b5b86; }
+.pvp__for--women,
+.pvp__gf-dot--women { color: #b4587a; }
+.pvp__for--unisex,
+.pvp__gf-dot--unisex { color: #9a7b2e; }
+
+.pvp__gf-dot--men,
+.pvp__gf-dot--women,
+.pvp__gf-dot--unisex { background: currentColor; }
+
+.pvp__pop-for {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.pvp__pop-for .pvp__for-ic {
+  height: 12px;
+  width: 12px;
+}
+
+.pvp__pop-for .pvp__for-t {
+  color: var(--pvp-ink, #292521);
+}
 
 .pvp__gf-dot {
   border-radius: 50%;

@@ -1430,3 +1430,8 @@ Sync errors are under the theme's GitHub chip → View logs.
   too slow). Every notes reader now accepts plain text (`x.name.value | default: x`), and
   `perfume-note-art` maps free text to a picture key. Entered from brand-published pyramids
   (sources in the chat / docs/CREDITS.md note); Bleu de Chanel skipped (not a decant yet).
+- Builder tidy-up (owner 2026-11-26): the Show filter and the "See the vials at actual size"
+  button are off by default now (settings `show_gender_filter`, `show_size_guide`; both still
+  work if switched on). The pre-fill note is a small one-line hint (no box). Tiles show a
+  ♂ / ♀ / unisex icon (blue / rose / gold) instead of the text tag; the pop-up shows icon +
+  label.

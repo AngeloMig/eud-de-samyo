@@ -377,7 +377,7 @@
         const notes = [...(li.querySelector('template[data-notes]')?.content.querySelectorAll('.pvp__pn') || [])];
         const noteArt = notes.length ? `<span class="pvp__pop-notes">${notes.map((n, i) => `<span class="pvp__pn${n.innerHTML.trim() ? '' : ' pvp__pn--txt'}" style="--i:${i}">${n.innerHTML.trim() || `<b>${esc(n.dataset.i || '')}</b>`}</span>`).join('')}</span>` : '';
         pop.classList.toggle('has-notes', notes.length > 0);
-        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for">${esc(forEl.textContent)}</span>` : ''}</p>
+        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for ${[...forEl.classList].find((c) => c.startsWith('pvp__for--')) || ''}">${forEl.innerHTML}</span>` : ''}</p>
           <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
           <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
           ${act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
@@ -410,7 +410,7 @@
 
     // Men / Women / Unisex filter (owner 2026-11-26). Reads each tile's label class.
     scents.forEach((li) => {
-      const m = (li.querySelector('.pvp__for')?.className || '').match(/pvp__for--(\w+)/);
+      const m = (li.querySelector('.pvp__for')?.getAttribute('class') || '').match(/pvp__for--(\w+)/);
       li.dataset.for = m ? m[1] : '';
     });
     const gf = root.querySelector('[data-gf]');

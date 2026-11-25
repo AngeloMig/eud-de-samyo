@@ -263,7 +263,19 @@
                     {%- when 'women' -%}{%- assign for_label = section.settings.for_women_label -%}
                     {%- else -%}{%- assign for_label = section.settings.for_unisex_label -%}
                   {%- endcase -%}
-                  {%- if for_label != blank -%}<span class="pvp__for pvp__for--{{ for_key }}">{{ for_label | escape }}</span>{%- endif -%}
+                  {%- if for_label != blank -%}
+                    <span class="pvp__for pvp__for--{{ for_key }}">
+                      {%- comment -%} Gender icon (owner 2026-11-26): ♂ men, ♀ women, both for unisex. {%- endcomment -%}
+                      <svg class="pvp__for-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        {%- case for_key -%}
+                          {%- when 'men' -%}<circle cx="10" cy="14" r="5.5"/><path d="M14 10l6-6M15 4h5v5"/>
+                          {%- when 'women' -%}<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V21M9 18h6"/>
+                          {%- else -%}<circle cx="11" cy="11" r="4.5"/><path d="M14.3 7.7 19 3M15.5 3H19v3.5M11 15.5V21M8.5 18.5h5"/>
+                        {%- endcase -%}
+                      </svg>
+                      <span class="pvp__for-t">{{ for_label | escape }}</span>
+                    </span>
+                  {%- endif -%}
                 {%- endif -%}
                 <span class="pvp__scent-vendor">{{ p.vendor | escape }}</span>
                 <span class="pvp__scent-name">{{ p.title | escape }}</span>
@@ -319,7 +331,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Build your" },
     { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "set" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Choose a set, then pick a scent for every vial. Poured by hand from authentic full bottles.</p>" },
-    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Sangyó vial sizes.", "default": true },
+    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Sangyó vial sizes.", "default": false },
     { "type": "collection", "id": "collection", "label": "Scents to choose from", "info": "Leave empty to use all products. A perfume shows in a size when it has a variant for it, e.g. 1 ml." },
     { "type": "checkbox", "id": "allow_repeats", "label": "Allow the same scent more than once", "info": "Off: every vial in a set is a different scent, and set prices show the cheapest and dearest different scents.", "default": false },
     { "type": "header", "content": "Labels" },
@@ -328,7 +340,7 @@
     { "type": "text", "id": "range_to_label", "label": "Set price: highest", "info": "[price] = the dearest different scents.", "default": "up to [price]" },
     { "type": "text", "id": "pricing_note", "label": "Pricing note under the sets", "default": "Each perfume has its own price per vial. Your set costs the vials you pick, added up." },
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
-    { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
+    { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "Pre-filled with our lowest-priced scents. Click a picked one to take it out, then pick any other." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
     {
       "type": "select",
@@ -346,7 +358,7 @@
     { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
     { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },
-    { "type": "checkbox", "id": "show_gender_filter", "label": "Show the Men / Women / Unisex filter", "default": true, "info": "Uses the same tags as the labels below (men, women, unisex). Buttons with no perfumes hide themselves." },
+    { "type": "checkbox", "id": "show_gender_filter", "label": "Show the Men / Women / Unisex filter", "default": false, "info": "Uses the same tags as the labels below (men, women, unisex). Buttons with no perfumes hide themselves." },
     { "type": "text", "id": "gf_label", "label": "Filter heading", "default": "Show" },
     { "type": "text", "id": "gf_all_label", "label": "Filter: all", "default": "All" },
     { "type": "text", "id": "gf_men_label", "label": "Filter: men", "default": "Men" },
