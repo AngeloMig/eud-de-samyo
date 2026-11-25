@@ -541,6 +541,30 @@
   margin-left: 2px;
 }
 
+.pvp__scent { position: relative; }
+
+/* Who it's for: a small tag on the photo's corner, so card text stays aligned. */
+.pvp__for {
+  background: #fff;
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  font-size: 9px;
+  font-weight: 700;
+  left: 18px;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  padding: 4px 7px 3px;
+  pointer-events: none;
+  position: absolute;
+  text-transform: uppercase;
+  top: 18px;
+  white-space: nowrap;
+  z-index: 1;
+}
+.pvp__for--men { color: #3b5878; }
+.pvp__for--women { color: #8f3b5a; }
+.pvp__for--unisex { color: #6b5a2e; }
+
 .pvp__off {
   background: #e3efe2;
   border-radius: 99px;

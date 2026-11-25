@@ -179,6 +179,33 @@
                     <span class="pvp__scent-mono">{{ p.vendor | default: p.title | escape }}</span>
                   {%- endif -%}
                 </span>
+                {%- comment -%}
+                  Who it's made for, from the product's own data only: a tag "men", "women"
+                  or "unisex" (also "for men", "for women"), else Shopify's Target gender
+                  category metafield. Nothing shows when neither is set.
+                {%- endcomment -%}
+                {%- assign for_key = '' -%}
+                {%- for tg in p.tags -%}
+                  {%- assign tk = tg | downcase | remove: 'for ' | strip -%}
+                  {%- if tk == 'men' or tk == 'women' or tk == 'unisex' -%}{%- assign for_key = tk -%}{%- break -%}{%- endif -%}
+                {%- endfor -%}
+                {%- if for_key == blank -%}
+                  {%- assign tgs = p.metafields.shopify['target-gender'].value -%}
+                  {%- if tgs.size == 1 -%}
+                    {%- assign tl = tgs.first.label | downcase -%}
+                    {%- if tl == 'male' -%}{%- assign for_key = 'men' -%}{%- elsif tl == 'female' -%}{%- assign for_key = 'women' -%}{%- elsif tl == 'unisex' -%}{%- assign for_key = 'unisex' -%}{%- endif -%}
+                  {%- elsif tgs.size > 1 -%}
+                    {%- assign for_key = 'unisex' -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- if for_key != blank -%}
+                  {%- case for_key -%}
+                    {%- when 'men' -%}{%- assign for_label = section.settings.for_men_label -%}
+                    {%- when 'women' -%}{%- assign for_label = section.settings.for_women_label -%}
+                    {%- else -%}{%- assign for_label = section.settings.for_unisex_label -%}
+                  {%- endcase -%}
+                  {%- if for_label != blank -%}<span class="pvp__for pvp__for--{{ for_key }}">{{ for_label | escape }}</span>{%- endif -%}
+                {%- endif -%}
                 <span class="pvp__scent-vendor">{{ p.vendor | escape }}</span>
                 <span class="pvp__scent-name">{{ p.title | escape }}</span>
                 <span class="pvp__vial-price" data-vial-price></span>
@@ -235,6 +262,9 @@
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
     { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    { "type": "text", "id": "for_men_label", "label": "Label: for men", "info": "Shown when a perfume has the tag men (or Shopify's Target gender: Male). Empty hides it.", "default": "For men" },
+    { "type": "text", "id": "for_women_label", "label": "Label: for women", "info": "Tag women (or Target gender: Female).", "default": "For women" },
+    { "type": "text", "id": "for_unisex_label", "label": "Label: unisex", "info": "Tag unisex (or both genders set).", "default": "Unisex" },
     { "type": "text", "id": "less_label", "label": "Saving on each scent (sets with a discount)", "info": "[price] = what one vial saves in the set, [percent] = the set's discount.", "default": "Save [price] · [percent]%" },
     { "type": "text", "id": "unavailable_label", "label": "Scent not offered in a size", "default": "Not in this size" },
     { "type": "text", "id": "add_scent_label", "label": "Add scent button", "default": "Add" },

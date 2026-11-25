@@ -1387,3 +1387,8 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Builder scent cards (owner): for a set with a discount, each perfume shows its price
   in that set, the solo price struck through, and a green tag "Save ₱… · 26%"
   (setting `less_label`). Sets without a discount show the plain vial price as before.
+- Builder scent cards (owner, 2026-11-26): a small "For men / For women / Unisex" tag on
+  the photo's top-left corner. Source, in order: product tag `men` / `women` / `unisex`
+  (also "for men"/"for women"), else Shopify's Target gender category metafield
+  (`shopify.target-gender`; both genders = Unisex). No data → no tag. Labels are
+  section settings (for_men_label, for_women_label, for_unisex_label).
