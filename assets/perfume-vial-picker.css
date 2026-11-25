@@ -745,6 +745,13 @@
   z-index: 2;
 }
 
+/* With a mouse the pop-up already says "Remove one to add this". */
+@media (any-hover: hover) {
+  .pvp--compact .pvp__tip {
+    display: none;
+  }
+}
+
 /* Touch screens: a short caption under the photo (no hover to show the pop-up). */
 @media (any-hover: none) {
   .pvp--compact .pvp__scent {
