@@ -76,6 +76,27 @@ perfume-header {
   line-height: 1;
 }
 
+/* Scrolled: logo 10px from the top, links box at 0 (owner 2026-11-26). */
+.ph__logo,
+.ph__nav {
+  transition: translate 0.6s var(--ph-ease);
+}
+
+.ph.is-scrolled .ph__logo {
+  translate: 0 calc(10px - var(--ph-gap));
+}
+
+.ph.is-scrolled .ph__nav {
+  translate: 0 calc(0px - var(--ph-gap));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ph__logo,
+  .ph__nav {
+    transition: none;
+  }
+}
+
 .ph__wordmark {
   font-family: var(--ph-serif);
   font-size: var(--ph-logo-size);

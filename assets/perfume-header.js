@@ -65,6 +65,11 @@
       this.bindSearch(signal);
       this.bindAnnouncement(signal);
       this.bindAdaptDark(signal);
+      // Scrolled (owner 2026-11-26): the logo tucks up to 10px from the top and the
+      // links box to the very top. CSS does the motion.
+      const tuck = () => this.classList.toggle('is-scrolled', window.scrollY > 24);
+      window.addEventListener('scroll', tuck, { passive: true, signal });
+      tuck();
 
       // Bag count: Dawn publishes cart updates through its pub/sub; other themes can
       // dispatch a 'cart:updated' event on document.
