@@ -1,0 +1,339 @@
+{
+  "checkedOn": "2026-11-25",
+  "currency": "PHP",
+  "products": [
+    {
+      "handle": "eros-eau-de-toilette",
+      "name": "Eros Eau de Toilette",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320621494504",
+          "ml": 1,
+          "price": 265
+        },
+        {
+          "available": true,
+          "id": "68327628144872",
+          "ml": 2,
+          "price": 460
+        },
+        {
+          "available": true,
+          "id": "68327628177640",
+          "ml": 5,
+          "price": 950
+        },
+        {
+          "available": true,
+          "id": "68327628210408",
+          "ml": 10,
+          "price": 1365
+        }
+      ]
+    },
+    {
+      "handle": "dolce-gabbana-the-one",
+      "name": "The One for Men Eau de Parfum",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320622805224",
+          "ml": 1,
+          "price": 265
+        },
+        {
+          "available": true,
+          "id": "68327529480424",
+          "ml": 2,
+          "price": 460
+        },
+        {
+          "available": true,
+          "id": "68327529513192",
+          "ml": 5,
+          "price": 960
+        },
+        {
+          "available": true,
+          "id": "68327529545960",
+          "ml": 10,
+          "price": 1375
+        }
+      ]
+    },
+    {
+      "handle": "hermes-terre-d-hermes-eau-de-toilette",
+      "name": "Terre d'Hermès Eau de Toilette",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320619331816",
+          "ml": 1,
+          "price": 275
+        },
+        {
+          "available": true,
+          "id": "68327720780008",
+          "ml": 2,
+          "price": 480
+        },
+        {
+          "available": true,
+          "id": "68327720812776",
+          "ml": 5,
+          "price": 1005
+        },
+        {
+          "available": true,
+          "id": "68327720845544",
+          "ml": 10,
+          "price": 1450
+        }
+      ]
+    },
+    {
+      "handle": "uomo-born-in-roma-eau-de-toilette",
+      "name": "Uomo Born in Roma Eau de Toilette",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320621461736",
+          "ml": 1,
+          "price": 410
+        },
+        {
+          "available": true,
+          "id": "68327659372776",
+          "ml": 2,
+          "price": 750
+        },
+        {
+          "available": true,
+          "id": "68327659405544",
+          "ml": 5,
+          "price": 1625
+        },
+        {
+          "available": true,
+          "id": "68327659438312",
+          "ml": 10,
+          "price": 2365
+        }
+      ]
+    },
+    {
+      "handle": "emporio-armani-stronger-with-you-intensely",
+      "name": "Stronger With You Intensely",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320618545384",
+          "ml": 1,
+          "price": 440
+        },
+        {
+          "available": true,
+          "id": "68327775600872",
+          "ml": 2,
+          "price": 800
+        },
+        {
+          "available": true,
+          "id": "68327775633640",
+          "ml": 5,
+          "price": 1750
+        },
+        {
+          "available": true,
+          "id": "68327775666408",
+          "ml": 10,
+          "price": 2545
+        }
+      ]
+    },
+    {
+      "handle": "wood-sage-sea-salt-cologne",
+      "name": "Wood Sage & Sea Salt Cologne",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320622182632",
+          "ml": 1,
+          "price": 440
+        },
+        {
+          "available": true,
+          "id": "68327558185192",
+          "ml": 2,
+          "price": 800
+        },
+        {
+          "available": true,
+          "id": "68327558217960",
+          "ml": 5,
+          "price": 1740
+        },
+        {
+          "available": true,
+          "id": "68327558250728",
+          "ml": 10,
+          "price": 2540
+        }
+      ]
+    },
+    {
+      "handle": "y-eau-de-parfum",
+      "name": "Y Eau de Parfum",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320621887720",
+          "ml": 1,
+          "price": 490
+        },
+        {
+          "available": true,
+          "id": "68327596720360",
+          "ml": 2,
+          "price": 905
+        },
+        {
+          "available": true,
+          "id": "68327596753128",
+          "ml": 5,
+          "price": 1965
+        },
+        {
+          "available": true,
+          "id": "68327596785896",
+          "ml": 10,
+          "price": 2870
+        }
+      ]
+    },
+    {
+      "handle": "dior-sauvage-eau-de-parfum",
+      "name": "Sauvage Eau de Parfum",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320618316008",
+          "ml": 1,
+          "price": 515
+        },
+        {
+          "available": true,
+          "id": "68327445496040",
+          "ml": 2,
+          "price": 960
+        },
+        {
+          "available": true,
+          "id": "68327445528808",
+          "ml": 5,
+          "price": 2100
+        },
+        {
+          "available": true,
+          "id": "68327445561576",
+          "ml": 10,
+          "price": 3065
+        }
+      ]
+    },
+    {
+      "handle": "dior-homme-intense",
+      "name": "Dior Homme Intense",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320643743976",
+          "ml": 1,
+          "price": 525
+        },
+        {
+          "available": true,
+          "id": "68327501103336",
+          "ml": 2,
+          "price": 975
+        },
+        {
+          "available": true,
+          "id": "68327501136104",
+          "ml": 5,
+          "price": 2125
+        },
+        {
+          "available": true,
+          "id": "68327501168872",
+          "ml": 10,
+          "price": 3110
+        }
+      ]
+    },
+    {
+      "handle": "oud-wood-eau-de-parfum",
+      "name": "Oud Wood Eau de Parfum",
+      "variants": [
+        {
+          "available": true,
+          "id": "68320621396200",
+          "ml": 1,
+          "price": 880
+        },
+        {
+          "available": true,
+          "id": "68327692763368",
+          "ml": 2,
+          "price": 1690
+        },
+        {
+          "available": true,
+          "id": "68327692796136",
+          "ml": 5,
+          "price": 3780
+        },
+        {
+          "available": true,
+          "id": "68327692828904",
+          "ml": 10,
+          "price": 5560
+        }
+      ]
+    }
+  ],
+  "sets": [
+    {
+      "count": 3,
+      "discount": 26,
+      "ml": 1
+    },
+    {
+      "count": 6,
+      "discount": 30,
+      "ml": 1
+    },
+    {
+      "count": 3,
+      "discount": 26,
+      "ml": 2
+    },
+    {
+      "count": 6,
+      "discount": 30,
+      "ml": 2
+    },
+    {
+      "count": 2,
+      "discount": 0,
+      "ml": 5
+    },
+    {
+      "count": 1,
+      "discount": 0,
+      "ml": 10
+    }
+  ],
+  "source": "https://eau-de-s-a-m-y-o.myshopify.com/pages/build-your-set"
+}

@@ -13,6 +13,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
+// Local price proposal, generated from the calculator's maths and explicit inputs.
+// Rebuild with: node dev/tools/export-decant-preview.mjs
+const decantPricingPath = join(root, 'dev/pricing/decant-preview.json');
+const decantPricing = existsSync(decantPricingPath) ? JSON.parse(readFileSync(decantPricingPath, 'utf8')) : null;
 const require = createRequire(import.meta.url);
 const { Liquid } = require(process.env.LIQUIDJS || 'liquidjs');
 
@@ -394,6 +398,23 @@ const template = existsSync(templatePath)
   ? JSON.parse(readFileSync(templatePath, 'utf8').replace(/^\s*\/\*[\s\S]*?\*\//, ''))
   : { order: ['hero', 'showcase'], sections: { hero: { type: 'perfume-hero' }, showcase: { type: 'perfume-showcase' } } };
 
+// Override homepage range copy in memory only. The Shopify template is untouched.
+if (decantPricing) {
+  for (const section of Object.values(template.sections).filter(s => s.type === 'perfume-decants')) {
+    for (const block of Object.values(section.blocks || {}).filter(b => b.type === 'bundle')) {
+      const ml = Number(block.settings.size), count = Number(block.settings.count);
+      const set = decantPricing.setMix.find(s => s.ml === ml && s.count === count);
+      if (!set) continue;
+      const index = [1, 2, 5, 10].indexOf(ml);
+      const values = decantPricing.products.map(p => p.prices[index]).sort((a, b) => a - b);
+      const amount = list => Math.round(list.reduce((a, n) => a + n, 0) * (1-set.discount/100) * 100) / 100;
+      const money = n => '₱' + n.toLocaleString('en-PH', { maximumFractionDigits: 2 });
+      block.settings.price = `${money(amount(values.slice(0, count)))} – ${money(amount(values.slice(-count)))}`;
+      block.settings.badge = set.discount ? `${set.discount}% off` : '';
+    }
+  }
+}
+
 async function renderGroup(file, fallbackType, id) {
   const path = join(root, `sections/${file}`);
   if (!existsSync(path)) return renderSection(fallbackType, id);
@@ -768,26 +789,14 @@ async function renderGroupScoped(file, scope) {
 }
 
 // ---------- Vial picker page (dev/vial-picker.html) ----------
-// PREVIEW ONLY: the store's perfumes with decant size variants priced as in
-// dev/decant-pricing.html section 2 (36% vial margin, 22 Nov 2026). Bleu de Chanel has no decant
-// prices yet (sold out at FragranceX), so the picker leaves it out.
+// PREVIEW ONLY: proposed active rotation and recommended prices from the calculator.
+// New fragrances without an owner-supplied photo have an empty image slot.
 {
-  const SCENTS = [
-    ['Sauvage Eau de Parfum', 'Dior', 'samyo-dior-sauvage-edp.webp', [220, 410, 985, 1935]],
-    ['Dior Homme Intense', 'Dior', 'samyo-dior-homme-intense.webp', [225, 415, 1000, 1965]],
-    ['Y Eau de Parfum', 'Yves Saint Laurent', null, [210, 385, 925, 1815]],
-    ['Uomo Born in Roma Eau de Toilette', 'Valentino', 'samyo-brand-valentino-2.webp', [175, 320, 765, 1495]],
-    ['Wood Sage & Sea Salt Cologne', 'Jo Malone London', null, [190, 345, 820, 1605]],
-    ['Stronger With You Intensely', 'Emporio Armani', 'samyo-armani-stronger-with-you-intensely.webp', [190, 345, 820, 1610]],
-    ["Terre d'Hermès Eau de Toilette", 'Hermès', 'samyo-brand-hermes-1.webp', [120, 205, 475, 920]],
-    ['Eros Eau de Toilette', 'Versace', 'samyo-brand-versace-1.webp', [115, 195, 450, 865]],
-    ['The One for Men Eau de Parfum', 'Dolce & Gabbana', 'samyo-dg-the-one.webp', [115, 195, 455, 875]],
-    ['Oud Wood Eau de Parfum', 'Tom Ford', 'samyo-brand-tom-ford-3.webp', [380, 725, 1770, 3510]],
-    ['Bleu de Chanel Eau de Parfum', 'Chanel', 'samyo-brand-chanel-3.webp', null],
-  ];
+  if (!decantPricing) throw new Error('Generate dev/pricing/decant-preview.json before rendering the decant previews.');
+  const SCENTS = decantPricing.products.map(p => [p.title, p.vendor, p.image, p.prices, p.handle]);
   let vVar = 8000;
-  const vProducts = SCENTS.map(([title, vendor, img, prices], i) => ({
-    title, vendor, url: 'product.html', tags: [], handle: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+  const vProducts = SCENTS.map(([title, vendor, img, prices, handle], i) => ({
+    title, vendor, url: 'product.html', tags: [], handle,
     featured_media: img ? { id: 900 + i, alt: '', preview_image: { src: `../dev/shop-images/${img}` } } : null,
     variants: [
       { id: ++vVar, option1: '100 ml', price: 0, available: true },
@@ -797,6 +806,12 @@ async function renderGroupScoped(file, scope) {
   const vScope = { template: { name: 'page', suffix: 'decant-builder' }, collections: { all: { products: vProducts } }, cart: { currency: { iso_code: 'PHP' } } };
   const vHeader = await renderGroupScoped('header-group.json', vScope);
   const vTpl = JSON.parse(readFileSync(join(root, 'templates/page.decant-builder.json'), 'utf8'));
+  for (const section of Object.values(vTpl.sections)) {
+    for (const block of Object.values(section.blocks || {}).filter(b => b.type === 'set')) {
+      const set = decantPricing.setMix.find(s => s.ml === Number(block.settings.size) && s.count === Number(block.settings.count));
+      if (set) { block.settings.discount = set.discount; block.settings.badge = set.discount ? `${set.discount}% off` : ''; }
+    }
+  }
   const vParts = [];
   for (const key of vTpl.order) vParts.push(await renderSection(vTpl.sections[key].type, key, {}, vTpl.sections[key], {}, vScope));
   writeFileSync(join(root, 'dev/vial-picker.html'), page('Samyo vial picker preview', `${vHeader}\n<main id="MainContent">${vParts.join('\n')}</main>\n${footer}`, false));
@@ -811,9 +826,10 @@ async function renderGroupScoped(file, scope) {
   const homme = demoProducts.find((p) => p.title === 'Dior Homme Intense');
   if (homme) {
     let dv = 8800;
-    const sizes = [['1 ml', 225], ['2 ml', 415], ['5 ml', 1000], ['10 ml', 1965]];
+    const proposed = decantPricing.products.find(p => p.id === 'homme');
+    const sizes = [1, 2, 5, 10].map((ml, i) => [`${ml} ml`, proposed.prices[i]]);
     const variants = sizes.map(([title, p]) => ({ id: ++dv, title, price: p * 100, available: true, options: [title], compare_at_price: null, featured_media: null }));
-    const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: 22500, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
+    const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: Math.min(...proposed.prices)*100, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
     const dScope = { product: decant, collection: null, template: { name: 'product' }, collections: { all: { products: demoProducts } }, pages: { 'build-your-set': { url: 'vial-picker.html' } } };
     const dHeader = await renderGroupScoped('header-group.json', dScope);
     const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));

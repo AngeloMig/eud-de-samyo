@@ -1,5 +1,59 @@
 # Handoff: Samyo perfume theme
 
+## Update 2026-11-25: wholesale costs and proposed 11-scent rotation
+
+- `dev/decant-pricing.html` now uses column H (Cost, formatted PHP) from the
+  owner's `AllFragrancesExcelList.xls`, sheet `Pricelist - All Fragrances`,
+  updated 2026-11-23. `WHOLESALE` records exact 100ml concentrations, item IDs,
+  and 1-based worksheet rows. Historical retail prices remain separate for the
+  affiliate illustration; the workbook Retail Price/Discount columns are not
+  wholesale costs or extra discounts.
+- Owner requested removing Oud Wood from the decant rotation and adding one
+  men's and one women's fragrance. Proposed replacements: Versace Pour Homme
+  Dylan Blue EDT (100ml, item 534152, row 11121, ₱3,310.03) and D&G Light Blue
+  EDT for women (100ml, item 418217, row 7226, ₱2,607.21). Popularity reference:
+  https://www.fragrancenet.com/boutiques/best-selling-perfumes (checked Nov 25;
+  global retailer evidence, not Philippine order counts or guaranteed sales).
+  Nine existing selling-price arrays are retained; the additions use dynamically
+  solved recommendations marked as drafts. No products/theme/store were changed.
+- Regular stock now totals ₱65,022.65 for 11 × 100ml, versus ₱77,600.77 for
+  the original ten including Oud Wood. Optional cheaper testers total ₱60,891.18.
+  The One stays regular: its wholesale tester is more expensive. Jo Malone uses
+  regular unisex SKU 537254 (listed in the worksheet's Women category).
+- One-time saved-data migration resets the old wholesale discount to 0 and selects
+  regular bottles, retaining the previous choice under `beforeWholesale`. Future
+  manual extra discounts/tester choices and all unrelated saved costs survive.
+  Browser's previous 15% import estimate was retained explicitly on this origin;
+  fresh-browser default remains 25%. Import is still an editable estimate.
+- Added a purchase summary and four alternative full-stock sell-through scenarios
+  (all 1/2/5/10ml), using existing + draft prices or the recommended-price preview.
+  They reconcile full bottle costs, transfer/leftover waste, supplies, fees,
+  delivery/protection, and fractional allocations of ads/fixed overhead. These
+  are not monthly cash-flow forecasts; additional Try-a-set discounts do not
+  apply here. Blank overhead remains labelled incomplete, not confirmed zero.
+- Exports include only the nine existing active product handles: removed Oud Wood
+  and proposed additions are excluded. Shared investor data contains 11 scents,
+  wholesale provenance and a draft/existing price-basis marker. Affiliate stock
+  stays independent; new retail prices/commissions are not invented.
+- Validation: all 17 regular/tester prices and item IDs rechecked against the
+  workbook; JS syntax and whitespace checks pass. Calculation checks cover
+  migration idempotence, tester minimums, extra supplier discounts, all recommended
+  set margin bands, 16 courier threshold boundaries, promotions, independent
+  full-bottle expense reconciliation, and both CSV modes (36 variants each).
+  Browser verified 11 active rows, the cheaper-tester total, both price modes,
+  and reload persistence of 15% import, ₱4 labels, 10% additional discount and
+  existing scent choices. Desktop and 390px summary fit the page; tables scroll
+  within their containers. Tester/preview test changes were restored.
+- With the browser's current 15% import, 5% transfer loss, ₱4 labels, ₱6,000 ads
+  and 40 orders/month: existing + draft prices project ₱53,148 monthly item sales
+  and ₱20,581.26 operating profit before tax and the blank apps/other overhead.
+  Selling all 11 bottles as 5ml gives ₱219,070 sales / ₱117,451.47 contribution /
+  ₱97,727.09 after allocated ads and Shopify overhead, before tax and missing
+  overhead. All recommended prices instead give ₱188,290 / ₱89,287.77 /
+  ₱69,563.39 for that same 5ml stock scenario. These are assumptions, not sales
+  predictions; at regular bottle costs Terre's existing prices miss the target.
+
+
 ## Update 2026-11-23: Basic plan and reload persistence
 
 - Calculator now defaults the monthly Shopify Basic cost to ₱1,550, from
