@@ -25,6 +25,25 @@
   ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
   1024 / 390: no gap between ribbons at either edge, text still clear.
 
+## Pricing rule for 1 ml and 2 ml decants (owner, 2026-11-25): always follow this
+
+When the base price of a 1 ml or 2 ml vial changes (or a new perfume is added):
+
+1. **Shopify variant price = base price + 35%** (base × 1.35, rounded to ₱5). This is
+   the solo price a customer pays for one vial on its own.
+2. **Leave the discounts alone.** They apply on top automatically:
+   - **Try trio · 26% off**: 3+ vials (1 ml and 2 ml variants)
+   - **Six-vial set · 30% off**: 6+ vials
+   Add any new perfume's 1 ml and 2 ml variants to both discounts in Shopify →
+   Discounts, or they won't get the set price.
+3. Theme settings stay at 26% / 30% (Try trio section, builder Set blocks, product
+   page Sizes block) so the prices shown match checkout.
+
+Check: base × 1.35 × 0.74 ≈ base (trio ≈ base price); base × 1.35 × 0.70 ≈ 94.5% of
+base (a six vial is about 5.5% under base). Note: the prices set on 2026-11-25 used
+base ÷ 0.7 instead, so a six never goes under base; the owner's rule going forward is
++35%.
+
 ## Decision 2026-11-25: decant pricing and the Try trio section (owner)
 
 - **Pricing rule:** a 1, 2 or 5 ml vial bought on its own costs **30% more** than the
