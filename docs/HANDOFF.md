@@ -1422,6 +1422,6 @@ Sync errors are under the theme's GitHub chip → View logs.
   Perfumes without notes show just the photo. Notes are still empty in Shopify (2026-11-26).
 - Men / Women / Unisex filter + tile labels (owner 2026-11-26): setting `show_gender_filter`
   (labels gf_*). A "Show" chip row above Quick fill, with counts; buttons with no perfumes hide.
-  Filtering hides other tiles (picked ones stay) and keeps the tile size fixed; Quick fill
+  Filtering hides every other tile, picked ones too (they stay in the tray) and keeps the tile size fixed; Quick fill
   then fills from that group. Each compact tile shows a tiny coloured label (For men / women
   / unisex) from the same tags (men, women, unisex) or Shopify's Target gender.

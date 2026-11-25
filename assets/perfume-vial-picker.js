@@ -445,7 +445,8 @@
         gfOn = b.dataset.gfV;
         btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
         scents.forEach((li) => {
-          const out = gfOn !== '' && li.dataset.for !== gfOn && !li.classList.contains('is-picked');
+          // Strict (owner): picked scents of another group hide too; they stay in the tray.
+          const out = gfOn !== '' && li.dataset.for !== gfOn;
           li.hidden = out;
         });
         lockCols();
