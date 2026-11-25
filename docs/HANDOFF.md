@@ -58,7 +58,12 @@
   Ribbon straddles the seam with the product section (half over its 72px bottom
   padding); tilt = −min(3°, atan2(0.85 × band height, 100vw)) so it always covers the
   seam edge to edge (no cream/lilac wedge), fallback −1°.
-  To do in Shopify: the 23% automatic discount for the Try trio, and the builder page
+  **Discount = 10%** (2026-11-25): the live bag showed the store's automatic discount
+  takes 10% off a decant set, so the section uses 10% to match (23% made it show
+  ₱893.20 while the bag charged ₱1,044). The owner's "30% dearer on its own" rule is
+  not met yet: open question (raise the Shopify discount to 23%, or keep 10% and raise
+  the 1/2/5 ml variant prices ~17%).
+  To do in Shopify: and the builder page
   (handle `build-your-set`, or pick it in the section) with a 3 × 1 ml Set block.
 - **Builder (done, live):** `assets/perfume-vial-picker.js` now takes a comma-separated
   `?scent=` list and fills the vials in that order (unknown handles, sizes it isn't

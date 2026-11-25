@@ -306,7 +306,9 @@
     },
     "trio": {
       "type": "perfume-try-trio",
-      "settings": {}
+      "settings": {
+        "discount": 10
+      }
     }
   },
   "order": [
