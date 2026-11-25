@@ -135,6 +135,9 @@
     data-t-hint-touch="{{ section.settings.hint_touch_label | escape }}"
     data-t-hint-full="{{ section.settings.hint_full_label | escape }}"
     data-t-pin="{{ section.settings.pin_label | escape }}"
+    data-t-in-trio="{{ section.settings.in_trio_label | escape }}"
+    data-t-save-short="{{ section.settings.save_short_label | escape }}"
+    data-t-solo="{{ section.settings.solo_label | escape }}"
     data-t-empty="{{ section.settings.empty_label | escape }}"
     data-t-remove="{{ section.settings.remove_label | escape }}"
     data-t-alone="{{ section.settings.alone_label | escape }}"
@@ -189,7 +192,7 @@
         <ol class="ptt__slots" data-slots role="list" style="--n: {{ count }};">
           <li class="ptt__slot ptt__slot--on">
             <span class="ptt__pin">{{ section.settings.pin_label | escape }}</span>
-            <span class="ptt__slot-in"><img src="{{ vial_img | asset_url }}" alt="" width="40" height="160" loading="lazy"><b>{{ product.title | escape }}</b></span>
+            <img src="{{ vial_img | asset_url }}" alt="" width="40" height="160" loading="lazy"><b class="ptt__slot-n">{{ product.title | escape }}</b>
           </li>
           {%- assign rest = count | minus: 1 -%}
           {%- for i in (1..rest) -%}
@@ -311,6 +314,9 @@
     { "type": "text", "id": "clear_label", "label": "Start over", "default": "Start over" },
     { "type": "text", "id": "nojs_label", "label": "Button without JavaScript", "default": "Build your trio" },
     { "type": "text", "id": "pin_label", "label": "Label on this perfume's vial", "default": "This perfume" },
+    { "type": "text", "id": "in_trio_label", "label": "On a vial: price in the set", "default": "In trio" },
+    { "type": "text", "id": "save_short_label", "label": "On a vial: saving", "info": "[price] = what this vial saves in the set.", "default": "save [price]" },
+    { "type": "text", "id": "solo_label", "label": "On a vial: prices on its own", "info": "Lists 1, 2 and 5 ml. Empty hides the list.", "default": "Solo" },
     { "type": "text", "id": "empty_label", "label": "Empty vial", "default": "Pick a scent" },
     { "type": "text", "id": "remove_label", "label": "Remove button (for screen readers)", "default": "Remove" },
     { "type": "text", "id": "full_label", "label": "When the set is full", "default": "Your trio is full. Remove one to swap." },

@@ -1270,3 +1270,15 @@ Sync errors are under the theme's GitHub chip → View logs.
   assets/perfume-product.css + bindSticky in perfume-product.js) now sits at the
   bottom centre of the screen on desktop too (was in the header row, where it covered
   the navigation; owner). Phones unchanged (full-width bottom bar).
+
+## Update 2026-11-25: Try trio vial cards + pricing plan (owner: solo = +35%)
+
+- Vial cards in the Try trio now show "In trio ₱… save ₱…" (when the section discount
+  is above 0) and a "Solo" row with the 1/2/5 ml prices (hidden on phones). Cards grow
+  with their content and share the row height, so long names never spill out.
+- Owner rule (replaces the 30% note above): a vial bought **solo costs 35% more** than
+  in a trio → trio discount **26%** (1 − 1/1.35 = 25.9%). Needs, in Shopify: an
+  automatic 26% discount for 3+ vials, 1/2/5 ml variant prices = solo prices, the
+  product page showing those sizes (main section → Sizes block → turn off "Hide decant
+  sizes sold only in sets"), and the section + builder set discounts set to match.
+  Pending the owner's go-ahead (see chat 2026-11-25).

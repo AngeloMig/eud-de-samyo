@@ -137,10 +137,20 @@
 
 /* Vials */
 .ptt__slots { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
-.ptt__slot { position: relative; height: 172px; border-radius: 16px; font-size: 12px; text-align: center; color: var(--ptt-soft); }
-.ptt__slot--on { display: grid; place-items: end center; padding-bottom: 14px; background: var(--ptt-slot); }
-.ptt__slot--on img { display: block; width: auto; height: 76px; margin: 0 auto 10px; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.14)); }
-.ptt__slot--on b { display: block; font: 500 17px/1.1 var(--pf-font-serif); color: var(--ptt-ink); }
+.ptt__slot { position: relative; min-height: 172px; border-radius: 16px; font-size: 12px; text-align: center; color: var(--ptt-soft); }
+/* A filled vial: picture, name, set price and saving, then the solo prices.
+   Content flows (no fixed height), so long names never spill out; the row's
+   cards share the tallest height. */
+.ptt__slot--on { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; padding: 30px 10px 12px; background: var(--ptt-slot); }
+.ptt__slot--on img { display: block; flex: none; width: auto; height: 72px; margin: 0 auto 6px; filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.14)); }
+.ptt__slot-n { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font: 500 16px/1.1 var(--pf-font-serif); color: var(--ptt-ink); }
+.ptt__slot-p { font-size: 12px; color: var(--ptt-soft); }
+.ptt__slot-p b { font-weight: 600; color: var(--ptt-ink); }
+.ptt__slot-p em { font-style: normal; font-weight: 600; color: var(--ptt-save); white-space: nowrap; }
+.ptt__solo { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 8px; width: 100%; margin-top: 4px; padding-top: 7px; border-top: 1px solid rgba(38, 34, 31, 0.12); font-size: 10.5px; color: var(--ptt-soft); font-variant-numeric: tabular-nums; }
+.ptt__solo small { width: 100%; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.ptt__solo span { white-space: nowrap; }
+.ptt__solo b { font-weight: 600; color: var(--ptt-ink); }
 .ptt__slot-in { display: block; }
 .ptt__pin { position: absolute; top: 10px; left: 12px; font: 600 9px/1 var(--pf-font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ptt-soft); }
 .ptt__x {
@@ -256,9 +266,10 @@
 @media (max-width: 989px) {
   .ptt__wrap { grid-template-columns: 1fr; gap: 26px; }
   .ptt__h { font-size: 38px; }
-  .ptt__slot { height: 160px; }
-  .ptt__slot--on img { height: 66px; }
-  .ptt__slot--on b { font-size: 15px; }
+  .ptt__slot { min-height: 160px; }
+  .ptt__slot--on { padding-top: 40px; }
+  .ptt__slot--on img { height: 60px; }
+  .ptt__slot-n { font-size: 15px; }
   .ptt__pin { display: none; }
   .ptt__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
   .ptt__grid-h { flex-direction: column; gap: 6px; padding-top: 22px; }
@@ -267,8 +278,9 @@
 }
 @media (max-width: 749px) {
   .ptt__slots { gap: 8px; }
-  .ptt__slot--on b { font-size: 14px; }
-  .ptt__slot-p { display: block; }
+  .ptt__slot-n { font-size: 14px; }
+  .ptt__slot-p em { display: block; }
+  .ptt__solo { display: none; } /* too narrow; the pop-up / product page has them */
 }
 
 @media (prefers-reduced-motion: reduce) {
