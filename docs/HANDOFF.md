@@ -1450,3 +1450,8 @@ Sync errors are under the theme's GitHub chip → View logs.
   Dior Homme Intense: Lavender / Iris, Ambrette, Pear / Virginia cedar, Vetiver.
   Oud Wood: Rosewood, Cardamom, Pink pepper / Oud, Sandalwood, Vetiver / Tonka bean, Amber, Patchouli.
   Bleu de Chanel: not entered (no decants yet).
+- Phones (owner 2026-11-26): tiles stay the desktop size on every viewport (no captions).
+  On touch the first tap opens the pop-up as a card with "Add to set / Take it out" and ×
+  (capture-phase click on the tile, so the real toggle runs only from the card). The open
+  drawer keeps "Add set to bag" sticky at its bottom, and once the set is full the closed bar
+  shows an "Add to bag" button (setting `bar_add_label`).

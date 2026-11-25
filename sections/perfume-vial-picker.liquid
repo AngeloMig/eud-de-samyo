@@ -69,6 +69,8 @@
   data-t-filled="{{ section.settings.filled_label | escape }}"
   data-t-pop-add="{{ section.settings.pop_add_label | escape }}"
   data-t-pop-remove="{{ section.settings.pop_remove_label | escape }}"
+  data-t-pop-add-tap="{{ section.settings.pop_add_tap_label | escape }}"
+  data-t-pop-remove-tap="{{ section.settings.pop_remove_tap_label | escape }}"
   data-t-bar="{{ section.settings.bar_count_label | escape }}"
   data-t-less="{{ section.settings.less_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
@@ -303,6 +305,7 @@
           <span class="pvp__bar-label">{{ section.settings.tray_label | escape }}</span>
           <span class="pvp__bar-chev" aria-hidden="true"></span>
         </button>
+        <button type="button" class="pvp__bar-add" data-bar-add hidden>{{ section.settings.bar_add_label | default: section.settings.add_label | escape }}</button>
         <div class="pvp__tray-body" id="{{ vid }}-body" data-tray-body><div class="pvp__tray-in">
         <h2 class="pvp__tray-h" id="{{ vid }}-tray">{{ section.settings.tray_label | escape }}</h2>
         <p class="pvp__tray-set" data-set-name></p>
@@ -355,6 +358,9 @@
     },
     { "type": "checkbox", "id": "pop_notes", "label": "Pop-up: show note pictures", "default": true, "info": "Up to five of the perfume's notes (top, heart, base) resting on the photo. Perfumes without notes just show the photo." },
     { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add" },
+    { "type": "text", "id": "pop_add_tap_label", "label": "Pop-up button on phones: add", "default": "Add to set" },
+    { "type": "text", "id": "pop_remove_tap_label", "label": "Pop-up button on phones: remove", "default": "Take it out" },
+    { "type": "text", "id": "bar_add_label", "label": "Phone bar: add button", "default": "Add to bag", "info": "Shows on the phone bar once the set is full." },
     { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
     { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },

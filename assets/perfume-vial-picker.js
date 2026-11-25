@@ -359,9 +359,10 @@
         picks.push({ li, name: li.dataset.scent });
       });
     }
-    // Compact tiles: a pop-up by the mouse with the scent's details (owner). Touch
-    // screens get the short caption under each tile instead (CSS).
-    if (root.classList.contains('pvp--compact') && matchMedia('(any-hover: hover)').matches) {
+    // Compact tiles: a pop-up by the mouse with the scent's details (owner). On touch
+    // (owner 2026-11-26) the first tap opens the same card with an Add / Remove button,
+    // so phone shoppers see name, notes and price before adding.
+    if (root.classList.contains('pvp--compact')) {
       const pop = document.createElement('div');
       pop.className = 'pvp__pop';
       pop.setAttribute('aria-hidden', 'true');
@@ -380,7 +381,9 @@
         pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for ${[...forEl.classList].find((c) => c.startsWith('pvp__for--')) || ''}">${forEl.innerHTML}</span>` : ''}</p>
           <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
           <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
-          ${act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
+          ${pop.classList.contains('is-touch')
+            ? `<div class="pvp__pop-row"><button type="button" class="pvp__pop-btn${picked ? ' is-remove' : ''}" data-pop-act${blocked && !picked ? ' disabled' : ''}>${esc(picked ? t('PopRemoveTap') || 'Take it out' : blocked ? act : t('PopAddTap') || 'Add to set')}</button><button type="button" class="pvp__pop-x" data-pop-x aria-label="Close">×</button></div>`
+            : act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
       };
       const place = (x, y) => {
         const w = pop.offsetWidth, h = pop.offsetHeight, g = 16;
@@ -405,7 +408,52 @@
         btn.addEventListener('blur', hide);
         btn.addEventListener('click', () => { if (popLi === li) requestAnimationFrame(() => fill(li)); });
       });
-      window.addEventListener('scroll', () => popLi && hide(), { passive: true });
+      window.addEventListener('scroll', () => { if (popLi && !pop.classList.contains('is-touch')) hide(); }, { passive: true });
+
+      // Touch: tap = preview card; its button adds / removes.
+      let lastPT = '', bypass = false, tapLi = null;
+      const closeTap = () => { tapLi = null; popLi = null; pop.classList.remove('is-on'); setTimeout(() => { if (!tapLi) pop.classList.remove('is-touch'); }, 250); };
+      const placeTap = (li) => {
+        const r = li.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+        const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+        const below = r.bottom + 8, above = r.top - h - 8;
+        const y = below + h < innerHeight - 90 ? below : above > 8 ? above : Math.max(8, (innerHeight - h) / 2);
+        pop.style.translate = `${x}px ${y}px`;
+      };
+      const openTap = (li) => {
+        pop.classList.add('is-touch');
+        const wasOn = pop.classList.contains('is-on') && tapLi && tapLi !== li;
+        tapLi = li; popLi = li; lastLi = li; fill(li); pop.classList.add('is-on'); placeTap(li);
+        if (wasOn) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
+      };
+      scents.forEach((li) => {
+        li.addEventListener('pointerdown', (e) => { lastPT = e.pointerType; }, true);
+        li.addEventListener('click', (e) => {
+          if (bypass || lastPT !== 'touch' || !e.target.closest('[data-add]')) return;
+          e.stopPropagation(); e.preventDefault();
+          if (tapLi === li && pop.classList.contains('is-on')) closeTap(); else openTap(li);
+        }, true);
+      });
+      pop.addEventListener('click', (e) => {
+        if (e.target.closest('[data-pop-x]')) { closeTap(); return; }
+        if (!e.target.closest('[data-pop-act]') || !tapLi) return;
+        const li = tapLi;
+        bypass = true; li.querySelector('[data-add]').click(); bypass = false;
+        closeTap();
+      });
+      document.addEventListener('pointerdown', (e) => {
+        if (tapLi && !pop.contains(e.target) && !e.target.closest('.pvp__scent')) closeTap();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tapLi) closeTap(); });
+      window.addEventListener('scroll', () => { if (tapLi) placeTap(tapLi); }, { passive: true });
+    }
+
+    // Phones: a quick "Add set to bag" on the bar once the set is full (owner).
+    const barAdd = root.querySelector('[data-bar-add]');
+    if (barAdd && submit) {
+      barAdd.addEventListener('click', () => submit.click());
+      new MutationObserver(() => { barAdd.hidden = submit.disabled; }).observe(submit, { attributes: true, attributeFilter: ['disabled'] });
+      barAdd.hidden = submit.disabled;
     }
 
     // Men / Women / Unisex filter (owner 2026-11-26). Reads each tile's label class.

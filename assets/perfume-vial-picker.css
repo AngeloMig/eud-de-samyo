@@ -865,41 +865,6 @@
   }
 }
 
-/* Touch screens: a short caption under the photo (no hover to show the pop-up). */
-@media (any-hover: none) {
-  .pvp--compact .pvp__scent {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 8px;
-  }
-
-  .pvp--compact .pvp__scent-name {
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    display: -webkit-box;
-    font-size: 12px;
-    line-height: 1.15;
-    margin: 4px 6px 0;
-    overflow: hidden;
-    text-align: center;
-  }
-
-  .pvp--compact .pvp__vial-price {
-    display: block;
-    font-size: 11px;
-    margin: 2px 4px 0;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .pvp--compact .pvp__vial-price s,
-  .pvp--compact .pvp__vial-price .pvp__off {
-    display: none;
-  }
-}
-
 /* Pop-up next to the mouse */
 .pvp__pop {
   background: #fff;
@@ -1090,6 +1055,60 @@
 
 .pvp__pop-act.is-muted {
   opacity: 0.65;
+}
+
+/* Touch: the pop-up is a tap card with real buttons (owner 2026-11-26). */
+.pvp__pop.is-touch {
+  width: min(280px, calc(100vw - 16px));
+}
+
+.pvp__pop.is-touch.is-on {
+  pointer-events: auto;
+}
+
+.pvp__pop-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.pvp__pop-btn {
+  background: var(--pvp-ink, #292521);
+  border: 1px solid var(--pvp-ink, #292521);
+  border-radius: 99px;
+  color: #fff;
+  cursor: pointer;
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  min-height: 44px;
+}
+
+.pvp__pop-btn.is-remove {
+  background: #fff;
+  color: var(--pvp-ink, #292521);
+}
+
+.pvp__pop-btn:disabled {
+  opacity: 0.5;
+}
+
+.pvp__pop-x {
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--pvp-ink) 18%, transparent);
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  flex: none;
+  font-size: 20px;
+  height: 44px;
+  line-height: 1;
+  width: 44px;
+}
+
+.pvp__bar-add {
+  display: none;
 }
 
 /* Phone bar: hidden on desktop. */
@@ -1505,13 +1524,46 @@
     background: var(--pvp-bg, #f7f5f0);
     color: var(--pvp-ink, #292521);
   }
+
+  /* The add button never scrolls out of view in the open drawer (owner). */
+  .pvp__form {
+    background: var(--pvp-ink, #292521);
+    bottom: 0;
+    margin-bottom: -16px;
+    padding-bottom: 16px;
+    position: sticky;
+    z-index: 1;
+  }
+
+  /* Full set: a quick add button right on the bar (owner). */
+  .pvp__bar-add:not([hidden]) {
+    align-items: center;
+    background: var(--pvp-bg, #f7f5f0);
+    border: 0;
+    border-radius: 99px;
+    color: var(--pvp-ink, #292521);
+    cursor: pointer;
+    display: flex;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    min-height: 44px;
+    padding: 0 16px;
+    position: absolute;
+    right: 44px;
+    top: 10px;
+  }
+
+  .pvp__tray:has(.pvp__bar-add:not([hidden])) .pvp__bar-label {
+    visibility: hidden;
+  }
+
+  .is-tray-open .pvp__bar-add {
+    display: none !important;
+  }
 }
 
 @media screen and (max-width: 749px) {
-  .pvp--compact .pvp__scents {
-    gap: 6px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 
   .pvp {
     padding-left: 16px;
