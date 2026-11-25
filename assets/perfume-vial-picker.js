@@ -308,15 +308,26 @@
 
     statusEl.tabIndex = -1;
     // ?scent=<handle> (from a product page): that perfume goes in first, in a set
-    // whose size it comes in.
-    const wantedScent = new URLSearchParams(location.search).get('scent');
-    const first = wantedScent && scents.find((li) => li.dataset.handle === wantedScent);
+    // whose size it comes in. ?scent=a,b,c (a finished Try trio from a product page)
+    // puts those perfumes in the vials in that order; any vial left over is filled as
+    // usual.
+    const wantedScents = (new URLSearchParams(location.search).get('scent') || '')
+      .split(',').map((h) => h.trim()).filter(Boolean)
+      .map((h) => scents.find((li) => li.dataset.handle === h)).filter(Boolean);
+    const first = wantedScents[0];
     if (first) {
       if (!vialOf(first, current().dataset.size)) {
         const fit = setInputs.find((i) => vialOf(first, i.dataset.size));
         if (fit) fit.checked = true;
       }
-      if (vialOf(first, current().dataset.size)) picks = [{ li: first, name: first.dataset.scent }];
+      const size = current().dataset.size;
+      const count = parseInt(current().dataset.count, 10) || 1;
+      picks = [];
+      wantedScents.forEach((li) => {
+        if (picks.length >= count || !vialOf(li, size)) return;
+        if (!repeats && picks.some((p) => p.li === li)) return;
+        picks.push({ li, name: li.dataset.scent });
+      });
     }
     prefill();
     draw();

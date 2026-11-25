@@ -42,6 +42,16 @@
   bag · ₱…" → "Added ✓"; when the trio is full the other tiles dim and say "Remove one
   to swap". No repeats. It hides on perfumes without a 1 ml variant.
   Preview: claude.ai artifact "Sangyó: Try trio section, built out".
+- When the trio is full, the main button becomes **"Continue with your trio →"** and opens
+  the decant builder page (the section's page setting, like `picker_page` on the product
+  section, falling back to `pages['build-your-set']`) with
+  `?set=3x1&scent=<handle>,<handle>,<handle>`, so people see the other sets and sizes.
+  A small "Or add to bag now · ₱…" link adds the trio directly. Ribbon speed: slow (the
+  owner found 30s for 8 phrase repeats too fast; preview uses 56s).
+- **Builder (done, live):** `assets/perfume-vial-picker.js` now takes a comma-separated
+  `?scent=` list and fills the vials in that order (unknown handles, sizes it isn't
+  offered in and duplicates when repeats are off are skipped; leftover vials fill as
+  before). A single `?scent=<handle>` works exactly as it did.
 
 ## Update 2026-11-25: hero hover badge
 
