@@ -99,17 +99,20 @@ perfume-hero {
   display: inline-grid;
   font-family: var(--phh-script);
   justify-items: start; /* each word keeps its own width, for the fit */
-  font-size: 2.05em;
+  /* Same size to the eye as the heading (owner, 2026-11-25): Cormorant's lowercase
+     is ~0.39em tall, Mrs Saint Delafield's ~0.235em, so the script needs 1.66x the
+     font-size for its letters to stand as tall as "like". */
+  font-size: 1.66em;
   letter-spacing: 0;
   line-height: 0.45;
   margin-left: -0.04em;
   vertical-align: baseline;
 }
 
-/* A larger first letter, like a hand-drawn initial. The script may touch "like"
-   and the line above a little (owner's choice); it never leaves the column. */
+/* A slightly larger first letter, like a hand-drawn initial, kept small so the
+   word still reads the same size as the heading. */
 .phh__rw::first-letter {
-  font-size: 1.4em;
+  font-size: 1.15em;
 }
 
 /* Each word is sized on its own (--w-fit, set by perfume-hero.js) so short words

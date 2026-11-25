@@ -37,6 +37,10 @@
 
 ## Update 2026-11-25: hero rotating word
 
+- Size (owner, later the same day): the script word is 1.66em with a 1.15em first
+  letter, so its lowercase matches Cormorant's x-height (0.39em vs the script's
+  ~0.235em) and it reads the same size as the heading. Was 2.05em with a 1.4em initial.
+
 - Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;
   home page: summer, sunday morning, your first date, rain in manila — lowercase on
   purpose at first, then owner asked: summer, Sunday morning, your first date, rain
