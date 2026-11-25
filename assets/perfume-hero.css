@@ -707,6 +707,97 @@ perfume-header {
   }
 }
 
+/* ---------- Hover badge ----------
+   A slowly turning round badge in the empty top-right cell (row 1, column 3),
+   pointing down-left at the bottles. Desktop with a mouse only. It fades while a
+   perfume's notes show, and waits for the intro. */
+.phh-hint {
+  display: grid;
+  grid-area: 1 / 3;
+  pointer-events: none;
+  place-items: center;
+  transition: opacity 0.6s ease 0.2s;
+}
+
+.phh-hint__badge {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 78%;
+}
+
+.phh-hint__ring {
+  fill: var(--phh-ink);
+  height: 100%;
+  inset: 0;
+  overflow: visible;
+  position: absolute;
+  width: 100%;
+}
+
+.phh-hint__ring text {
+  font-family: var(--phh-sans);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.phh-hint__arrow {
+  fill: none;
+  height: 22%;
+  stroke: var(--phh-ink);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+  width: 22%;
+}
+
+.phh__grid.is-notes .phh-hint,
+.phh.is-pre .phh-hint,
+html.pf-intro-pre .phh[data-intro='true'] .phh-hint {
+  opacity: 0;
+  transition-delay: 0s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .phh-hint__ring {
+    animation: phh-hint-spin 22s linear infinite;
+  }
+
+  .phh-hint__arrow {
+    animation: phh-hint-nudge 2.4s var(--phh-ease-io) infinite alternate;
+  }
+
+  .phh__grid:hover .phh-hint__ring,
+  .phh__grid:focus-within .phh-hint__ring,
+  .phh__grid:hover .phh-hint__arrow,
+  .phh__grid:focus-within .phh-hint__arrow {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes phh-hint-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes phh-hint-nudge {
+  from {
+    transform: translate(2px, -2px);
+  }
+
+  to {
+    transform: translate(-3px, 3px);
+  }
+}
+
+@media (hover: none), (max-width: 989px) {
+  .phh-hint {
+    display: none;
+  }
+}
+
 /* ---------- Hover notes ----------
    While a perfume tile is hovered or focused, the scent tiles step back and that
    perfume's notes wipe up in random free cells (placed by assets/perfume-hero.js). */

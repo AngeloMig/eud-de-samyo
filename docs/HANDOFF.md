@@ -25,6 +25,16 @@
   ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
   1024 / 390: no gap between ribbons at either edge, text still clear.
 
+## Update 2026-11-25: hero hover badge
+
+- Owner picked hover-hint idea 4 (seal badge). A turning ring of text with an arrow sits
+  in the empty grid cell beside the lemon tile (row 1, column 3), inviting people to
+  hover a bottle. Settings: **Show the hover badge** (`show_hint`) and **Hover badge
+  text** (`hint_text`). Only renders when at least one tile has hover notes.
+- It fades out while notes are showing and during the intro, pauses on grid hover or
+  focus, stops under reduced motion, and is hidden on touch screens and below 990px.
+  `aria-hidden` (decorative; the notes themselves stay keyboard reachable).
+
 ## Update 2026-11-25: hero rotating word
 
 - Owner picked left-side idea 10. Settings: **Rotating words** (comma-separated;
