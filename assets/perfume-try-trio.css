@@ -14,17 +14,30 @@
   line-height: 1.55;
 }
 
-/* Ribbon: every word on one baseline; two copies loop seamlessly. */
+/* Ribbon: every word on one baseline; two copies loop seamlessly.
+   It straddles the line with the product section above (half over each), and its
+   tilt is worked out from the screen width so the band always covers that line from
+   edge to edge: the steepest angle that never shows a gap (owner, 2026-11-25).
+   Rise across the screen = 85% of the band height; capped at 3deg on narrow screens. */
+.ptt {
+  --ptt-rib-h: 48px;
+  --ptt-tilt: -1deg;
+}
+@supports (rotate: atan2(1px, 1px)) {
+  .ptt { --ptt-tilt: calc(-1 * min(3deg, atan2(calc(var(--ptt-rib-h) * 0.85), 100vw))); }
+}
 .ptt__rib {
+  position: relative;
+  z-index: 3;
   display: flex;
   align-items: center;
-  height: 48px;
-  margin: 0 -24px 34px;
+  height: var(--ptt-rib-h);
+  margin: calc(-1 * (var(--ptt-pt) + var(--ptt-rib-h) / 2)) -24px 34px;
   background: var(--ptt-ribbon);
   color: var(--ptt-ribbon-text);
   white-space: nowrap;
   overflow: hidden;
-  rotate: -1.6deg;
+  rotate: var(--ptt-tilt);
 }
 .ptt__rib-t {
   display: flex;

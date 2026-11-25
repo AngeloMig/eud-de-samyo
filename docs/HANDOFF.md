@@ -55,6 +55,9 @@
   every label, colours, padding. Hidden on products without an available vial in the
   set's size. Cart lines match the builder exactly. Prices in the section are exact
   (centavos show when the % gives them, as in the builder).
+  Ribbon straddles the seam with the product section (half over its 72px bottom
+  padding); tilt = −min(3°, atan2(0.85 × band height, 100vw)) so it always covers the
+  seam edge to edge (no cream/lilac wedge), fallback −1°.
   To do in Shopify: the 23% automatic discount for the Try trio, and the builder page
   (handle `build-your-set`, or pick it in the section) with a 3 × 1 ml Set block.
 - **Builder (done, live):** `assets/perfume-vial-picker.js` now takes a comma-separated
