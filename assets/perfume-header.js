@@ -65,16 +65,6 @@
       this.bindSearch(signal);
       this.bindAnnouncement(signal);
       this.bindAdaptDark(signal);
-      // While scrolling (owner 2026-11-26): the logo tucks up to 10px from the top and the
-      // links box to the very top; once scrolling stops they glide back to their usual
-      // place. CSS does the motion.
-      let tuckTimer = 0;
-      const tuck = () => {
-        this.classList.add('is-scrolled');
-        clearTimeout(tuckTimer);
-        tuckTimer = setTimeout(() => this.classList.remove('is-scrolled'), 260);
-      };
-      window.addEventListener('scroll', tuck, { passive: true, signal });
       // Scrolled past the top: a soft cream fade behind the logo corner (owner idea 07).
       const down = () => this.classList.toggle('is-down', window.scrollY > 40);
       window.addEventListener('scroll', down, { passive: true, signal });
