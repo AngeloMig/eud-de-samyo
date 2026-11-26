@@ -230,8 +230,7 @@
       </li>`;
     }
 
-    // One decant set: small vials of its size, the saving on top, the vials at full
-    // width, then the set price and a Remove-set icon on one quiet row.
+    // Use Shopify's actual paid amounts for each vial, including partial discounts.
     setCard(g, i, cart) {
       const name = g.set.split('|')[0].replace(/\s*\([a-z0-9]+\)\s*$/i, '');
       const total = g.lines.reduce((a, l) => a + l.final_line_price, 0);
@@ -248,7 +247,8 @@
       const vials = g.lines
         .map((l) => {
           const qty = l.quantity > 1 ? ` × ${l.quantity}` : '';
-          return `<li><span>${esc(l.product_title)}${qty}</span><span>${money(l.original_line_price, cart.currency)}</span></li>`;
+          const saved = Math.max(0, l.original_line_price - l.final_line_price);
+          return `<li><span class="pcd__vial-name">${esc(l.product_title)}${qty}</span><span class="pcd__vial-pricing"><b>${money(l.final_line_price, cart.currency)}</b>${saved ? `<small>Save ${money(saved, cart.currency)}</small>` : ''}</span></li>`;
         })
         .join('');
       return `<li class="pcd__item pcd__set${isNew ? ' is-new' : ''}" style="--i:${i}" data-set="${esc(g.set)}" data-keys="${esc(g.lines.map((l) => l.key).join(','))}">
