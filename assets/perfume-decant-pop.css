@@ -1,6 +1,6 @@
 /* Decant pop-up (sections/perfume-decant-pop.liquid). Motion: opacity/transform only. */
 .pdp { --pdp-ink: #26221f; --pdp-paper: #ede8df; --pdp-ease: cubic-bezier(0.16, 1, 0.3, 1); }
-.pdp__scrim {
+.pdp .pdp__scrim {
   display: block; /* Dawn hides empty divs */
   position: fixed; inset: 0; z-index: 90;
   background: rgba(38, 34, 31, 0.22);
