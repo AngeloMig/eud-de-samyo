@@ -540,6 +540,7 @@ perfume-showcase {
   border-radius: 999px;
   display: inline-flex;
   gap: 6px;
+  max-width: 100%;
   padding: 3px 12px 3px 3px;
 }
 
@@ -555,12 +556,16 @@ perfume-showcase {
 
 .ps-chip__art {
   display: block;
+  flex: none;
   height: 30px;
+  overflow: hidden;
+  border-radius: 50%;
   width: 30px;
 }
 
 .ps-chip__art svg,
-.ps-chip__art img {
+.ps-chip__art img,
+.ps-chip__art .pf-note-art {
   display: block;
   height: 100%;
   object-fit: contain;
@@ -568,10 +573,12 @@ perfume-showcase {
 }
 
 .ps-chip__label {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--ps-serif);
   font-size: 17px;
   font-style: italic;
-  line-height: 1;
+  line-height: 1.15;
 }
 
 /* Notes, one-line style: overlapping round note photos + one italic line. */

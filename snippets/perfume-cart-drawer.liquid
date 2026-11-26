@@ -92,10 +92,12 @@
           <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
         </details>
       {%- endif -%}
-      <form action="{{ routes.cart_url }}" method="post" class="pcd__form">
-        <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
-      </form>
-      <a class="pcd__view pf-link" href="{{ routes.cart_url }}">View bag</a>
+      <div class="pcd__actions">
+        <form action="{{ routes.cart_url }}" method="post" class="pcd__form">
+          <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+        </form>
+        <a class="pcd__view pf-link" href="{{ routes.cart_url }}">View bag</a>
+      </div>
     </div>
 
     {%- assign trust_lines = trust | newline_to_br | split: '<br />' -%}
