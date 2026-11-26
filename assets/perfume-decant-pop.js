@@ -49,6 +49,21 @@
 
   const closedAt = store.get();
   if (closedAt && Date.now() - closedAt < days * 864e5) { showFab(); return; }
-  const tryOpen = () => { if (busy()) { setTimeout(tryOpen, 5000); return; } open(); };
+  // Whichever comes first: the delay, or scrolling [scroll]% down the page (never before 8 s).
+  let done = false;
+  const tryOpen = () => {
+    if (done) return;
+    if (busy()) { setTimeout(tryOpen, 5000); return; }
+    done = true;
+    removeEventListener('scroll', onScroll);
+    open();
+  };
   setTimeout(tryOpen, delay);
+  const depth = (parseInt(root.dataset.scroll, 10) || 0) / 100;
+  const born = Date.now();
+  const onScroll = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (max > 0 && scrollY / max >= depth && Date.now() - born > 8000) tryOpen();
+  };
+  if (depth > 0) addEventListener('scroll', onScroll, { passive: true });
 })();

@@ -63,6 +63,7 @@
     data-pdp
     data-delay="{{ section.settings.delay }}"
     data-days="{{ section.settings.days }}"
+    data-scroll="{{ section.settings.scroll }}"
     data-key="pf-dpop-{{ section.settings.version }}"
   >
     <div class="pdp__scrim" data-pdp-close></div>
@@ -101,6 +102,7 @@
   "settings": [
     { "type": "checkbox", "id": "enabled", "label": "Show the pop-up", "default": true },
     { "type": "range", "id": "delay", "label": "Opens after", "min": 5, "max": 120, "step": 5, "unit": "s", "default": 30 },
+    { "type": "range", "id": "scroll", "label": "Or open once scrolled this far down", "min": 0, "max": 90, "step": 10, "unit": "%", "default": 50, "info": "Whichever comes first: the time above or this. 0 = time only. Never in the first 8 seconds." },
     { "type": "range", "id": "days", "label": "After closing, don't open again for", "min": 1, "max": 30, "step": 1, "unit": "d", "default": 7, "info": "The floating button stays, so shoppers can reopen it." },
     { "type": "text", "id": "version", "label": "Campaign name", "default": "1", "info": "Change it to show the pop-up again to everyone." },
     { "type": "header", "content": "The set" },
