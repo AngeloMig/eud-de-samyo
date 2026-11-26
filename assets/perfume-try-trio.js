@@ -77,11 +77,13 @@
     function slotHTML(s, i) {
       const v = vial(s);
       const name = (s.name || '').replace(/ Eau de Parfum$/i, ' EDP').replace(/ Eau de Toilette$/i, ' EDT');
-      // Its price on its own, with a tiny "−₱…" next to it: what it saves in the set.
+      // Lead with what this vial costs in the set, then spell out its saving.
       let price = '';
       if (v) {
-        const less = v.price - inSet(v.price);
-        price = `<span class="ptt__slot-p">${size} ml · <b>${money(v.price)}</b>${off && less > 0 ? ` <em title="${esc(t('SaveShort').replace('[price]', money(less)))}">−${money(less)}</em>` : ''}</span>`;
+        const paid = inSet(v.price), less = v.price - paid;
+        const label = !t('SaveShort') || t('SaveShort') === '[price] less in a trio' ? 'Save [price] · [percent]%' : t('SaveShort');
+        const saving = label.replace('[price]', money(less)).replace('[percent]', Math.round(off * 100));
+        price = `<span class="ptt__slot-p">${size} ml · <b>${money(paid)}</b></span>${off && less > 0 ? `<span class="ptt__slot-save">${esc(saving)}</span>` : ''}`;
       }
       return `${s.handle === own ? `<span class="ptt__pin">${esc(t('Pin'))}</span>` : ''}
         <img src="${vialImg}" alt="" width="40" height="160"><b class="ptt__slot-n">${esc(name)}</b>${price}
@@ -243,12 +245,21 @@
       lastFor = s;
     }
     function showPop(s, x, y) { isTap = false; pop.classList.remove('is-tap'); swapAnim(s); popFor = s; drawPop(s); pop.classList.add('is-on'); movePop(x, y); }
+    let pointer = null;
+    function fitPop(x, y) {
+      const v = window.visualViewport;
+      const left = (v?.offsetLeft || 0) + 8, top = (v?.offsetTop || 0) + 8;
+      const right = left + (v?.width || innerWidth) - 16, bottom = top + (v?.height || innerHeight) - 16;
+      pop.style.maxHeight = `${Math.max(1, bottom - top)}px`;
+      pop.style.translate = `${Math.max(left, Math.min(x, right - pop.offsetWidth))}px ${Math.max(top, Math.min(y, bottom - pop.offsetHeight))}px`;
+    }
     function movePop(x, y) {
+      pointer = { x, y };
       const w = pop.offsetWidth, h = pop.offsetHeight, g = 18;
       let px = x + g, py = y + g, ox = '0%', oy = '0%';
       if (px + w > innerWidth - 8) { px = x - w - g; ox = '100%'; }
       if (py + h > innerHeight - 8) { py = y - h - g; oy = '100%'; }
-      pop.style.translate = `${Math.max(8, px)}px ${Math.max(8, py)}px`;
+      fitPop(px, py);
       pop.style.setProperty('--ox', ox);
       pop.style.setProperty('--oy', oy);
     }
@@ -259,12 +270,20 @@
       const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
       const below = r.bottom + 8, above = r.top - h - 8;
       const y = below + h < innerHeight - 8 ? below : above > 8 ? above : Math.max(8, (innerHeight - h) / 2);
-      pop.style.translate = `${x}px ${y}px`;
+      fitPop(x, y);
       pop.style.setProperty('--ox', '50%');
       pop.style.setProperty('--oy', y < r.top ? '100%' : '0%');
     }
     function openTap(s) { isTap = true; pop.classList.add('is-tap'); swapAnim(s); popFor = s; drawPop(s); pop.classList.add('is-on'); placeTap(s.tile); }
     function closeTap() { isTap = false; popFor = null; pop.classList.remove('is-on'); setTimeout(() => { if (!isTap) pop.classList.remove('is-tap'); }, 250); }
+    const reposition = () => {
+      if (!popFor || !pop.classList.contains('is-on')) return;
+      if (isTap) placeTap(popFor.tile);
+      else if (pointer) movePop(pointer.x, pointer.y);
+    };
+    if ('ResizeObserver' in window) new ResizeObserver(reposition).observe(pop);
+    window.addEventListener('resize', reposition, { passive: true });
+    window.visualViewport?.addEventListener('resize', reposition, { passive: true });
 
     let lastPT = '';
     tiles.forEach((b) => {
