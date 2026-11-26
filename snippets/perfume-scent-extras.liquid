@@ -1,0 +1,90 @@
+{%- comment -%}
+  Gender icon + note pictures for one perfume (owner 2026-11-26). Used by the Try trio
+  tiles; same data and rules as the decant builder (sections/perfume-vial-picker.liquid).
+  Params: p (product), men / women / unisex (labels). Outputs:
+  - <span class="pf-for pf-for--men|women|unisex"> icon + label (nothing when no tag)
+  - <template data-notes> with up to five notes (top → base), each <span class="pf-pn">
+    with its picture (empty when no picture matches; the script shows the first letter).
+  Gender: tags men / women / unisex, else Shopify's Target gender. Notes: the perfume's own
+  fragrance.* lists, never invented.
+{%- endcomment -%}
+{%- liquid
+  assign for_key = ''
+  for tg in p.tags
+    assign tk = tg | downcase | remove: 'for ' | strip
+    if tk == 'men' or tk == 'women' or tk == 'unisex'
+      assign for_key = tk
+      break
+    endif
+  endfor
+  if for_key == blank
+    assign tgs = p.metafields.shopify['target-gender'].value
+    if tgs.size == 1
+      assign tl = tgs.first.label | downcase
+      if tl == 'male'
+        assign for_key = 'men'
+      elsif tl == 'female'
+        assign for_key = 'women'
+      elsif tl == 'unisex'
+        assign for_key = 'unisex'
+      endif
+    elsif tgs.size > 1
+      assign for_key = 'unisex'
+    endif
+  endif
+  assign for_label = ''
+  case for_key
+    when 'men'
+      assign for_label = men
+    when 'women'
+      assign for_label = women
+    when 'unisex'
+      assign for_label = unisex
+  endcase
+-%}
+{%- if for_label != blank -%}
+  <span class="pf-for pf-for--{{ for_key }}" data-for="{{ for_key }}">
+    <svg class="pf-for-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      {%- case for_key -%}
+        {%- when 'men' -%}<circle cx="10" cy="14" r="5.5"/><path d="M14 10l6-6M15 4h5v5"/>
+        {%- when 'women' -%}<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V21M9 18h6"/>
+        {%- else -%}<circle cx="11" cy="11" r="4.5"/><path d="M14.3 7.7 19 3M15.5 3H19v3.5M11 15.5V21M8.5 18.5h5"/>
+      {%- endcase -%}
+    </svg>
+    <span class="pf-for-t">{{ for_label | escape }}</span>
+  </span>
+{%- endif -%}
+{%- liquid
+  assign n_profile = p.metafields.fragrance.profile.value
+  assign n_top = n_profile.top_notes.value | default: p.metafields.fragrance.top_notes.value
+  assign n_mid = n_profile.middle_notes.value | default: p.metafields.fragrance.middle_notes.value
+  assign n_base = n_profile.base_notes.value | default: p.metafields.fragrance.base_notes.value
+  assign n_count = 0
+-%}
+<template data-notes>
+  {%- for list in (1..3) -%}
+    {%- liquid
+      case list
+        when 1
+          assign n_group = n_top
+        when 2
+          assign n_group = n_mid
+        else
+          assign n_group = n_base
+      endcase
+    -%}
+    {%- for note in n_group -%}
+      {%- if n_count >= 5 -%}{%- break -%}{%- endif -%}
+      {%- assign n_count = n_count | plus: 1 -%}
+      {%- assign n_name = note.name.value | default: note -%}
+      {%- assign n_art = note.art.value | default: n_name -%}
+      <span class="pf-pn" data-name="{{ n_name | escape }}" data-i="{{ n_name | slice: 0 | upcase | escape }}">
+        {%- if note.image.value != blank -%}
+          {{ note.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
+        {%- else -%}
+          {%- render 'perfume-note-art', note: n_art -%}
+        {%- endif -%}
+      </span>
+    {%- endfor -%}
+  {%- endfor -%}
+</template>

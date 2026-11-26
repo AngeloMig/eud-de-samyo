@@ -1548,3 +1548,10 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Logo fade (owner, idea 07 from the logo-backdrop ideas, 2026-11-26): `.ph::before` is a
   cream radial fade in the top-left corner only (behind the logo), shown once scrolled past
   40px (`.is-down`), hidden over dark sections (`.is-on-dark`). Setting `logo_backdrop`: blur (default, idea 10, owner) / fade / none.
+- Try trio pop-up = builder pop-up (owner 2026-11-26): big photo with note pictures on its
+  edge, names line, brand + ♂/♀/unisex pill, name, set price / struck solo / "Save ₱ · %".
+  Tiles get the gender icon too. New shared snippet `perfume-scent-extras` (gender + notes
+  template) — same rules as the builder. Touch (or a touch tap on a hybrid laptop): the
+  first tap opens the pop-up as a card with "Add to trio / Take it out" and ×; the old
+  size table is gone. Settings: pop_add_tap_label, pop_remove_tap_label, pop_save_label,
+  per_vial_label, for_*_label.

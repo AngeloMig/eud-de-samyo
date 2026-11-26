@@ -146,6 +146,10 @@
     data-t-pop-add="{{ section.settings.pop_add_label | escape }}"
     data-t-pop-remove="{{ section.settings.pop_remove_label | escape }}"
     data-t-pop-full="{{ section.settings.pop_full_label | escape }}"
+    data-t-pop-add-tap="{{ section.settings.pop_add_tap_label | escape }}"
+    data-t-pop-remove-tap="{{ section.settings.pop_remove_tap_label | escape }}"
+    data-t-per="{{ section.settings.per_vial_label | escape }}"
+    data-t-pop-save="{{ section.settings.pop_save_label | escape }}"
     data-t-added-one="{{ section.settings.added_one_label | escape }}"
     data-t-removed-one="{{ section.settings.removed_one_label | escape }}"
   >
@@ -238,7 +242,7 @@
                 data-name="{{ p.title | escape }}"
                 data-vendor="{{ p.vendor | escape }}"
                 data-vials="{{ vials }}"
-                {%- if p.featured_media != blank %} data-img="{{ p.featured_media.preview_image | image_url: width: 160 }}"{% endif %}
+                {%- if p.featured_media != blank %} data-img="{{ p.featured_media.preview_image | image_url: width: 480 }}"{% endif %}
                 aria-pressed="false"
                 aria-label="{{ p.vendor | escape }} {{ p.title | escape }}"
               >
@@ -248,6 +252,7 @@
                   <span class="ptt__tile-mono">{{ p.vendor | default: p.title | escape }}</span>
                 {%- endif -%}
                 <span class="ptt__tick" aria-hidden="true">✓</span>
+                {%- render 'perfume-scent-extras', p: p, men: section.settings.for_men_label, women: section.settings.for_women_label, unisex: section.settings.for_unisex_label -%}
               </button>
             </li>
           {%- endfor -%}
@@ -323,13 +328,20 @@
 
     { "type": "header", "content": "Grid and pop-up" },
     { "type": "text", "id": "grid_heading", "label": "Grid heading", "default": "Every perfume you can try" },
-    { "type": "text", "id": "hint_label", "label": "Hint (mouse)", "default": "Hover for prices · click to add" },
-    { "type": "text", "id": "hint_touch_label", "label": "Hint (touch screens)", "default": "Tap to add" },
+    { "type": "text", "id": "hint_label", "label": "Hint (mouse)", "default": "Hover for notes and prices · click to add" },
+    { "type": "text", "id": "hint_touch_label", "label": "Hint (touch screens)", "default": "Tap a scent to see it, then add it" },
     { "type": "text", "id": "hint_full_label", "label": "Hint when full", "default": "Trio full · click one to take it out" },
     { "type": "text", "id": "vial_label", "label": "Pop-up: size column", "default": "Vial" },
     { "type": "text", "id": "alone_label", "label": "Pop-up: on its own", "default": "On its own" },
     { "type": "text", "id": "in_set_label", "label": "Pop-up: in a set", "default": "In a set" },
     { "type": "text", "id": "pop_note", "label": "Pop-up note", "default": "The Try trio uses 1 ml vials." },
+    { "type": "text", "id": "pop_add_tap_label", "label": "Pop-up button on phones: add", "default": "Add to trio" },
+    { "type": "text", "id": "pop_remove_tap_label", "label": "Pop-up button on phones: remove", "default": "Take it out" },
+    { "type": "text", "id": "pop_save_label", "label": "Pop-up saving tag", "default": "Save [price] · [percent]" },
+    { "type": "text", "id": "per_vial_label", "label": "Pop-up price suffix", "default": "per [size] ml vial", "info": "[size] becomes the set's vial size." },
+    { "type": "text", "id": "for_men_label", "label": "Label: men", "default": "For men" },
+    { "type": "text", "id": "for_women_label", "label": "Label: women", "default": "For women" },
+    { "type": "text", "id": "for_unisex_label", "label": "Label: unisex", "default": "Unisex" },
     { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add to your trio" },
     { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
     { "type": "text", "id": "pop_full_label", "label": "Pop-up: full", "default": "Trio full · remove one to swap" },

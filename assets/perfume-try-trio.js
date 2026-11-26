@@ -200,24 +200,46 @@
       if (first) setTimeout(() => first.focus({ preventScroll: true }), reduce ? 0 : 450);
     }
 
-    // Pop-up next to the mouse (keyboard: next to the tile).
-    let popFor = null;
+    // Pop-up (owner 2026-11-26): the same card as the decant builder: big photo with the
+    // perfume's note pictures resting on its edge, brand + men/women icon, name, the set
+    // price with the solo price struck and the saving. Mouse: follows the pointer. Touch:
+    // the first tap opens it as a card with Add / Take it out, so phones see it too.
+    let popFor = null, lastFor = null, isTap = false;
     function drawPop(s) {
       const inT = picks.includes(s.handle);
       const full = picks.length >= count;
-      const act = inT ? ['is-muted', '−', t('PopRemove')] : full ? ['is-muted', '!', t('PopFull')] : ['', '+', t('PopAdd')];
-      const rows = UP.map((z) => {
-        const v = s.vials[z];
-        if (!v) return '';
-        const inSets = setSizes.includes(String(z));
-        return `<tr><td>${z} ml</td><td>${money(v.price)}</td><td class="ptt__pop-set">${inSets && off ? money(inSet(v.price)) : '—'}</td></tr>`;
-      }).join('');
-      pop.innerHTML = `<div class="ptt__pop-h">${s.img ? `<img src="${s.img}" alt="" width="46" height="62">` : ''}<div><small>${esc(s.vendor)}</small><b>${esc(s.name)}</b></div></div>
-        <table><thead><tr><th>${esc(t('Vial'))}</th><th>${esc(t('Alone'))}</th><th>${esc(t('InSet'))}</th></tr></thead><tbody>${rows}</tbody></table>
-        ${t('PopNote') ? `<p class="ptt__pop-note">${esc(t('PopNote'))}</p>` : ''}
-        <p class="ptt__pop-act ${act[0]}"><i aria-hidden="true">${act[1]}</i>${esc(act[2])}</p>`;
+      const isOwn = s.handle === own;
+      const v = s.vials[size];
+      const inSets = setSizes.includes(String(size)) && off > 0;
+      const tile = s.tile;
+      const forEl = tile && tile.querySelector('.pf-for');
+      const notes = [...((tile && tile.querySelector('template[data-notes]')?.content.querySelectorAll('.pf-pn')) || [])];
+      const art = notes.length ? `<span class="ptt__pop-notes">${notes.map((n, i) => `<span class="pf-pn${n.innerHTML.trim() ? '' : ' pf-pn--txt'}" style="--i:${i}">${n.innerHTML.trim() || `<b>${esc(n.dataset.i || '')}</b>`}</span>`).join('')}</span>` : '';
+      pop.classList.toggle('has-notes', notes.length > 0);
+      const per = esc((t('Per') || 'per [size] ml vial').replace('[size]', size));
+      const price = v ? (inSets
+        ? `<p class="ptt__pop-p"><span>${money(inSet(v.price))} <span class="ptt__pop-per">${per}</span></span><s>${money(v.price)}</s><span class="ptt__pop-save">${esc((t('PopSave') || 'Save [price] · [percent]').replace('[price]', money(v.price - inSet(v.price))).replace('[percent]', Math.round(off * 100) + '%'))}</span></p>`
+        : `<p class="ptt__pop-p"><span>${money(v.price)} <span class="ptt__pop-per">${per}</span></span></p>`) : '';
+      let foot;
+      if (isTap) {
+        const dis = !inT && full;
+        const label = inT ? (t('PopRemoveTap') || t('PopRemove')) : full ? t('PopFull') : (t('PopAddTap') || t('PopAdd'));
+        foot = `<div class="ptt__pop-row"><button type="button" class="ptt__pop-btn${inT ? ' is-remove' : ''}" data-pop-act${dis || (isOwn && inT) ? ' disabled' : ''}>${esc(isOwn && inT ? t('Pin') || label : label)}</button><button type="button" class="ptt__pop-x" data-pop-x aria-label="Close">×</button></div>`;
+      } else {
+        const act = inT ? ['is-muted', '−', t('PopRemove')] : full ? ['is-muted', '!', t('PopFull')] : ['', '+', t('PopAdd')];
+        foot = `<p class="ptt__pop-act ${act[0]}"><i aria-hidden="true">${act[1]}</i>${esc(act[2])}</p>`;
+      }
+      pop.innerHTML = `${s.img ? `<span class="ptt__pop-img"><img src="${s.img}" alt="">${art}</span>` : ''}
+        ${notes.length ? `<p class="ptt__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}
+        <p class="ptt__pop-top"><span>${esc(s.vendor)}</span>${forEl ? `<span class="ptt__pop-for pf-for--${forEl.dataset.for}">${forEl.innerHTML}</span>` : ''}</p>
+        <p class="ptt__pop-n">${esc(s.name)}</p>
+        ${price}${foot}`;
     }
-    function showPop(s, x, y) { popFor = s; drawPop(s); pop.classList.add('is-on'); movePop(x, y); }
+    function swapAnim(s) {
+      if (pop.classList.contains('is-on') && lastFor && lastFor !== s) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
+      lastFor = s;
+    }
+    function showPop(s, x, y) { isTap = false; pop.classList.remove('is-tap'); swapAnim(s); popFor = s; drawPop(s); pop.classList.add('is-on'); movePop(x, y); }
     function movePop(x, y) {
       const w = pop.offsetWidth, h = pop.offsetHeight, g = 18;
       let px = x + g, py = y + g, ox = '0%', oy = '0%';
@@ -227,20 +249,46 @@
       pop.style.setProperty('--ox', ox);
       pop.style.setProperty('--oy', oy);
     }
-    function hidePop() { popFor = null; pop.classList.remove('is-on'); }
+    let hideT;
+    function hidePop() { if (isTap) return; clearTimeout(hideT); popFor = null; hideT = setTimeout(() => { if (!popFor) pop.classList.remove('is-on'); }, 60); }
+    function placeTap(b) {
+      const r = b.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+      const below = r.bottom + 8, above = r.top - h - 8;
+      const y = below + h < innerHeight - 8 ? below : above > 8 ? above : Math.max(8, (innerHeight - h) / 2);
+      pop.style.translate = `${x}px ${y}px`;
+      pop.style.setProperty('--ox', '50%');
+      pop.style.setProperty('--oy', y < r.top ? '100%' : '0%');
+    }
+    function openTap(s) { isTap = true; pop.classList.add('is-tap'); swapAnim(s); popFor = s; drawPop(s); pop.classList.add('is-on'); placeTap(s.tile); }
+    function closeTap() { isTap = false; popFor = null; pop.classList.remove('is-on'); setTimeout(() => { if (!isTap) pop.classList.remove('is-tap'); }, 250); }
 
+    let lastPT = '';
     tiles.forEach((b) => {
       const s = scents.get(b.dataset.handle);
-      b.addEventListener('click', () => toggle(s.handle));
-      if (!touch) {
-        b.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') showPop(s, e.clientX, e.clientY); });
-        b.addEventListener('pointermove', (e) => { if (popFor) movePop(e.clientX, e.clientY); });
-        b.addEventListener('pointerleave', hidePop);
-      }
+      b.addEventListener('pointerdown', (e) => { lastPT = e.pointerType; });
+      b.addEventListener('click', () => {
+        if (lastPT === 'touch' || touch) { lastPT = ''; if (isTap && popFor === s) closeTap(); else openTap(s); return; }
+        toggle(s.handle);
+      });
+      b.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch' && !touch) showPop(s, e.clientX, e.clientY); });
+      b.addEventListener('pointermove', (e) => { if (popFor && !isTap) movePop(e.clientX, e.clientY); });
+      b.addEventListener('pointerleave', hidePop);
       b.addEventListener('focus', () => { if (!b.matches(':focus-visible')) return; const r = b.getBoundingClientRect(); showPop(s, r.right - 8, r.top + 12); });
       b.addEventListener('blur', hidePop);
     });
-    window.addEventListener('scroll', () => { if (popFor && !root.matches(':hover')) hidePop(); }, { passive: true });
+    pop.addEventListener('click', (e) => {
+      if (e.target.closest('[data-pop-x]')) { closeTap(); return; }
+      if (!e.target.closest('[data-pop-act]') || !popFor) return;
+      toggle(popFor.handle);
+      closeTap();
+    });
+    document.addEventListener('pointerdown', (e) => { if (isTap && !pop.contains(e.target) && !e.target.closest('[data-tile]')) closeTap(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isTap) closeTap(); });
+    window.addEventListener('scroll', () => {
+      if (isTap) { if (popFor && popFor.tile) placeTap(popFor.tile); }
+      else if (popFor && !root.matches(':hover')) hidePop();
+    }, { passive: true });
 
     cta.addEventListener('click', (e) => {
       if (cta.dataset.state === 'pick') { e.preventDefault(); toGrid(); }
