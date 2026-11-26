@@ -4,13 +4,12 @@
   "settings": {
     "cheaperTesters": false,
     "checkedOn": "2026-11-25",
-    "description": "Proposed 11-scent rotation at recommended prices; local preview only.",
     "inputs": {
       "ads": 6000,
       "allow": 2,
       "apps": null,
       "box": 40,
-      "d6": 10,
+      "d6": 0,
       "deliv": 0,
       "delivery_example": 10000,
       "delivery_luzon": 178,
@@ -20,7 +19,7 @@
       "delivery_protectionExcess": 500,
       "delivery_threshold": 10000,
       "delivery_visayas": 212,
-      "discount_value": 10,
+      "discount_value": 0,
       "fee_card": 3.5,
       "fee_cardshare": 50,
       "fee_wallet": 3.5,
@@ -28,7 +27,7 @@
       "fill": 0,
       "imp_duty": 10,
       "imp_fees": 1500,
-      "imp_value": 65022.65,
+      "imp_value": 65226.74,
       "imp_vat": 12,
       "lab": 4,
       "loss": 5,
@@ -46,43 +45,48 @@
       "ship": 15,
       "shop": 2,
       "tax_sales": null,
-      "thi": 50,
-      "tlo": 45,
+      "thi": 55,
+      "tlo": 50,
       "v1": 4,
       "v10": 9,
       "v2": 7.5,
       "v5": 8,
       "wd": 0
     },
-    "zone": "ncr"
+    "pricesUsed": "live",
+    "rotation": "proposed",
+    "scents": "avg",
+    "zone": "ncr",
+    "capturedCalculatorOrders": 20,
+    "description": "1000-order forecast using the current calculator costs and targets; in-set base prices; no extra six discount; Light Blue + Bright Crystal for women. The open calculator keeps its own order count."
   },
   "source": "dev/decant-pricing.html; AllFragrancesExcelList.xls Cost (PHP), 2026-11-23",
   "liveSource": "dev/pricing/live-prices-2026-11-25.json",
-  "pricesUsed": "recommended",
+  "pricesUsed": "live",
   "recommendedMarginBand": [
-    0.45,
-    0.5
+    0.5,
+    0.55
   ],
   "verifiedBands": [
     {
       "ml": 1,
-      "min": 0.46613283258045324,
-      "max": 0.4822443713450292
+      "min": 0.4987865837320575,
+      "max": 0.5517784795321636
     },
     {
       "ml": 2,
-      "min": 0.4613858632087466,
-      "max": 0.4903815377951052
+      "min": 0.5111823781676413,
+      "max": 0.541060150206311
     },
     {
       "ml": 5,
-      "min": 0.4729191204362257,
-      "max": 0.4772116479723901
+      "min": 0.5232032622879513,
+      "max": 0.5251510635964913
     },
     {
       "ml": 10,
-      "min": 0.4741214925859541,
-      "max": 0.47528010970353923
+      "min": 0.5238932330827067,
+      "max": 0.5250881965944273
     }
   ],
   "products": [
@@ -93,12 +97,24 @@
       "handle": "dior-sauvage-eau-de-parfum",
       "image": "samyo-dior-sauvage-edp.webp",
       "prices": [
-        345,
-        645,
-        1480,
-        2945
+        381.1,
+        710.4,
+        2100,
+        3065
+      ],
+      "recommendedPrices": [
+        360,
+        685,
+        1675,
+        3320
       ],
       "livePrices": [
+        515,
+        960,
+        2100,
+        3065
+      ],
+      "soloPrices": [
         515,
         960,
         2100,
@@ -116,12 +132,24 @@
       "handle": "dior-homme-intense",
       "image": "samyo-dior-homme-intense.webp",
       "prices": [
-        285,
-        535,
-        1205,
-        2395
+        388.5,
+        721.5,
+        2125,
+        3110
+      ],
+      "recommendedPrices": [
+        300,
+        565,
+        1365,
+        2705
       ],
       "livePrices": [
+        525,
+        975,
+        2125,
+        3110
+      ],
+      "soloPrices": [
         525,
         975,
         2125,
@@ -139,12 +167,24 @@
       "handle": "hermes-terre-d-hermes-eau-de-toilette",
       "image": "samyo-brand-hermes-1.webp",
       "prices": [
-        205,
-        370,
-        820,
-        1615
+        203.5,
+        355.2,
+        1005,
+        1450
+      ],
+      "recommendedPrices": [
+        220,
+        395,
+        925,
+        1825
       ],
       "livePrices": [
+        275,
+        480,
+        1005,
+        1450
+      ],
+      "soloPrices": [
         275,
         480,
         1005,
@@ -162,12 +202,24 @@
       "handle": "uomo-born-in-roma-eau-de-toilette",
       "image": "samyo-brand-valentino-2.webp",
       "prices": [
-        250,
-        465,
-        1045,
-        2065
+        303.4,
+        555,
+        1625,
+        2365
+      ],
+      "recommendedPrices": [
+        265,
+        495,
+        1180,
+        2330
       ],
       "livePrices": [
+        410,
+        750,
+        1625,
+        2365
+      ],
+      "soloPrices": [
         410,
         750,
         1625,
@@ -185,12 +237,24 @@
       "handle": "eros-eau-de-toilette",
       "image": "samyo-brand-versace-1.webp",
       "prices": [
-        165,
-        285,
-        615,
-        1205
+        196.1,
+        340.4,
+        950,
+        1365
+      ],
+      "recommendedPrices": [
+        175,
+        305,
+        690,
+        1360
       ],
       "livePrices": [
+        265,
+        460,
+        950,
+        1365
+      ],
+      "soloPrices": [
         265,
         460,
         950,
@@ -206,14 +270,26 @@
       "title": "Y Eau de Parfum",
       "vendor": "Yves Saint Laurent",
       "handle": "y-eau-de-parfum",
-      "image": "samyo-brand-ysl-1.webp",
+      "image": null,
       "prices": [
-        260,
-        480,
-        1080,
-        2135
+        362.6,
+        669.7,
+        1965,
+        2870
+      ],
+      "recommendedPrices": [
+        275,
+        510,
+        1220,
+        2410
       ],
       "livePrices": [
+        490,
+        905,
+        1965,
+        2870
+      ],
+      "soloPrices": [
         490,
         905,
         1965,
@@ -229,14 +305,26 @@
       "title": "Wood Sage & Sea Salt Cologne",
       "vendor": "Jo Malone London",
       "handle": "wood-sage-sea-salt-cologne",
-      "image": "samyo-brand-jo-malone-2.webp",
+      "image": null,
       "prices": [
-        285,
-        525,
-        1190,
-        2365
+        325.6,
+        592,
+        1740,
+        2540
+      ],
+      "recommendedPrices": [
+        300,
+        560,
+        1345,
+        2665
       ],
       "livePrices": [
+        440,
+        800,
+        1740,
+        2540
+      ],
+      "soloPrices": [
         440,
         800,
         1740,
@@ -254,12 +342,24 @@
       "handle": "dolce-gabbana-the-one",
       "image": "samyo-dg-the-one.webp",
       "prices": [
-        130,
-        225,
-        465,
-        900
+        196.1,
+        340.4,
+        960,
+        1375
+      ],
+      "recommendedPrices": [
+        145,
+        235,
+        520,
+        1015
       ],
       "livePrices": [
+        265,
+        460,
+        960,
+        1375
+      ],
+      "soloPrices": [
         265,
         460,
         960,
@@ -277,12 +377,24 @@
       "handle": "emporio-armani-stronger-with-you-intensely",
       "image": "samyo-armani-stronger-with-you-intensely.webp",
       "prices": [
-        245,
-        455,
-        1015,
-        2015
+        325.6,
+        592,
+        1750,
+        2545
+      ],
+      "recommendedPrices": [
+        260,
+        480,
+        1150,
+        2270
       ],
       "livePrices": [
+        440,
+        800,
+        1750,
+        2545
+      ],
+      "soloPrices": [
         440,
         800,
         1750,
@@ -294,39 +406,53 @@
       "proposedAddition": false
     },
     {
-      "id": "dylan",
-      "title": "Dylan Blue EDT (men)",
-      "vendor": "Versace",
-      "handle": "preview-dylan",
-      "image": null,
-      "prices": [
-        150,
-        255,
-        545,
-        1065
-      ],
-      "livePrices": null,
-      "bottleMl": 100,
-      "wholesale": 3310.03,
-      "landed": 3806.53,
-      "proposedAddition": true
-    },
-    {
       "id": "lightblue",
       "title": "Light Blue EDT (women)",
       "vendor": "Dolce & Gabbana",
       "handle": "preview-lightblue",
       "image": null,
       "prices": [
-        130,
-        215,
-        450,
-        870
+        140,
+        230,
+        505,
+        980
+      ],
+      "recommendedPrices": [
+        140,
+        230,
+        505,
+        980
       ],
       "livePrices": null,
+      "soloPrices": null,
       "bottleMl": 100,
       "wholesale": 2607.21,
       "landed": 2998.29,
+      "proposedAddition": true
+    },
+    {
+      "id": "bright",
+      "title": "Bright Crystal EDT (women)",
+      "vendor": "Versace",
+      "handle": "preview-bright",
+      "image": null,
+      "prices": [
+        180,
+        310,
+        705,
+        1385
+      ],
+      "recommendedPrices": [
+        180,
+        310,
+        705,
+        1385
+      ],
+      "livePrices": null,
+      "soloPrices": null,
+      "bottleMl": 90,
+      "wholesale": 3514.12,
+      "landed": 4041.24,
       "proposedAddition": true
     }
   ],
@@ -338,18 +464,18 @@
       "discount": 0,
       "share": 40,
       "orders": 400,
-      "averagePrice": 668.18,
-      "contributionPerOrder": 318.02
+      "averagePrice": 818.86,
+      "contributionPerOrder": 453.95
     },
     {
       "id": "s1",
       "count": 6,
       "ml": 1,
-      "discount": 10,
+      "discount": 0,
       "share": 15,
       "orders": 150,
-      "averagePrice": 1202.73,
-      "contributionPerOrder": 568.48
+      "averagePrice": 1637.73,
+      "contributionPerOrder": 962.58
     },
     {
       "id": "t2",
@@ -358,18 +484,18 @@
       "discount": 0,
       "share": 20,
       "orders": 200,
-      "averagePrice": 1215,
-      "contributionPerOrder": 593.21
+      "averagePrice": 1477.25,
+      "contributionPerOrder": 829.25
     },
     {
       "id": "s2",
       "count": 6,
       "ml": 2,
-      "discount": 10,
+      "discount": 0,
       "share": 5,
       "orders": 50,
-      "averagePrice": 2187,
-      "contributionPerOrder": 1018.75
+      "averagePrice": 2954.51,
+      "contributionPerOrder": 1713.18
     },
     {
       "id": "d5",
@@ -378,8 +504,8 @@
       "discount": 0,
       "share": 12,
       "orders": 120,
-      "averagePrice": 1801.82,
-      "contributionPerOrder": 854.43
+      "averagePrice": 2805.45,
+      "contributionPerOrder": 1766.21
     },
     {
       "id": "x10",
@@ -388,50 +514,62 @@
       "discount": 0,
       "share": 8,
       "orders": 80,
-      "averagePrice": 1779.55,
-      "contributionPerOrder": 845.05
+      "averagePrice": 2095.45,
+      "contributionPerOrder": 1127.56
     }
   ],
   "forecast": {
     "orders": 1000,
-    "averageOrder": 1158.61,
-    "sales": 1158613.64,
-    "contribution": 552197.16,
-    "margin": 0.4766016407660315,
-    "leftoverWaste": 4550.49,
-    "netContribution": 547646.67,
-    "fullyCostedMargin": 0.47267411093731804,
+    "averageOrder": 1520.67,
+    "sales": 1520671.82,
+    "contribution": 879628.39,
+    "margin": 0.5784472227984808,
+    "leftoverWaste": 4776.7,
+    "netContribution": 874851.69,
+    "fullyCostedMargin": 0.5753060465083083,
     "ads": 6000,
     "fixedCost": 1550,
     "missingFixedCosts": [
       "Apps",
       "Other fixed costs"
     ],
-    "operatingBeforeTax": 540096.67,
+    "operatingBeforeTax": 867301.69,
     "pouredMl": 5900,
-    "bottlesPerScent": 6,
-    "margin45": 513826.14,
-    "margin50": 571756.82,
+    "bottlesPerScent": {
+      "lightblue": 6,
+      "one": 6,
+      "eros": 6,
+      "bright": 7,
+      "terre": 6,
+      "swy": 6,
+      "roma": 6,
+      "y": 6,
+      "wss": 6,
+      "homme": 6,
+      "sauvage": 6
+    },
+    "margin45": 676752.32,
+    "margin50": 752785.91,
     "adSensitivity": [
       {
         "ads": 6000,
         "perOrder": 6,
-        "operatingBeforeTax": 540096.67
+        "operatingBeforeTax": 867301.69
       },
       {
         "ads": 30000,
         "perOrder": 30,
-        "operatingBeforeTax": 516096.67
+        "operatingBeforeTax": 843301.69
       },
       {
         "ads": 75000,
         "perOrder": 75,
-        "operatingBeforeTax": 471096.67
+        "operatingBeforeTax": 798301.69
       },
       {
         "ads": 150000,
         "perOrder": 150,
-        "operatingBeforeTax": 396096.67
+        "operatingBeforeTax": 723301.69
       }
     ]
   }

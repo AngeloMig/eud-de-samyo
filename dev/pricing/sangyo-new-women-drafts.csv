@@ -1,0 +1,9 @@
+﻿Handle,Title,Body (HTML),Vendor,Type,Tags,Published,Option1 Name,Option1 Value,Variant Price,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Fulfillment Service,Variant Requires Shipping,Variant Taxable,Status
+light-blue-eau-de-toilette,Light Blue Eau de Toilette,"<p>Perfume decants in 1ml, 2ml, 5ml and 10ml sizes. Independently decanted; not affiliated with the fragrance brand.</p>",Dolce & Gabbana,Fragrance,"Women, Decant",FALSE,Size,1 ml,190.00,shopify,0,deny,manual,TRUE,TRUE,draft
+light-blue-eau-de-toilette,,,,,,,Size,2 ml,315.00,shopify,0,deny,manual,TRUE,TRUE,
+light-blue-eau-de-toilette,,,,,,,Size,5 ml,505.00,shopify,0,deny,manual,TRUE,TRUE,
+light-blue-eau-de-toilette,,,,,,,Size,10 ml,980.00,shopify,0,deny,manual,TRUE,TRUE,
+bright-crystal-eau-de-toilette,Bright Crystal Eau de Toilette,"<p>Perfume decants in 1ml, 2ml, 5ml and 10ml sizes. Independently decanted; not affiliated with the fragrance brand.</p>",Versace,Fragrance,"Women, Decant",FALSE,Size,1 ml,245.00,shopify,0,deny,manual,TRUE,TRUE,draft
+bright-crystal-eau-de-toilette,,,,,,,Size,2 ml,420.00,shopify,0,deny,manual,TRUE,TRUE,
+bright-crystal-eau-de-toilette,,,,,,,Size,5 ml,705.00,shopify,0,deny,manual,TRUE,TRUE,
+bright-crystal-eau-de-toilette,,,,,,,Size,10 ml,1385.00,shopify,0,deny,manual,TRUE,TRUE,

@@ -49,6 +49,18 @@ Shopify admin ("Add media from URL"); local copies in `dev/source-photos/fragran
 
 The One for Men uses the owner's photo `samyo-dg-the-one.webp` (173x266, small).
 
+## Light Blue and Bright Crystal product media (2026-11-26)
+
+At the owner's request, imported unaltered FragranceX retailer images through
+Shopify's media URL picker, under the owner's existing CJ/FragranceX image-use
+approval recorded above. Matched the EDT source-bottle listings (Light Blue
+100ml item 418217; Bright Crystal 90ml item 427251), not the EDP/Parfum versions.
+
+| Shopify media | Product | Source |
+|---|---|---|
+| wlightblue.jpg | Dolce & Gabbana Light Blue Eau de Toilette | https://img.fragrancex.com/images/products/sku/large/wlightblue.jpg — https://www.fragrancex.com/products/dolce-and-gabbana/light-blue-perfume |
+| bcrystalw.jpg | Versace Bright Crystal Eau de Toilette | https://img.fragrancex.com/images/products/sku/large/bcrystalw.jpg — https://www.fragrancex.com/products/versace/bright-crystal-perfume |
+
 ## Bottle-only photos (supplied by the store owner, 2026-11-21) — now used on the home page
 
 Source not stated; the Sauvage and Dolce & Gabbana shots look like brand or retailer

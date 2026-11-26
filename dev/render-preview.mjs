@@ -243,7 +243,9 @@ let DEMO_RATINGS = false; // example ratings for the product-section preview onl
 function demoProduct(sectionName, i) {
   const d = sectionName === 'perfume-showcase' ? demo.showcase?.[i] : null;
   if (!d) return null;
-  const variants = d.variants.map(([title, price, available]) => ({ id: ++variantId, title, price, available }));
+  const proposed = decantPricing?.products.find(p => p.id === ['sauvage', 'homme', 'one', 'swy'][i]);
+  const sizes = proposed ? [1, 2, 5, 10].map((ml, n) => [`${ml} ml`, (proposed.soloPrices||proposed.prices)[n]*100, true]) : d.variants;
+  const variants = sizes.map(([title, price, available]) => ({ id: ++variantId, title, price, available }));
   const first = variants.find((v) => v.available) || variants[0];
   return {
     title: d.title,
@@ -317,6 +319,7 @@ const PREVIEW_LINKS = [
 ];
 const linkPages = (html) =>
   html.replace(/href="([^"]*)"/g, (all, url) => {
+    if (url.startsWith('/pages/build-your-set')) return `href="${url.replace('/pages/build-your-set', 'vial-picker.html')}"`;
     const hit = PREVIEW_LINKS.find(([re]) => re.test(url));
     return hit ? `href="${hit[1]}"` : all;
   });
@@ -386,7 +389,7 @@ ${head}
 ${body}
 ${filler ? '<div class="preview-next">Next section…</div>' : ''}
 </body>
-</html>`);
+</html>`.replace(/[ \t]+$/gm, ''));
 
 const showcaseOverrides = {};
 if (args.autoplay) showcaseOverrides.autoplay = true;
@@ -827,12 +830,16 @@ async function renderGroupScoped(file, scope) {
   if (homme) {
     let dv = 8800;
     const proposed = decantPricing.products.find(p => p.id === 'homme');
-    const sizes = [1, 2, 5, 10].map((ml, i) => [`${ml} ml`, proposed.prices[i]]);
+    const sizes = [1, 2, 5, 10].map((ml, i) => [`${ml} ml`, (proposed.soloPrices||proposed.prices)[i]]);
     const variants = sizes.map(([title, p]) => ({ id: ++dv, title, price: p * 100, available: true, options: [title], compare_at_price: null, featured_media: null }));
-    const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: Math.min(...proposed.prices)*100, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
+    const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: Math.min(...(proposed.soloPrices||proposed.prices))*100, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
     const dScope = { product: decant, collection: null, template: { name: 'product' }, collections: { all: { products: demoProducts } }, pages: { 'build-your-set': { url: 'vial-picker.html' } } };
     const dHeader = await renderGroupScoped('header-group.json', dScope);
     const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
+    // Solo variant prices stay higher; both set nudges return to the same base.
+    for (const section of Object.values(productTpl.sections)) for (const block of Object.values(section.blocks||{})) {
+      if (block.settings && Object.hasOwn(block.settings,'six_discount')) block.settings.six_discount=26;
+    }
     const main = await renderSection('main-product-perfume', 'main', {}, productTpl.sections.main, {}, dScope);
     // PREVIEW ONLY: an example FragranceX offer (example.com link, not a real CJ link).
     decant.metafields.samyo = { affiliate_offers: { value: [{ size: '100 ml', url: 'https://example.com/cj-link', price: '₱10,376.98', in_stock: true }] }, retailer: { value: 'FragranceX' }, price_checked: { value: '2026-11-22' } };

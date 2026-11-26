@@ -173,8 +173,9 @@
 <header>
  <h1>Decant pricing: contribution before ads and fixed overhead</h1>
  <p class="lede">Target: a <b>fully costed contribution margin inside your band (default 45–50%)</b> on every in-house decant set, after the set discount, for every possible mix of scents. Margin = (selling price − all variable order costs) ÷ selling price. Ads and fixed costs come off separately in the monthly plan. Bottle costs use the peso <b>Cost</b> column in your wholesale list dated 23 Nov 2026. Nothing here changes the live store.</p>
- <p class="sub" style="margin-top:12px">Proposed rotation: Oud Wood is excluded from decant calculations; Dylan Blue EDT for men and Light Blue EDT for women replace it. Their selling prices are recommendations, not existing store prices. The other nine scents keep their existing selling prices unless you turn on the recommended-price preview.</p>
- <p class="sub">Live prices checked 25 Nov 2026: the store still has the original ten scents, with 26% off trios and 30% off six-vial sets. The live comparison uses those discounts. Recommendations use no trio discount and your editable six-vial discount (10% by default). Local previews show the proposed 11-scent rotation at recommended prices.</p>
+ <p class="sub" style="margin-top:12px">In-set base prices copied from the live trio on 25 Nov 2026. Sauvage is ₱381.10 per 1ml vial (solo ₱515). The higher solo price adjustment is already included in this base. Trios and six-vial sets use the same price per vial, with no extra six-vial discount. Optional recommended prices stay separate. The live store still showed 30% off six-vial sets when checked; only this calculator and the local previews follow the new rule.</p>
+ <div class="inp" id="rotation-input" style="margin-top:16px"></div>
+ <p class="sub" id="rotation-note" style="margin-top:8px"></p>
  <p id="save-status" class="sub" role="status" style="font-size:12px;margin:12px 0 0">Changes save automatically in this browser.</p>
 </header>
 
@@ -198,7 +199,7 @@
  <div class="gbody">
   <p class="how"><b>How to read this:</b> landed bottle cost = wholesale Cost × (1 − any extra supplier discount) × (1 + import %). These prices already include the wholesale discount; leave the extra discount at 0 unless your supplier offers another reduction. Source: AllFragrancesExcelList.xls, “Pricelist - All Fragrances”, updated 23 Nov 2026. Each perfume row below shows its item number and spreadsheet row.</p>
   <div class="inp" id="import-inputs"></div>
-  <label class="tester"><input type="checkbox" id="usetester"> Use a 100ml tester only when cheaper: Eros ₱2,519.20, Terre d’Hermès ₱3,507.74, Dylan Blue ₱2,607.21 and Light Blue ₱2,295.98. The One stays regular at ₱2,711.16; its tester costs more.</label>
+  <label class="tester"><input type="checkbox" id="usetester"> Use a same-size tester only when cheaper: Eros 100ml ₱2,519.20, Terre d’Hermès 100ml ₱3,507.74, Light Blue 100ml ₱2,295.98 and Bright Crystal 90ml ₱2,997.52. The One stays regular at ₱2,711.16; its tester costs more.</label>
   <div id="purchase-summary" class="sheet" style="margin-top:16px" aria-live="polite"></div>
   <div class="panel" id="import-calc">
    <h3>Work it out</h3>
@@ -266,14 +267,14 @@
 </details>
 
 <h2 id="vials">Price of each vial: current and recommended</h2>
-<p class="how"><b>How to read this:</b> each cell compares your existing price with the recommendation and shows its margin in a set of that scent (trio for 1 and 2 ml, duo for 5 ml, a single 10 ml). Dylan Blue and Light Blue have draft recommended prices until you set their store prices. Red = below your lowest target, green = above your highest.</p>
+<p class="how"><b>How to read this:</b> live mode shows what a customer pays per vial in its usual set: 1 and 2ml at the in-set base copied from the live trio, 5ml in a duo, and a single 10ml. Six-vial sets use the same unit base, with no further discount. Turn on the recommended-price preview to compare optional new prices.</p>
 <p class="sub">One price per perfume and size, used everywhere (picker, sets, Shopify). Recommended prices are searched so that every set and every scent combination lands inside the target band after the set discount, then rounded up to ₱5 and checked again. Vial cost = perfume, vial, label and filling labour, before the order’s box, packing, fees and allowance.</p>
 <p class="legend" id="vial-legend"></p>
 <label class="pvsw"><input type="checkbox" class="pv-toggle"> <span><b>Preview the recommended prices everywhere</b> · your store does not change.</span></label>
 <p class="pvnote" id="pvnote" hidden></p>
 <div class="card tablewrap"><table id="t-vial"></table></div>
 <div class="card csv">
-  <p class="sub" style="margin:0 0 10px">Update Shopify by spreadsheet: download a CSV, change the <b>Variant Price</b> column in Excel or Google Sheets if you like, save it as CSV, then in Shopify go to <b>Products → Import</b>, choose the file and tick <b>“Overwrite products with matching handles”</b>. Only the columns in the file change. Export your products first as a backup. Both exports include the nine existing active scents only; Oud Wood is excluded, and the two proposed additions need store products first.</p>
+  <p class="sub" style="margin:0 0 10px">Update Shopify by spreadsheet: download a CSV, change the <b>Variant Price</b> column in Excel or Google Sheets if you like, save it as CSV, then in Shopify go to <b>Products → Import</b>, choose the file and tick <b>“Overwrite products with matching handles”</b>. Only the columns in the file change. Export your products first as a backup. Both exports include existing products in the selected rotation; the two proposed additions need store products first. Recommended CSV prices for 1/2ml are solo prices (base +35%, rounded up to ₱5), not an additional discount on the base.</p>
   <div class="bt"><button type="button" id="csv-rec">Download CSV · recommended prices</button>
   <button type="button" id="csv-cur">Download CSV · current prices</button></div>
 </div>
@@ -283,7 +284,8 @@
 <div class="card tablewrap"><table id="t-comp"></table></div>
 
 <h2>Profit per bottle</h2>
-<p class="how"><b>How to read this:</b> each cell is one full bottle poured into one size and sold at the recommended prices. Bold = contribution before ads; then profit after ads, operating profit after ads and fixed overhead, and that operating profit as a return on what the bottle cost you. Smaller lines show how it adds up; the last line compares your existing price (draft recommendation for the two additions).</p>
+<p class="how"><b>How to read this:</b> each cell is one full bottle poured into one size, using the selected live or recommended price mode. Bold = contribution before ads; then profit after ads and fixed overhead. The higher solo-price adjustment is already included in the in-set base; it is not deducted again.</p>
+<p class="how" id="bottle-ads-note"></p>
 <p class="sub">Sets mix different scents, so each vial carries its share of one order’s costs: a third of a trio for 1 and 2 ml, half a duo for 5 ml, a whole order for 10 ml. <b>Order share</b> = vials ÷ vials per set (the number of orders’ worth of box, fees, ads and overhead the bottle carries). Usable ml = bottle ml × (1 − transfer loss); the transfer loss is already inside the perfume cost per usable ml. Usable ml that can’t fill one more vial is charged once as leftover perfume (waste).</p>
 <div class="defs" id="bottle-defs">
  <span><b>Contribution</b> = sales − all variable costs: perfume in the vials, leftover perfume (waste), vials, labels, filling, the order-cost share (box, packing, payment fee per order, delivery, protection) and the payment, Shopify and reserve %.</span>
@@ -293,8 +295,8 @@
 </div>
 <div class="card tablewrap"><table id="t-bottle"></table></div>
 <div class="card" id="inventory-profit">
- <h3 style="margin-top:0">If you sell all 11 bottles</h3>
- <p class="sub">One 100ml bottle of each active scent, poured entirely into the size shown. Uses the existing selling prices for nine scents and recommended prices for Dylan Blue and Light Blue, or all recommended prices when preview is on. Each row is an alternative, not an amount to add to the others. Ads and overhead use the order shares explained above; this is a stock sell-through estimate, not a monthly forecast.</p>
+  <h3 style="margin-top:0" id="inventory-profit-title">If you sell all the bottles</h3>
+ <p class="sub">One full bottle of each scent in your selected rotation: 90ml for Bright Crystal and 100ml for the other scents. Uses the selected base or recommended prices. Each row is an alternative. Ads and overhead use order shares; this is a stock sell-through estimate, not a monthly forecast.</p>
  <div class="tablewrap"><table id="t-inventory-profit"></table></div>
  <p class="sub" id="inventory-profit-note" style="margin:12px 0 0"></p>
 </div>
@@ -317,7 +319,7 @@
 <div id="conflicts"></div>
 
 <h2 id="try-set">Try a set</h2>
-<p class="how"><b>How to read this:</b> pick a set and tap scents, then read the cost lines top to bottom: what the customer pays, what each cost takes, and what is left. Uses the recommended prices.</p>
+<p class="how"><b>How to read this:</b> uses your selected live or recommended price mode. In live mode, the scent buttons show the price per vial after the live set discount. The tray also shows the original subtotal and the discount so you can compare it with your website.</p>
 <div class="card">
  <div class="inp" id="discount-inputs"></div>
  <p class="sub" style="margin:12px 0 0">Try an additional order discount after the bundle discount. This applies only to the set below; recommended prices and the other tables stay at their base settings. Delivery eligibility uses the discounted item total.</p>
@@ -335,7 +337,7 @@
 <div class="card" id="sheet"></div>
 
 <h2>Operating profit per order (example)</h2>
-<p class="how"><b>How to read this:</b> one order of each set with the cheapest scents at recommended prices: contribution, minus ads per order, minus fixed costs per order. Green = that order pays for itself.</p>
+<p class="how"><b>How to read this:</b> one order of each set with the cheapest scents in the selected price mode: contribution, minus ads per order and fixed costs per order.</p>
 <div class="card tablewrap"><table id="t-op"></table></div>
 
 <h2 id="stock">Stock</h2>
@@ -343,6 +345,12 @@
 <div class="card">
  <div class="inp" id="stock-inputs" style="margin-bottom:14px"></div>
  <div class="tablewrap"><table id="t-stock"></table></div>
+</div>
+<div class="card" id="bottle-life">
+ <h3 style="margin-top:0">How many months will a bottle last?</h3>
+ <p class="sub" id="bottle-life-summary"></p>
+ <div class="tablewrap"><table id="t-bottle-life"></table></div>
+ <p class="sub" style="margin:12px 0 0">Updates with your monthly order count, set mix and scent assumption. A full bottle allows for transfer loss. Actual scent preferences can use some bottles faster. Count your stock above to also see months remaining.</p>
 </div>
 
 <details class="grp" id="g-aff" style="margin-top:44px">
@@ -384,7 +392,8 @@ const PERFUMES=[ // [id, brand, name, historical retail ₱, bottle ml, retail s
  ['one','Dolce & Gabbana','The One for Men EDP',4903.34,100,'FragranceX · 100 ml EDP',FX+'dolce-and-gabbana/the-one-cologne',4071.21],
  ['swy','Emporio Armani','Stronger With You Intensely',8318.61,100,'FragranceX · 100 ml EDP',FX+'giorgio-armani/stronger-with-you-intensely-cologne'],
  ['dylan','Versace','Dylan Blue EDT (men)',null,100,'Retail price not entered',FX+'versace/versace-pour-homme-dylan-blue-cologne'],
- ['lightblue','Dolce & Gabbana','Light Blue EDT (women)',null,100,'Retail price not entered',FX+'dolce-and-gabbana/light-blue-perfume']];
+ ['lightblue','Dolce & Gabbana','Light Blue EDT (women)',null,100,'Retail price not entered',FX+'dolce-and-gabbana/light-blue-perfume'],
+ ['bright','Versace','Bright Crystal EDT (women)',null,90,'Retail price not entered',FX+'versace/bright-crystal-perfume']];
 // AllFragrancesExcelList.xls / Pricelist - All Fragrances, updated 2026-11-23.
 // H = Cost (PHP); regular 100ml spray, exact concentration. G (Retail Price)
 // and I (Discount) are not used. Item IDs and rows are 1-based Excel references.
@@ -400,13 +409,18 @@ const WHOLESALE={
  one:{cost:2711.16,item:'531952',row:10529,tester:3125.08,testerItem:'539995',testerRow:10527},
  swy:{cost:6760.37,item:'547632',row:10308},
  dylan:{cost:3310.03,item:'534152',row:11121,tester:2607.21,testerItem:'535703',testerRow:11120},
- lightblue:{cost:2607.21,item:'418217',row:7226,tester:2295.98,testerItem:'446006',testerRow:7224}
+ lightblue:{cost:2607.21,item:'418217',row:7226,tester:2295.98,testerItem:'446006',testerRow:7224},
+ bright:{cost:3514.12,item:'427251',row:2235,tester:2997.52,testerItem:'446759',testerRow:2233}
 };
-const DRAFT_IDS=['dylan','lightblue'];
-const ACTIVE_IDS=['sauvage','homme','terre','roma','eros','y','wss','one','swy',...DRAFT_IDS];
+const DRAFT_IDS=['lightblue','bright'];
+const PROPOSED_IDS=['sauvage','homme','terre','roma','eros','y','wss','one','swy',...DRAFT_IDS];
+let ACTIVE_IDS=PROPOSED_IDS.slice();
 // Live store prices before this review (per vial: 1 / 2 / 5 / 10 ml), set 22 Nov 2026.
-const LIVE={sauvage:[515,960,2100,3065],homme:[525,975,2125,3110],terre:[275,480,1005,1450],oud:[880,1690,3780,5560],roma:[410,750,1625,2365],eros:[265,460,950,1365],y:[490,905,1965,2870],wss:[440,800,1740,2540],one:[265,460,960,1375],swy:[440,800,1750,2545]}; // verified live variant prices, 25 Nov 2026, before bundle discounts
-const LIVE_DISCOUNTS={t1:0.26,s1:0.30,t2:0.26,s2:0.30,d5:0,x10:0}; // builder display, checked same day
+const SOLO={sauvage:[515,960,2100,3065],homme:[525,975,2125,3110],terre:[275,480,1005,1450],oud:[880,1690,3780,5560],roma:[410,750,1625,2365],eros:[265,460,950,1365],y:[490,905,1965,2870],wss:[440,800,1740,2540],one:[265,460,960,1375],swy:[440,800,1750,2545]}; // verified Shopify solo variant prices, 25 Nov 2026
+// Reverse the higher solo price ONCE to obtain the actual in-set base.
+// Six-vial sets use the same base; there is no further volume discount.
+const LIVE=Object.fromEntries(Object.entries(SOLO).map(([id,prices])=>[id,prices.map((p,i)=>i<2?(Math.round(p*100)-Math.round(p*100*.26))/100:p)]));
+const LIVE_DISCOUNTS={t1:0,s1:0,t2:0,s2:0,d5:0,x10:0}; // prices already are the in-set base
 // What the tables use: the live store prices, or (preview) the recommended ones. The store is never changed here.
 let CURRENT=LIVE;
 const SETS=[ // [id, name, count, ml, discount key]
@@ -445,9 +459,9 @@ const COSTS=[
 const IMPORT=[
  ['wd','Extra supplier discount %',0,0.5,'Wholesale is already included. Enter 0 unless the supplier grants an additional discount.'],
  ['ship','Import cost, % of bottle price',25,0.1,'Customs duty + VAT + fees. Work it out below, or type your own.']];
-const IMPH=[['imp_duty','Customs duty %',10,0.5],['imp_vat','VAT %',12,0.5,'Charged on order value + duty.'],['imp_fees','Fixed import fees per shipment ₱',1500,50,'Broker, handling, customs processing.'],['imp_value','Planned order value ₱',65022.65,0.01,'One regular 100ml bottle of all 11 active scents, before any extra discount. Edit to match your shipment.']];
+const IMPH=[['imp_duty','Customs duty %',10,0.5],['imp_vat','VAT %',12,0.5,'Charged on order value + duty.'],['imp_fees','Fixed import fees per shipment ₱',1500,50,'Broker, handling, customs processing.'],['imp_value','Planned order value ₱',65226.74,0.01,'One regular bottle of each proposed scent: ten 100ml and one 90ml. Edit to match your shipment.']];
 const SHIPPING=[['threshold','Free standard delivery from ₱',10000,1],['ncr','NCR standard delivery ₱',85,1],['luzon','Other Luzon standard delivery ₱',178,1],['visayas','Visayas standard delivery ₱',212,1],['mindanao','Mindanao standard delivery ₱',234,1],['protection','Item protection rate %',1,0.1],['protectionExcess','Value exempt from item protection ₱',500,1]];
-const TARGETS=[['tlo','Lowest margin %',45,1],['thi','Highest margin %',50,1],['d6','Six-vial set discount %',10,1]];
+const TARGETS=[['tlo','Lowest margin %',45,1],['thi','Highest margin %',50,1],['d6','Extra six-vial discount %',0,1]];
 const PLAN=[['ads','Ad spend per month ₱',6000,500],['orders','Orders per month',1000,1]];
 const MIX=[['t1',40],['s1',15],['t2',20],['s2',5],['d5',12],['x10',8]];   // default set mix, % of orders (sums to 100)
 const PRESETS=[[35,45],[40,45],[45,50],[50,55]];
@@ -455,11 +469,20 @@ const FIXED=[['plan','Shopify Basic per month ₱',1550],['apps','Apps per month
 const AFF=[['rate','CJ commission rate % (from your CJ account)']];
 const BOTTLE_SET={1:['t1','Try trio',3,1,null],2:['t2','Wear trio',3,2,null],5:['d5','Signature duo',2,5,null],10:['x10','Travel ten',1,10,null]};
 const MB_DEFAULT={1:25,2:10,5:5,10:2};
-const DECANTS=PERFUMES.filter(p=>ACTIVE_IDS.includes(p[0]));
+let DECANTS=PERFUMES.filter(p=>ACTIVE_IDS.includes(p[0]));
 
 let saved={};
 try{const parsed=JSON.parse(localStorage.getItem(KEY)||'{}');if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))saved=parsed}catch(e){saved={}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(saved));$('save-status').textContent='Saved in this browser. Your inputs, discount, set and scents restore on reload.'}catch(e){$('save-status').textContent='This browser could not save your changes. Keep this page open to retain them.'}}
+if(!saved.liveCopy20261125){
+ saved.beforeLiveCopy={previewRec:saved.previewRec,discount:saved['in:discount_value'],rotation:saved.rotation};
+ saved.previewRec=false;saved.planPrices='current';saved.mbPrices='current';saved.rotation='live';
+ saved['in:discount_value']=0;saved.liveCopy20261125=true;save();
+}
+ACTIVE_IDS=saved.rotation==='proposed'?PROPOSED_IDS.slice():Object.keys(LIVE);
+DECANTS=PERFUMES.filter(p=>ACTIVE_IDS.includes(p[0]));
+if(!saved.noExtraSixDiscount){saved.previousSixDiscount=saved['in:d6'];saved['in:d6']=0;saved.noExtraSixDiscount=true;save()}
+if(!saved.twoWomenRotation){saved.rotation='proposed';saved.twoWomenRotation=true;save();ACTIVE_IDS=PROPOSED_IDS.slice();DECANTS=PERFUMES.filter(p=>ACTIVE_IDS.includes(p[0]))}
 // Switching from retail-based estimates to actual wholesale costs must not
 // apply the old wholesale discount twice. Regular bottles are the agreed base.
 // Preserve the old choice for reference and every unrelated saved input.
@@ -484,15 +507,21 @@ function field(id,label,def,step,withConfirm,hint){
 const select=(id,label,opts,val)=>`<div class="f"><label for="${id}">${label}</label><select id="${id}">${opts.map(([v,t])=>`<option value="${v}"${v===val?' selected':''}>${t}</option>`).join('')}</select></div>`;
 const savedNum=id=>saved['in:'+id]!=null?saved['in:'+id]:'';
 
+$('rotation-input').innerHTML=select('rotation','Perfumes used in calculations',[['live','Live site · 10 scents'],['proposed','Proposed rotation · 11 scents']],saved.rotation==='proposed'?'proposed':'live');
+$('rotation-note').textContent=saved.rotation==='proposed'?'Proposed: Oud Wood removed; Light Blue EDT 100ml and Bright Crystal EDT 90ml added for women. Their base prices are draft recommendations until published.':'Exact live catalogue, including Oud Wood. The proposed 11-scent rotation is available in the selector; it has not been published.';
+$('rotation').addEventListener('change',()=>{saved.rotation=$('rotation').value;save();location.reload()});
+
 $('inputs').innerHTML=COSTS.map(c=>field(c[0],c[1],c[2],c[3],true,c[4])).join('');
 $('import-inputs').innerHTML=IMPORT.map(c=>field(c[0],c[1],c[2],c[3],true,c[4])).join('');
 $('import-helper').innerHTML=IMPH.map(c=>field(c[0],c[1],c[2],c[3],false,c[3+1])).join('');
 $('shipping-inputs').innerHTML=SHIPPING.map(c=>field('delivery_'+c[0],c[1],c[2],c[3],true)).join('')+select('delivery_zone','Destination for order calculations',[['ncr','NCR'],['luzon','Other Luzon'],['visayas','Visayas'],['mindanao','Mindanao']],saved.deliveryZone||'ncr')+field('delivery_example','Example item subtotal after discounts ₱',10000,1,false);
 $('delivery_zone').addEventListener('change',()=>{saved.deliveryZone=$('delivery_zone').value;save();render()});
 $('targets').innerHTML=TARGETS.map(c=>field(c[0],c[1],c[2],c[3],false)).join('');
+$('d6').value='0';$('d6').readOnly=true;$('d6').setAttribute('aria-describedby','six-discount-note');
+$('targets').insertAdjacentHTML('beforeend','<p class="hint" id="six-discount-note">Six-vial sets use the same base price per vial as trios. No additional discount.</p>');
 $('presets').innerHTML=PRESETS.map(([lo,hi])=>`<button type="button" data-preset="${lo},${hi}" aria-pressed="false">${lo}–${hi}%</button>`).join('');
 $('plan-inputs').innerHTML=PLAN.map(c=>field(c[0],c[1],c[2],c[3],true)).join('')
-  +select('plan_prices','Prices used in the plan',[['current','Existing prices + two draft additions'],['rec','Recommended prices']],saved.planPrices==='rec'?'rec':'current')
+  +select('plan_prices','Prices used in the plan',[['current','In-set base prices · no extra set discount'],['rec','Recommended prices']],saved.planPrices==='rec'?'rec':'current')
   +select('plan_scents','Scents in each set',[['avg','Average of every scent combination'],['cheap','Cheapest scents (lowest cost per ml)']],saved.planScents==='cheap'?'cheap':'avg');
 $('mix-inputs').innerHTML=MIX.map(([id,def])=>{const set=SETS.find(x=>x[0]===id);return field('mix_'+id,`${set[1]} %`,def,1,false,`${set[2]} × ${set[3]} ml`)}).join('');
 $('tax-inputs').innerHTML=select('vat_reg','Registration status',[['non','Not VAT-registered'],['vat','VAT-registered']],saved.vatReg==='vat'?'vat':'non')
@@ -530,14 +559,14 @@ let useTester=saved.useTester!=null?!!saved.useTester:false;
 const ut=$('usetester');ut.checked=useTester;ut.addEventListener('change',()=>{useTester=ut.checked;saved.useTester=useTester;save();render()});
 const usesTester=p=>useTester&&WHOLESALE[p[0]]?.tester<WHOLESALE[p[0]]?.cost;
 const bottle=p=>{const w=WHOLESALE[p[0]];return w?(usesTester(p)?w.tester:w.cost):null};
-const wholesaleNote=p=>{const w=WHOLESALE[p[0]],t=usesTester(p);return w?`100ml wholesale${t?' tester':''} · item ${t?w.testerItem:w.item} · sheet row ${t?w.testerRow:w.row}`:'No wholesale quote'};
+const wholesaleNote=p=>{const w=WHOLESALE[p[0]],t=usesTester(p);return w?`${p[4]}ml wholesale${t?' tester':''} · item ${t?w.testerItem:w.item} · sheet row ${t?w.testerRow:w.row}`:'No wholesale quote'};
 const num=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:0};
 const opt=id=>{const v=parseFloat($(id).value);return isFinite(v)?v:null};
 
 // Blended payment rate in %: e-wallet rate + card share × (card − e-wallet). Equal rates give exactly that rate.
 function blendedFee(){const c=num('fee_card'),w=num('fee_wallet'),sh=num('fee_cardshare');return w+sh/100*(c-w)}
 function S(){return{delivery:Object.fromEntries(SHIPPING.map(c=>[c[0],num('delivery_'+c[0])])),zone:$('delivery_zone').value,wd:num('wd')/100,ship:num('ship')/100,loss:num('loss')/100,vial:{1:num('v1'),2:num('v2'),5:num('v5'),10:num('v10')},lab:num('lab'),box:num('box'),fill:num('fill'),packl:num('packl'),
-  fee:blendedFee()/100,ffee:num('ffee'),shop:num('shop')/100,allow:num('allow')/100,deliv:num('deliv'),tlo:num('tlo')/100,thi:num('thi')/100,d6:num('d6')/100,ads:num('ads'),orders:num('orders'),cac:num('orders')>0?num('ads')/num('orders'):0}}
+  fee:blendedFee()/100,ffee:num('ffee'),shop:num('shop')/100,allow:num('allow')/100,deliv:num('deliv'),tlo:num('tlo')/100,thi:num('thi')/100,d6:0,ads:num('ads'),orders:num('orders'),cac:num('orders')>0?num('ads')/num('orders'):0}}
 const pctCosts=s=>s.fee+s.shop+s.allow;                       // charged on the selling price
 const orderCost=s=>s.box+s.packl+s.ffee+s.deliv;               // once per order
 // Cost already includes wholesale; only an explicitly entered EXTRA discount applies.
@@ -662,26 +691,28 @@ function renderImport(){
 function renderPurchase(s){
  const total=DECANTS.reduce((a,p)=>a+bottle(p),0), discounted=total*(1-s.wd), landedTotal=discounted*(1+s.ship);
  const regular=DECANTS.reduce((a,p)=>a+WHOLESALE[p[0]].cost,0);
- $('purchase-summary').innerHTML=`<h3 style="margin-top:0">Buy one bottle of each · ${DECANTS.length} × 100ml</h3>
+ $('purchase-summary').innerHTML=`<h3 style="margin-top:0">Buy one bottle of each · ${DECANTS.length} bottles, ${DECANTS.reduce((n,p)=>n+p[4],0)}ml total</h3>
   <div class="ln"><span>Wholesale bottles${useTester?' · cheaper testers where available':' · regular bottles'}</span><b>${p2(total)}</b></div>
   ${total<regular?`<div class="ln"><span>Saving from cheaper testers</span><span>${p2(regular-total)}</span></div>`:''}
   ${s.wd?`<div class="ln"><span>Extra supplier discount · ${pc(s.wd*100)}</span><span>− ${p2(total-discounted)}</span></div>`:''}
   <div class="ln"><span>Import estimate · ${pc(s.ship*100)}<small>Uses your editable import assumption; not a supplier delivery quote.</small></span><span>${p2(discounted*s.ship)}</span></div>
   <div class="ln tot"><span>Bottles including estimated import</span><b>${p2(landedTotal)}</b></div>
-  <p class="sub" style="margin:12px 0 0">Regular Dylan Blue + Light Blue: ${p2(WHOLESALE.dylan.cost+WHOLESALE.lightblue.cost)}, versus ${p2(WHOLESALE.oud.cost)} for Oud Wood alone. The rotation now has 11 scents. Vials, labels, packing and selling fees are added in the profit calculations.</p>`;
+  <p class="sub" style="margin:12px 0 0">${saved.rotation==='proposed'?'Proposed 11-scent rotation.':'Live 10-scent catalogue.'} Vials, labels, packing and selling fees are added in the profit calculations.</p>`;
 }
 function renderVials(s,L){
   REC={};SOLVE={};CURM=[];
   SIZES.forEach(ml=>{const r=solveSize(ml,L,s);SOLVE[ml]=r;L.forEach((x,i)=>{(REC[x.p[0]]=REC[x.p[0]]||[])[SI[ml]]=r.prices[i]})});
   $('vial-legend').innerHTML=`<span class="mflag flag-low">▼ below ${pct(s.tlo)}</span><span class="mflag flag-in">inside ${pct(s.tlo)} – ${pct(s.thi)}</span><span class="mflag flag-high">▲ above ${pct(s.thi)}</span><span>margin at the existing or draft price</span>`;
-  $('t-vial').innerHTML=`<thead><tr><th>Perfume</th><th>Wholesale bottle ₱</th><th>Perfume cost / usable ml<br><span style="font-weight:400;text-transform:none;letter-spacing:0">same at any margin</span></th>${SIZES.map(z=>`<th>${z} ml<br>existing / draft → recommended at ${Math.round(s.tlo*100)}–${Math.round(s.thi*100)}%</th>`).join('')}</tr></thead><tbody>${DECANTS.map(p=>{
+  $('vials').textContent=saved.previewRec?'Live prices compared with recommendations':'In-set base prices · no extra set discount';
+  $('t-vial').innerHTML=`<thead><tr><th>Perfume</th><th>Wholesale bottle ₱</th><th>Perfume cost / usable ml<br><span style="font-weight:400;text-transform:none;letter-spacing:0">same at any margin</span></th>${SIZES.map(z=>`<th>${z} ml<br>${saved.previewRec?`paid live → recommended at ${Math.round(s.tlo*100)}–${Math.round(s.thi*100)}%`:'paid price in its usual set'}</th>`).join('')}</tr></thead><tbody>${DECANTS.map(p=>{
     const pm=perMl(p,s), cur=LIVE[p[0]]||REC[p[0]],draft=DRAFT_IDS.includes(p[0]);
     if(pm==null||!cur) return `<tr><td><span class="brand">${p[1]}</span>${p[2]}<span class="src">${p[5]}</span></td><td class="na">—</td><td class="na">—</td>${SIZES.map(()=>'<td class="na">no decants</td>').join('')}</tr>`;
     const x={p,pm}, comp=opt('comp_'+p[0]);
     return `<tr><td><span class="brand">${p[1]}</span>${p[2]}${draft?'<span class="c">Proposed addition · suggested selling prices</span>':''}<span class="src">${wholesaleNote(p)}</span><a class="src" href="${p[6]}" target="_blank" rel="noopener">Product reference</a></td><td>${p2(+bottle(p))}<span class="c">${s.wd?`− ${pc(s.wd*100)} extra discount · `:''}landed ${p2(landed(p,s))}</span></td><td>${p2(pm)}</td>${SIZES.map(z=>{
-      const c=cur[SI[z]], r=REC[p[0]][SI[z]], d=r-c, run=bottleRun(x,z,c,draft?s:liveSettings(s)), m=run.r.m, b=band(m,s); CURM.push(m);
-      const flag=draft?`<span class="mflag flag-in">draft ${pct(m)}</span>`:b==='low'?`<span class="mflag flag-low">▼ now ${pct(m)}</span>`:b==='high'?`<span class="mflag flag-high">▲ now ${pct(m)}</span>`:`<span class="mflag flag-in">now ${pct(m)}</span>`;
-      return `<td>${peso(c)} → <b>${peso(r)}</b><span class="chg ${d>0?'up':d<0?'down':''}">${d>0?'+':''}${peso(d)}</span><span class="c">vial cost ${p2(vialCost(pm,z,s))}</span>${z===1&&comp!=null?`<span class="c">competitor ${peso(comp)}</span>`:''}${flag}</td>`}).join('')}</tr>`}).join('')}</tbody>`;
+      const raw=cur[SI[z]], r=REC[p[0]][SI[z]],run=bottleRun(x,z,raw,draft?s:liveSettings(s)),c=run.r.price/BOTTLE_SET[z][2],d=r-c,m=run.r.m,b=band(m,s); CURM.push(m);
+      const flag=draft?`<span class="mflag flag-in">draft ${pct(m)}</span>`:b==='low'?`<span class="mflag flag-low">▼ margin ${pct(m)}</span>`:b==='high'?`<span class="mflag flag-high">▲ margin ${pct(m)}</span>`:`<span class="mflag flag-in">margin ${pct(m)}</span>`;
+      const display=saved.previewRec?`${p2(c)} → <b>${peso(r)}</b><span class="chg ${d>0?'up':d<0?'down':''}">${d>0?'+':''}${p2(d)}</span>`:`<b>${p2(c)}</b>`;
+      return `<td>${display}<span class="c">${!draft&&z<=2?`in-set base · solo ${p2(SOLO[p[0]][SI[z]])}`:'per vial in its usual set'}</span><span class="c">vial cost ${p2(vialCost(pm,z,s))}</span>${z===1&&comp!=null?`<span class="c">competitor ${peso(comp)}</span>`:''}${flag}</td>`}).join('')}</tr>`}).join('')}</tbody>`;
 }
 function renderCompetitors(){
   DECANTS.forEach(p=>{const id=p[0], comp=opt('comp_'+id), c=(LIVE[id]||REC[id])[0], r=REC[id]?REC[id][0]:null;
@@ -696,7 +727,7 @@ function renderBottle(s,L,P){
   const rows=L.map(x=>{
     const usable=x.p[4]*(1-s.loss), cost=landed(x.p,s);
     const cells=SIZES.map(ml=>{
-      const E=bottleEcon(x,ml,REC[x.p[0]][SI[ml]],s,F), live=bottleEcon(x,ml,(LIVE[x.p[0]]||REC[x.p[0]])[SI[ml]],DRAFT_IDS.includes(x.p[0])?s:liveSettings(s),F), n=BOTTLE_SET[ml][2];
+      const E=bottleEcon(x,ml,CURRENT[x.p[0]][SI[ml]],currentSettings(s),F), n=BOTTLE_SET[ml][2];
       const taxLine=P&&P.ok&&P.tax?(eff==null?`<span class="bl">after tax <b class="na">n/a</b> <span class="tag est">estimate</span></span>`:`<span class="bl">after tax ${sgn(E.op>0?E.op*(1-eff):E.op,1)} <span class="tag est">estimate</span></span>`):'';
       return `<td><b class="bp">${whole(E.contrib)}</b><span class="c">contribution before ads · ${pct(E.margin)}</span>
         <span class="bl">after ads ${sgn(E.after,1)}</span>
@@ -704,38 +735,39 @@ function renderBottle(s,L,P){
         <span class="bl">return after ads &amp; overhead <b class="${E.rOp<0?'low':''}">${rpct(E.rOp)}</b>${tg}</span>${taxLine}
         <span class="c sep">sales ${whole(E.revenue)} · ${E.vials} vials · order share ${E.share.toFixed(n===1?0:2)}</span>
         <span class="c">leftover ${E.left.toFixed(1)} ml${E.waste?` · waste ${p2(E.waste)}`:''}</span>
-        <span class="c">ads ${whole(E.ads)} · overhead ${whole(E.over)}</span>
+        <span class="c">allocated ads ${whole(E.ads)} · allocated overhead ${whole(E.over)}</span>
         <span class="c">return before ads ${rpct(E.rBefore)} · after ads ${rpct(E.rAfter)}</span>
-        <span class="c">return on total cash spent ${rpct(E.rCash)} (${whole(E.cash)})</span>
-        <span class="c">at ${DRAFT_IDS.includes(x.p[0])?'draft':'live'} prices: ${whole(live.contrib)} · operating ${whole(live.op)}</span></td>`;
+        <span class="c">return on total cash spent ${rpct(E.rCash)} (${whole(E.cash)})</span></td>`;
     }).join('');
     return `<tr><td><span class="brand">${x.p[1]}</span>${x.p[2]}<span class="c">${x.p[4]} ml · ${usable.toFixed(1)} ml usable</span></td><td>${p2(cost)}<span class="c">landed: bottle${s.wd?' after discount':''} + import</span></td>${cells}</tr>`;
   }).join('');
-  $('t-bottle').innerHTML=`<thead><tr><th>Perfume</th><th>Landed bottle cost</th>${SIZES.map(z=>`<th>All as ${z} ml<br>${BOTTLE_SET[z][1]}${BOTTLE_SET[z][2]>1?'s':''} · recommended</th>`).join('')}</tr></thead><tbody>${rows}</tbody>`+
+  $('t-bottle').innerHTML=`<thead><tr><th>Perfume</th><th>Landed bottle cost</th>${SIZES.map(z=>`<th>All as ${z} ml<br>${BOTTLE_SET[z][1]}${BOTTLE_SET[z][2]>1?'s':''} · ${saved.previewRec?'recommended':'live after discount'}</th>`).join('')}</tr></thead><tbody>${rows}</tbody>`+
     (F.state!=='ok'?`<caption style="caption-side:bottom;text-align:left;padding-top:10px;font-size:12.5px;color:var(--soft)">${F.missing.length?`<span class="tag inc">incomplete</span> Fixed costs not set (counted as ₱0 until filled): ${F.missing.join(', ')}. `:''}${F.unconf.length?`<span class="tag est">estimate</span> Not confirmed: ${F.unconf.join(', ')}.`:''}</caption>`:'');
 }
 function renderInventory(s,L){
  const F=fixedStatus(),tag=ftag(F);
+ $('inventory-profit-title').textContent=`If you sell all ${L.length} bottles`;
  const rows=SIZES.map(ml=>{
   const runs=L.map(x=>bottleEcon(x,ml,CURRENT[x.p[0]][SI[ml]],currentSettings(s),F));
   const sum=k=>runs.reduce((a,x)=>a+x[k],0),revenue=sum('revenue'),contrib=sum('contrib');
   return `<tr><td>${ml}ml vials<span class="c">${sum('vials')} vials · ${sum('share').toFixed(2)} order shares</span></td><td>${p2(revenue)}</td><td>${p2(contrib)}<span class="c">${pct(contrib/revenue)} margin</span></td><td>${p2(sum('ads'))}</td><td>${p2(sum('over'))}${tag}</td><td>${p2(sum('op'))}${tag}</td></tr>`;
  });
  $('t-inventory-profit').innerHTML=`<thead><tr><th>Sell all stock as</th><th>Sales</th><th>Profit before ads &amp; fixed costs</th><th>Ads allocation</th><th>Fixed cost allocation</th><th>Operating profit before tax</th></tr></thead><tbody>${rows.join('')}</tbody>`;
- $('inventory-profit-note').textContent=`${saved.previewRec?'All recommended prices; no trio discount':'Nine live prices + two draft additions, with the verified live trio discounts'}. Includes full landed bottle costs, transfer loss, leftover perfume, packaging, payment fees, Shopify fees, refund reserve, delivery and protection. ${F.missing.length?'Incomplete: these fixed costs are blank and counted as ₱0 for now: '+F.missing.join(', ')+'. ':''}Selling all stock is assumed; demand and time to sell are not predicted. Six-vial discounts and the extra Try a set discount do not apply to these scenarios.`;
+ $('inventory-profit-note').textContent=`${saved.previewRec?'Recommended prices; no trio discount':'In-set base prices, with no extra six-vial discount'}. Includes full landed bottle costs, transfer loss, leftover perfume, packaging, payment fees, Shopify fees, refund reserve, delivery and protection. ${F.missing.length?'Incomplete: these fixed costs are blank and counted as ₱0 for now: '+F.missing.join(', ')+'. ':''}Selling all stock is assumed; demand and time to sell are not predicted. Six-vial discounts and the extra Try a set discount do not apply to these scenarios.`;
 }
 // Ads behind the per-bottle figures. Shown even when other inputs are incomplete; never ₱0 for "unknown".
 function renderAdsBox(s){
   const ads=opt('ads'), orders=opt('orders'), lossOk=opt('loss')!=null&&s.loss>=0&&s.loss<1;
   const okOrders=orders!=null&&orders>0&&Number.isInteger(orders), okAds=ads!=null&&ads>=0;
   const per=okOrders&&okAds?ads/orders:null, na='<span class="na">unavailable</span>';
+  $('bottle-ads-note').innerHTML=per==null?'Enter your monthly ad budget and expected orders to see the allocation.':`<b>These are full-bottle sales scenarios, not monthly profit.</b> Your whole-store ad budget is ${p2(ads)} per month ÷ ${orders} total orders = ${p2(per)} allocated to each order, including organic orders. Each bottle carries only its share of those order costs over selling all its vials. The four size columns are alternatives; do not add them together. See <a href="#monthly">Monthly plan</a> for one month’s profit: it deducts the ${p2(ads)} budget once for the whole store.`;
   const mls=[...new Set(DECANTS.map(p=>p[4]))];
   const rows=mls.map(bm=>SIZES.map(ml=>{const set=BOTTLE_SET[ml], v=lossOk?Math.floor(bm*(1-s.loss)/ml+1e-9):null, share=v==null?null:v/set[2];
     return `<tr><td>${ml} ml<span class="c">${set[1]} · ${set[2]} per set${mls.length>1?` · ${bm} ml bottle`:''}</span></td><td>${v==null?na:v}</td><td>${share==null?na:share.toFixed(2)}</td><td>${per==null||share==null?na:p2(per*share)}</td></tr>`}).join('')).join('');
-  $('ads-box').innerHTML=`<h3 style="margin-top:0">Ads in these numbers</h3>
+  $('ads-box').innerHTML=`<h3 style="margin-top:0">How the monthly ad budget is shared</h3>
    <div class="sheet" style="max-width:520px"><div class="ln"><span>Monthly ads budget</span><b>${okAds?p2(ads):na}</b></div><div class="ln"><span>Expected orders a month</span><b>${okOrders?orders:na}</b></div><div class="ln tot"><span>Ads per order</span><b>${per==null?na:p2(per)}</b></div></div>
-   <div class="tablewrap" style="margin-top:14px"><table><thead><tr><th>Size</th><th>Vials per bottle</th><th>Order share</th><th>Ads per bottle</th></tr></thead><tbody>${rows}</tbody></table></div>
-   <p class="sub" style="margin:10px 0 0;font-size:12.5px">Ads per bottle = ads per order × order share. ${per==null?'Set a whole number of orders a month above 0 and an ad budget to see these figures.':'Set orders to what your ads actually bring in a month.'}</p>`;
+   <div class="tablewrap" style="margin-top:14px"><table><thead><tr><th>Size</th><th>Vials per bottle</th><th>Order cost shares</th><th>Allocated ads over all bottle sales</th></tr></thead><tbody>${rows}</tbody></table></div>
+   <p class="sub" style="margin:10px 0 0;font-size:12.5px">Allocated ads = vials from the bottle ÷ vials per set × ads per order. ${per==null?'Set a whole number of orders a month above 0 and an ad budget to see these figures.':`For a 100ml bottle sold as 1ml vials with ${pc(s.loss*100)} transfer loss: ${Math.floor(100*(1-s.loss)+1e-9)} vials ÷ 3 × ${p2(per)} = ${p2(Math.floor(100*(1-s.loss)+1e-9)/3*per)}. This is a cost allocation across selling the entire bottle, which may span several months. It is not an extra monthly ad purchase. Enter all expected store orders, paid and organic, in Monthly plan.`}</p>`;
 }
 // One bottle split across sizes; each vial carries its share of its usual set's order costs.
 function renderMixed(s,L){
@@ -777,15 +809,17 @@ function renderSets(s,L){
   let rows=SETS.filter(x=>L.length>=x[2]).map(set=>{const C=rangeFor(set,L,cur,liveSettings(s)),R=rangeFor(set,L,rec,s);
     return `<tr><td>${set[1]}<span class="c">${set[2]} × ${set[3]} ml${discOf(set,s)?` · ${Math.round(discOf(set,s)*100)}% off`:''} · ${combos(L.length,set[2]).length} combinations</span></td>${cell(C)}${cell(R)}</tr>`}).join('');
   // Standalone single vials, each a whole order with a whole box.
-  rows+=[1,2,5].map(ml=>{const one=['sv','Single '+ml+' ml vial',1,ml,null];const C=rangeFor(one,L,cur,s),R=rangeFor(one,L,rec,s);
-    return `<tr><td>${one[1]} on its own<span class="c">not sold: product pages hide 1, 2 and 5 ml; the picker sells sets only</span></td>${cell(C)}${cell(R)}</tr>`}).join('');
-  $('t-sets').innerHTML=`<thead><tr><th rowspan="2">Order</th><th colspan="3">Existing prices + two draft additions</th><th colspan="3">All recommended prices</th></tr><tr><th>Price</th><th>Contribution % · ₱</th><th>After ads</th><th>Price</th><th>Contribution % · ₱</th><th>After ads</th></tr></thead><tbody>${rows}</tbody>`;
+  const soloRecommended=(id,ml)=>ml<=2?Math.ceil(rec(id,ml)*1.35/5)*5:rec(id,ml);
+  const soloCurrent=(id,ml)=>SOLO[id]?.[SI[ml]]??soloRecommended(id,ml);
+  rows+=[1,2,5].map(ml=>{const one=['sv','Single '+ml+' ml vial',1,ml,null];const C=rangeFor(one,L,soloCurrent,liveSettings(s)),R=rangeFor(one,L,soloRecommended,s);
+    return `<tr><td>${one[1]} on its own<span class="c">solo variant price · one complete order with its own packing costs</span></td>${cell(C)}${cell(R)}</tr>`}).join('');
+  $('t-sets').innerHTML=`<thead><tr><th rowspan="2">Order</th><th colspan="3">In-set base prices (proposed additions are drafts)</th><th colspan="3">All recommended prices</th></tr><tr><th>Price</th><th>Contribution % · ₱</th><th>After ads</th><th>Price</th><th>Contribution % · ₱</th><th>After ads</th></tr></thead><tbody>${rows}</tbody>`;
   // Conflicts and alternatives
   let h='';
   SIZES.forEach(ml=>{const r=SOLVE[ml]; if(!r||r.fits) return;
-    const md=maxSixDiscount(ml,L,r.prices,s);
-    h+=`<div class="card"><h3>${ml} ml: the band can’t hold every combination at one price per vial</h3><p class="sub" style="margin:0">Best found: margins ${pct(r.lo)} – ${pct(r.hi)}. With one consistent price per vial, the three-vial set carries a third of the box and the six-vial set a sixth, and the six also loses ${Math.round(s.d6*100)}%. Perfume is most of the cost at this size, so a cheap mix and a dear mix also land far apart.</p>
-    <div class="alt"><b>Practical alternatives</b>${md!=null?`• Lower the six-vial discount to <b>${md}%</b> (the most that keeps every six-vial combination in the band at these prices).<br>`:''}• Keep 10% but accept the six landing below ${pct(s.tlo)} (it still beats the trio on profit per order in pesos).<br>• Narrow the scents offered at this size (the spread between the cheapest and dearest perfume drives the range).</div></div>`});
+    const md=s.d6>0?maxSixDiscount(ml,L,r.prices,s):null;
+    h+=`<div class="card"><h3>${ml} ml: the band can’t hold every combination at one price per vial</h3><p class="sub" style="margin:0">Best found: margins ${pct(r.lo)} – ${pct(r.hi)}. With one consistent price per vial, the three-vial set carries a third of the box and the six-vial set a sixth, and the six has ${Math.round(s.d6*100)}% extra discount. With no extra discount, its lower cost share can push it above the target. Perfume is most of the cost at this size, so a cheap mix and a dear mix also land far apart.</p>
+    <div class="alt"><b>Practical alternatives</b>${md!=null?`• Lower the six-vial discount to <b>${md}%</b> (the most that keeps every six-vial combination in the band at these prices).<br>`:''}• Widen the target margin band slightly to include the displayed results.<br>• Narrow the scents offered at this size. Six-vial prices stay at the unit base; no extra discount is added.</div></div>`});
   if(SETS.some(x=>x[4]==='d6')){
     const fitsAll=SIZES.every(ml=>!SOLVE[ml]||SOLVE[ml].fits);
     if(fitsAll) h+=`<div class="card"><p class="sub" style="margin:0"><b class="ok">Every set, every combination fits ${pct(s.tlo)} – ${pct(s.thi)}</b> with one price per vial and the ${Math.round(s.d6*100)}% six-vial discount.</p></div>`;
@@ -806,17 +840,18 @@ function renderPicker(s,L){
   saved.selectedSet=cur;saved.pickedScents=picks.map(x=>x.p[0]);save();
   $('set-btns').innerHTML=SETS.map(x=>`<button type="button" data-set="${x[0]}" class="${x[0]===cur?'on':''}" aria-pressed="${x[0]===cur}">${x[1]}<small>${x[2]} × ${x[3]} ml</small></button>`).join('');
   const full=picks.length>=set[2];
-  $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${peso(REC[x.p[0]][SI[ml]])} per ${ml} ml</small></button>`}).join('');
+  const model=currentSettings(s),setDiscount=discOf(set,model);
+  $('scent-btns').innerHTML=L.map((x,i)=>{const on=picks.some(y=>y.p===x.p),price=CURRENT[x.p[0]][SI[ml]]*(1-setDiscount);return `<button type="button" data-i="${i}" class="${on?'on':''}" ${full||on?'disabled':''}>${x.p[2]}<small>${p2(price)} per ${ml} ml · in-set base</small></button>`}).join('');
   const promotion={type:$('discount_type').value,value:opt('discount_value')};
   const invalid=promotion.value==null||promotion.value<0||(promotion.type==='percent'&&promotion.value>100);
   const error=$('discount-error');error.hidden=!invalid;error.textContent=invalid?(promotion.type==='percent'?'Enter a discount from 0 to 100%.':'Enter a peso discount of 0 or more.'):'';
   $('discount_value').setAttribute('aria-invalid',String(invalid));$('discount_value').setAttribute('aria-describedby','discount-error');
   if(invalid){$('tray').textContent='Enter a valid discount to calculate your set.';$('sheet').textContent='Your set choices are kept while you correct the discount.';return}
-  const prices=picks.map(x=>REC[x.p[0]][SI[ml]]), base=order(set,picks,prices,s), r=order(set,picks,prices,s,promotion);
+  const prices=picks.map(x=>CURRENT[x.p[0]][SI[ml]]), base=order(set,picks,prices,model), r=order(set,picks,prices,model,promotion);
   let h=`<span class="k">${set[1]} · ${set[2]} × ${ml} ml</span><div style="margin-top:10px">`;
   for(let i=0;i<set[2];i++){const x=picks[i];h+=x?`<div class="slot full"><span class="n">${i+1}</span><span>${x.p[2]}</span><span>${peso(prices[i])}</span><button type="button" data-rm="${i}" aria-label="Remove ${x.p[2]}">×</button></div>`:`<div class="slot"><span class="n">${i+1}</span><span class="e">Empty</span><span></span><span></span></div>`}
   h+=`</div><div class="tline"><span class="s">Vials added up</span><span>${p2(r.sub)}</span></div>`;
-  if(r.off)h+=`<div class="tline"><span class="s">Set discount (${Math.round(discOf(set,s)*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
+  if(r.off)h+=`<div class="tline"><span class="s">Set discount (${Math.round(setDiscount*100)}%)</span><span>− ${p2(r.off)}</span></div>`;
   if(r.promoOff)h+=`<div class="tline"><span class="s">Additional order discount${promotion.type==='percent'?' ('+promotion.value+'%)':''}</span><span>− ${p2(r.promoOff)}</span></div>`;
   h+=`<div class="tline tot"><span>Items after discounts</span><span>${p2(r.price)}</span></div>`;
   if(picks.length)h+=`<div class="tline"><span class="s">Standard delivery${r.delivery.free?' · free':''}</span><span>${p2(r.delivery.customer/100)}</span></div><div class="tline tot"><span>Customer pays before tax</span><span>${p2(r.price+r.delivery.customer/100)}</span></div>`;
@@ -832,6 +867,10 @@ function renderPicker(s,L){
   t+=`<div class="ln"><span>Refund & replacement reserve<small>${pct(s.allow)} of the ${p2(r.price)} item total; money set aside for leaks, refunds or replacements</small></span><span>${p2(r.charges.reserve)}</span></div>`;
   t+=`<div class="ln"><span>Delivery we cover<small>${r.delivery.free?'Free-delivery threshold reached after discounts.':'Customer pays standard delivery below the threshold.'}${s.deliv?' Includes '+p2(s.deliv)+' extra delivery support.':''}</small></span><span>${p2(r.charges.delivery)}</span></div>`;
   t+=`<div class="ln"><span>Item protection (estimate)<small>Parcel cover paid by Sangyó, separate from delivery</small></span><span>${p2(r.charges.protection)}</span></div>`;
+  // Reconcile individually rounded expense lines with the precise total.
+  const shownCosts=[...picks.map(x=>ml*x.pm),picks.length*(s.vial[ml]+s.lab+s.fill),s.box+s.packl,...Object.values(r.charges)];
+  const shownCents=shownCosts.reduce((n,c)=>n+Math.round(c*100),0),roundingCents=Math.round(r.cost*100)-shownCents;
+  if(roundingCents)t+=`<div class="ln"><span>Rounding adjustment<small>Aligns the displayed cents; calculations keep full precision.</small></span><span>${p2(roundingCents/100)}</span></div>`;
   t+=`<div class="ln tot"><span>All variable costs</span><span>${p2(r.cost)}</span></div>`;
   t+=`<p class="big">${p2(r.contrib)}</p><span class="k">contribution · ${pct(r.m)} of the price</span>`;
   if(r.promoOff)t+=`<div class="ln"><span>Contribution before the additional discount</span><span>${p2(base.contrib)} · ${pct(base.m)}</span></div><div class="ln"><span>Contribution change</span><span>${p2(r.contrib-base.contrib)}</span></div>`;
@@ -859,9 +898,9 @@ function renderOverhead(s,L){
   const F=fixedStatus();
   $('opprofit').innerHTML=planShare+(missing.length?`<p class="sub" style="margin:0"><span class="tag inc" style="margin-left:0">incomplete</span> <span class="est">Not set:</span> ${missing.join(', ')}. Operating profit per order is shown once these are filled in (the monthly plan and profit per bottle count blanks as ₱0 and are tagged incomplete).</p>`:`<p class="sub" style="margin:0">Fixed overhead per order: <b>${p2(perOrder)}</b> (${p2(plan+apps+other)} a month ÷ ${orders} orders).</p>`)
     +(F.unconf.length?`<p class="sub" style="margin:8px 0 0"><span class="tag est" style="margin-left:0">estimate</span> Not confirmed yet: ${F.unconf.join(', ')}. Tick “Confirmed” once the amount matches your invoice.</p>`:'');
-  const rec=(id,ml)=>REC[id][SI[ml]];
-  $('t-op').innerHTML=`<thead><tr><th>Example order (recommended prices)</th><th>Price</th><th>Contribution</th><th>− Ads</th><th>− Fixed overhead</th><th>Operating profit</th></tr></thead><tbody>${SETS.filter(x=>L.length>=x[2]).map(set=>{
-    const v=L.slice(0,set[2]), r=order(set,v,v.map(x=>rec(x.p[0],set[3])),s), op=perOrder==null?null:r.contrib-s.cac-perOrder;
+  const price=(id,ml)=>CURRENT[id][SI[ml]];
+  $('t-op').innerHTML=`<thead><tr><th>Example order (${saved.previewRec?'recommended':'live after discount'})</th><th>Price</th><th>Contribution</th><th>− Ads</th><th>− Fixed overhead</th><th>Operating profit</th></tr></thead><tbody>${SETS.filter(x=>L.length>=x[2]).map(set=>{
+    const v=L.slice(0,set[2]), r=order(set,v,v.map(x=>price(x.p[0],set[3])),currentSettings(s)), op=perOrder==null?null:r.contrib-s.cac-perOrder;
     return `<tr><td>${set[1]}<span class="c">cheapest mix: ${v.map(x=>x.p[2]).join(', ')}</span></td><td>${p2(r.price)}</td><td>${p2(r.contrib)} <span class="c">${pct(r.m)}</span></td><td>− ${p2(s.cac)}</td><td>${perOrder==null?'<span class="na">not set</span>':'− '+p2(perOrder)}</td><td>${op==null?'<span class="na">—</span> <span class="tag inc">incomplete</span>':`<b class="${op>=0?'ok':'low'}">${p2(op)}</b>${ftag(F)}`}</td></tr>`}).join('')}</tbody>`;
 }
 // Average price and contribution of one set: over every scent combination, or the cheapest scents.
@@ -924,21 +963,31 @@ function renderPlan(s,L){
     taxH+=tax.blocked?'':`<div class="ln tot"><span>Profit after tax${tg}</span>${both(tax.afterM,1)}</div><p class="sub" style="margin:6px 0 0;font-size:12.5px">${tax.eff==null?'Effective rate: not meaningful while operating profit is ₱0 or less.':`Taxes take ${pct(tax.eff)} of operating profit${tax.reg?' (incl. net VAT owed)':''}; profit per bottle uses this rate for its “after tax (estimate)” line.`}</p>`;
     taxH+=tax.warn.map(w=>`<p class="warn" role="alert">${w}</p>`).join('');
   }
-  $('plan-sum').innerHTML=`<span class="k">${basis==='rec'?`Recommended prices (${Math.round(s.tlo*100)}–${Math.round(s.thi*100)}% target)`:'Existing prices + two draft additions'} · ${mode==='cheap'?'cheapest scents':'average of every scent combination'}</span>
+  $('plan-sum').innerHTML=`<span class="k">${basis==='rec'?`Recommended prices (${Math.round(s.tlo*100)}–${Math.round(s.thi*100)}% target)`:'In-set base prices (proposed additions are drafts)'} · ${mode==='cheap'?'cheapest scents':'average of every scent combination'}</span>
+   <div class="ln"><span>Orders and vials<small>An order is a complete set, not one vial. This is your entered order count and set mix, not recorded sales.</small></span><span>${s.orders.toLocaleString('en-PH')} orders · ${rows.reduce((n,r)=>n+r.n*r.set[2],0).toLocaleString('en-PH',{maximumFractionDigits:1})} vials</span></div>
+   <div class="ln"><span>Average item total per order<small>${mode==='cheap'?'Cheapest scent choices for each set':'Assumes every different-scent combination is equally likely; this can overstate sales if buyers favour cheaper scents'}</small></span><span>${p2(rev/s.orders)}</span></div>
    <div class="ln"><span>Sales a month<small>items after set discounts; delivery the customer pays only covers the courier and is left out</small></span><span>${whole(rev)}</span></div>
    <div class="ln"><span>Contribution before ads · ${pct(con/rev)}</span><span>${whole(con)}</span></div>
    <div class="ln"><span>Leftover perfume (waste)<small>usable ml that can’t fill one more vial, spread over that size’s vials (same as profit per bottle)</small></span><span>− ${whole(waste)}</span></div>
    <div class="ln"><span>Contribution after all variable costs · ${pct((con-waste)/rev)}</span><span>${whole(con-waste)}</span></div>
-   <div class="ln"><span>Ads</span><span>− ${whole(s.ads)}</span></div>
+   <div class="ln"><span>Monthly ads · once for the whole store</span><span>− ${whole(s.ads)}</span></div>
    <div class="ln"><span>Fixed costs${tg}<small>Shopify plan, apps, other${F.missing.length?` · not set, counted as ₱0 for now: ${F.missing.join(', ')}`:''}${F.unconf.length?` · not confirmed: ${F.unconf.join(', ')}`:''}</small></span><span>− ${whole(fixed)}</span></div>
    <div class="ln tot"><span>Operating profit${tg}</span>${both(op,1)}</div>
    ${taxH}
    <p class="verdict ${be!=null&&be<=s.orders?'ok':'low'}">${be==null?'Each order loses money at this mix, so no number of orders breaks even.':`Break-even: <b>${be} orders a month</b> at this mix (you plan ${s.orders}). ${be<=s.orders?`${s.orders-be} orders of headroom.`:`${be-s.orders} more orders needed.`}`}${F.state==='incomplete'?' Incomplete until every fixed cost is filled in.':''}</p>`;
   const budgets=[...new Set([s.ads,30000,75000,150000])].sort((a,b)=>a-b);
+  const demandCases=['cheap','avg'].map(demand=>{
+    let revenue=0,contribution=0,leftover=0;
+    mix.forEach(x=>{const n=s.orders*x.v/100,st=setStats(x.set,L,priceOf,priceSettings,demand);revenue+=n*st.price;contribution+=n*st.contrib;leftover+=n*st.waste});
+    return{demand,revenue,contribution:contribution-leftover,profit:contribution-leftover-s.ads-fixed};
+  });
   $('plan-sensitivity').innerHTML=`<h3 style="margin-top:0">How ads change the profit</h3>
    <p class="sub">Assumes the same ${s.orders.toLocaleString('en-PH')} orders and ${whole(rev)} item sales in every row. These are expense scenarios, not a prediction that an ad budget produces those orders. Profit is before tax${F.missing.length?' and the blank fixed costs listed above':''}.</p>
    <div class="tablewrap"><table><thead><tr><th>Ads per month</th><th>Ads per order</th><th>Operating profit before tax</th></tr></thead><tbody>${budgets.map(ads=>`<tr><td>${whole(ads)}${ads===s.ads?' · selected':''}</td><td>${p2(ads/s.orders)}</td><td>${whole(con-waste-ads-fixed)}${tg}</td></tr>`).join('')}</tbody></table></div>
-   <p class="sub" style="margin:12px 0 0">At these sales, a fully costed contribution margin of ${pct(s.tlo)}–${pct(s.thi)} after all variable costs would leave ${whole(rev*s.tlo-s.ads-fixed)}–${whole(rev*s.thi-s.ads-fixed)} after your selected ads and fixed costs, before tax. The plan above uses the actual margins from its set mix.</p>`;
+   <p class="sub" style="margin:12px 0 0">At these sales, a fully costed contribution margin of ${pct(s.tlo)}–${pct(s.thi)} after all variable costs would leave ${whole(rev*s.tlo-s.ads-fixed)}–${whole(rev*s.thi-s.ads-fixed)} after your selected ads and fixed costs, before tax. The plan above uses the actual margins from its set mix.</p>
+   <h3>How customer scent choices change the estimate</h3>
+   <p class="sub">Same order count, set mix, ads and fixed costs. These are two demand assumptions; neither is measured customer behaviour.</p>
+   <div class="tablewrap"><table><thead><tr><th>Scent choices</th><th>Average order</th><th>Monthly sales</th><th>Contribution after all variable costs</th><th>Operating profit before tax</th></tr></thead><tbody>${demandCases.map(d=>`<tr><td>${d.demand==='cheap'?'Cheapest scents in every set':'Every scent combination equally likely'}</td><td>${p2(d.revenue/s.orders)}</td><td>${whole(d.revenue)}</td><td>${whole(d.contribution)}</td><td>${whole(d.profit)}${tg}</td></tr>`).join('')}</tbody></table></div>`;
   return{ok:true,rev,con,waste,op,be,tax,avgC,F};
 }
 function renderAffiliate(){
@@ -957,7 +1006,28 @@ function renderStock(s){
     const low=min!=null&&onHand<min;
     set('stk-st-'+id,low?`<span class="flagword reorder">Reorder</span>`:`<span class="flagword fine">OK</span>`)});
 }
-function renderPresets(s){document.querySelectorAll('[data-preset]').forEach(b=>{const [lo,hi]=b.dataset.preset.split(',').map(Number);b.setAttribute('aria-pressed',String(Math.round(s.tlo*1000)===lo*10&&Math.round(s.thi*1000)===hi*10))});$('targets-meta').textContent=`${pct(s.tlo)} – ${pct(s.thi)} · six-vial ${pc(s.d6*100)} off`}
+// Expected liquid usage per scent, separate from pricing and revenue assumptions.
+function monthlyScentUsage(s,L,shares,mode){
+ if(!L.length||!(s.orders>0)||shares.some(n=>n==null||n<0)||Math.abs(shares.reduce((a,b)=>a+b,0)-100)>.001)return null;
+ const usage=Object.fromEntries(L.map(x=>[x.p[0],0]));
+ SETS.forEach((set,i)=>{const orders=s.orders*shares[i]/100;
+  if(mode==='cheap')L.slice(0,set[2]).forEach(x=>usage[x.p[0]]+=orders*set[3]);
+  else L.forEach(x=>usage[x.p[0]]+=orders*set[2]*set[3]/L.length);
+ });return usage;
+}
+function renderBottleLife(s,L){
+ const mode=$('plan_scents').value,usage=monthlyScentUsage(s,L,MIX.map(([id])=>opt('mix_'+id)),mode);
+ if(!usage){$('bottle-life-summary').textContent='Enter a valid monthly order count and a set mix adding up to 100%.';$('t-bottle-life').innerHTML='';return}
+ const total=Object.values(usage).reduce((a,b)=>a+b,0);
+ $('bottle-life-summary').textContent=`${s.orders.toLocaleString('en-PH')} orders/month at your set mix use about ${total.toLocaleString('en-PH',{maximumFractionDigits:1})}ml of perfume/month. ${mode==='cheap'?'Uses the cheapest scents in each set.':'Assumes every scent combination is equally likely.'} Allows for ${pc(s.loss*100)} transfer loss.`;
+ const months=(ml,demand)=>demand>0?(ml/demand).toFixed(2)+' months':'No usage in this scenario';
+ $('t-bottle-life').innerHTML=`<thead><tr><th>Perfume</th><th>Full bottle / usable ml</th><th>Expected ml used / month</th><th>One full bottle lasts</th><th>Your counted stock lasts</th></tr></thead><tbody>${L.map(x=>{
+  const usable=x.p[4]*(1-s.loss),demand=usage[x.p[0]],open=opt('stk_ml_'+x.p[0]),sealed=opt('stk_b_'+x.p[0]);
+  const known=open!=null||sealed!=null,stock=(Math.max(0,open||0)+Math.max(0,Math.floor(sealed||0))*x.p[4])*(1-s.loss);
+  return `<tr><td><span class="brand">${x.p[1]}</span>${x.p[2]}</td><td>${x.p[4]}ml / ${+usable.toFixed(2)}ml</td><td>${demand.toFixed(2)}ml</td><td><b>${months(usable,demand)}</b></td><td>${known?months(stock,demand):'Count stock above'}</td></tr>`;
+ }).join('')}</tbody>`;
+}
+function renderPresets(s){document.querySelectorAll('[data-preset]').forEach(b=>{const [lo,hi]=b.dataset.preset.split(',').map(Number);b.setAttribute('aria-pressed',String(Math.round(s.tlo*1000)===lo*10&&Math.round(s.thi*1000)===hi*10))});$('targets-meta').textContent=`${pct(s.tlo)} – ${pct(s.thi)} · no extra six-vial discount`}
 function renderKpis(s,L,P){
   const put=(id,v,sub,cls)=>{const b=$('kpi-'+id);b.textContent=v;b.className=cls||'';$('kpi-'+id+'-s').textContent=sub||''};
   if(!s){['margin','trio','be','op','tax'].forEach(id=>put(id,'—','Check the inputs'));return}
@@ -1007,17 +1077,17 @@ function render(){
   if(s.d6>=1)missing.push('Set discount must be below 100%');
   if(s.tlo>s.thi||s.thi+pctCosts(s)>=1)missing.push('Check margin targets and percentage costs');
   const error=$('calculation-error');error.hidden=missing.length===0;error.textContent=missing.length?'Calculation incomplete: '+missing.join('; '):'';
-  document.querySelectorAll('#t-vial,#t-bottle,#inventory-profit,#purchase-summary,#t-sets,#conflicts,.pick,#sheet,#opprofit,#t-op,#shipping-example,#plan-out,#mb-out,#t-comp,#t-stock,#fee-blend').forEach(el=>{el.hidden=missing.length>0});
+  document.querySelectorAll('#t-vial,#t-bottle,#inventory-profit,#purchase-summary,#t-sets,#conflicts,.pick,#sheet,#opprofit,#t-op,#shipping-example,#plan-out,#mb-out,#t-comp,#t-stock,#bottle-life,#fee-blend').forEach(el=>{el.hidden=missing.length>0});
   if(missing.length){renderKpis(null);return}
   const L=priced(s); renderPurchase(s); renderFees(s); renderShipping(s); renderAds(s,L); renderVials(s,L);
   // Additions have no store price yet: model them at the freshly solved recommendation.
-  CURRENT={...LIVE,...Object.fromEntries(DRAFT_IDS.map(id=>[id,REC[id].slice()]))};
+  CURRENT={...LIVE,...Object.fromEntries(DRAFT_IDS.filter(id=>ACTIVE_IDS.includes(id)).map(id=>[id,REC[id].slice()]))};
   // Preview: from here on every table, the picker, the plan and the summary use the recommended prices.
   if(saved.previewRec) CURRENT=Object.fromEntries(Object.entries(REC).map(([k,v])=>[k,v.slice()]));
   renderPreview(s);
   renderCompetitors(); renderMixed(s,L); renderSets(s,L); renderPicker(s,L); renderOverhead(s,L);
   // The plan comes before profit per bottle: the bottle table's "after tax (estimate)" uses the plan's effective rate.
-  const P=renderPlan(s,L); renderBottle(s,L,P); renderInventory(s,L); renderAffiliate(); renderStock(s); renderPresets(s); renderKpis(s,L,P); writeShared(s,L);
+  const P=renderPlan(s,L); renderBottle(s,L,P); renderInventory(s,L); renderAffiliate(); renderStock(s); renderBottleLife(s,L); renderPresets(s); renderKpis(s,L,P); writeShared(s,L);
 }
 // Preview switch (two copies on the page, kept in step) and its note.
 function renderPreview(s){
@@ -1046,7 +1116,7 @@ function shopifyCsv(useRec){
   const rows=[['Handle','Title','Option1 Name','Option1 Value','Variant Price']];
   Object.entries(SHOP).forEach(([id,[handle,title]])=>{
     if(!ACTIVE_IDS.includes(id))return;
-    const prices=useRec?REC[id]:LIVE[id]; if(!prices)return;
+    const prices=useRec?REC[id]?.map((p,i)=>i<2?Math.ceil(p*1.35/5)*5:p):SOLO[id]; if(!prices)return;
     SIZES.forEach((z,i)=>{const v=prices[SI[z]]; if(v>0) rows.push(i===0?[handle,title,'Size',z+' ml',v.toFixed(2)]:[handle,'','',z+' ml',v.toFixed(2)])});
   });
   const blob=new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});

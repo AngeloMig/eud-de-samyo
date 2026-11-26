@@ -1,5 +1,89 @@
 # Handoff: Sangyo perfume theme
 
+## Published new women’s products and clarified ads (2026-11-26)
+
+- Owner authorized images and live publishing for Light Blue and Bright Crystal.
+  Imported `wlightblue.jpg` / `bcrystalw.jpg` from the approved FragranceX source
+  (see CREDITS), saved both Active and published to Online Store. Verified their
+  public product pages and images. Light Blue also appears in its automatic
+  Dolce & Gabbana collection. Inventory remains zero, deny overselling, so the
+  products are visible but sold out. Existing prices/discounts were not changed.
+- Owner questioned the ad allocation in the bottle table. The formula is
+  monthly ads ÷ all store orders × bottle vial count ÷ set vial count. At ₱6,000
+  and 20 orders/month, one 100ml bottle sold as 95 × 1ml vials carries ₱9,500 of
+  allocated ads across its entire sell-through (95/3 × ₱300), not a monthly bill.
+  Added explicit full-bottle-vs-monthly explanation and allocation labels. Monthly
+  plan still deducts the ad budget once. All expected orders include organic.
+  Audit checks budget conservation at 20/100/1,000 orders across all four sizes.
+
+## Current pricing and stock-duration decision (owner, 2026-11-25, latest)
+
+This supersedes the older six-vial discount instruction below. Local calculator
+and preview only for existing products; no live Shopify pricing/discount changes
+were authorized. The owner subsequently asked to add both new women’s perfumes
+in Shopify admin. **Completed 2026-11-26:** imported both as drafts with four
+1/2/5/10ml variants each, tracked inventory at zero, deny overselling, no photos,
+and no sales-channel publishing. Verified both saved variant tables in admin.
+Light Blue product ID `15477237383400`; Bright Crystal ID `15477237416168`.
+Handles: `light-blue-eau-de-toilette`, `bright-crystal-eau-de-toilette`.
+Import record: `dev/pricing/sangyo-new-women-drafts.csv`, using the
+currently selected 50–55% recommendation inputs, solo 1/2ml +35% rounded up to ₱5.
+Light Blue solo prices: ₱190 / ₱315 / ₱505 / ₱980. Bright Crystal:
+₱245 / ₱420 / ₱705 / ₱1,385. With the existing 26% adjustment, the first two prices
+land slightly above the ideal recommended base because of rounding; verify the
+actual admin prices in the calculator before publishing. No product images or
+fragrance notes were invented. Do not import the fallback if the products have
+already exist (both now do). Existing products, live discounts and theme settings
+were not changed. Before activating these drafts, add approved images, configure
+their decant/brand collections and matching bundle-discount eligibility, and
+check the actual paid prices. Local new-women base prices remain draft solver
+recommendations; they have not been replaced by these fixed admin solo prices.
+
+- Solo 1/2ml prices carry the higher individual-vial price. Existing solo prices
+  were verified in the live builder and saved in
+  `dev/pricing/live-prices-2026-11-25.json`. The owner specifically confirmed
+  Sauvage's in-trio 1ml price is **₱381.10** (₱515 solo less 26%).
+- Calculator `SOLO` holds verified Shopify variant prices. `LIVE` holds the in-set
+  BASE: convert the solo 1/2ml price once using the live 26% adjustment. No further
+  percentage comes off that base for trios or sixes. Extra six-vial discount is
+  fixed at 0%, including old saved values. The live site still showed 30% for sixes
+  when checked; that is a historical observation, not the new local policy.
+- Recommended CSV 1/2ml variant prices are SOLO prices (base ×1.35, rounded up to
+  ₱5). Current CSV preserves the verified solo prices; never import a paid in-set
+  price as the solo price and then discount it again at checkout.
+- Owner changed the replacement choice to **two women’s perfumes**: D&G Light
+  Blue EDT 100ml (item 418217, row 7226, ₱2,607.21) and Versace Bright Crystal EDT
+  **90ml** (item 427251, row 2235, ₱3,514.12). Their tester costs are ₱2,295.98
+  (row 7224) and ₱2,997.52 (row 2233). Proposed rotation is nine original scents
+  excluding Oud Wood, plus these two; Dylan Blue is not in the active proposal.
+  Regular bottles total **₱65,226.74** for 1,090ml. Cheaper-testers option totals
+  **₱61,281.49**. Regular remains selected unless the owner enables testers.
+- Added automatic bottle-duration table under Stock: monthly order count × set
+  mix × liquid per set, allocated to every scent equally for the average scenario,
+  or only the cheapest scents for that scenario. Full usable bottle ml ÷ expected
+  monthly usage gives months. Counted stock duration is separate; blank is unknown,
+  zero is empty, no demand is explicitly labelled. At 100 orders/month, the default
+  mix uses 590ml/month: equal demand across 11 scents gives **1.77 months** per
+  100ml bottle and **1.59 months** per 90ml Bright Crystal, after 5% transfer loss.
+- Audited and corrected a mixed-price-mode bug: profit per bottle and the example
+  operating-profit table used recommendations even with base/live mode selected.
+  They now use CURRENT and its matching price rules, like the picker, monthly
+  plan, full-stock table and shared investor values. Try a set now follows the
+  selected mode too. Customer delivery fees remain a pass-through; processing
+  fees on that payment, item protection and seller-funded delivery stay separate.
+- `node dev/tools/check-decant-math.mjs` independently reconciles 1,320 set
+  combinations, checks the known ₱595.70 trio and ₱322.8733 contribution with the
+  stated estimated costs, 44 bottle scenarios and duration at 100/1,000 orders.
+  It also regenerates the dated preview snapshot. Preview rebuild:
+  `LIQUIDJS=/Users/angelomiguel/GitHub/High-Spirits/node_modules/liquidjs node dev/render-preview.mjs`.
+- Forecasts must state order count, vials/order, set mix, average item total, scent
+  demand, ad budget and missing overhead. Orders are complete bundles, not vials.
+  All-combination averages are assumptions and can overstate sales when customers
+  favour cheaper scents. No claim that ₱6,000 ads generates 1,000 orders. The
+  calculator’s unknown app/other costs remain flagged incomplete; no tax deducted
+  by default. The no-extra-discount 1ml recommendation may slightly miss a narrow
+  45–50% band after ₱5 rounding; the conflict notice remains visible.
+
 ## Update 2026-11-25: crossing ribbons under the hero
 
 - `perfume-brands` has a new **Style** setting: One line (previous) or Crossing
@@ -25,7 +109,7 @@
   ribbons a bit thicker; `--pb-half` 108px (phones 66px). Checked at 1920 / 1440 /
   1024 / 390: no gap between ribbons at either edge, text still clear.
 
-## Pricing rule for 1 ml and 2 ml decants (owner, 2026-11-25): always follow this
+## Historical pricing rule for 1 ml and 2 ml decants (superseded above)
 
 When the base price of a 1 ml or 2 ml vial changes (or a new perfume is added):
 
