@@ -388,12 +388,25 @@
             ? `<div class="pvp__pop-row"><button type="button" class="pvp__pop-btn${picked ? ' is-remove' : ''}" data-pop-act${blocked && !picked ? ' disabled' : ''}>${esc(picked ? t('PopRemoveTap') || 'Take it out' : blocked ? act : t('PopAddTap') || 'Add to set')}</button><button type="button" class="pvp__pop-x" data-pop-x aria-label="Close">×</button></div>`
             : act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
       };
+      const bounds = () => {
+        const v = window.visualViewport;
+        return { left: (v?.offsetLeft || 0) + 8, top: (v?.offsetTop || 0) + 8,
+          right: (v?.offsetLeft || 0) + (v?.width || innerWidth) - 8,
+          bottom: (v?.offsetTop || 0) + (v?.height || innerHeight) - 8 };
+      };
+      const fit = (x, y) => {
+        const b = bounds();
+        pop.style.maxHeight = `${Math.max(1, b.bottom - b.top)}px`;
+        pop.style.translate = `${Math.max(b.left, Math.min(x, b.right - pop.offsetWidth))}px ${Math.max(b.top, Math.min(y, b.bottom - pop.offsetHeight))}px`;
+      };
+      let pointer = null;
       const place = (x, y) => {
-        const w = pop.offsetWidth, h = pop.offsetHeight, g = 16;
+        pointer = { x, y };
+        const w = pop.offsetWidth, h = pop.offsetHeight, g = 16, b = bounds();
         let px = x + g, py = y + g;
-        if (px + w > innerWidth - 8) px = x - w - g;
-        if (py + h > innerHeight - 8) py = y - h - g;
-        pop.style.translate = `${Math.max(8, px)}px ${Math.max(8, py)}px`;
+        if (px + w > b.right) px = x - w - g;
+        if (py + h > b.bottom) py = y - h - g;
+        fit(px, py);
       };
       const show = (li, x, y) => {
         const wasOn = pop.classList.contains('is-on') && lastLi && lastLi !== li;
@@ -409,7 +422,7 @@
         const btn = li.querySelector('[data-add]');
         btn.addEventListener('focus', () => { if (!btn.matches(':focus-visible')) return; const r = li.getBoundingClientRect(); show(li, r.right - 6, r.top + 6); });
         btn.addEventListener('blur', hide);
-        btn.addEventListener('click', () => { if (popLi === li) requestAnimationFrame(() => fill(li)); });
+        btn.addEventListener('click', () => { if (popLi === li) requestAnimationFrame(() => { fill(li); if (pointer) place(pointer.x, pointer.y); }); });
       });
       window.addEventListener('scroll', () => { if (popLi && !pop.classList.contains('is-touch')) hide(); }, { passive: true });
 
@@ -421,7 +434,7 @@
         const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
         const below = r.bottom + 8, above = r.top - h - 8;
         const y = below + h < innerHeight - 90 ? below : above > 8 ? above : Math.max(8, (innerHeight - h) / 2);
-        pop.style.translate = `${x}px ${y}px`;
+        fit(x, y);
       };
       const openTap = (li) => {
         pop.classList.add('is-touch');
@@ -429,6 +442,18 @@
         tapLi = li; popLi = li; lastLi = li; fill(li); pop.classList.add('is-on'); placeTap(li);
         if (wasOn) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
       };
+      if ('ResizeObserver' in window) new ResizeObserver(() => {
+        if (!popLi || !pop.classList.contains('is-on')) return;
+        if (pop.classList.contains('is-touch')) placeTap(popLi);
+        else if (pointer) place(pointer.x, pointer.y);
+      }).observe(pop);
+      const reposition = () => {
+        if (!popLi) return;
+        if (pop.classList.contains('is-touch')) placeTap(popLi);
+        else if (pointer) place(pointer.x, pointer.y);
+      };
+      window.addEventListener('resize', reposition, { passive: true });
+      window.visualViewport?.addEventListener('resize', reposition, { passive: true });
       scents.forEach((li) => {
         li.addEventListener('pointerdown', (e) => { lastPT = e.pointerType; }, true);
         li.addEventListener('click', (e) => {

@@ -1,5 +1,24 @@
 # Handoff: Sangyo perfume theme
 
+## Discounted vial cards and unclipped previews (2026-11-26)
+
+- Owner requested selected Try trio slots lead with the actual in-set price and
+  a separate `Save ₱… · …%` line, replacing the solo price plus a minus sign.
+  Uses the existing cents rounding and configured discount once. Legacy default
+  savings text upgrades for display; custom text stays editable in the editor.
+- Compact builder preview bottle rules now target only its direct image, so note
+  thumbnails do not inherit the bottle's absolute sizing. Both builder and trio
+  cards are constrained to the visual viewport, scroll in short windows, and
+  reposition after content/image size or viewport changes.
+- Owner confirmed Stronger With You Intensely should be the FIRST showcase slide
+  (not move the section). Reordered its existing block only. Preserved Claude's
+  latest homepage section order, decant popup and separate woody note photos.
+- Added `dev/try-trio.html` to the preview renderer. It reads SOLO prices before
+  the 26% example adjustment; never pass already-discounted base prices to it.
+  Browser checked 390px: no horizontal overflow; selected card text fits. Known
+  Sauvage example: ₱515 → ₱381.10, saving ₱133.90. Theme schema checks pass;
+  whole-theme lint remains at 15 existing findings (no new findings in our files).
+
 ## Published new women’s products and clarified ads (2026-11-26)
 
 - Owner authorized images and live publishing for Light Blue and Bright Crystal.

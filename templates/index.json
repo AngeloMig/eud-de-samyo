@@ -251,10 +251,10 @@
         }
       },
       "block_order": [
+        "perfume_4",
         "perfume_1",
         "perfume_2",
-        "perfume_3",
-        "perfume_4"
+        "perfume_3"
       ],
       "settings": {
         "image_scale": 95,

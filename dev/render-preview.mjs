@@ -819,6 +819,11 @@ async function renderGroupScoped(file, scope) {
   for (const key of vTpl.order) vParts.push(await renderSection(vTpl.sections[key].type, key, {}, vTpl.sections[key], {}, vScope));
   writeFileSync(join(root, 'dev/vial-picker.html'), page('Sangyo vial picker preview', `${vHeader}\n<main id="MainContent">${vParts.join('\n')}</main>\n${footer}`, false));
   console.log('wrote dev/vial-picker.html');
+  // Trio takes SOLO variant prices and applies the set adjustment exactly once.
+  const trioProducts = vProducts.map((p, i) => ({ ...p, variants: p.variants.map((v, j) => j === 0 ? v : { ...v, price: Math.round((decantPricing.products[i].soloPrices || decantPricing.products[i].prices)[j - 1] * 100) }) }));
+  const trio = await renderSection('perfume-try-trio', 'try-trio', { size: '1', count: 3, discount: 26 }, null, {}, { ...vScope, product: trioProducts[0], collections: { all: { products: trioProducts } } });
+  writeFileSync(join(root, 'dev/try-trio.html'), page('Sangyo trio preview', `${vHeader}\n<main id="MainContent"><p style="padding:12px;text-align:center">Preview: demo products &amp; prices · 26% set discount</p>${trio}</main>\n${footer}`, false));
+  console.log('wrote dev/try-trio.html');
 }
 
 // ---------- Decant product page (dev/product-decant.html) ----------
