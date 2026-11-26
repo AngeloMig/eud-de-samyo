@@ -232,3 +232,9 @@ Chosen by their Unsplash alt text for the builder pop-up notes:
 - bluebell: https://unsplash.com/photos/ (image id photo-1767561499678-8ba2963c13b4)
 - basil: https://unsplash.com/photos/ (image id photo-1776257217010-1c2e92207f2a)
 - ice: https://unsplash.com/photos/ (image id photo-1758001969632-c67b15c89f1f)
+- sage: image id photo-1726921300257-e42a9c4c5dc8
+- magnolia: image id photo-1775745489208-5bfb59b25c9c
+- yuzu: image id photo-1777075810453-84794d08f93e
+- violet: image id photo-1780277934673-6f6a43a5c65c
+- ambrette: image id photo-1596985122625-faf96c53e0c6
+- (sage photo also used for Clary sage; pansy = nearest free match for Violet leaf; hibiscus for Ambrette, the seed of a hibiscus; Ambroxan uses the amber picture)
