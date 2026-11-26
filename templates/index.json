@@ -656,22 +656,23 @@
             "title_italic": "trio",
             "size": "1",
             "count": 3,
-            "price": "₱560 – ₱1,340",
+            "price": "₱518 – ₱1,420.80",
             "price_from": false,
             "button_label": "Pick your scents",
-            "style": "dark"
+            "style": "dark",
+            "badge": "26% off"
           }
         },
         "bundle_2": {
           "type": "bundle",
           "settings": {
             "featured": true,
-            "badge": "10% off",
+            "badge": "30% off",
             "title": "Discovery",
             "title_italic": "six",
             "size": "1",
             "count": 6,
-            "price": "₱1,309.50 – ₱2,061",
+            "price": "₱1,155 – ₱2,303",
             "price_from": false,
             "button_label": "Pick your scents",
             "style": "light"
@@ -684,21 +685,22 @@
             "title_italic": "trio",
             "size": "2",
             "count": 3,
-            "price": "₱975 – ₱2,530",
+            "price": "₱884.30 – ₱2,682.50",
             "price_from": false,
             "button_label": "Pick your scents",
-            "style": "dark"
+            "style": "dark",
+            "badge": "26% off"
           }
         },
         "bundle_4": {
           "type": "bundle",
           "settings": {
-            "badge": "10% off",
+            "badge": "30% off",
             "title": "Wardrobe",
             "title_italic": "six",
             "size": "2",
             "count": 6,
-            "price": "₱2,358 – ₱3,852",
+            "price": "₱2,019.50 – ₱4,291",
             "price_from": false,
             "button_label": "Pick your scents",
             "style": "light"
@@ -711,7 +713,7 @@
             "title_italic": "duo",
             "size": "5",
             "count": 2,
-            "price": "₱1,415 – ₱4,375",
+            "price": "₱1,210 – ₱5,905",
             "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"
@@ -724,7 +726,7 @@
             "title_italic": "ten",
             "size": "10",
             "count": 1,
-            "price": "₱1,365 – ₱5,560",
+            "price": "₱980 – ₱5,560",
             "price_from": false,
             "button_label": "Pick your scents",
             "style": "dark"

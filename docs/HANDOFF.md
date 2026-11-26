@@ -1564,3 +1564,6 @@ Sync errors are under the theme's GitHub chip → View logs.
   set discount (26%), so it matches the builder. Hidden on the cart and the builder page;
   waits while the cart drawer is open; Esc / scrim / × close; focus trapped; reduced-motion
   safe; floats above the product sticky bar on phones.
+- Home decants teaser prices are typed by hand (perfume-decants bundle blocks). Updated
+  2026-11-26 to the builder's current from/up-to prices and 26% / 30% badges; update them
+  again whenever 1/2/5/10 ml prices change.
