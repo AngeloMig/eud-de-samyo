@@ -212,3 +212,23 @@ All containers are unbranded.
 Downloaded but not used: the 10 ml travel atomizer by Macro.jr
 (https://unsplash.com/photos/a-close-up-of-a-bottle-b0-MJ8wCQZ8): a lime slice covers it
 and it carries an embossed brand name.
+
+
+## Note photos added 2026-11-26 (Unsplash, free Unsplash licence, hotlinked)
+
+Chosen by their Unsplash alt text for the builder pop-up notes:
+- pomegranate: https://unsplash.com/photos/ (image id photo-1574709755254-fcd942d09d5a)
+- peony: https://unsplash.com/photos/ (image id photo-1787163519918-ce37e9c240e9)
+- ginger: https://unsplash.com/photos/ (image id photo-1630623093145-f606591c2546)
+- pear: https://unsplash.com/photos/ (image id photo-1570115114436-63d3405246e7)
+- lotus: https://unsplash.com/photos/ (image id photo-1616435577207-ca90abc6b732)
+- juniper: https://unsplash.com/photos/ (image id photo-1773341737863-ceb37f997bec)
+- chestnut: https://unsplash.com/photos/ (image id photo-1758107957614-67c266119a1d)
+- geranium: https://unsplash.com/photos/ (image id photo-1754493931374-79a31a602d8e)
+- bamboo: https://unsplash.com/photos/ (image id photo-1583642037383-861ac716c3f0)
+- leather: https://unsplash.com/photos/ (image id photo-1571829604981-ea159f94e5ad)
+- wood: https://unsplash.com/photos/ (image id photo-1702001145743-094b0b7ead51)
+- moss: https://unsplash.com/photos/ (image id photo-1607092634852-faf1f18029b9)
+- bluebell: https://unsplash.com/photos/ (image id photo-1767561499678-8ba2963c13b4)
+- basil: https://unsplash.com/photos/ (image id photo-1776257217010-1c2e92207f2a)
+- ice: https://unsplash.com/photos/ (image id photo-1758001969632-c67b15c89f1f)

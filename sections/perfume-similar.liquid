@@ -29,7 +29,7 @@
         assign group = profile.base_notes.value | default: product.metafields.fragrance.base_notes.value
     endcase
     for nn in group
-      assign nk = nn.name.value | downcase | strip
+      assign nk = nn.name.value | default: nn | downcase | strip
       assign cur_notes = cur_notes | append: nk | append: ','
     endfor
   endfor
@@ -85,7 +85,7 @@
             assign group = cp.base_notes.value | default: p.metafields.fragrance.base_notes.value
         endcase
         for nn in group
-          assign nk = nn.name.value | downcase | strip
+          assign nk = nn.name.value | default: nn | downcase | strip
           assign probe = ',' | append: nk | append: ','
           if cur_notes contains probe
             unless why_notes contains nk

@@ -47,7 +47,8 @@
         "adapt_dark": false,
         "drawer_ship_text": "[amount] away from free standard delivery after discounts",
         "drawer_ship_done": "Free standard delivery unlocked after discounts",
-        "announcement": "Authentic designer fragrances\nFree standard delivery on ₱10,000+ after discounts\nScent notes for every perfume, before you buy"
+        "announcement": "Authentic designer fragrances\nFree standard delivery on ₱10,000+ after discounts\nScent notes for every perfume, before you buy",
+        "logo_backdrop": "blur"
       }
     }
   },

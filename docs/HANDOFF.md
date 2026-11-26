@@ -1471,3 +1471,80 @@ Sync errors are under the theme's GitHub chip → View logs.
 - Builder scent cards (owner): for a set with a discount, each perfume shows its price
   in that set, the solo price struck through, and a green tag "Save ₱… · 26%"
   (setting `less_label`). Sets without a discount show the plain vial price as before.
+- Builder scent cards (owner, 2026-11-26): a small "For men / For women / Unisex" tag on
+  the photo's top-left corner. Source, in order: product tag `men` / `women` / `unisex`
+  (also "for men"/"for women"), else Shopify's Target gender category metafield
+  (`shopify.target-gender`; both genders = Unisex). No data → no tag. Labels are
+  section settings (for_men_label, for_women_label, for_unisex_label).
+
+## Update 2026-11-26: decant builder ideas 1, 6, 10 (owner picks)
+
+- **Picked = highlighted (1):** picked scents no longer blur/fade; they get an ink
+  outline, the photo grows 5%, and a number badge (`[data-num]`) matching their vial in
+  the tray (hidden when repeats are allowed, where the "× n" count shows instead).
+- **Phone drawer (6):** at ≤989px the tray is a fixed dark drawer at the bottom: a bar
+  (`[data-bar]`) with a vial per slot (amber when filled), the total, "n of total
+  picked" and "Your vials ⌄"; tapping opens the tray body (`[data-tray-body]`, inert
+  while closed, Esc closes). The section keeps 96px extra bottom padding so content
+  isn't hidden. Desktop unchanged (sticky tray).
+- **Quick fill (10):** buttons above the scents: Lowest price, One of each brand
+  (random per brand, then cheapest), Surprise me (random). Settings: show_fills,
+  fills_label, fill_*_label (empty hides one), filled_label, bar_count_label.
+
+### Decant builder: compact tiles (owner, 2026-11-26)
+- Builder idea 05: `perfume-vial-picker` setting **Scent cards** (`card_style`, default
+  `compact`) adds `.pvp--compact`: 84px photo-only tiles like the Try trio grid (4 across on
+  phones). The real Add/Remove button is stretched over each tile, so all toggle, blocked-tip
+  and aria logic is unchanged. With a mouse a pop-up follows the pointer (vendor, gender tag,
+  name, set price / struck solo / Save tag, "Click to add / take it out"); touch screens get a
+  short name + price caption instead. Choose **Full cards** to get the old layout back.
+- Pop-up note pictures (take 02, owner 2026-11-26): setting `pop_notes` (default on).
+  Each tile carries a `<template data-notes>` with up to five of the perfume's notes
+  (profile metaobject first, else `fragrance.top/middle/base_notes`; the note's own image,
+  else `perfume-note-art`). The pictures rest on the bottom edge of the pop-up photo with the
+  names below; they pop in one by one and the photo cross-fades when moving tile to tile.
+  Perfumes without notes show just the photo. Notes are still empty in Shopify (2026-11-26).
+- Men / Women / Unisex filter + tile labels (owner 2026-11-26): setting `show_gender_filter`
+  (labels gf_*). A "Show" chip row above Quick fill, with counts; buttons with no perfumes hide.
+  Filtering hides every other tile, picked ones too (they stay in the tray) and keeps the tile size fixed; Quick fill
+  then fills from that group. Each compact tile shows a tiny coloured label (For men / women
+  / unisex) from the same tags (men, women, unisex) or Shopify's Target gender.
+- Notes data (2026-11-26): `fragrance.top_notes / middle_notes / base_notes` are created on the
+  live store as **lists of single line text** (not metaobjects; ~54 note entries by hand was
+  too slow). Every notes reader now accepts plain text (`x.name.value | default: x`), and
+  `perfume-note-art` maps free text to a picture key. Entered from brand-published pyramids
+  (sources in the chat / docs/CREDITS.md note); Bleu de Chanel skipped (not a decant yet).
+- Builder tidy-up (owner 2026-11-26): the Show filter and the "See the vials at actual size"
+  button are off by default now (settings `show_gender_filter`, `show_size_guide`; both still
+  work if switched on). The pre-fill note is a small one-line hint (no box). Tiles show a
+  ♂ / ♀ / unisex icon (blue / rose / gold) instead of the text tag; the pop-up shows icon +
+  label.
+- Notes entered 2026-11-26 (Shopify bulk editor). Top / Heart / Base, from brand pages or
+  brand-supplied retailer copy (Sephora, Lookfantastic, Ulta, John Lewis, Harrods):
+  Light Blue: Sicilian lemon, Granny Smith apple, Bluebell / Jasmine, Bamboo, White rose / Cedarwood, Amber, Musk.
+  Bright Crystal: Yuzu, Pomegranate, Iced accord / Peony, Magnolia, Lotus flower / Plant amber, Musk, Mahogany.
+  Eros EDT: Mint, Green apple, Lemon / Tonka bean, Ambroxan, Geranium / Vanilla, Vetiver, Oakmoss, Cedarwood.
+  The One for Men EDP: Tarocco orange, Basil, Bergamot / Clary sage, Orange blossom, Lavender / Tobacco, Amber, Cedarwood.
+  Terre d'Hermès EDT: Orange, Grapefruit / Pepper, Flint / Cedar, Vetiver, Patchouli.
+  Uomo Born in Roma EDT: Violet leaf, Ginger, Citron / Clary sage, Peppermint, Mineral salt / Vetiver, Guaiac wood, Leather.
+  Stronger With You Intensely: Pink pepper, Chestnut / Lavender, Sage / Vanilla, Amberwood.
+  Wood Sage & Sea Salt: Ambrette seed / Sea salt / Sage.
+  Y EDP: Apple, Bergamot, Ginger / Sage, Juniper, Geranium / Tonka bean, Amberwood, Olibanum.
+  Sauvage EDP (Dior lists only these): Calabrian bergamot / (none) / Vanilla, Patchouli.
+  Dior Homme Intense: Lavender / Iris, Ambrette, Pear / Virginia cedar, Vetiver.
+  Oud Wood: Rosewood, Cardamom, Pink pepper / Oud, Sandalwood, Vetiver / Tonka bean, Amber, Patchouli.
+  Bleu de Chanel: not entered (no decants yet).
+- Phones (owner 2026-11-26): tiles stay the desktop size on every viewport (no captions).
+  On touch the first tap opens the pop-up as a card with "Add to set / Take it out" and ×
+  (capture-phase click on the tile, so the real toggle runs only from the card). The open
+  drawer keeps "Add set to bag" sticky at its bottom, and once the set is full the closed bar
+  shows an "Add to bag" button (setting `bar_add_label`).
+- Phone overflow fix (2026-11-26): the hidden `.pvp__tip` tooltips stuck out past the right
+  edge and made phone pages ~28px wider, pushing the drawer off-screen. They're hidden for
+  compact tiles now (the pop-up / tap card says the same). `.pcd` (cart drawer) also clips
+  its parked panel. Quick fill is a compact one-line row (34px pills; 44px on phones, label
+  hidden there).
+- Header on scroll (owner 2026-11-26): tried a logo / links tuck while scrolling; owner removed it, so nothing in the header moves on scroll.
+- Logo fade (owner, idea 07 from the logo-backdrop ideas, 2026-11-26): `.ph::before` is a
+  cream radial fade in the top-left corner only (behind the logo), shown once scrolled past
+  40px (`.is-down`), hidden over dark sections (`.is-on-dark`). Setting `logo_backdrop`: blur (default, idea 10, owner) / fade / none.

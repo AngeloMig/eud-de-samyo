@@ -100,15 +100,17 @@
             <ul class="pjr__notes" role="list">
               {%- for nn in group -%}
                 {%- assign n_desc = nn.description.value -%}
+                {%- assign n_name = nn.name.value | default: nn -%}
+                {%- assign n_art = nn.art.value | default: n_name -%}
                 <li class="pjr__note{% if forloop.index > show_max %} is-extra{% endif %}" style="--i: {{ forloop.index0 | at_most: 9 }};">
                   <span class="pjr__photo" aria-hidden="true">
                     {%- if nn.image.value != blank -%}
                       {{ nn.image.value | image_url: width: 300 | image_tag: alt: '', loading: 'lazy' }}
                     {%- else -%}
-                      {%- render 'perfume-note-art', note: nn.art.value -%}
+                      {%- render 'perfume-note-art', note: n_art -%}
                     {%- endif -%}
                   </span>
-                  <span class="pjr__note-name">{{ nn.name.value | escape }}</span>
+                  <span class="pjr__note-name">{{ n_name | escape }}</span>
                   {%- if n_desc != blank -%}<span class="pjr__note-desc">{{ n_desc | escape }}</span>{%- endif -%}
                 </li>
               {%- endfor -%}

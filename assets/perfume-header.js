@@ -65,6 +65,10 @@
       this.bindSearch(signal);
       this.bindAnnouncement(signal);
       this.bindAdaptDark(signal);
+      // Scrolled past the top: the blurred logo corner (owner ideas 07 / 10). Nothing moves.
+      const down = () => this.classList.toggle('is-down', window.scrollY > 40);
+      window.addEventListener('scroll', down, { passive: true, signal });
+      down();
 
       // Bag count: Dawn publishes cart updates through its pub/sub; other themes can
       // dispatch a 'cart:updated' event on document.

@@ -16,6 +16,8 @@
   color: var(--pcd-ink);
   font-family: var(--pcd-sans);
   inset: 0;
+  /* Clip the closed panel (parked off-screen) so phones don't get a wider page. */
+  overflow: hidden;
   pointer-events: none;
   position: fixed;
   visibility: hidden;

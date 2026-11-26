@@ -38,6 +38,9 @@
     const totalEl = root.querySelector('[data-total]');
     const submit = root.querySelector('[data-submit]');
     const form = root.querySelector('[data-form]');
+    const barEl = root.querySelector('[data-bar]');
+    const trayBody = root.querySelector('[data-tray-body]');
+    const mq = matchMedia('(max-width: 989px)');
     if (!setInputs.length || !slotsEl) return;
 
     // Each scent's vials: { "1": { id, price, available }, ... }
@@ -156,6 +159,13 @@
         badge.hidden = n === 0 || !repeats;
         badge.textContent = '× ' + n;
         li.classList.toggle('is-picked', n > 0);
+        // Its vial number in the tray (1, 2, 3), so card and tray match (owner).
+        const num = li.querySelector('[data-num]');
+        if (num) {
+          const at = picks.findIndex((p) => p.li === li);
+          num.hidden = repeats || at < 0;
+          num.textContent = at < 0 ? '' : String(at + 1);
+        }
         li.classList.toggle('is-off', !v);
         // With a set discount: the price in this set, the solo price struck through and
         // the % off, so the saving is obvious (owner). Without one: the vial price.
@@ -215,6 +225,15 @@
       }
       totalEl.textContent = money(sub - off);
       submit.disabled = !full;
+
+      // Phone bar: a little vial per slot (filled ones amber), the total and progress.
+      if (barEl) {
+        const vials = root.querySelector('[data-bar-vials]');
+        vials.innerHTML = Array.from({ length: Math.min(count, 10) }, (_, i) => `<i class="${i < picks.length ? 'on' : ''}"></i>`).join('');
+        root.querySelector('[data-bar-total]').textContent = money(sub - off);
+        root.querySelector('[data-bar-n]').textContent = (t('Bar') || '[n] of [total] picked').replace('[n]', picks.length).replace('[total]', count);
+        barEl.classList.toggle('is-full', full);
+      }
 
       if (focusSlot != null) {
         const target = slotsEl.children[Math.min(focusSlot, slotsEl.children.length - 1)];
@@ -340,6 +359,198 @@
         picks.push({ li, name: li.dataset.scent });
       });
     }
+    // Compact tiles: a pop-up by the mouse with the scent's details (owner). On touch
+    // (owner 2026-11-26) the first tap opens the same card with an Add / Remove button,
+    // so phone shoppers see name, notes and price before adding.
+    if (root.classList.contains('pvp--compact')) {
+      const pop = document.createElement('div');
+      pop.className = 'pvp__pop';
+      pop.setAttribute('aria-hidden', 'true');
+      root.appendChild(pop);
+      let popLi = null, lastLi = null;
+      const fill = (li) => {
+        const forEl = li.querySelector('.pvp__for');
+        const btn = li.querySelector('[data-add]');
+        const picked = li.classList.contains('is-picked');
+        const blocked = btn.getAttribute('aria-disabled') === 'true';
+        const act = picked ? t('PopRemove') : blocked ? (li.querySelector('[data-tip]')?.textContent.trim() || t('Full')) : t('PopAdd');
+        const img = li.querySelector('.pvp__scent-img img');
+        const notes = [...(li.querySelector('template[data-notes]')?.content.querySelectorAll('.pvp__pn') || [])];
+        const noteArt = notes.length ? `<span class="pvp__pop-notes">${notes.map((n, i) => `<span class="pvp__pn${n.innerHTML.trim() ? '' : ' pvp__pn--txt'}" style="--i:${i}">${n.innerHTML.trim() || `<b>${esc(n.dataset.i || '')}</b>`}</span>`).join('')}</span>` : '';
+        pop.classList.toggle('has-notes', notes.length > 0);
+        pop.innerHTML = `${img ? `<span class="pvp__pop-img"><img src="${esc((img.srcset || '').split(',').pop().trim().split(' ')[0] || img.currentSrc || img.src)}" alt="">${noteArt}</span>` : ''}${notes.length ? `<p class="pvp__pop-names">${notes.map((n) => esc(n.dataset.name)).join(' · ')}</p>` : ''}<p class="pvp__pop-top"><span>${esc(li.dataset.vendor || '')}</span>${forEl ? `<span class="pvp__pop-for ${[...forEl.classList].find((c) => c.startsWith('pvp__for--')) || ''}">${forEl.innerHTML}</span>` : ''}</p>
+          <p class="pvp__pop-n">${esc(li.dataset.scent)}</p>
+          <p class="pvp__pop-p">${li.querySelector('[data-vial-price]').innerHTML}</p>
+          ${pop.classList.contains('is-touch')
+            ? `<div class="pvp__pop-row"><button type="button" class="pvp__pop-btn${picked ? ' is-remove' : ''}" data-pop-act${blocked && !picked ? ' disabled' : ''}>${esc(picked ? t('PopRemoveTap') || 'Take it out' : blocked ? act : t('PopAddTap') || 'Add to set')}</button><button type="button" class="pvp__pop-x" data-pop-x aria-label="Close">×</button></div>`
+            : act ? `<p class="pvp__pop-act${picked || blocked ? ' is-muted' : ''}"><i aria-hidden="true">${picked ? '−' : blocked ? '!' : '+'}</i>${esc(act)}</p>` : ''}`;
+      };
+      const place = (x, y) => {
+        const w = pop.offsetWidth, h = pop.offsetHeight, g = 16;
+        let px = x + g, py = y + g;
+        if (px + w > innerWidth - 8) px = x - w - g;
+        if (py + h > innerHeight - 8) py = y - h - g;
+        pop.style.translate = `${Math.max(8, px)}px ${Math.max(8, py)}px`;
+      };
+      const show = (li, x, y) => {
+        const wasOn = pop.classList.contains('is-on') && lastLi && lastLi !== li;
+        popLi = li; lastLi = li; fill(li); pop.classList.add('is-on'); place(x, y);
+        if (wasOn) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
+      };
+      let hideT;
+      const hide = () => { clearTimeout(hideT); hideT = setTimeout(() => { if (!popLi) pop.classList.remove('is-on'); }, 60); popLi = null; };
+      scents.forEach((li) => {
+        li.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'touch') show(li, e.clientX, e.clientY); });
+        li.addEventListener('pointermove', (e) => { if (popLi === li) place(e.clientX, e.clientY); });
+        li.addEventListener('pointerleave', hide);
+        const btn = li.querySelector('[data-add]');
+        btn.addEventListener('focus', () => { if (!btn.matches(':focus-visible')) return; const r = li.getBoundingClientRect(); show(li, r.right - 6, r.top + 6); });
+        btn.addEventListener('blur', hide);
+        btn.addEventListener('click', () => { if (popLi === li) requestAnimationFrame(() => fill(li)); });
+      });
+      window.addEventListener('scroll', () => { if (popLi && !pop.classList.contains('is-touch')) hide(); }, { passive: true });
+
+      // Touch: tap = preview card; its button adds / removes.
+      let lastPT = '', bypass = false, tapLi = null;
+      const closeTap = () => { tapLi = null; popLi = null; pop.classList.remove('is-on'); setTimeout(() => { if (!tapLi) pop.classList.remove('is-touch'); }, 250); };
+      const placeTap = (li) => {
+        const r = li.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+        const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+        const below = r.bottom + 8, above = r.top - h - 8;
+        const y = below + h < innerHeight - 90 ? below : above > 8 ? above : Math.max(8, (innerHeight - h) / 2);
+        pop.style.translate = `${x}px ${y}px`;
+      };
+      const openTap = (li) => {
+        pop.classList.add('is-touch');
+        const wasOn = pop.classList.contains('is-on') && tapLi && tapLi !== li;
+        tapLi = li; popLi = li; lastLi = li; fill(li); pop.classList.add('is-on'); placeTap(li);
+        if (wasOn) { pop.classList.remove('is-swap'); void pop.offsetWidth; pop.classList.add('is-swap'); }
+      };
+      scents.forEach((li) => {
+        li.addEventListener('pointerdown', (e) => { lastPT = e.pointerType; }, true);
+        li.addEventListener('click', (e) => {
+          if (bypass || lastPT !== 'touch' || !e.target.closest('[data-add]')) return;
+          e.stopPropagation(); e.preventDefault();
+          if (tapLi === li && pop.classList.contains('is-on')) closeTap(); else openTap(li);
+        }, true);
+      });
+      pop.addEventListener('click', (e) => {
+        if (e.target.closest('[data-pop-x]')) { closeTap(); return; }
+        if (!e.target.closest('[data-pop-act]') || !tapLi) return;
+        const li = tapLi;
+        bypass = true; li.querySelector('[data-add]').click(); bypass = false;
+        closeTap();
+      });
+      document.addEventListener('pointerdown', (e) => {
+        if (tapLi && !pop.contains(e.target) && !e.target.closest('.pvp__scent')) closeTap();
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tapLi) closeTap(); });
+      window.addEventListener('scroll', () => { if (tapLi) placeTap(tapLi); }, { passive: true });
+    }
+
+    // Phones: a quick "Add set to bag" on the bar once the set is full (owner).
+    const barAdd = root.querySelector('[data-bar-add]');
+    if (barAdd && submit) {
+      barAdd.addEventListener('click', () => submit.click());
+      new MutationObserver(() => { barAdd.hidden = submit.disabled; }).observe(submit, { attributes: true, attributeFilter: ['disabled'] });
+      barAdd.hidden = submit.disabled;
+    }
+
+    // Men / Women / Unisex filter (owner 2026-11-26). Reads each tile's label class.
+    scents.forEach((li) => {
+      const m = (li.querySelector('.pvp__for')?.getAttribute('class') || '').match(/pvp__for--(\w+)/);
+      li.dataset.for = m ? m[1] : '';
+    });
+    const gf = root.querySelector('[data-gf]');
+    let gfOn = '';
+    if (gf) {
+      const btns = [...gf.querySelectorAll('[data-gf-v]')];
+      let groups = 0;
+      btns.forEach((b) => {
+        const v = b.dataset.gfV;
+        if (!v) return;
+        const n = scents.filter((li) => li.dataset.for === v).length;
+        const nEl = b.querySelector('[data-gf-n]');
+        if (nEl) nEl.textContent = n;
+        b.hidden = n === 0;
+        if (n) groups++;
+      });
+      gf.hidden = groups < 1;
+      // Keep tiles the same size while filtered (auto-fit would stretch the few left).
+      const ulEl = scents[0]?.parentElement;
+      const lockCols = () => {
+        if (!ulEl) return;
+        ulEl.style.gridTemplateColumns = '';
+        if (!gfOn) return;
+        const shown = scents.filter((li) => !li.hidden);
+        scents.forEach((li) => { li.dataset.h = li.hidden ? '1' : ''; li.hidden = false; });
+        const w = scents[0].getBoundingClientRect().width;
+        scents.forEach((li) => { li.hidden = li.dataset.h === '1'; });
+        if (w && shown.length < scents.length) ulEl.style.gridTemplateColumns = `repeat(auto-fill, ${w}px)`;
+      };
+      addEventListener('resize', lockCols, { passive: true });
+      btns.forEach((b) => b.addEventListener('click', () => {
+        gfOn = b.dataset.gfV;
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        scents.forEach((li) => {
+          // Strict (owner): picked scents of another group hide too; they stay in the tray.
+          const out = gfOn !== '' && li.dataset.for !== gfOn;
+          li.hidden = out;
+        });
+        lockCols();
+        scents.filter((li) => !li.hidden).forEach((li, i) => {
+          li.classList.remove('is-gf-in'); void li.offsetWidth; li.style.setProperty('--gi', i); li.classList.add('is-gf-in');
+        });
+      }));
+    }
+
+    // Quick fills (owner): lowest price, one of each brand, or a random mix.
+    root.querySelectorAll('[data-fill]').forEach((b) => b.addEventListener('click', () => {
+      const set = current();
+      const count = parseInt(set.dataset.count, 10) || 1;
+      const size = set.dataset.size;
+      // With a filter on, fill from that group (owner).
+      const avail = scents.filter((li) => vialOf(li, size) && (!gfOn || li.dataset.for === gfOn));
+      const byPrice = avail.slice().sort((a, c) => vialOf(a, size).price - vialOf(c, size).price);
+      let pick = [];
+      if (b.dataset.fill === 'low') pick = byPrice;
+      else if (b.dataset.fill === 'surprise') {
+        pick = avail.slice();
+        for (let i = pick.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pick[i], pick[j]] = [pick[j], pick[i]]; }
+      } else {
+        const seen = new Set();
+        const shuffled = avail.slice().sort(() => Math.random() - 0.5);
+        const first = shuffled.filter((li) => !seen.has(li.dataset.vendor) && seen.add(li.dataset.vendor));
+        pick = first.concat(byPrice.filter((li) => !first.includes(li)));
+      }
+      if (!repeats) pick = pick.filter((li, i) => pick.indexOf(li) === i);
+      let list2 = pick.slice(0, count);
+      if (repeats && list2.length < count && list2.length) while (list2.length < count) list2.push(list2[list2.length % pick.length]);
+      picks = list2.map((li) => ({ li, name: li.dataset.scent }));
+      draw();
+      [...slotsEl.children].forEach((sl) => sl.classList.add('is-new'));
+      statusEl.textContent = (t('Filled') || 'Filled [n] vials.').replace('[n]', picks.length);
+      if (barEl && mq.matches) setOpen(true);
+    }));
+
+    // Phones: the tray is a drawer behind a bar; desktop shows it open as before.
+    function setOpen(open) {
+      if (!barEl) return;
+      const drawer = mq.matches;
+      root.classList.toggle('is-tray-open', drawer && open);
+      barEl.setAttribute('aria-expanded', String(!drawer || open));
+      if (trayBody) trayBody.inert = drawer && !open;
+    }
+    if (barEl) {
+      barEl.addEventListener('click', () => setOpen(!root.classList.contains('is-tray-open')));
+      const sync = () => setOpen(false);
+      mq.addEventListener ? mq.addEventListener('change', sync) : mq.addListener(sync);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && root.classList.contains('is-tray-open')) { setOpen(false); barEl.focus(); }
+      });
+      sync();
+    }
+
     prefill();
     draw();
   }

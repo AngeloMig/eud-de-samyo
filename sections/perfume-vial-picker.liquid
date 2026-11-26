@@ -49,7 +49,7 @@
 
 <section
   id="{{ vid }}"
-  class="pvp"
+  class="pvp{% if section.settings.card_style == 'compact' %} pvp--compact{% endif %}"
   aria-labelledby="{{ vid }}-h"
   data-pvp
   data-repeats="{{ section.settings.allow_repeats }}"
@@ -66,6 +66,12 @@
   data-t-remove="{{ section.settings.remove_label | escape }}"
   data-t-add-scent="{{ section.settings.add_scent_label | escape }}"
   data-t-per-vial="{{ section.settings.per_vial_label | escape }}"
+  data-t-filled="{{ section.settings.filled_label | escape }}"
+  data-t-pop-add="{{ section.settings.pop_add_label | escape }}"
+  data-t-pop-remove="{{ section.settings.pop_remove_label | escape }}"
+  data-t-pop-add-tap="{{ section.settings.pop_add_tap_label | escape }}"
+  data-t-pop-remove-tap="{{ section.settings.pop_remove_tap_label | escape }}"
+  data-t-bar="{{ section.settings.bar_count_label | escape }}"
   data-t-less="{{ section.settings.less_label | escape }}"
   data-t-unavailable="{{ section.settings.unavailable_label | escape }}"
   data-t-error="{{ section.settings.error_label | escape }}"
@@ -150,6 +156,23 @@
           {%- if section.settings.swap_note != blank -%}
             <p class="pvp__swap"><span class="pvp__swap-icon" aria-hidden="true">i</span><span>{{ section.settings.swap_note | escape }}</span></p>
           {%- endif -%}
+          {%- if section.settings.show_fills -%}
+            {%- if section.settings.show_gender_filter -%}
+              <div class="pvp__fills pvp__gf" role="group" aria-label="{{ section.settings.gf_label | escape }}" data-gf hidden>
+                <span class="pvp__fills-t">{{ section.settings.gf_label | escape }}</span>
+                <button type="button" class="pvp__fill" data-gf-v="" aria-pressed="true">{{ section.settings.gf_all_label | escape }}</button>
+                {%- if section.settings.gf_men_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="men" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--men" aria-hidden="true"></i>{{ section.settings.gf_men_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+                {%- if section.settings.gf_women_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="women" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--women" aria-hidden="true"></i>{{ section.settings.gf_women_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+                {%- if section.settings.gf_unisex_label != blank -%}<button type="button" class="pvp__fill" data-gf-v="unisex" aria-pressed="false"><i class="pvp__gf-dot pvp__gf-dot--unisex" aria-hidden="true"></i>{{ section.settings.gf_unisex_label | escape }}<span class="pvp__gf-n" data-gf-n></span></button>{%- endif -%}
+              </div>
+            {%- endif -%}
+            <div class="pvp__fills" role="group" aria-label="{{ section.settings.fills_label | escape }}" data-fills>
+              <span class="pvp__fills-t">{{ section.settings.fills_label | escape }}</span>
+              {%- if section.settings.fill_low_label != blank -%}<button type="button" class="pvp__fill" data-fill="low"><span aria-hidden="true">₱</span>{{ section.settings.fill_low_label | escape }}</button>{%- endif -%}
+              {%- if section.settings.fill_brand_label != blank -%}<button type="button" class="pvp__fill" data-fill="brand"><span aria-hidden="true">◎</span>{{ section.settings.fill_brand_label | escape }}</button>{%- endif -%}
+              {%- if section.settings.fill_surprise_label != blank -%}<button type="button" class="pvp__fill" data-fill="surprise"><span aria-hidden="true">✦</span>{{ section.settings.fill_surprise_label | escape }}</button>{%- endif -%}
+            </div>
+          {%- endif -%}
           <ul class="pvp__scents" role="list" data-scents>
             {%- assign shown = 0 -%}
             {%- for p in pool limit: 100 -%}
@@ -170,7 +193,45 @@
               {%- if vials == blank -%}{%- continue -%}{%- endif -%}
               {%- assign shown = shown | plus: 1 -%}
               {%- assign media = p.featured_media -%}
-              <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vials="{{ vials | strip }}">
+              <li class="pvp__scent" data-scent="{{ p.title | escape }}" data-handle="{{ p.handle | escape }}" data-vendor="{{ p.vendor | escape }}" data-vials="{{ vials | strip }}">
+                <span class="pvp__num" data-num aria-hidden="true" hidden></span>
+                {%- if section.settings.pop_notes -%}
+                  {%- comment -%} Pop-up note pictures (owner 2026-11-26): the perfume's own notes, top → base, never invented. {%- endcomment -%}
+                  {%- liquid
+                    assign n_profile = p.metafields.fragrance.profile.value
+                    assign n_top = n_profile.top_notes.value | default: p.metafields.fragrance.top_notes.value
+                    assign n_mid = n_profile.middle_notes.value | default: p.metafields.fragrance.middle_notes.value
+                    assign n_base = n_profile.base_notes.value | default: p.metafields.fragrance.base_notes.value
+                    assign n_count = 0
+                  -%}
+                  <template data-notes>
+                    {%- for list in (1..3) -%}
+                      {%- liquid
+                        case list
+                          when 1
+                            assign n_group = n_top
+                          when 2
+                            assign n_group = n_mid
+                          else
+                            assign n_group = n_base
+                        endcase
+                      -%}
+                      {%- for note in n_group -%}
+                        {%- if n_count >= 5 -%}{%- break -%}{%- endif -%}
+                        {%- assign n_count = n_count | plus: 1 -%}
+                        {%- assign n_name = note.name.value | default: note -%}
+                        {%- assign n_art = note.art.value | default: n_name -%}
+                        <span class="pvp__pn" data-name="{{ n_name | escape }}" data-i="{{ n_name | slice: 0 | upcase | escape }}">
+                          {%- if note.image.value != blank -%}
+                            {{ note.image.value | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}
+                          {%- else -%}
+                            {%- render 'perfume-note-art', note: n_art -%}
+                          {%- endif -%}
+                        </span>
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  </template>
+                {%- endif -%}
                 <span class="pvp__scent-img" aria-hidden="true">
                   {%- if media != blank -%}
                     {{ media.preview_image | image_url: width: 400 | image_tag: widths: '200, 300, 400', sizes: '(min-width: 990px) 15vw, 40vw', alt: '', loading: 'lazy' }}
@@ -179,6 +240,45 @@
                     <span class="pvp__scent-mono">{{ p.vendor | default: p.title | escape }}</span>
                   {%- endif -%}
                 </span>
+                {%- comment -%}
+                  Who it's made for, from the product's own data only: a tag "men", "women"
+                  or "unisex" (also "for men", "for women"), else Shopify's Target gender
+                  category metafield. Nothing shows when neither is set.
+                {%- endcomment -%}
+                {%- assign for_key = '' -%}
+                {%- for tg in p.tags -%}
+                  {%- assign tk = tg | downcase | remove: 'for ' | strip -%}
+                  {%- if tk == 'men' or tk == 'women' or tk == 'unisex' -%}{%- assign for_key = tk -%}{%- break -%}{%- endif -%}
+                {%- endfor -%}
+                {%- if for_key == blank -%}
+                  {%- assign tgs = p.metafields.shopify['target-gender'].value -%}
+                  {%- if tgs.size == 1 -%}
+                    {%- assign tl = tgs.first.label | downcase -%}
+                    {%- if tl == 'male' -%}{%- assign for_key = 'men' -%}{%- elsif tl == 'female' -%}{%- assign for_key = 'women' -%}{%- elsif tl == 'unisex' -%}{%- assign for_key = 'unisex' -%}{%- endif -%}
+                  {%- elsif tgs.size > 1 -%}
+                    {%- assign for_key = 'unisex' -%}
+                  {%- endif -%}
+                {%- endif -%}
+                {%- if for_key != blank -%}
+                  {%- case for_key -%}
+                    {%- when 'men' -%}{%- assign for_label = section.settings.for_men_label -%}
+                    {%- when 'women' -%}{%- assign for_label = section.settings.for_women_label -%}
+                    {%- else -%}{%- assign for_label = section.settings.for_unisex_label -%}
+                  {%- endcase -%}
+                  {%- if for_label != blank -%}
+                    <span class="pvp__for pvp__for--{{ for_key }}">
+                      {%- comment -%} Gender icon (owner 2026-11-26): ♂ men, ♀ women, both for unisex. {%- endcomment -%}
+                      <svg class="pvp__for-ic" viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        {%- case for_key -%}
+                          {%- when 'men' -%}<circle cx="10" cy="14" r="5.5"/><path d="M14 10l6-6M15 4h5v5"/>
+                          {%- when 'women' -%}<circle cx="12" cy="9" r="5.5"/><path d="M12 14.5V21M9 18h6"/>
+                          {%- else -%}<circle cx="11" cy="11" r="4.5"/><path d="M14.3 7.7 19 3M15.5 3H19v3.5M11 15.5V21M8.5 18.5h5"/>
+                        {%- endcase -%}
+                      </svg>
+                      <span class="pvp__for-t">{{ for_label | escape }}</span>
+                    </span>
+                  {%- endif -%}
+                {%- endif -%}
                 <span class="pvp__scent-vendor">{{ p.vendor | escape }}</span>
                 <span class="pvp__scent-name">{{ p.title | escape }}</span>
                 <span class="pvp__vial-price" data-vial-price></span>
@@ -198,6 +298,15 @@
 
       {%- comment -%} The tray: your vials, each with its price, and the total {%- endcomment -%}
       <aside class="pvp__tray" aria-labelledby="{{ vid }}-tray">
+        {%- comment -%} Phones: a bar that opens the tray as a drawer (perfume-vial-picker.js). {%- endcomment -%}
+        <button type="button" class="pvp__bar" data-bar aria-expanded="false" aria-controls="{{ vid }}-body">
+          <span class="pvp__bar-vials" data-bar-vials aria-hidden="true"></span>
+          <span class="pvp__bar-text"><b data-bar-total></b><span data-bar-n></span></span>
+          <span class="pvp__bar-label">{{ section.settings.tray_label | escape }}</span>
+          <span class="pvp__bar-chev" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="pvp__bar-add" data-bar-add hidden>{{ section.settings.bar_add_label | default: section.settings.add_label | escape }}</button>
+        <div class="pvp__tray-body" id="{{ vid }}-body" data-tray-body><div class="pvp__tray-in">
         <h2 class="pvp__tray-h" id="{{ vid }}-tray">{{ section.settings.tray_label | escape }}</h2>
         <p class="pvp__tray-set" data-set-name></p>
         <ol class="pvp__slots" data-slots role="list"></ol>
@@ -209,6 +318,7 @@
           <button type="submit" class="pvp__submit" data-submit disabled>{{ section.settings.add_label | escape }}</button>
         </form>
         {%- if section.settings.trust != blank -%}<p class="pvp__trust">{{ section.settings.trust | escape }}</p>{%- endif -%}
+        </div></div>
       </aside>
     </div>
   </div>
@@ -224,7 +334,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Build your" },
     { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "set" },
     { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Choose a set, then pick a scent for every vial. Poured by hand from authentic full bottles.</p>" },
-    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Sangyó vial sizes.", "default": true },
+    { "type": "checkbox", "id": "show_size_guide", "label": "Show the vial size guide", "info": "Vials at actual size. Heights: Theme settings → Sangyó vial sizes.", "default": false },
     { "type": "collection", "id": "collection", "label": "Scents to choose from", "info": "Leave empty to use all products. A perfume shows in a size when it has a variant for it, e.g. 1 ml." },
     { "type": "checkbox", "id": "allow_repeats", "label": "Allow the same scent more than once", "info": "Off: every vial in a set is a different scent, and set prices show the cheapest and dearest different scents.", "default": false },
     { "type": "header", "content": "Labels" },
@@ -233,8 +343,41 @@
     { "type": "text", "id": "range_to_label", "label": "Set price: highest", "info": "[price] = the dearest different scents.", "default": "up to [price]" },
     { "type": "text", "id": "pricing_note", "label": "Pricing note under the sets", "default": "Each perfume has its own price per vial. Your set costs the vials you pick, added up." },
     { "type": "text", "id": "step2_label", "label": "Step 2", "default": "Pick your scents" },
-    { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "We start every set with our lowest-priced scents. Don't want one? Tap Remove on it, then Add any scent you like instead. You can change them as often as you want before adding the set to your bag." },
+    { "type": "textarea", "id": "swap_note", "label": "Note above the scents", "info": "Explains that the starting scents can be changed. Empty hides it.", "default": "Pre-filled with our lowest-priced scents. Click a picked one to take it out, then pick any other." },
     { "type": "text", "id": "per_vial_label", "label": "Price on each scent", "info": "[price] = one vial in the chosen size, [size] = the size.", "default": "[price] per [size] ml vial" },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Scent cards",
+      "options": [
+        { "value": "compact", "label": "Compact tiles (photo only, details on hover)" },
+        { "value": "cards", "label": "Full cards" }
+      ],
+      "default": "compact",
+      "info": "Compact matches the Try trio grid on product pages. On touch screens the tiles show a short name and price."
+    },
+    { "type": "checkbox", "id": "pop_notes", "label": "Pop-up: show note pictures", "default": true, "info": "Up to five of the perfume's notes (top, heart, base) resting on the photo. Perfumes without notes just show the photo." },
+    { "type": "text", "id": "pop_add_label", "label": "Pop-up: add", "default": "Click to add" },
+    { "type": "text", "id": "pop_add_tap_label", "label": "Pop-up button on phones: add", "default": "Add to set" },
+    { "type": "text", "id": "pop_remove_tap_label", "label": "Pop-up button on phones: remove", "default": "Take it out" },
+    { "type": "text", "id": "bar_add_label", "label": "Phone bar: add button", "default": "Add to bag", "info": "Shows on the phone bar once the set is full." },
+    { "type": "text", "id": "pop_remove_label", "label": "Pop-up: remove", "default": "Click to take it out" },
+    { "type": "checkbox", "id": "show_fills", "label": "Show quick fill buttons", "info": "One tap fills the set: lowest price, one of each brand, or a random mix.", "default": true },
+    { "type": "text", "id": "fills_label", "label": "Quick fill heading", "default": "Quick fill" },
+    { "type": "checkbox", "id": "show_gender_filter", "label": "Show the Men / Women / Unisex filter", "default": false, "info": "Uses the same tags as the labels below (men, women, unisex). Buttons with no perfumes hide themselves." },
+    { "type": "text", "id": "gf_label", "label": "Filter heading", "default": "Show" },
+    { "type": "text", "id": "gf_all_label", "label": "Filter: all", "default": "All" },
+    { "type": "text", "id": "gf_men_label", "label": "Filter: men", "default": "Men" },
+    { "type": "text", "id": "gf_women_label", "label": "Filter: women", "default": "Women" },
+    { "type": "text", "id": "gf_unisex_label", "label": "Filter: unisex", "default": "Unisex" },
+    { "type": "text", "id": "fill_low_label", "label": "Quick fill: lowest price", "info": "Empty hides this button.", "default": "Lowest price" },
+    { "type": "text", "id": "fill_brand_label", "label": "Quick fill: one of each brand", "default": "One of each brand" },
+    { "type": "text", "id": "fill_surprise_label", "label": "Quick fill: random", "default": "Surprise me" },
+    { "type": "text", "id": "filled_label", "label": "Announced after a quick fill", "info": "[n] = vials filled.", "default": "Filled [n] vials. Swap any you like." },
+    { "type": "text", "id": "bar_count_label", "label": "Phone bar: progress", "info": "[n] = picked, [total] = vials.", "default": "[n] of [total] picked" },
+    { "type": "text", "id": "for_men_label", "label": "Label: for men", "info": "Shown when a perfume has the tag men (or Shopify's Target gender: Male). Empty hides it.", "default": "For men" },
+    { "type": "text", "id": "for_women_label", "label": "Label: for women", "info": "Tag women (or Target gender: Female).", "default": "For women" },
+    { "type": "text", "id": "for_unisex_label", "label": "Label: unisex", "info": "Tag unisex (or both genders set).", "default": "Unisex" },
     { "type": "text", "id": "less_label", "label": "Saving on each scent (sets with a discount)", "info": "[price] = what one vial saves in the set, [percent] = the set's discount.", "default": "Save [price] · [percent]%" },
     { "type": "text", "id": "unavailable_label", "label": "Scent not offered in a size", "default": "Not in this size" },
     { "type": "text", "id": "add_scent_label", "label": "Add scent button", "default": "Add" },

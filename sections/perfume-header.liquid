@@ -67,7 +67,7 @@
 
 <perfume-header
   id="PerfumeHeader-{{ section.id }}"
-  class="ph{% if overlay %} ph--overlay{% else %} ph--sticky{% endif %} ph--hover-{{ section.settings.hover_style }}"
+  class="ph{% if overlay %} ph--overlay{% else %} ph--sticky{% endif %} ph--hover-{{ section.settings.hover_style }} ph--logo-{{ section.settings.logo_backdrop | default: 'blur' }}"
   data-cart-url="{{ routes.cart_url }}"
   {% if section.settings.adapt_dark %}data-adapt-dark{% endif %}
   {% if section.settings.blend %}data-blend{% endif %}
@@ -405,6 +405,18 @@
     { "type": "color", "id": "background_color", "label": "Box colour", "info": "The header is transparent; this colours its boxes (logo, links, Bag, menu) and the menu panels.", "default": "#FFFFFF" },
     { "type": "color", "id": "text_color", "label": "Header text", "default": "#292521" },
     { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    {
+      "type": "select",
+      "id": "logo_backdrop",
+      "label": "Behind the logo once scrolled",
+      "options": [
+        { "value": "fade", "label": "Cream fade (corner)" },
+        { "value": "blur", "label": "Blur (corner)" },
+        { "value": "none", "label": "Nothing" }
+      ],
+      "default": "blur",
+      "info": "Keeps the logo readable over photos and headings. Only the top-left corner, behind the logo."
+    },
     { "type": "text", "id": "nav_label", "label": "Menu name for screen readers", "default": "Main" },
     { "type": "text", "id": "bag_label", "label": "Bag label", "default": "Bag" },
     { "type": "checkbox", "id": "show_search", "label": "Show Search link", "default": true },
