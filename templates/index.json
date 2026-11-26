@@ -308,8 +308,7 @@
         "family_3",
         "cta_4"
       ],
-      "settings": {},
-      "disabled": true
+      "settings": {}
     },
     "brands": {
       "type": "perfume-brands",
@@ -877,94 +876,15 @@
       "settings": {
         "link": "/pages/contact"
       }
-    },
-    "builder": {
-      "type": "perfume-vial-picker",
-      "blocks": {
-        "set_1": {
-          "type": "set",
-          "settings": {
-            "title": "Try",
-            "title_italic": "trio",
-            "size": "1",
-            "count": 3,
-            "badge": "26% off",
-            "discount": 26
-          }
-        },
-        "set_2": {
-          "type": "set",
-          "settings": {
-            "title": "Discovery",
-            "title_italic": "six",
-            "size": "1",
-            "count": 6,
-            "discount": 30,
-            "badge": "30% off"
-          }
-        },
-        "set_3": {
-          "type": "set",
-          "settings": {
-            "title": "Wear",
-            "title_italic": "trio",
-            "size": "2",
-            "count": 3,
-            "badge": "26% off",
-            "discount": 26
-          }
-        },
-        "set_4": {
-          "type": "set",
-          "settings": {
-            "title": "Wardrobe",
-            "title_italic": "six",
-            "size": "2",
-            "count": 6,
-            "discount": 30,
-            "badge": "30% off"
-          }
-        },
-        "set_5": {
-          "type": "set",
-          "settings": {
-            "title": "Signature",
-            "title_italic": "duo",
-            "size": "5",
-            "count": 2,
-            "badge": ""
-          }
-        },
-        "set_6": {
-          "type": "set",
-          "settings": {
-            "title": "Travel",
-            "title_italic": "ten",
-            "size": "10",
-            "count": 1,
-            "badge": ""
-          }
-        }
-      },
-      "block_order": [
-        "set_1",
-        "set_2",
-        "set_3",
-        "set_4",
-        "set_5",
-        "set_6"
-      ],
-      "settings": {}
     }
   },
   "order": [
     "hero",
     "brands",
     "showcase",
-    "builder",
-    "families",
-    "shop_brands",
     "decants",
+    "shop_brands",
+    "families",
     "why",
     "journal",
     "faq"
