@@ -7,10 +7,6 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
-/*
- * Sangyo home page. Images are Shopify Files: upload dev/shop-images/*.webp in
- * Settings > Files with the same names before using this template.
- */
 {
   "sections": {
     "hero": {
@@ -267,6 +263,7 @@
       ],
       "settings": {
         "image_scale": 95,
+        "notes_style": "chips",
         "show_compare": false,
         "after_add": "drawer"
       }
