@@ -776,6 +776,13 @@
   }
 }
 
+@media screen and (max-width: 359px) {
+  .pcd__item.pcd__set { grid-template-columns: minmax(0, 1fr); }
+  .pcd__set .pcd__set-media { display: none; }
+  .pcd__set .pcd__set-top, .pcd__set .pcd__name { grid-column: 1; }
+  .pcd__set .pcd__name { font-size: 18px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pcd__panel,
   .pcd__scrim {
