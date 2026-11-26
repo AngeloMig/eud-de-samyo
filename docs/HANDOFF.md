@@ -1617,10 +1617,13 @@ Sync errors are under the theme's GitHub chip → View logs.
   per_vial_label, for_*_label.
 - Home page (owner 2026-11-26): tried the full builder on the home page; owner chose the teaser instead. Order now: hero, brands, showcase, **decants teaser**, shop_brands, **families (Shop by scent)**, why, journal, faq. The builder lives only on the Build your set page.
 - Decant pop-up (owner 2026-11-26, teaser idea 01 "Price first"): `sections/perfume-decant-pop`
-  in the footer group (+ assets/perfume-decant-pop.css/.js). Opens 30 s after load (setting),
+  in the footer group (+ assets/perfume-decant-pop.css/.js). Opens 30 s after load or at 50% scroll depth, whichever first, never before 8 s (settings); blurred backdrop;
   then after closing shows a floating "Try 3 scents · from ₱…" button bottom-left that
   reopens it; won't auto-open again for 7 days (localStorage key `pf-dpop-<campaign>`; change
   "Campaign name" to show it to everyone again). Price = cheapest 3 available 1 ml vials −
   set discount (26%), so it matches the builder. Hidden on the cart and the builder page;
   waits while the cart drawer is open; Esc / scrim / × close; focus trapped; reduced-motion
   safe; floats above the product sticky bar on phones.
+- Home decants teaser prices are typed by hand (perfume-decants bundle blocks). Updated
+  2026-11-26 to the builder's current from/up-to prices and 26% / 30% badges; update them
+  again whenever 1/2/5/10 ml prices change.
