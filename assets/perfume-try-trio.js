@@ -204,6 +204,9 @@
     // perfume's note pictures resting on its edge, brand + men/women icon, name, the set
     // price with the solo price struck and the saving. Mouse: follows the pointer. Touch:
     // the first tap opens it as a card with Add / Take it out, so phones see it too.
+    // Warm the note photos so the first pop-up shows them straight away (owner).
+    const warm = () => root.querySelectorAll('template[data-notes]').forEach((tp) => tp.content.querySelectorAll('img').forEach((im) => { const i = new Image(); i.src = im.getAttribute('src'); }));
+    if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 }); else setTimeout(warm, 1500);
     let popFor = null, lastFor = null, isTap = false;
     function drawPop(s) {
       const inT = picks.includes(s.handle);

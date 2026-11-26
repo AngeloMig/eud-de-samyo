@@ -362,6 +362,9 @@
     // Compact tiles: a pop-up by the mouse with the scent's details (owner). On touch
     // (owner 2026-11-26) the first tap opens the same card with an Add / Remove button,
     // so phone shoppers see name, notes and price before adding.
+    // Warm the note photos so the first pop-up shows them straight away (owner).
+    const warm = () => root.querySelectorAll('template[data-notes]').forEach((tp) => tp.content.querySelectorAll('img').forEach((im) => { const i = new Image(); i.src = im.getAttribute('src'); }));
+    if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 }); else setTimeout(warm, 1500);
     if (root.classList.contains('pvp--compact')) {
       const pop = document.createElement('div');
       pop.className = 'pvp__pop';
