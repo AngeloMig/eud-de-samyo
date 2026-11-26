@@ -1555,3 +1555,7 @@ Sync errors are under the theme's GitHub chip → View logs.
   first tap opens the pop-up as a card with "Add to trio / Take it out" and ×; the old
   size table is gone. Settings: pop_add_tap_label, pop_remove_tap_label, pop_save_label,
   per_vial_label, for_*_label.
+- Home page (owner 2026-11-26): the decant builder (`builder`, a copy of the Build your set
+  page's picker with the same sets) replaces "Shop by scent" (`families`, now
+  `"disabled": true`, kept so it can be switched back on). The builder heading is an h2 on
+  the home page.

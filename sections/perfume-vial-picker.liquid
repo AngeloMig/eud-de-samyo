@@ -83,7 +83,9 @@
   <div class="pvp__wrap">
     <header class="pvp__head">
       {%- if section.settings.kicker != blank -%}<p class="pf-kicker">{{ section.settings.kicker | escape }}</p>{%- endif -%}
-      <h1 class="pvp__h" id="{{ vid }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</h1>
+      {%- comment -%} An h2 on the home page (the hero has the h1). {%- endcomment -%}
+      {%- if template.name == 'index' -%}{%- assign h_tag = 'h2' -%}{%- else -%}{%- assign h_tag = 'h1' -%}{%- endif -%}
+      <{{ h_tag }} class="pvp__h" id="{{ vid }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</{{ h_tag }}>
       {%- if section.settings.text != blank -%}<div class="pvp__text">{{ section.settings.text }}</div>{%- endif -%}
       {%- if section.settings.show_size_guide -%}
         {%- render 'perfume-vial-size', id: section.id, class: 'pvp__size-guide' -%}
