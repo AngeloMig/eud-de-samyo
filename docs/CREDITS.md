@@ -238,3 +238,9 @@ Chosen by their Unsplash alt text for the builder pop-up notes:
 - violet: image id photo-1780277934673-6f6a43a5c65c
 - ambrette: image id photo-1596985122625-faf96c53e0c6
 - (sage photo also used for Clary sage; pansy = nearest free match for Violet leaf; hibiscus for Ambrette, the seed of a hibiscus; Ambroxan uses the amber picture)
+- rosewood: image id photo-1736506159893-22cca29b8018
+- oud: image id photo-1692131781548-fb3ecf4e7764
+- sandalwood: image id photo-1768591189203-8c05a55a36f5
+- mahogany: image id photo-1736506159776-22ca388780fa
+- guaiac: image id photo-1617615181070-ab4788da6d03
+- (no free Unsplash photos are labelled oud / agarwood / rosewood: each wood note uses a different free wood photo)
