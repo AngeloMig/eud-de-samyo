@@ -80,7 +80,7 @@
   })();
 </script>
 <div style="position:fixed;left:8px;bottom:8px;z-index:200;font:11px/1.4 sans-serif;background:#26221f;color:#fff;padding:4px 8px;border-radius:4px;opacity:.75">Preview: demo products &amp; prices</div>
-<link rel="stylesheet" href="../assets/perfume-header.css?v=1795662233479">
+<link rel="stylesheet" href="../assets/perfume-header.css?v=1795669639787">
 <script src="../assets/perfume-header.js?v=1795662233480" defer="defer"></script><style>#PerfumeHeader-header {
     --ph-logo-w: 96px;
     --ph-logo-size: 34px;
@@ -216,8 +216,8 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
       </button>
     </nav>
   </div>
-</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795662233478">
-<script src="../assets/perfume-cart-drawer.js?v=1795456948018" defer="defer"></script><perfume-cart-drawer
+</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795688932984">
+<script src="../assets/perfume-cart-drawer.js?v=1795683884410" defer="defer"></script><perfume-cart-drawer
   class="pcd"
   id="PerfumeCartDrawer"
   data-cart-url="/cart"
@@ -263,7 +263,7 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
       <p class="pcd__row">
         <span class="pcd__row-label">Subtotal</span>
         <span class="pcd__subtotal" data-pcd-subtotal></span>
-      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><link rel="stylesheet" href="../assets/perfume-shipping.css?v=1795456948020">
+      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><div class="pcd__options"><link rel="stylesheet" href="../assets/perfume-shipping.css?v=1795456948020">
   <details class="pf-delivery">
     <summary>Standard delivery rates</summary>
     <div class="pf-delivery__body">
@@ -278,10 +278,13 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
           <label class="pf-visually-hidden" for="PerfumeCartGift">Gift message</label>
           <textarea id="PerfumeCartGift" class="pcd__gift-text" rows="3" maxlength="300" placeholder="Write a short message for the card" data-pcd-note></textarea>
           <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
-        </details><form action="/cart" method="post" class="pcd__form">
-        <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
-      </form>
-      <a class="pcd__view pf-link" href="/cart">View bag</a>
+        </details></div>
+      <div class="pcd__actions">
+        <form action="/cart" method="post" class="pcd__form">
+          <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+        </form>
+        <a class="pcd__view pf-link" href="/cart">View bag</a>
+      </div>
     </div><div class="pcd__trust"><ul class="pcd__trust-row" role="list"><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg><span>Delivered across the Philippines</span>
               </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l6 2.5V9c0 4-2.6 7-6 9-3.4-2-6-5-6-9V4.5z"/><path d="M7 10l2 2 4-4"/></svg><span>100% authentic fragrances</span>
               </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg><span>Secure checkout</span>

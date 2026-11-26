@@ -1,5 +1,131 @@
 # Handoff: Sangyo perfume theme
 
+## Full catalog dropship and affiliate calculator (2026-11-26)
+
+- New local page: `dev/bottle-pricing.html`, linked from the decant calculator.
+  Uses the same warm palette and fonts. No store/admin products, prices, live
+  shipping rules or affiliate destinations were changed by this task.
+- Owner supplied `SANGYO_Popular_100_Pricing_Profit_FIXED.xlsx` and
+  `SANGYO_Niche_100_Pricing_Profit_FIXED.xlsx`, then broadened the request with
+  Downloads/`Pricelist -All Fragrances.csv`: import ALL fragrances and filter by
+  profit/popularity, with affiliate fallback when direct sale is unattractive.
+  Imported all **10,350 CSV SKUs**, retaining **9 workbook-only SKUs**, total
+  **10,359 unique items**. Both 100-item shortlists remain separate filter views.
+  Source workbooks/CSV were read only. New CSV costs/RRP are labelled PHP and
+  take precedence for the 191 overlapping shortlist SKUs. Nine workbook-only
+  prices retain their unverified-unit warning. Missing RRP stays null (3,838 CSV
+  rows); no invented zero revenue or automatically profitable missing prices.
+- Brand and approximate weight joined by exact SKU from the owner's existing
+  SANGYO/`Shopify -All Fragrances.csv` (10,131 matches). Never use that old feed's
+  placeholder inventory quantities as live supplier stock.
+- **Clarified shipping:** the old workbook's ₱1,353.99 is ACTUAL supplier shipping;
+  customer pays a **₱750 minimum or 50% of higher actual shipping**, capped at the
+  actual bill. Seller covers the remainder (₱603.99 in the base example). This is
+  a dropship estimate, not ₱750 inbound plus another duplicated delivery bill.
+  Base includes an illustrative 1kg, +₱350 per 0.5kg, outer packing 0.2kg; these
+  are explicitly editable assumptions, not researched courier tariffs. Actual
+  combined supplier quote overrides the weight formula, including a true zero.
+  One consolidated shipping charge per order; split shipments need a total quote.
+  Optional after-discount ₱10k free delivery is OFF for this new cost-sharing
+  scenario; the owner can enable it to model the existing store policy.
+- Fully costed operating results separate supplier cost, actual/customer/seller
+  shipping, gateway and Shopify fees (including shipping receipts), protection,
+  loss/tax reserves, owner labour (default zero), monthly ads and fixed costs.
+  Basic monthly reference ₱1,550 and 2% third-party fee checked on Shopify PH
+  pricing. Fees/quotes remain estimates. Monthly model deducts ads/fixed costs
+  once; row comparisons allocate them across the entered order count.
+- **Research scope:** 1,305 PerfumeStudioMNL + 425 Perfume Philippines + 730
+  Perfume Rack PH public catalog products checked on 26 Nov 2026. Matched **450
+  available exact-name/size/concentration retail SKU comparisons** across the
+  full catalog. Lowest is only among those checked offers, excluding delivery;
+  not a lowest-anywhere guarantee. Sold-out offers stay separate. Testers,
+  unboxed, refill-only and extra-gift packs do not inherit a retail bottle price.
+  Excluded/uncertain concentrations are visible in the inspector. Original
+  supplied units/brand-gender mistakes are not silently replaced by guesses.
+- Popularity has actual provenance: **14 variants** match Perfume Rack PH's public
+  Best Sellers collection. This is a retailer tag, not audited sales or a national
+  rank. Original Popular 100 is only the owner's shortlist. Own orders/month and
+  low/medium/high interest are separate optional user inputs; unknown stays unknown.
+- Routing: direct-sale candidates must meet editable minimum operating margin
+  (45% default) AND peso profit (₱500 default). Negative/low-margin, unavailable
+  supplier stock, or required-but-absent extra supplier promotions become affiliate
+  candidates. Missing market/currency inputs remain review candidates. Candidates
+  do not publish anything. Owner must add approved tracking URLs; no tracking tags
+  or commission terms are invented. Affiliate funnel defaults to zero assumptions
+  and is kept separate from direct order revenue and traffic.
+- All 20 implemented improvements are listed in-page at `#ideas`: catalog/views,
+  filters, exact comparisons, minimum checked prices, dated evidence, popularity
+  provenance, supplier promotions, routing, shipping separation and sharing,
+  weight/quotes, consolidated basket, full costs, promos, 45/50% margin solvers,
+  monthly forecasts, break-even/CAC, cost stress, affiliate model, persistence/export.
+- Files: `dev/pricing/bottle-math.mjs`, `bottle-app.mjs`, `bottle-pricing.css`,
+  `bottle-catalog.json`; `dev/tools/prepare-bottle-market.py` reads the three
+  original local sources and refreshes three public catalogs with `--fetch`.
+  Pass `--date YYYY-MM-DD` on future refreshes. No retailer photos copied.
+  Existing calculator logic left unchanged; only a link added to its header.
+- Validation: independent hand calculations for subsidies/fees/quotes/discount
+  boundaries, monthly reconciliation, route switches, affiliate funnel and 144
+  margin target scenarios in `node dev/tools/check-bottle-math.mjs`. All 10,350
+  CSV names, sizes, costs and RRP reconciled to source; 10,359 unique SKU counts
+  and price-match metadata checked. JS syntax/whitespace passed.
+  Browser QA: Popular/Niche filters each return 100, retailer bestseller 14;
+  cost override switches routing, quantity/quote updates, persistence across
+  reload, backup AND restore, filtered CSV export (1,645 matching rows, not only
+  current page), 320px and 390px no page overflow or clipped receipt amounts.
+  Wide catalog table scrolls inside its own region. Test overrides removed;
+  current selected example is Calvin Klein Eternity EDP 100ml, one bottle.
+
+## Live mobile cart, discount eligibility and design studies (2026-11-26)
+
+**Latest owner decision: retain 30% for six-vial sets, 26% for trios.** This
+supersedes older instructions below about removing the six-vial discount. The
+owner explicitly authorized correcting the live automatic discount rules.
+
+- Fixed both live automatic rules: Try trio `1600719880424` (26%, minimum 3)
+  and Six-vial set `1599924044008` (30%, minimum 6). Added Light Blue and Bright
+  Crystal's 1ml/2ml variants only, preserving existing selections and excluding
+  5ml/10ml. Both rules now show 12 products. Previously four eligible scents
+  plus two excluded new scents received only the trio discount on those four.
+- Verified a real six-by-2ml builder set in cart AND checkout: original ₱2,885,
+  saving ₱865.50, paid ₱2,019.50 before shipping. Each of all six lines received
+  30%, including Bright Crystal ₱420 → ₱294 and Light Blue ₱315 → ₱220.50.
+  Separately verified the product-page trio: Light Blue + Bright Crystal + Y,
+  ₱925 → ₱684.50, saving ₱240.50 (26%). No order/payment submitted; removed only
+  our test sets afterwards and observed the cart empty.
+- Cart set rows now use Shopify's actual `final_line_price`, with a separate
+  individual saving, rather than displaying the solo price. Compact subtotal,
+  delivery/gift disclosures, Checkout/View bag and three reassurance columns.
+  Phone controls retain 44px targets; decorative montage hides below 360px.
+- Homepage showcase now uses editable `notes_style: chips`: each note's photo
+  and name stay together. Preserved Claude's current section order and prices.
+  Product trio has an always-available, editable “Open decant builder” link that
+  carries current selections, including when only one scent is selected.
+- Owner replied “only the name please sangyo” to the contact correction. Changed
+  footer email spelling to `hello@sangyo.shop`; kept existing hours unchanged.
+- Published the relevant JS/CSS/Liquid, footer group and homepage settings through
+  authenticated Shopify code editor after comparing current live contents. No
+  Git force-push, product price edits, or unrelated homepage replacements.
+- Live browser viewport QA: 320×568 and 390×844 phones, 667×375 landscape.
+  Homepage chips wrap without horizontal overflow at 320px. Selected trio paid
+  prices fit at 390px. Builder perfume preview fits at 320px (top 8, bottom 415)
+  and landscape (top 8, bottom 329); bottle image area shrinks to 84px for short
+  viewports. Drawer 390px footer is about 179px high; Checkout/View bag are 44px.
+  Browser emulation/keyboard checks, not physical-device touch testing.
+- Existing `dev/vial-picker-ideas-2.html` contains older full-builder ideas.
+  Created fresh **10 cart drawer + 10 Your vials tray** studies in
+  `dev/cart-and-tray-ideas.html`, generated by
+  `dev/tools/build-cart-tray-previews.py` after the normal preview renderer.
+  Uses current 30% example, interactive design selectors and safe demo actions.
+  All 20 checked at 320px without horizontal/row overflow. Compact receipt
+  (option 1) recommended; other variants remain local design studies only.
+- Added `dev/tools/check-cart-drawer.mjs`: verifies corrected 30%, historical
+  partial eligibility and no-discount totals against actual renderer. Passed,
+  along with JS syntax, whitespace and schema checks (73 sections / 17 JSON).
+  Whole-theme check remains 15 existing findings, including existing hero image
+  sizing and Dawn unknown-filter findings; no new findings in changed files.
+- Preview renderer now strips repeated leading JSON comments and tolerates
+  sections with no blocks. Generated all static preview pages successfully.
+
 ## Owner's homepage ideas to keep for later (2026-11-26)
 
 **Notes only. Do not build, publish promotions, install apps or invent terms from

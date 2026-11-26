@@ -1,0 +1,474 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cart & vial tray · 20 design studies</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&family=Italiana&family=Mrs+Saint+Delafield&display=swap"
+><link rel="stylesheet" href="../assets/perfume-tokens.css"><link rel="stylesheet" href="../assets/perfume-cart-drawer.css"><style>
+*{box-sizing:border-box}body{margin:0;background:#ebe7e0;color:#292521;font:14px/1.5 'Instrument Sans',sans-serif!important;overflow:auto!important}header{padding:28px 24px 20px;max-width:1260px;margin:auto}h1{font:500 44px/1.05 'Cormorant Garamond',Georgia,serif;margin:0 0 10px}header p{margin:0;color:#655d54}.switch{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}button,a{font:inherit}button{cursor:pointer}.switch button,.reset{border:1px solid #b8afa4;padding:10px 16px;min-height:44px;background:transparent;color:inherit;border-radius:3px}.switch button[aria-pressed=true]{background:#292521;color:#fff}.layout{max-width:1260px;margin:auto;display:grid;grid-template-columns:310px minmax(0,1fr);gap:32px;padding:0 24px 40px}.options{display:grid;align-content:start;gap:5px}.option{display:grid;grid-template-columns:26px 1fr;text-align:left;gap:4px;border:0;background:transparent;padding:10px;min-height:48px;color:#292521}.option[aria-pressed=true]{background:#fff}.option small{display:block;font-size:12px;color:#655d54;line-height:1.4}.option strong{font-weight:600}.number{font-size:11px;line-height:23px;color:#7d7266}.stage{display:flex;flex-direction:column;align-items:center;gap:14px;padding:24px;background:#ddd6cb;min-width:0}.stage h2{font:500 28px/1.1 'Cormorant Garamond',Georgia,serif;margin:0}.frame{width:420px;max-width:100%;min-width:0}.pcd{display:block!important;position:relative!important;inset:auto;visibility:visible;pointer-events:auto;overflow:visible;width:100%;height:690px;--pcd-gap:0px}.pcd__scrim{display:none}.pcd__panel{position:absolute;inset:0!important;width:100%;max-width:none;transform:none!important;transition:none}.pcd__body{min-height:100px}.pcd__head{flex-shrink:0}.pcd__close{visibility:hidden}.pcd__set-vials li{min-height:24px}.pcd__set-top .pcd__save{white-space:normal}.pcd__foot .pf-button{display:flex;align-items:center;justify-content:center;border:0;background:#292521;color:#fff;letter-spacing:.12em;font-size:11px;text-decoration:none}.pcd__view{color:inherit;text-underline-offset:5px}.pcd__empty{display:none}.pcd__foot[hidden]{display:grid}.pcd__trust-row{padding:0}.pcd details summary{cursor:pointer}.pcd__actions form{min-width:0}.demo-status{font-size:12px;min-height:18px;margin:0;text-align:center;color:#655d54}.tray{padding:24px;background:#fff;min-width:0}.tray h3{font:500 32px/1.1 'Cormorant Garamond',Georgia,serif;margin:0}.meta{font-size:12px;color:#70675f;margin:4px 0 18px}.tray ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}.tray li{display:grid;grid-template-columns:16px minmax(0,1fr) auto 44px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #eee9e2;min-width:0}.tray li>span{min-width:0;overflow-wrap:anywhere}.tray li img{height:34px;width:10px;object-fit:contain}.tray li b{font-size:12px;font-weight:500;white-space:nowrap}.tray li button{border:0;background:none;width:44px;min-height:44px;color:#73695d}.tray .sum{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:14px 0 4px}.sum strong{font:500 30px 'Cormorant Garamond',Georgia,serif}.tray .saving{font-size:11px;color:#386b45;margin:0 0 14px}.tray .add{width:100%;min-height:44px;border:0;background:#292521;color:#fff;font:500 12px 'Instrument Sans',sans-serif;border-radius:999px}.tray details summary{padding:10px 0;min-height:44px;cursor:pointer}.shelf{display:flex;justify-content:center;gap:16px;margin:16px 0}.shelf img{height:70px;width:16px;object-fit:contain}.tray .notice{margin:12px 0 0;font-size:11px;color:#70675f}.preview-note{max-width:420px;color:#655d54;font-size:12px;margin:0}button:focus-visible,a:focus-visible{outline:2px solid #806534;outline-offset:3px}[hidden]{display:none!important}
+body[data-idea="2"] .pcd__set-media{grid-column:1/-1;grid-row:auto;aspect-ratio:auto;height:90px;gap:10px}body[data-idea="2"] .pcd__set-media img{flex:none;height:65px;width:14px}body[data-idea="2"] .pcd__set-top,body[data-idea="2"] .pcd__set .pcd__name{grid-column:1/-1}body[data-idea="3"] .pcd__set-vials{max-height:114px;overflow:auto;padding-right:8px}body[data-idea="4"] .pcd__foot{order:-1;border-bottom:1px solid #ddd}body[data-idea="4"] .pcd__ship{order:-2}body[data-idea="4"] .pcd__head{order:-3}body[data-idea="5"] .pcd__panel{--pcd-paper:#fbf4e7;--pcd-tint:#f2eadb}body[data-idea="5"] .pcd__set-vials li{border-bottom:1px dotted #d0c3ac;padding-bottom:5px}body[data-idea="5"] .pcd__vial-pricing b{font:500 16px 'Cormorant Garamond',Georgia,serif}body[data-idea="6"] .pcd{--pcd-paper:#2c2c28;--pcd-ink:#fffaf0;--pcd-soft:#d6d0c3;--pcd-tint:#383a30;--pcd-line:#ffffff30}body[data-idea="6"] .pcd__vial-pricing small{color:#c6d8a6}body[data-idea="6"] .pcd__checkout{background:#f0eadc;color:#2c2c28}body[data-idea="7"] .pcd__set-media{display:none}body[data-idea="7"] .pcd__item.pcd__set{grid-template-columns:1fr}body[data-idea="7"] .pcd__set-top,body[data-idea="7"] .pcd__set .pcd__name{grid-column:1}body[data-idea="7"] .pcd__set-vials li{border-bottom:1px solid #eee;padding:5px 0}body[data-idea="8"] .pcd__foot{background:#e9e5dd}body[data-idea="8"] .pcd__set .pcd__save{border-radius:2px;background:#edf0e8;color:#3e5a35}body[data-idea="9"] .pcd__set-vials{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}body[data-idea="9"] .pcd__set-vials li{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:3px;padding:8px 0;border-top:1px solid #eee}body[data-idea="9"] .pcd__vial-pricing{align-items:flex-start}body[data-idea="10"] .pcd__panel{top:85px!important;border-radius:22px 22px 0 0;overflow:hidden}body[data-idea="10"] .pcd__set .pcd__name{font-size:18px}body[data-idea="10"] .pcd__ship{display:none}
+body[data-mode="tray"][data-idea="2"] .tray ol,body[data-mode="tray"][data-idea="5"] .tray ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}body[data-mode="tray"][data-idea="2"] .tray ol{grid-template-columns:repeat(3,minmax(0,1fr))}body[data-mode="tray"][data-idea="2"] .tray li,body[data-mode="tray"][data-idea="5"] .tray li{display:flex;flex-wrap:wrap;background:#f4f1eb;padding:8px;border:0;border-radius:8px;gap:4px}body[data-mode="tray"][data-idea="2"] .tray li>span,body[data-mode="tray"][data-idea="5"] .tray li>span{flex-basis:100%;font-size:11px}body[data-mode="tray"][data-idea="2"] .tray li button,body[data-mode="tray"][data-idea="5"] .tray li button{margin-left:auto}body[data-mode="tray"][data-idea="3"] .tray li{grid-template-columns:18px minmax(0,1fr) auto 44px}body[data-mode="tray"][data-idea="3"] .tray li::before{content:attr(data-n);font-size:10px;color:#8b8072}body[data-mode="tray"][data-idea="3"] .tray li img{display:none}body[data-mode="tray"][data-idea="4"] .tray li img,body[data-mode="tray"][data-idea="10"] .tray li img{display:none}body[data-mode="tray"][data-idea="4"] .tray li,body[data-mode="tray"][data-idea="10"] .tray li{grid-template-columns:minmax(0,1fr) auto 44px}body[data-mode="tray"][data-idea="6"] .tray{border-radius:22px 22px 0 0;margin-top:90px;border-top:4px solid #b5ae9e}body[data-mode="tray"][data-idea="8"] .tray{background:#e9eee4}body[data-mode="tray"][data-idea="8"] .sum{border-top:1px solid #bcc6b0;padding-top:12px}body[data-mode="tray"][data-idea="9"] .tray{background:#fcf5e9}body[data-mode="tray"][data-idea="9"] .tray li{border-bottom:1px dotted #c9bfae}body[data-mode="tray"][data-idea="9"] .sum{border-top:1px dashed #c9bfae;padding-top:12px}body[data-mode="tray"][data-idea="10"] .tray{padding:18px}body[data-mode="tray"][data-idea="10"] .tray li{border:0;padding:0}body[data-mode="tray"][data-idea="10"] .tray ol{gap:0}
+@media(max-width:760px){h1{font-size:34px}.layout{grid-template-columns:1fr;padding:0 12px 24px;gap:14px}.options{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.option{background:#f5f2ec;padding:9px}.option small{display:none}.stage{padding:16px 0}.frame{width:min(420px,100%)}.pcd__panel{left:0!important;right:0!important}.tray{padding:18px}.stage h2{text-align:center}.preview-note{padding:0 12px}}
+
+.pcd__set .pcd__info > details { grid-column: 1 / -1; }
+body[data-idea="9"] .pcd__set-vials li { min-width:0; }
+body[data-idea="9"] .pcd__vial-name { max-width:100%; white-space:normal; overflow-wrap:anywhere; }
+</style><header><h1>A smaller bag. A clearer set.</h1><p>Ten cart drawers and ten “Your vials” layouts. Example prices: six 2 ml vials, 30% off, ₱2,019.50 paid.</p><div class="switch"><button data-mode-button="cart" aria-pressed="true">Cart drawer · 10 ideas</button><button data-mode-button="tray" aria-pressed="false">Your vials · 10 ideas</button><button id="reset" class="reset">Reset example</button></div></header><main class="layout"><nav class="options" id="options" aria-label="Design options"></nav><section class="stage"><h2 id="previewTitle"></h2><div class="frame" id="cartHost"><perfume-cart-drawer
+  class="pcd"
+  id="PerfumeCartDrawer"
+  data-cart-url="/cart"
+  data-change-url="/cart/change"
+  data-update-url="/cart/update"
+  data-ship-threshold="10000"
+  data-ship-text="[amount] away from free standard delivery after discounts"
+  data-ship-done="Free standard delivery unlocked after discounts"
+  data-vial-1="../assets/sample-decant-square.webp?v=1795356291192"
+  data-vial-2="../assets/sample-decant-clear.webp?v=1795356291191"
+  data-vial-5="../assets/sample-decant-amber.webp?v=1795356291190"
+
+>
+  <div class="pcd__scrim" data-pcd-close></div>
+  <div class="pcd__panel" role="dialog" aria-modal="true" aria-labelledby="PerfumeCartDrawerTitle" tabindex="-1" data-pcd-panel>
+    <div class="pcd__head">
+      <h2 class="pcd__title" id="PerfumeCartDrawerTitle">
+        Your bag
+        <span class="pcd__count" data-pcd-count>2</span>
+      </h2>
+      <button type="button" class="pcd__close" data-pcd-close aria-label="Close bag">
+        <span aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div><div class="pcd__ship" data-pcd-ship hidden>
+        <p class="pcd__ship-text" data-pcd-ship-text aria-live="polite"></p>
+        <div class="pcd__ship-line" aria-hidden="true">
+          <span class="pcd__ship-fill" data-pcd-ship-fill></span>
+          <span class="pcd__ship-dot" data-pcd-ship-dot></span>
+          <span class="pcd__ship-goal">
+            <svg viewBox="0 0 20 20"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg>
+          </span>
+        </div>
+      </div><div class="pcd__body" data-pcd-body>
+      <ul class="pcd__items" role="list" data-pcd-items></ul>
+      <div class="pcd__empty" data-pcd-empty hidden>
+        <svg class="pcd__empty-bag" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 16h28l-2 26H12z"/><path d="M18 16v-3a6 6 0 0 1 12 0v3"/></svg>
+        <p class="pcd__empty-text">Your bag is empty</p>
+        <a class="pf-button pcd__empty-btn" href="collection.html">Continue shopping</a>
+      </div>
+    </div>
+
+    <div class="pcd__foot" data-pcd-foot hidden>
+      <p class="pcd__row">
+        <span class="pcd__row-label">Subtotal</span>
+        <span class="pcd__subtotal" data-pcd-subtotal></span>
+      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><div class="pcd__options"><link rel="stylesheet" href="../assets/perfume-shipping.css?v=1795456948020">
+  <details class="pf-delivery">
+    <summary>Standard delivery rates</summary>
+    <div class="pf-delivery__body">
+      <p><strong>Free standard delivery on Sangyó orders of ₱10,000.00 and above after discounts.</strong></p>
+      <p>For smaller orders, customers pay delivery. Estimated small-parcel rates from Pulilan, Bulacan:</p>
+      <table><caption class="pf-visually-hidden">Estimated delivery fees below the free-delivery threshold</caption><tbody><tr><th scope="row">NCR</th><td>₱85.00</td></tr><tr><th scope="row">Other Luzon</th><td>₱178.00</td></tr><tr><th scope="row">Visayas</th><td>₱212.00</td></tr><tr><th scope="row">Mindanao</th><td>₱234.00</td></tr></tbody></table>
+      <p class="pf-delivery__note">Small-parcel estimates; final delivery fees and available services are shown at checkout. Same-day services and larger parcels are quoted separately.</p>
+      <p class="pf-delivery__note">Partner full-bottle purchases follow the retailer’s delivery policy and do not count toward Sangyó’s free-delivery threshold.</p>
+    </div>
+  </details><details class="pcd__gift" data-pcd-gift>
+          <summary>Add a gift message</summary>
+          <label class="pf-visually-hidden" for="PerfumeCartGift">Gift message</label>
+          <textarea id="PerfumeCartGift" class="pcd__gift-text" rows="3" maxlength="300" placeholder="Write a short message for the card" data-pcd-note></textarea>
+          <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
+        </details></div>
+      <div class="pcd__actions">
+        <form action="/cart" method="post" class="pcd__form">
+          <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+        </form>
+        <a class="pcd__view pf-link" href="/cart">View bag</a>
+      </div>
+    </div><div class="pcd__trust"><ul class="pcd__trust-row" role="list"><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg><span>Delivered across the Philippines</span>
+              </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l6 2.5V9c0 4-2.6 7-6 9-3.4-2-6-5-6-9V4.5z"/><path d="M7 10l2 2 4-4"/></svg><span>100% authentic fragrances</span>
+              </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg><span>Secure checkout</span>
+              </li></ul></div><p class="pf-visually-hidden" role="status" data-pcd-status></p>
+  </div>
+</perfume-cart-drawer></div><div class="frame" id="trayHost" hidden></div><p class="demo-status" role="status"></p><p class="preview-note">Design studies only. Option 1 uses the actual updated cart renderer. Checkout and View bag are demonstrations here.</p></section></main><script>
+const CART_IDEAS=[["Compact receipt", "Full-width scent names, paid prices and small individual savings."], ["Bottle counter", "A strip of vials introduces a quiet, full-width receipt."], ["Folded set", "Keep the set small; expand its scent breakdown when needed."], ["Checkout first", "Subtotal and actions sit above the scrollable set details."], ["Perfumer\u2019s ticket", "A warm paper ticket, serif prices and fine dotted rules."], ["Dark boutique", "Ink surfaces with cream type and a restrained olive saving."], ["Quiet ledger", "Precise rows, aligned amounts and a narrow totals band."], ["Split summary", "Set details above, a contrasting checkout block below."], ["Scent index", "Two columns of small scent entries with individual savings."], ["Phone sheet", "A shallow bottom-sheet layout with a thumb-friendly checkout row."]],TRAY_IDEAS=[["Compact receipt", "The smallest clear list: name, paid price and one saving total."], ["Six little vials", "Individual vial cards in a compact three-by-two grid."], ["Numbered selection", "A numbered, full-width list with easy remove controls."], ["Bottle shelf", "A vial shelf above a pared-back scent list."], ["Two-column edit", "Pairs of scents reduce the height of a six-vial selection."], ["Phone dock", "A compact dock that opens the full selection when needed."], ["Fold-away list", "Keep the scent list behind a clear selection summary."], ["Savings first", "Show the saving beside the paid total, then the scents."], ["Discovery ticket", "A warm paper receipt with fine dividers and a detachable total."], ["Text-only list", "No repeated vial thumbnails: use all the width for scent names."]], demoLines=[{"key": "demo-0", "variant_id": 1, "product_title": "Uomo Born in Roma Eau de Toilette", "variant_title": "2 ml", "quantity": 1, "original_line_price": 75000, "final_line_price": 52500, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}, {"key": "demo-1", "variant_id": 2, "product_title": "Terre d\u2019Herm\u00e8s Eau de Toilette", "variant_title": "2 ml", "quantity": 1, "original_line_price": 48000, "final_line_price": 33600, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}, {"key": "demo-2", "variant_id": 3, "product_title": "The One for Men Eau de Parfum", "variant_title": "2 ml", "quantity": 1, "original_line_price": 46000, "final_line_price": 32200, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}, {"key": "demo-3", "variant_id": 4, "product_title": "Eros Eau de Toilette", "variant_title": "2 ml", "quantity": 1, "original_line_price": 46000, "final_line_price": 32200, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}, {"key": "demo-4", "variant_id": 5, "product_title": "Bright Crystal Eau de Toilette", "variant_title": "2 ml", "quantity": 1, "original_line_price": 42000, "final_line_price": 29400, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}, {"key": "demo-5", "variant_id": 6, "product_title": "Light Blue Eau de Toilette", "variant_title": "2 ml", "quantity": 1, "original_line_price": 31500, "final_line_price": 22050, "properties": {"Set": "Wardrobe six \u00b7 6 \u00d7 2 ml", "_set": "demo"}}];
+const fmt=c=>new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP'}).format(c/100);
+let demo={currency:'PHP',item_count:6,total_price:201950,note:'',items:structuredClone(demoLines)};
+const nativeFetch=window.fetch.bind(window);
+window.fetch=async(url,opts={})=>{if(String(url).includes('/cart')){const body=opts.body?JSON.parse(opts.body):{};if(body.updates)demo.items=demo.items.filter(l=>body.updates[l.key]!==0);if('note'in body)demo.note=body.note;demo.item_count=demo.items.length;demo.total_price=demo.items.reduce((s,l)=>s+l.final_line_price,0);return new Response(JSON.stringify(demo),{headers:{'Content-Type':'application/json'}});}return nativeFetch(url,opts)};
+let mode='cart',idea=1,picks=demoLines.slice();
+function drawTray(){const el=document.querySelector('#trayHost');const before=picks.reduce((s,l)=>s+l.original_line_price,0),paid=picks.reduce((s,l)=>s+l.final_line_price,0);const rows=picks.map((l,i)=>`<li data-n="${i+1}"><img src="../assets/sample-decant-clear.webp" alt=""><span>${l.product_title}</span><b>${fmt(l.final_line_price)}</b><button data-remove="${l.key}" aria-label="Remove ${l.product_title}">×</button></li>`).join('');const shelf=idea===4?'<div class="shelf">'+picks.map(()=>'<img src="../assets/sample-decant-clear.webp" alt="">').join('')+'</div>':'';const list=[6,7].includes(idea)?`<details><summary>${picks.length} scents selected · View / edit</summary><ol>${rows}</ol></details>`:`<ol>${rows}</ol>`;el.innerHTML=`<div class="tray"><h3>Your vials</h3><p class="meta">Wardrobe six · 6 × 2 ml · ${picks.length} of 6 selected</p>${shelf}${list}<div class="sum"><span>Total</span><strong>${fmt(paid)}</strong></div><p class="saving">Save ${fmt(before-paid)} · 30% on this example set</p><button class="add">${picks.length===6?'Add set to bag':'Pick '+(6-picks.length)+' more'}</button><p class="notice">Example only · This preview does not change your shop or place an order.</p></div>`;el.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{picks=picks.filter(l=>l.key!==b.dataset.remove);drawTray()});el.querySelector('.add').onclick=()=>document.querySelector('.demo-status').textContent='Design preview only — no items added.'}
+function draw(){document.body.dataset.mode=mode;document.body.dataset.idea=idea;document.querySelector('#cartHost').hidden=mode!=='cart';document.querySelector('#trayHost').hidden=mode!=='tray';document.querySelectorAll('[data-mode-button]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.modeButton===mode));const ideas=mode==='cart'?CART_IDEAS:TRAY_IDEAS;document.querySelector('#options').innerHTML=ideas.map(([n,d],i)=>`<button class="option" data-select="${i+1}" aria-pressed="${idea===i+1}"><span class="number">${String(i+1).padStart(2,'0')}</span><span><strong>${n}${i===0?' · Recommended':''}</strong><small>${d}</small></span></button>`).join('');document.querySelectorAll('[data-select]').forEach(b=>b.onclick=()=>{idea=Number(b.dataset.select);draw()});document.querySelector('#previewTitle').textContent=ideas[idea-1][0];drawTray();const list=document.querySelector('.pcd__set-vials');if(list&&idea===3&&!list.parentElement.matches('details')){const d=document.createElement('details');d.innerHTML='<summary style="min-height:44px;padding:10px 0;cursor:pointer">View 6 scents & savings</summary>';list.before(d);d.append(list)}else if(list&&idea!==3&&list.parentElement.matches('details')){const d=list.parentElement;d.before(list);d.remove()}}
+document.querySelectorAll('[data-mode-button]').forEach(b=>b.onclick=()=>{mode=b.dataset.modeButton;idea=1;draw()});
+document.addEventListener('DOMContentLoaded',()=>{const drawer=document.querySelector('perfume-cart-drawer');drawer.inert=false;drawer.classList.add('is-open');drawer.load();document.querySelector('.pcd__form').onsubmit=e=>{e.preventDefault();document.querySelector('.demo-status').textContent='Checkout preview only — no order submitted.'};document.querySelector('.pcd__view').onclick=e=>{e.preventDefault();document.querySelector('.demo-status').textContent='View bag preview only.'};draw()});
+document.querySelector('#reset').onclick=()=>{picks=demoLines.slice();demo.items=structuredClone(demoLines);demo.item_count=6;demo.total_price=201950;document.querySelector('perfume-cart-drawer').load();draw()};draw();
+</script><script>/*
+  <perfume-cart-drawer> (snippets/perfume-cart-drawer.liquid)
+  Opens from any [data-cart-drawer-open] link (the header Bag) and on the
+  'perfume:cart-open' event (the showcase fires it after Add to bag). Renders the bag
+  from /cart.js, changes quantities through /cart/change.js, and tells the rest of the
+  theme (Dawn pub/sub cartUpdate + a 'cart:updated' event) so the Bag count follows.
+  Closed: inert. Open: focus moves in, Tab stays inside, Escape and the scrim close it,
+  and focus returns to whatever opened it.
+  Decant sets (sections/perfume-vial-picker.liquid): vials added together carry the
+  same "Set" line property (and hidden "_set" id). They show as one card, with each vial's price, the set's
+  savings when a discount applies, and one Remove that takes out the whole set (no
+  per-vial quantities, so a set can't be broken up).
+  Free-delivery bar: what is left to the goal (data-ship-threshold, store currency,
+  converted with Shopify.currency.rate on other currencies). Gift message: saved as
+  the cart note through /cart/update.js, a moment after typing stops.
+*/
+(() => {
+  if (customElements.get('perfume-cart-drawer')) return;
+
+  const esc = (s) =>
+    String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+  const money = (cents, currency) => {
+    try {
+      return new Intl.NumberFormat('en-PH', { style: 'currency', currency: currency || 'PHP' }).format((cents || 0) / 100);
+    } catch (e) {
+      return ((cents || 0) / 100).toFixed(2);
+    }
+  };
+
+  // Remove icon (a bin); the button carries the accessible name.
+  const TRASH = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h8a1.5 1.5 0 0 0 1.5-1.5l1-12.5M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/></svg>';
+  const sized = (src, width) => {
+    if (!src) return '';
+    try {
+      const u = new URL(src, location.href);
+      if (/cdn\.shopify|\/cdn\/shop\//.test(u.href)) u.searchParams.set('width', width);
+      return u.href;
+    } catch (e) {
+      return src;
+    }
+  };
+
+  class PerfumeCartDrawer extends HTMLElement {
+    connectedCallback() {
+      // Live at the end of <body> so no section's stacking context can cover it.
+      if (false) {
+        document.body.appendChild(this);
+        return;
+      }
+      this.panel = this.querySelector('[data-pcd-panel]');
+      this.list = this.querySelector('[data-pcd-items]');
+      this.empty = this.querySelector('[data-pcd-empty]');
+      this.foot = this.querySelector('[data-pcd-foot]');
+      this.count = this.querySelector('[data-pcd-count]');
+      this.subtotal = this.querySelector('[data-pcd-subtotal]');
+      this.status = this.querySelector('[data-pcd-status]');
+      this.abort?.abort();
+      this.abort = new AbortController();
+      const signal = this.abort.signal;
+
+      document.addEventListener(
+        'click',
+        (e) => {
+          const opener = e.target.closest('[data-cart-drawer-open]');
+          if (!opener) return;
+          e.preventDefault();
+          this.show(opener);
+        },
+        { signal }
+      );
+      document.addEventListener('perfume:cart-open', (e) => this.show(null, e.detail), { signal });
+      const warm = (e) => {
+        if (e.target.closest?.('[data-cart-drawer-open]')) this.prefetch();
+      };
+      document.addEventListener('pointerover', warm, { signal, passive: true });
+      document.addEventListener('focusin', warm, { signal });
+      document.addEventListener('touchstart', warm, { signal, passive: true });
+      const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1200));
+      idle(() => this.prefetch());
+      this.querySelectorAll('[data-pcd-close]').forEach((b) => b.addEventListener('click', () => this.hide(), { signal }));
+      this.addEventListener('keydown', (e) => this.onKeydown(e), { signal });
+      this.list.addEventListener('click', (e) => this.onListClick(e), { signal });
+      this.ship = this.querySelector('[data-pcd-ship]');
+      this.noteField = this.querySelector('[data-pcd-note]');
+      this.noteStatus = this.querySelector('[data-pcd-note-status]');
+      this.noteField?.addEventListener('input', () => {
+        clearTimeout(this.noteTimer);
+        if (this.noteStatus) this.noteStatus.textContent = '';
+        this.noteTimer = setTimeout(() => this.saveNote(), 700);
+      }, { signal });
+
+      // Keep in step when something else changes the cart.
+      if (typeof window.subscribe === 'function' && window.PUB_SUB_EVENTS?.cartUpdate) {
+        this.unsubscribe = window.subscribe(window.PUB_SUB_EVENTS.cartUpdate, (e) => {
+          if (e?.source !== 'perfume-cart-drawer' && this.isOpen) this.load();
+        });
+      }
+    }
+
+    disconnectedCallback() {
+      if (this.parentElement === document.body) return;
+      this.abort?.abort();
+      this.unsubscribe?.();
+    }
+
+    get isOpen() {
+      return this.classList.contains('is-open');
+    }
+
+    async show(opener, added) {
+      this.opener = opener || document.activeElement;
+      this.newVariant = added?.variant_id || added?.id || null;
+      // Items rise in only when the drawer opens, not on every quantity change.
+      this.classList.add('is-entering');
+      clearTimeout(this.enterTimer);
+      this.enterTimer = setTimeout(() => this.classList.remove('is-entering'), 1400);
+      // Open at once with the bag as last read (prefetched on load and on hover),
+      // then refresh it in the background; never wait on the network to slide in.
+      const fresh = this.load();
+      if (!this.cart) await Promise.race([fresh, new Promise((r) => setTimeout(r, 250))]);
+      this.inert = false;
+      this.classList.add('is-open');
+      document.documentElement.style.overflow = 'hidden';
+      requestAnimationFrame(() => this.querySelector('.pcd__close')?.focus({ preventScroll: true }));
+    }
+
+    // Read the bag ahead of time so the first open already has the items.
+    prefetch() {
+      if (this.prefetched && Date.now() - this.prefetched < 15000) return;
+      this.prefetched = Date.now();
+      this.load();
+    }
+
+    hide() {
+      if (!this.isOpen) return;
+      this.classList.remove('is-open');
+      this.inert = true;
+      document.documentElement.style.overflow = '';
+      if (this.opener && document.contains(this.opener)) this.opener.focus({ preventScroll: true });
+    }
+
+    onKeydown(e) {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        this.hide();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const items = [...this.panel.querySelectorAll('a[href], button:not([disabled]), input, [tabindex="0"]')].filter(
+        (el) => el.offsetParent !== null
+      );
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
+    async load() {
+      const ticket = (this.loadTicket = (this.loadTicket || 0) + 1);
+      try {
+        const res = await fetch(`${this.dataset.cartUrl}.js`, { headers: { Accept: 'application/json' } });
+        const cart = await res.json();
+        if (ticket === this.loadTicket) this.render(cart); // a newer read wins
+      } catch (e) {
+        // Keep whatever is shown; the Bag link still goes to the cart page.
+      }
+    }
+
+    render(cart) {
+      const items = cart.items || [];
+      // Same bag as shown: keep the rows (no flicker or replayed entrance).
+      const sig = JSON.stringify([cart.total_price, cart.note, items.map((it) => [it.key, it.quantity, it.final_line_price])]);
+      if (sig === this.sig && !this.newVariant) return;
+      this.sig = sig;
+      this.cart = cart;
+      if (this.count) this.count.textContent = cart.item_count;
+      this.empty.hidden = items.length > 0;
+      this.foot.hidden = items.length === 0;
+      this.subtotal.textContent = money(cart.total_price, cart.currency);
+      this.renderShip(cart);
+      if (this.noteField && document.activeElement !== this.noteField && typeof cart.note === 'string') {
+        this.noteField.value = cart.note;
+      }
+      // Decant sets: group lines by their "Set" property, in cart order.
+      const groups = [];
+      const bySet = new Map();
+      items.forEach((item) => {
+        const props = item.properties || {};
+        if (!props.Set) return groups.push({ item });
+        const set = `${props.Set}|${props._set || ''}`;
+        if (!bySet.has(set)) {
+          const g = { set, lines: [] };
+          bySet.set(set, g);
+          groups.push(g);
+        }
+        bySet.get(set).lines.push(item);
+      });
+      this.list.innerHTML = groups.map((g, i) => (g.set ? this.setCard(g, i, cart) : this.itemRow(g.item, i, cart))).join('');
+      this.newVariant = null;
+    }
+
+    itemRow(item, i, cart) {
+      const variant = item.variant_title && item.variant_title !== 'Default Title' ? item.variant_title : '';
+      const isNew = this.newVariant && Number(item.variant_id) === Number(this.newVariant);
+      const img = sized(item.image || item.featured_image?.url, 240);
+      const url = item.url || '#';
+      return `<li class="pcd__item${isNew ? ' is-new' : ''}" style="--i:${i}" data-key="${esc(item.key)}" data-qty="${item.quantity}">
+        <a class="pcd__media" href="${esc(url)}" tabindex="-1" aria-hidden="true">${img ? `<img src="${esc(img)}" alt="" loading="lazy" width="84" height="105">` : ''}</a>
+        <div class="pcd__info">
+          ${item.vendor ? `<p class="pcd__brand">${esc(item.vendor)}</p>` : ''}
+          <a class="pcd__name" href="${esc(url)}">${esc(item.product_title)}</a>
+          ${variant ? `<p class="pcd__variant">${esc(variant)}</p>` : ''}
+          <div class="pcd__qty" role="group" aria-label="Quantity of ${esc(item.product_title)}">
+            <button type="button" data-pcd-step="-1" aria-label="One fewer"${item.quantity <= 1 ? ' disabled' : ''}>−</button>
+            <output aria-live="polite">${item.quantity}</output>
+            <button type="button" data-pcd-step="1" aria-label="One more">+</button>
+          </div>
+        </div>
+        <div class="pcd__side">
+          <p class="pcd__price">${money(item.final_line_price, cart.currency)}</p>
+          <button type="button" class="pcd__remove" data-pcd-remove aria-label="Remove ${esc(item.product_title)}">${TRASH}</button>
+        </div>
+      </li>`;
+    }
+
+    // Use Shopify's actual paid amounts for each vial, including partial discounts.
+    setCard(g, i, cart) {
+      const name = g.set.split('|')[0].replace(/\s*\([a-z0-9]+\)\s*$/i, '');
+      const total = g.lines.reduce((a, l) => a + l.final_line_price, 0);
+      const before = g.lines.reduce((a, l) => a + l.original_line_price, 0);
+      const isNew = this.newVariant && g.lines.some((l) => Number(l.variant_id) === Number(this.newVariant));
+      const count = g.lines.reduce((a, l) => a + l.quantity, 0);
+      const size = parseFloat(g.lines[0]?.variant_title) || 0;
+      const vialSrc = this.dataset[`vial-${size}`] || this.dataset['vial-5'] || ''; // data-vial-1 stays 'vial-1' (digit after the dash)
+      const vialH = { 1: 46, 2: 64, 5: 84 }[size] || 84;
+      const shown = Math.min(count, 6);
+      const media = vialSrc
+        ? `<span class="pcd__media pcd__set-media" style="--vh:${vialH}%" data-n="${shown}" aria-hidden="true">${Array.from({ length: shown }, () => `<img src="${esc(vialSrc)}" alt="" loading="lazy" width="40" height="160">`).join('')}</span>`
+        : '<span class="pcd__media" aria-hidden="true"></span>';
+      const vials = g.lines
+        .map((l) => {
+          const qty = l.quantity > 1 ? ` × ${l.quantity}` : '';
+          const saved = Math.max(0, l.original_line_price - l.final_line_price);
+          return `<li><span class="pcd__vial-name">${esc(l.product_title)}${qty}</span><span class="pcd__vial-pricing"><b>${money(l.final_line_price, cart.currency)}</b>${saved ? `<small>Save ${money(saved, cart.currency)}</small>` : ''}</span></li>`;
+        })
+        .join('');
+      return `<li class="pcd__item pcd__set${isNew ? ' is-new' : ''}" style="--i:${i}" data-set="${esc(g.set)}" data-keys="${esc(g.lines.map((l) => l.key).join(','))}">
+        ${media}
+        <div class="pcd__info">
+          <div class="pcd__set-top">
+            <p class="pcd__brand">Decant set</p>
+            ${before > total ? `<p class="pcd__save">You save ${money(before - total, cart.currency)}</p>` : ''}
+          </div>
+          <p class="pcd__name">${esc(name)}</p>
+          <ul class="pcd__set-vials" role="list">${vials}</ul>
+          <div class="pcd__set-foot">
+            <p class="pcd__price">${before > total ? `<s>${money(before, cart.currency)}</s> ` : ''}${money(total, cart.currency)}</p>
+            <button type="button" class="pcd__remove" data-pcd-remove-set aria-label="Remove set: ${esc(name)}">${TRASH}</button>
+          </div>
+        </div>
+      </li>`;
+    }
+
+    renderShip(cart) {
+      if (!this.ship) return;
+      // The policy is denominated in PHP. Other presentment currencies are quoted
+      // at checkout rather than incorrectly treating ₱10,000 as another currency.
+      const goal = cart.currency === 'PHP' ? Math.round(Number(this.dataset.shipThreshold || 0) * 100) : 0;
+      const items = (cart.items || []).length;
+      this.ship.hidden = !goal || !items;
+      if (!goal || !items) return;
+      const total = cart.total_price || 0;
+      const left = Math.max(0, goal - total);
+      const done = left === 0;
+      this.ship.style.setProperty('--p', Math.min(1, total / goal).toFixed(4));
+      this.ship.classList.toggle('is-done', done);
+      const text = this.ship.querySelector('[data-pcd-ship-text]');
+      if (!text) return;
+      if (done) text.textContent = this.dataset.shipDone;
+      else {
+        const [before, after = ''] = (this.dataset.shipText || '[amount]').split('[amount]');
+        text.textContent = '';
+        text.append(before);
+        const b = document.createElement('b');
+        b.textContent = money(left, cart.currency);
+        text.append(b, after);
+      }
+    }
+
+    async saveNote() {
+      if (!this.noteField) return;
+      try {
+        const res = await fetch(`${this.dataset.updateUrl || '/cart/update'}.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ note: this.noteField.value }),
+        });
+        if (!res.ok) throw new Error();
+        if (this.noteStatus) this.noteStatus.textContent = 'Saved';
+      } catch (e) {
+        if (this.noteStatus) this.noteStatus.textContent = 'Could not save the message. Try again.';
+      }
+    }
+
+    onListClick(e) {
+      const li = e.target.closest('.pcd__item');
+      if (!li) return;
+      const step = e.target.closest('[data-pcd-step]');
+      if (step) return this.change(li, Number(li.dataset.qty) + Number(step.dataset.pcdStep));
+      if (e.target.closest('[data-pcd-remove]')) return this.change(li, 0);
+      if (e.target.closest('[data-pcd-remove-set]')) return this.removeSet(li);
+    }
+
+    // Remove every vial of a set in one request.
+    async removeSet(li) {
+      const updates = {};
+      (li.dataset.keys || '').split(',').filter(Boolean).forEach((k) => { updates[k] = 0; });
+      li.classList.add('is-busy');
+      try {
+        const res = await fetch(`${this.dataset.updateUrl || '/cart/update'}.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates }),
+        });
+        const cart = await res.json();
+        if (!res.ok) throw new Error(cart.description || cart.message || 'Could not update the bag.');
+        const name = li.querySelector('.pcd__name')?.textContent || 'Set';
+        this.render(cart);
+        this.status.textContent = `${name} removed.`;
+        if (typeof window.publish === 'function' && window.PUB_SUB_EVENTS?.cartUpdate) {
+          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'perfume-cart-drawer', cartData: cart });
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+        if (!this.panel.contains(document.activeElement)) this.querySelector('.pcd__close')?.focus({ preventScroll: true });
+      } catch (error) {
+        li.classList.remove('is-busy');
+        this.status.textContent = error.message;
+      }
+    }
+
+    async change(li, quantity) {
+      li.classList.add('is-busy');
+      try {
+        const res = await fetch(`${this.dataset.changeUrl}.js`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ id: li.dataset.key, quantity }),
+        });
+        const cart = await res.json();
+        if (!res.ok) throw new Error(cart.description || cart.message || 'Could not update the bag.');
+        const name = li.querySelector('.pcd__name')?.textContent || 'Item';
+        this.render(cart);
+        this.status.textContent = quantity === 0 ? `${name} removed.` : `${name}: quantity ${quantity}.`;
+        if (typeof window.publish === 'function' && window.PUB_SUB_EVENTS?.cartUpdate) {
+          window.publish(window.PUB_SUB_EVENTS.cartUpdate, { source: 'perfume-cart-drawer', cartData: cart });
+        }
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: cart }));
+        // Keep focus in the drawer after the list is redrawn.
+        if (!this.panel.contains(document.activeElement)) this.querySelector('.pcd__close')?.focus({ preventScroll: true });
+      } catch (error) {
+        li.classList.remove('is-busy');
+        this.status.textContent = error.message;
+      }
+    }
+  }
+
+  customElements.define('perfume-cart-drawer', PerfumeCartDrawer);
+})();
+</script></html>

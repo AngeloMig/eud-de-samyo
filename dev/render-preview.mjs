@@ -16,7 +16,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 // Local price proposal, generated from the calculator's maths and explicit inputs.
 // Rebuild with: node dev/tools/export-decant-preview.mjs
 const decantPricingPath = join(root, 'dev/pricing/decant-preview.json');
-const decantPricing = existsSync(decantPricingPath) ? JSON.parse(readFileSync(decantPricingPath, 'utf8')) : null;
+const decantPricing = existsSync(decantPricingPath) ? readJSON(decantPricingPath) : null;
+function readJSON(path) { return JSON.parse(readFileSync(path, 'utf8').replace(/^(?:\s*\/\*[\s\S]*?\*\/)+/, '')); }
 const require = createRequire(import.meta.url);
 const { Liquid } = require(process.env.LIQUIDJS || 'liquidjs');
 
@@ -167,7 +168,7 @@ const DEMO_ARTICLES = [
 }));
 const DEMO_BLOG = { title: 'Journal', handle: 'journal', url: '/blogs/journal', articles: DEMO_ARTICLES, articles_count: DEMO_ARTICLES.length, all_tags: ['Basics', 'Guides', 'Weather'] };
 
-const globalSettingsData = JSON.parse(readFileSync(join(root, 'config/settings_data.json'), 'utf8'));
+const globalSettingsData = readJSON(join(root, 'config/settings_data.json'));
 const globalSettings = typeof globalSettingsData.current === 'object' ? globalSettingsData.current : globalSettingsData.presets[globalSettingsData.current];
 const globals = {
   settings: globalSettings,
@@ -235,7 +236,7 @@ function stubMenus(schemaSettings, values) {
 
 // Preview-only demo products (dev/preview-products.json) so Add to bag can be seen.
 const demo = existsSync(join(root, 'dev/preview-products.json'))
-  ? JSON.parse(readFileSync(join(root, 'dev/preview-products.json'), 'utf8'))
+  ? readJSON(join(root, 'dev/preview-products.json'))
   : {};
 let variantId = 9000;
 const demoVariants = {}; // variant id -> what the fake cart returns (preview only)
@@ -282,7 +283,7 @@ async function renderSection(name, id, overrides = {}, templateSection = null, b
   stubMenus(schema.settings, settings);
   const blockDefaults = Object.fromEntries((schema.blocks || []).map((b) => [b.type, defaults(b.settings || [])]));
   const source_blocks = templateSection
-    ? templateSection.block_order.map((key) => templateSection.blocks[key])
+    ? (templateSection.block_order || Object.keys(templateSection.blocks || {})).map((key) => templateSection.blocks[key])
     : schema.presets?.[0]?.blocks || [];
   const blocks = source_blocks.map((b, i) => {
     const blockSchema = (schema.blocks || []).find((x) => x.type === b.type)?.settings || [];
@@ -444,7 +445,7 @@ writeFileSync(join(root, 'dev/preview.html'), page('Perfume showcase preview', s
 console.log(`wrote dev/home.html (${template.order.join(', ')}) and dev/preview.html`);
 
 // Footer review pages: the real section and forms, without the long homepage.
-const footerGroupPreview = JSON.parse(readFileSync(join(root, 'sections/footer-group.json'), 'utf8'));
+const footerGroupPreview = readJSON(join(root, 'sections/footer-group.json'));
 const footerSectionPreview = footerGroupPreview.sections.footer;
 for (const [file, label, layout, alternative] of [
   ['footer-new.html', 'Editorial footer', 'atelier', 'footer-original.html'],
@@ -560,7 +561,7 @@ if (homme) {
     top_notes: { value: [note('Lavender', 'lavender')] }, middle_notes: { value: [note('Iris', 'iris')] },
     base_notes: { value: [note('Vetiver', 'vetiver'), note('Cedar', 'cedar')] },
   } };
-  const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
+  const productTpl = readJSON(join(root, 'templates/product.json'));
   const pScope = {
     product: homme,
     collection: null,
@@ -599,7 +600,7 @@ if (sauvage) {
     price_checked: { value: '2026-11-21' },
   };
   sauvage.description = '<p>Preview only: an imported product shows the description from the CJ feed here.</p>';
-  const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
+  const productTpl = readJSON(join(root, 'templates/product.json'));
   const aScope = { product: sauvage, collection: null, template: { name: 'product' }, recommendations: { 'performed?': true, performed: true, products: demoProducts.filter((p) => p !== sauvage) } };
   const aHeader = await renderGroupScoped('header-group.json', aScope);
   const sec = productTpl.sections.main;
@@ -628,7 +629,7 @@ const demoCollection = {
 };
 const cScope = { collection: demoCollection, template: { name: 'collection' } };
 const cHeader = await renderGroupScoped('header-group.json', cScope);
-const colTpl = JSON.parse(readFileSync(join(root, 'templates/collection.json'), 'utf8'));
+const colTpl = readJSON(join(root, 'templates/collection.json'));
 const cParts = [];
 for (const key of colTpl.order) {
   const sec = colTpl.sections[key];
@@ -638,7 +639,7 @@ writeFileSync(join(root, 'dev/collection.html'), page('Sangyo collection preview
 console.log('wrote dev/collection.html');
 
 async function renderGroupScoped(file, scope) {
-  const group = JSON.parse(readFileSync(join(root, `sections/${file}`), 'utf8'));
+  const group = readJSON(join(root, `sections/${file}`));
   const out = [];
   for (const key of group.order) out.push(await renderSection(group.sections[key].type, key, {}, group.sections[key], {}, scope));
   return out.join('\n');
@@ -648,7 +649,7 @@ async function renderGroupScoped(file, scope) {
 {
   const gScope = { template: { name: 'page', suffix: 'scent-guide' }, page: { title: 'How to read a perfume' } };
   const gHeader = await renderGroupScoped('header-group.json', gScope);
-  const gTpl = JSON.parse(readFileSync(join(root, 'templates/page.scent-guide.json'), 'utf8'));
+  const gTpl = readJSON(join(root, 'templates/page.scent-guide.json'));
   const gParts = [];
   for (const key of gTpl.order) gParts.push(await renderSection(gTpl.sections[key].type, key, {}, gTpl.sections[key], {}, gScope));
   writeFileSync(join(root, 'dev/scent-guide.html'), page('Sangyo scent guide preview', `${gHeader}\n<main id="MainContent">${gParts.join('\n')}</main>\n${footer}`, false));
@@ -668,7 +669,7 @@ async function renderGroupScoped(file, scope) {
   demoProducts.forEach((p) => (p.tags = TAGS[p.title] || []));
   const qScope = { template: { name: 'page', suffix: 'find-your-scent' }, collections: { all: { products: demoProducts } } };
   const qHeader = await renderGroupScoped('header-group.json', qScope);
-  const qTpl = JSON.parse(readFileSync(join(root, 'templates/page.find-your-scent.json'), 'utf8'));
+  const qTpl = readJSON(join(root, 'templates/page.find-your-scent.json'));
   const qParts = [];
   for (const key of qTpl.order) qParts.push(await renderSection(qTpl.sections[key].type, key, {}, qTpl.sections[key], {}, qScope));
   writeFileSync(join(root, 'dev/find-your-scent.html'), page('Sangyo quiz preview', `${qHeader}\n<main id="MainContent">${qParts.join('\n')}</main>\n${footer}`.replace('<perfume-quiz', '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example tags on demo perfumes</p><perfume-quiz'), false));
@@ -728,7 +729,7 @@ async function renderGroupScoped(file, scope) {
   };
   const fScope = { metaobject: example, product: null, template: { name: 'metaobject' }, collections: { all: { products: demoProducts } } };
   const fHeader = await renderGroupScoped('header-group.json', fScope);
-  const fTpl = JSON.parse(readFileSync(join(root, 'templates/metaobject/fragrance_profile.json'), 'utf8'));
+  const fTpl = readJSON(join(root, 'templates/metaobject/fragrance_profile.json'));
   const fParts = [];
   for (const key of fTpl.order) {
     const sec = fTpl.sections[key];
@@ -762,7 +763,7 @@ async function renderGroupScoped(file, scope) {
   const cmp = { a: { value: one }, b: { value: two }, title: { value: '' }, verdict: { value: '<p>Example verdict: pick One for evenings and rain, Two for hot days and the office.</p>' } };
   const vScope = { metaobject: cmp, product: null, template: { name: 'metaobject' }, collections: { all: { products: demoProducts } } };
   const vHeader = await renderGroupScoped('header-group.json', vScope);
-  const vTpl = JSON.parse(readFileSync(join(root, 'templates/metaobject/fragrance_comparison.json'), 'utf8'));
+  const vTpl = readJSON(join(root, 'templates/metaobject/fragrance_comparison.json'));
   const vParts = [];
   for (const key of vTpl.order) {
     const sec = vTpl.sections[key];
@@ -778,13 +779,13 @@ async function renderGroupScoped(file, scope) {
   const banner = '<p style="position:fixed;right:8px;bottom:8px;z-index:200;font:11px sans-serif;background:#9b2c2c;color:#fff;padding:4px 8px;border-radius:4px">Example Journal: articles made up for the preview</p>';
   const bScope = { blog: DEMO_BLOG, template: { name: 'blog' } };
   const bHeader = await renderGroupScoped('header-group.json', bScope);
-  const bTpl = JSON.parse(readFileSync(join(root, 'templates/blog.json'), 'utf8'));
+  const bTpl = readJSON(join(root, 'templates/blog.json'));
   const bParts = [];
   for (const key of bTpl.order) bParts.push(await renderSection(bTpl.sections[key].type, key, {}, { blocks: {}, block_order: [], ...bTpl.sections[key] }, {}, bScope));
   writeFileSync(join(root, 'dev/journal.html'), page('Sangyo journal preview', `${bHeader}\n<main id="MainContent">${banner}${bParts.join('\n')}</main>\n${footer}`, false));
   const aScope = { blog: DEMO_BLOG, article: DEMO_ARTICLES[0], template: { name: 'article' } };
   const aHeader = await renderGroupScoped('header-group.json', aScope);
-  const aTpl = JSON.parse(readFileSync(join(root, 'templates/article.json'), 'utf8'));
+  const aTpl = readJSON(join(root, 'templates/article.json'));
   const aParts = [];
   for (const key of aTpl.order) aParts.push(await renderSection(aTpl.sections[key].type, key, {}, { blocks: {}, block_order: [], ...aTpl.sections[key] }, {}, aScope));
   writeFileSync(join(root, 'dev/article.html'), page('Sangyo article preview', `${aHeader}\n<main id="MainContent">${banner}${aParts.join('\n')}</main>\n${footer}`, false));
@@ -808,7 +809,7 @@ async function renderGroupScoped(file, scope) {
   }));
   const vScope = { template: { name: 'page', suffix: 'decant-builder' }, collections: { all: { products: vProducts } }, cart: { currency: { iso_code: 'PHP' } } };
   const vHeader = await renderGroupScoped('header-group.json', vScope);
-  const vTpl = JSON.parse(readFileSync(join(root, 'templates/page.decant-builder.json'), 'utf8'));
+  const vTpl = readJSON(join(root, 'templates/page.decant-builder.json'));
   for (const section of Object.values(vTpl.sections)) {
     for (const block of Object.values(section.blocks || {}).filter(b => b.type === 'set')) {
       const set = decantPricing.setMix.find(s => s.ml === Number(block.settings.size) && s.count === Number(block.settings.count));
@@ -840,7 +841,7 @@ async function renderGroupScoped(file, scope) {
     const decant = { ...homme, handle: 'dior-homme-intense', variants, selected_or_first_available_variant: variants[0], price_min: Math.min(...(proposed.soloPrices||proposed.prices))*100, price_varies: true, has_only_default_variant: false, options_with_values: [{ name: 'Size', values: sizes.map(([t]) => ({ name: t })) }], metafields: { ...homme.metafields, samyo: {} } };
     const dScope = { product: decant, collection: null, template: { name: 'product' }, collections: { all: { products: demoProducts } }, pages: { 'build-your-set': { url: 'vial-picker.html' } } };
     const dHeader = await renderGroupScoped('header-group.json', dScope);
-    const productTpl = JSON.parse(readFileSync(join(root, 'templates/product.json'), 'utf8'));
+    const productTpl = readJSON(join(root, 'templates/product.json'));
     // Solo variant prices stay higher; both set nudges return to the same base.
     for (const section of Object.values(productTpl.sections)) for (const block of Object.values(section.blocks||{})) {
       if (block.settings && Object.hasOwn(block.settings,'six_discount')) block.settings.six_discount=26;

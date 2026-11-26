@@ -17,7 +17,8 @@
         "text_1": {
           "type": "text",
           "settings": {
-            "heading": "Contact us"
+            "heading": "Contact us",
+            "text": "<p>hello@sangyo.shop<br>Mon–Sat, 10am–7pm (PHT)</p>"
           }
         },
         "menu_2": {

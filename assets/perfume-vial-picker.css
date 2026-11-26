@@ -927,6 +927,10 @@
   position: relative;
 }
 
+@media (max-height: 460px) {
+  .pvp__pop-img { height: 84px; }
+}
+
 .pvp__pop-img > img {
   height: calc(100% - 20px);
   inset: 10px 0;

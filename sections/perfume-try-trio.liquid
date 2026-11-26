@@ -186,6 +186,7 @@
         <div class="ptt__cta">
           <a class="ptt__btn" data-cta data-state="pick" href="{{ picker_url }}?set={{ set_key }}&amp;scent={{ product.handle | url_encode }}">{{ section.settings.nojs_label | escape }} <span aria-hidden="true">→</span></a>
           <button type="button" class="ptt__link" data-add-now hidden></button>
+          <a class="ptt__link ptt__builder-link" data-builder-link href="{{ picker_url }}?set={{ set_key }}&amp;scent={{ product.handle | url_encode }}">{{ section.settings.builder_link_label | default: 'Open decant builder' | escape }} <span aria-hidden="true">→</span></a>
           <button type="button" class="ptt__link" data-clear hidden>{{ section.settings.clear_label | escape }}</button>
         </div>
         <p class="ptt__status" data-status role="status"></p>
@@ -318,6 +319,7 @@
     { "type": "text", "id": "error_label", "label": "Add to bag error", "default": "Couldn't add the trio. Please try again." },
     { "type": "text", "id": "clear_label", "label": "Start over", "default": "Start over" },
     { "type": "text", "id": "nojs_label", "label": "Button without JavaScript", "default": "Build your trio" },
+    { "type": "text", "id": "builder_link_label", "label": "Direct builder link", "default": "Open decant builder" },
     { "type": "text", "id": "pin_label", "label": "Label on this perfume's vial", "default": "This perfume" },
     { "type": "text", "id": "save_short_label", "label": "On a vial: savings", "info": "Shown below the discounted vial price. [price] = amount saved; [percent] = discount percentage.", "default": "Save [price] · [percent]%" },
     { "type": "text", "id": "empty_label", "label": "Empty vial", "default": "Pick a scent" },

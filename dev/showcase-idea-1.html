@@ -80,7 +80,7 @@
   })();
 </script>
 <div style="position:fixed;left:8px;bottom:8px;z-index:200;font:11px/1.4 sans-serif;background:#26221f;color:#fff;padding:4px 8px;border-radius:4px;opacity:.75">Preview: demo products &amp; prices</div>
-<link rel="stylesheet" href="../assets/perfume-header.css?v=1795662233479">
+<link rel="stylesheet" href="../assets/perfume-header.css?v=1795669639787">
 <script src="../assets/perfume-header.js?v=1795662233480" defer="defer"></script><style>#PerfumeHeader-header {
     --ph-logo-w: 96px;
     --ph-logo-size: 34px;
@@ -216,8 +216,8 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
       </button>
     </nav>
   </div>
-</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795662233478">
-<script src="../assets/perfume-cart-drawer.js?v=1795456948018" defer="defer"></script><perfume-cart-drawer
+</perfume-header><link rel="stylesheet" href="../assets/perfume-cart-drawer.css?v=1795688932984">
+<script src="../assets/perfume-cart-drawer.js?v=1795683884410" defer="defer"></script><perfume-cart-drawer
   class="pcd"
   id="PerfumeCartDrawer"
   data-cart-url="/cart"
@@ -263,7 +263,7 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
       <p class="pcd__row">
         <span class="pcd__row-label">Subtotal</span>
         <span class="pcd__subtotal" data-pcd-subtotal></span>
-      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><link rel="stylesheet" href="../assets/perfume-shipping.css?v=1795456948020">
+      </p><p class="pcd__note">Shipping and taxes are worked out at checkout.</p><div class="pcd__options"><link rel="stylesheet" href="../assets/perfume-shipping.css?v=1795456948020">
   <details class="pf-delivery">
     <summary>Standard delivery rates</summary>
     <div class="pf-delivery__body">
@@ -278,10 +278,13 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
           <label class="pf-visually-hidden" for="PerfumeCartGift">Gift message</label>
           <textarea id="PerfumeCartGift" class="pcd__gift-text" rows="3" maxlength="300" placeholder="Write a short message for the card" data-pcd-note></textarea>
           <p class="pcd__gift-saved" data-pcd-note-status aria-live="polite"></p>
-        </details><form action="/cart" method="post" class="pcd__form">
-        <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
-      </form>
-      <a class="pcd__view pf-link" href="/cart">View bag</a>
+        </details></div>
+      <div class="pcd__actions">
+        <form action="/cart" method="post" class="pcd__form">
+          <button type="submit" name="checkout" class="pf-button pcd__checkout">Checkout</button>
+        </form>
+        <a class="pcd__view pf-link" href="/cart">View bag</a>
+      </div>
     </div><div class="pcd__trust"><ul class="pcd__trust-row" role="list"><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 6h10v8H2zM12 9h3.5L18 11.5V14h-6z"/><circle cx="5.5" cy="15" r="1.6"/><circle cx="14.5" cy="15" r="1.6"/></svg><span>Delivered across the Philippines</span>
               </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2l6 2.5V9c0 4-2.6 7-6 9-3.4-2-6-5-6-9V4.5z"/><path d="M7 10l2 2 4-4"/></svg><span>100% authentic fragrances</span>
               </li><li><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="9" width="12" height="9" rx="1.5"/><path d="M7 9V6.5a3 3 0 0 1 6 0V9"/></svg><span>Secure checkout</span>
@@ -290,7 +293,7 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
 </perfume-cart-drawer>
 
 
-<main id="MainContent"><link rel="stylesheet" href="../assets/perfume-showcase.css?v=1795456948021">
+<main id="MainContent"><link rel="stylesheet" href="../assets/perfume-showcase.css?v=1795683884413">
 <script src="../assets/perfume-showcase.js?v=1795619949470" defer="defer"></script><style>#PerfumeShowcase-showcase {
     --ps-pt: 48px;
     --ps-pb: 48px;
@@ -415,16 +418,26 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
               <span data-ps-price-top>₱3,065.00</span><small data-ps-price-size>10 ml</small></p></div><p class="ps-panel__meta"><span>Eau de Parfum</span><span class="ps-stock ps-stock--in">In stock</span></p><p class="ps-rating">
             <span class="ps-rating__stars" style="--r: 0.96;" aria-hidden="true"><span>★★★★★</span></span>
             <span class="ps-rating__value">4.8</span><span class="ps-rating__count">(214 reviews)</span><span class="pf-visually-hidden">Rated 4.8 out of 5</span>
-          </p><p class="ps-panel__desc">Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.</p><div class="ps-panel__notes"><div class="ps-notes-line">
-                <span class="ps-notes-line__photos" aria-hidden="true"><span class="ps-notes-line__ph" style="--n: 1;"><span class="pf-note-art pf-note-photo" style="--tint: #F1DCD6;" aria-hidden="true">
+          </p><p class="ps-panel__desc">Sweet and spicy: pink pepper and cinnamon over vanilla, tonka bean and amber.</p><div class="ps-panel__notes"><p class="pf-kicker">Smells like</p>
+              <ul class="ps-chips" role="list"><li class="ps-chip" style="--n: 1;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo" style="--tint: #F1DCD6;" aria-hidden="true">
     <img src="../assets/sample-scent-pepper.webp?v=1795619949475" alt="" loading="lazy" width="160" height="160">
-  </span></span><span class="ps-notes-line__ph" style="--n: 2;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Pink pepper</span>
+        </li><li class="ps-chip" style="--n: 2;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1553499944-e4297a0af1bd?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 3;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Cinnamon</span>
+        </li><li class="ps-chip" style="--n: 3;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1682482198446-4cbf92f85a4b?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 4;"><svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EADBCB"/><g fill="none" stroke="#3E271B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M11.5 25.5c-1-5 3-8.8 9-9.8 7-1.1 13 .9 14 4.9.9 3.9-4 6.9-11 7.9-6 .9-11.2 0-12-3Z" fill="#5A3A26"/><path d="M15.5 22.2c3-.9 6-1 9 0M17.5 25.3c3 .1 7-.4 10-1.9M21.8 19.3c3 0 6 .5 8 1.5" stroke="#A07A5E" stroke-width="1"/><path d="M22.5 34.5c0-3 3-5 7-5 4 0 6.5 1.5 6.5 3.5s-3 3.6-7 3.6c-3.5 0-6.5-.5-6.5-2.1Z" fill="#6E4A32"/><path d="M25.5 33c2-.6 4.5-.8 7-.2" stroke="#A07A5E" stroke-width="1"/></g></svg></span></span>
-                <p class="ps-notes-line__text"><span class="pf-visually-hidden">Smells like: </span>pink pepper, cinnamon, vanilla &amp; tonka bean</p>
-              </div></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-0" class="ps-form" novalidate><fieldset class="ps-sizes">
+  </span></span>
+          <span class="ps-chip__label">Vanilla</span>
+        </li><li class="ps-chip" style="--n: 4;">
+          <span class="ps-chip__art" aria-hidden="true"><svg class="pf-note-art" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><circle cx="24" cy="24" r="24" fill="#EADBCB"/><g fill="none" stroke="#3E271B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="matrix(1.12 0 0 1.12 -2.88 -2.88)"><path d="M11.5 25.5c-1-5 3-8.8 9-9.8 7-1.1 13 .9 14 4.9.9 3.9-4 6.9-11 7.9-6 .9-11.2 0-12-3Z" fill="#5A3A26"/><path d="M15.5 22.2c3-.9 6-1 9 0M17.5 25.3c3 .1 7-.4 10-1.9M21.8 19.3c3 0 6 .5 8 1.5" stroke="#A07A5E" stroke-width="1"/><path d="M22.5 34.5c0-3 3-5 7-5 4 0 6.5 1.5 6.5 3.5s-3 3.6-7 3.6c-3.5 0-6.5-.5-6.5-2.1Z" fill="#6E4A32"/><path d="M25.5 33c2-.6 4.5-.8 7-.2" stroke="#A07A5E" stroke-width="1"/></g></svg></span>
+          <span class="ps-chip__label">Tonka bean</span>
+        </li></ul></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-0" class="ps-form" novalidate><fieldset class="ps-sizes">
                 <legend class="pf-kicker">Size</legend>
                 <div class="ps-sizes__list"><label class="ps-size">
                       <input
@@ -480,18 +493,28 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
               <span data-ps-price-top>₱3,110.00</span><small data-ps-price-size>10 ml</small></p></div><p class="ps-panel__meta"><span>Eau de Parfum</span><span class="ps-stock ps-stock--in">In stock</span></p><p class="ps-rating">
             <span class="ps-rating__stars" style="--r: 0.9400000000000001;" aria-hidden="true"><span>★★★★★</span></span>
             <span class="ps-rating__value">4.7</span><span class="ps-rating__count">(96 reviews)</span><span class="pf-visually-hidden">Rated 4.7 out of 5</span>
-          </p><p class="ps-panel__desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="ps-panel__notes"><div class="ps-notes-line">
-                <span class="ps-notes-line__photos" aria-hidden="true"><span class="ps-notes-line__ph" style="--n: 1;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+          </p><p class="ps-panel__desc">Fresh with a warmer, deeper trail: Calabrian bergamot and Sichuan pepper over lavender, vanilla and ambroxan.</p><div class="ps-panel__notes"><p class="pf-kicker">Smells like</p>
+              <ul class="ps-chips" role="list"><li class="ps-chip" style="--n: 1;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1612253167527-0598073d2979?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 2;"><span class="pf-note-art pf-note-photo" style="--tint: #F1DCD6;" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Bergamot</span>
+        </li><li class="ps-chip" style="--n: 2;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo" style="--tint: #F1DCD6;" aria-hidden="true">
     <img src="../assets/sample-scent-pepper.webp?v=1795619949475" alt="" loading="lazy" width="160" height="160">
-  </span></span><span class="ps-notes-line__ph" style="--n: 3;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Sichuan pepper</span>
+        </li><li class="ps-chip" style="--n: 3;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 4;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Lavender</span>
+        </li><li class="ps-chip" style="--n: 4;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1682482198446-4cbf92f85a4b?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span></span>
-                <p class="ps-notes-line__text"><span class="pf-visually-hidden">Smells like: </span>bergamot, Sichuan pepper, lavender &amp; vanilla</p>
-              </div></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-1" class="ps-form" novalidate><fieldset class="ps-sizes">
+  </span></span>
+          <span class="ps-chip__label">Vanilla</span>
+        </li></ul></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-1" class="ps-form" novalidate><fieldset class="ps-sizes">
                 <legend class="pf-kicker">Size</legend>
                 <div class="ps-sizes__list"><label class="ps-size">
                       <input
@@ -547,18 +570,28 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
               <span data-ps-price-top>₱1,375.00</span><small data-ps-price-size>10 ml</small></p></div><p class="ps-panel__meta"><span>Eau de Parfum</span><span class="ps-stock ps-stock--in">In stock</span></p><p class="ps-rating">
             <span class="ps-rating__stars" style="--r: 0.9199999999999999;" aria-hidden="true"><span>★★★★★</span></span>
             <span class="ps-rating__value">4.6</span><span class="ps-rating__count">(151 reviews)</span><span class="pf-visually-hidden">Rated 4.6 out of 5</span>
-          </p><p class="ps-panel__desc">Powdery and woody: iris and lavender over vetiver and cedar.</p><div class="ps-panel__notes"><div class="ps-notes-line">
-                <span class="ps-notes-line__photos" aria-hidden="true"><span class="ps-notes-line__ph" style="--n: 1;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+          </p><p class="ps-panel__desc">Powdery and woody: iris and lavender over vetiver and cedar.</p><div class="ps-panel__notes"><p class="pf-kicker">Smells like</p>
+              <ul class="ps-chips" role="list"><li class="ps-chip" style="--n: 1;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1611625105602-42ee06be977e?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 2;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Lavender</span>
+        </li><li class="ps-chip" style="--n: 2;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1776372294959-e78a71c2af84?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 3;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Iris</span>
+        </li><li class="ps-chip" style="--n: 3;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1563364664-399838d1394c?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 4;"><span class="pf-note-art pf-note-photo" style="--tint: #E3D3BC;" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Vetiver</span>
+        </li><li class="ps-chip" style="--n: 4;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo" style="--tint: #E3D3BC;" aria-hidden="true">
     <img src="../assets/sample-scent-cedar.webp?v=1795619949474" alt="" loading="lazy" width="160" height="160">
-  </span></span></span>
-                <p class="ps-notes-line__text"><span class="pf-visually-hidden">Smells like: </span>lavender, iris, vetiver &amp; cedar</p>
-              </div></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-2" class="ps-form" novalidate><fieldset class="ps-sizes">
+  </span></span>
+          <span class="ps-chip__label">Cedar</span>
+        </li></ul></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-2" class="ps-form" novalidate><fieldset class="ps-sizes">
                 <legend class="pf-kicker">Size</legend>
                 <div class="ps-sizes__list"><label class="ps-size">
                       <input
@@ -614,18 +647,28 @@ Scent notes for every perfume, before you buy" style="--ph-ann-bg: #292521; --ph
               <span data-ps-price-top>₱2,545.00</span><small data-ps-price-size>10 ml</small></p></div><p class="ps-panel__meta"><span class="ps-stock ps-stock--in">In stock</span></p><p class="ps-rating">
             <span class="ps-rating__stars" style="--r: 0.96;" aria-hidden="true"><span>★★★★★</span></span>
             <span class="ps-rating__value">4.8</span><span class="ps-rating__count">(188 reviews)</span><span class="pf-visually-hidden">Rated 4.8 out of 5</span>
-          </p><p class="ps-panel__desc">Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.</p><div class="ps-panel__notes"><div class="ps-notes-line">
-                <span class="ps-notes-line__photos" aria-hidden="true"><span class="ps-notes-line__ph" style="--n: 1;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+          </p><p class="ps-panel__desc">Warm and spicy: grapefruit and cardamom over tobacco, amber and cedar.</p><div class="ps-panel__notes"><p class="pf-kicker">Smells like</p>
+              <ul class="ps-chips" role="list"><li class="ps-chip" style="--n: 1;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1787551742228-8af769f282d3?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 2;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Grapefruit</span>
+        </li><li class="ps-chip" style="--n: 2;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1763558049571-a6d12a85472e?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span><span class="ps-notes-line__ph" style="--n: 3;"><span class="pf-note-art pf-note-photo" style="--tint: #E6D2BC;" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Cardamom</span>
+        </li><li class="ps-chip" style="--n: 3;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo" style="--tint: #E6D2BC;" aria-hidden="true">
     <img src="../assets/sample-scent-tobacco.webp?v=1795619949475" alt="" loading="lazy" width="160" height="160">
-  </span></span><span class="ps-notes-line__ph" style="--n: 4;"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
+  </span></span>
+          <span class="ps-chip__label">Tobacco</span>
+        </li><li class="ps-chip" style="--n: 4;">
+          <span class="ps-chip__art" aria-hidden="true"><span class="pf-note-art pf-note-photo pf-note-photo--full" aria-hidden="true">
     <img src="https://images.unsplash.com/photo-1631624406592-f599694e6b2c?w=240&h=240&fit=crop&q=70&auto=format" alt="" loading="lazy" width="240" height="240">
-  </span></span></span>
-                <p class="ps-notes-line__text"><span class="pf-visually-hidden">Smells like: </span>grapefruit, cardamom, tobacco &amp; amber</p>
-              </div></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-3" class="ps-form" novalidate><fieldset class="ps-sizes">
+  </span></span>
+          <span class="ps-chip__label">Amber</span>
+        </li></ul></div><form method="post" action="/cart/add" accept-charset="UTF-8" enctype="multipart/form-data" id="PerfumeShowcase-showcase-form-3" class="ps-form" novalidate><fieldset class="ps-sizes">
                 <legend class="pf-kicker">Size</legend>
                 <div class="ps-sizes__list"><label class="ps-size">
                       <input
