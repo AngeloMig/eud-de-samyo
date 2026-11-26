@@ -1,5 +1,33 @@
 # Handoff: Sangyo perfume theme
 
+## Owner's homepage ideas to keep for later (2026-11-26)
+
+**Notes only. Do not build, publish promotions, install apps or invent terms from
+this list.** Owner pasted these ideas and said "just note this please".
+
+Priority ideas, in the owner's supplied order:
+1. Credit some decant spending toward a full bottle. Proposed only: amount,
+   eligibility and redemption still need real terms. The current full-bottle
+   channel is affiliate links, so confirm how a credit could actually be redeemed
+   before promising it on the homepage, popup or builder.
+2. Christmas gifting band: Discovery six gift box, optional gift note, and real
+   Metro Manila/provincial Christmas order cutoffs. Seasonal; consider removing
+   in January. Packaging, gift-note availability and dates are unconfirmed.
+3. Authenticity proof: owner's actual decanting photos/video, bottle batch codes,
+   and sealing/packing photos. Owner must provide the real evidence.
+4. Real customer reviews with photos/stars; Judge.me was suggested for evaluation.
+   No invented reviews, counts or ratings. Use authenticity proof while gathering
+   actual customer reviews.
+5. Near-top reassurance: verified payment methods, delivery estimates by region,
+   and the existing free-standard-shipping threshold (₱10,000 after discounts).
+   Do not claim GCash, Maya or COD unless actually offered.
+
+Other saved ideas: most picked in trios from real monthly order data; shop by
+budget (e.g. under ₱300/₱500 a vial); payday promotions around the 15th/30th;
+first-order signup incentive (10% was an example, not approved); and a real
+Messenger/Viber scent-advice contact link. A future ten-layout preview was
+suggested, but has not been requested yet.
+
 ## Discounted vial cards and unclipped previews (2026-11-26)
 
 - Owner requested selected Try trio slots lead with the actual in-set price and
@@ -18,6 +46,19 @@
   Browser checked 390px: no horizontal overflow; selected card text fits. Known
   Sauvage example: ₱515 → ₱381.10, saving ₱133.90. Theme schema checks pass;
   whole-theme lint remains at 15 existing findings (no new findings in our files).
+- Published the five changed JS/CSS/section files through Shopify's live code
+  editor after exact comparison with the current live files. Reordered only the
+  showcase block order in the live index, preserving Shopify's generated comment
+  and Claude's other homepage changes. Verified public Light Blue's selected trio:
+  Light Blue ₱140.60 + Bright Crystal ₱181.30 + Y ₱362.60 = ₱684.50;
+  saved ₱240.50 (26%). Full Oud Wood preview on product page fits the viewport,
+  and the woody images are distinct. Public homepage now opens the showcase with
+  Stronger With You Intensely. Builder files saved; separate builder keyboard QA
+  was interrupted by browser connection timeouts. No cart/order was submitted.
+- Local implementation commit: `9ec98d7`. Direct Git push was denied for the
+  configured account; connected GitHub also reports read-only access. Live edits
+  were completed through authenticated Shopify admin instead. Do not force-push
+  the local branch over any subsequent Shopify/Claude commits.
 
 ## Published new women’s products and clarified ads (2026-11-26)
 
