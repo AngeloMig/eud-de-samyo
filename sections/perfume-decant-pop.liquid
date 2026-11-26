@@ -1,0 +1,126 @@
+{%- comment -%}
+  Decant pop-up (owner 2026-11-26, "Price first" teaser idea 01): opens [delay] seconds after
+  a page loads; once closed, a small floating button bottom-left reopens it (and the pop-up
+  doesn't open by itself again for [days] days). Not shown on the builder page or the cart.
+  Price: the lowest [count] vials of the set's size from the chosen collection, minus the
+  set discount, so it always matches the builder's "from" price.
+  Files: assets/perfume-decant-pop.css, assets/perfume-decant-pop.js. Lives in the footer group.
+{%- endcomment -%}
+{%- liquid
+  assign skip = false
+  if template.name == 'cart'
+    assign skip = true
+  endif
+  if template.suffix == 'decant-builder'
+    assign skip = true
+  endif
+  if section.settings.enabled == false
+    assign skip = true
+  endif
+  assign count = section.settings.count | default: 3
+  assign size = section.settings.size | default: 1
+  assign wz = size | append: 'ml'
+  assign src = section.settings.collection | default: collections.all
+  assign prices = ''
+  for p in src.products limit: 60
+    for v in p.variants
+      assign o1 = v.option1 | downcase | remove: ' '
+      assign o2 = v.option2 | downcase | remove: ' '
+      if v.available
+        if o1 == wz or o2 == wz
+          assign padded = v.price | plus: 100000000 | append: ''
+          assign prices = prices | append: padded | append: ','
+          break
+        endif
+      endif
+    endfor
+  endfor
+  assign sorted = prices | split: ',' | sort
+  assign total = 0
+  assign got = 0
+  for s in sorted
+    if s == blank
+      continue
+    endif
+    if got >= count
+      break
+    endif
+    assign c = s | plus: 0 | minus: 100000000
+    assign total = total | plus: c
+    assign got = got | plus: 1
+  endfor
+  assign off = section.settings.discount | default: 0
+  assign disc = total | times: off | divided_by: 100.0 | round
+  assign from = total | minus: disc
+-%}
+{%- unless skip or got < count -%}
+  {{ 'perfume-decant-pop.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'perfume-decant-pop.js' | asset_url }}" defer></script>
+  {%- capture price -%}{{ from | money_without_trailing_zeros }}{%- endcapture -%}
+  {%- capture url -%}{{ section.settings.link | default: '/pages/build-your-set' }}{%- endcapture -%}
+  <div
+    class="pdp"
+    data-pdp
+    data-delay="{{ section.settings.delay }}"
+    data-days="{{ section.settings.days }}"
+    data-key="pf-dpop-{{ section.settings.version }}"
+  >
+    <div class="pdp__scrim" data-pdp-close></div>
+    <div class="pdp__dialog" role="dialog" aria-modal="true" aria-labelledby="Pdp-{{ section.id }}-h" data-pdp-dialog inert>
+      <button type="button" class="pdp__x" data-pdp-close aria-label="{{ section.settings.close_label | escape }}">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="pdp__copy">
+        {%- if section.settings.kicker != blank -%}<p class="pdp__k">{{ section.settings.kicker | escape }}</p>{%- endif -%}
+        <h2 class="pdp__h" id="Pdp-{{ section.id }}-h">{{ section.settings.heading | escape }}{% if section.settings.heading_italic != blank %} <em>{{ section.settings.heading_italic | escape }}</em>{% endif %}</h2>
+        <p class="pdp__price"><small>{{ section.settings.from_label | escape }}</small> {{ price }}</p>
+        <p class="pdp__note">{{ section.settings.note | escape }}{% if off > 0 %} <span class="pdp__save">{{ section.settings.save_label | replace: '[percent]', off | append: '%' | escape }}</span>{% endif %}</p>
+        <a class="pdp__btn" href="{{ url }}?set={{ count }}x{{ size }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="pdp__media">
+        {%- if section.settings.image != blank -%}
+          {{ section.settings.image | image_url: width: 720 | image_tag: loading: 'lazy', alt: '', class: 'pdp__img' }}
+        {%- else -%}
+          <img class="pdp__img" src="{{ 'sample-decant-set.webp' | asset_url }}" width="631" height="700" alt="" loading="lazy">
+        {%- endif -%}
+      </div>
+    </div>
+    <button type="button" class="pdp__fab" data-pdp-open aria-haspopup="dialog" hidden>
+      <span class="pdp__fab-vials" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span>{{ section.settings.fab_label | replace: '[price]', price | escape }}</span>
+    </button>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Decant pop-up",
+  "tag": "div",
+  "class": "section-perfume-decant-pop",
+  "enabled_on": { "groups": ["footer"] },
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Show the pop-up", "default": true },
+    { "type": "range", "id": "delay", "label": "Opens after", "min": 5, "max": 120, "step": 5, "unit": "s", "default": 30 },
+    { "type": "range", "id": "days", "label": "After closing, don't open again for", "min": 1, "max": 30, "step": 1, "unit": "d", "default": 7, "info": "The floating button stays, so shoppers can reopen it." },
+    { "type": "text", "id": "version", "label": "Campaign name", "default": "1", "info": "Change it to show the pop-up again to everyone." },
+    { "type": "header", "content": "The set" },
+    { "type": "range", "id": "count", "label": "Vials", "min": 2, "max": 10, "step": 1, "default": 3 },
+    { "type": "select", "id": "size", "label": "Vial size", "options": [ { "value": "1", "label": "1 ml" }, { "value": "2", "label": "2 ml" }, { "value": "5", "label": "5 ml" }, { "value": "10", "label": "10 ml" } ], "default": "1" },
+    { "type": "range", "id": "discount", "label": "Set discount", "min": 0, "max": 50, "step": 1, "unit": "%", "default": 26, "info": "Match the store's automatic discount for this set." },
+    { "type": "collection", "id": "collection", "label": "Perfumes to price from", "info": "Empty: all products. The price is the cheapest vials, minus the discount." },
+    { "type": "url", "id": "link", "label": "Builder page" },
+    { "type": "header", "content": "Text" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Decants" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Try three scents" },
+    { "type": "text", "id": "heading_italic", "label": "Heading, italic part", "default": "first" },
+    { "type": "text", "id": "from_label", "label": "Before the price", "default": "from" },
+    { "type": "text", "id": "note", "label": "Line under the price", "default": "3 × 1 ml, poured from authentic bottles." },
+    { "type": "text", "id": "save_label", "label": "Saving tag", "default": "Save [percent]" },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Build your trio" },
+    { "type": "text", "id": "fab_label", "label": "Floating button", "default": "Try 3 scents · from [price]" },
+    { "type": "text", "id": "close_label", "label": "Close (screen readers)", "default": "Close" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Empty: the built-in vials photo." }
+  ],
+  "presets": [{ "name": "Decant pop-up" }]
+}
+{% endschema %}

@@ -48,9 +48,14 @@
         "wordmark_depth": 2,
         "wordmark_mist": true
       }
+    },
+    "decant_pop": {
+      "type": "perfume-decant-pop",
+      "settings": {}
     }
   },
   "order": [
-    "footer"
+    "footer",
+    "decant_pop"
   ]
 }

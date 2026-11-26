@@ -1,0 +1,78 @@
+/* Decant pop-up (sections/perfume-decant-pop.liquid). Motion: opacity/transform only. */
+.pdp { --pdp-ink: #26221f; --pdp-paper: #ede8df; --pdp-ease: cubic-bezier(0.16, 1, 0.3, 1); }
+.pdp__scrim {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(38, 34, 31, 0.36);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.pdp__dialog {
+  position: fixed; left: 50%; top: 50%; z-index: 91;
+  display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 24px;
+  width: min(760px, calc(100vw - 32px));
+  padding: 36px 34px;
+  border-radius: 18px;
+  background: var(--pdp-paper);
+  color: var(--pdp-ink);
+  box-shadow: 0 30px 80px rgba(38, 34, 31, 0.28);
+  opacity: 0; pointer-events: none;
+  translate: -50% -46%; scale: 0.97;
+  transition: opacity 0.35s ease, translate 0.5s var(--pdp-ease), scale 0.5s var(--pdp-ease);
+}
+.pdp.is-open .pdp__scrim { opacity: 1; pointer-events: auto; }
+.pdp.is-open .pdp__dialog { opacity: 1; pointer-events: auto; translate: -50% -50%; scale: 1; }
+.pdp__x {
+  position: absolute; top: 12px; right: 12px;
+  display: grid; place-items: center; width: 44px; height: 44px;
+  border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.pdp__x:hover { background: rgba(38, 34, 31, 0.07); }
+.pdp p { margin: 0; }
+.pdp__k { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.pdp__h { margin: 10px 0 0; font: 400 46px/1 var(--pf-font-serif); letter-spacing: -0.01em; }
+.pdp__h em { font-style: italic; }
+.pdp__price { margin: 16px 0 10px !important; font: 400 76px/1 var(--pf-font-serif); }
+.pdp__price small { margin-right: 6px; font-size: 20px; vertical-align: super; }
+.pdp__note { font-size: 13px; color: rgba(38, 34, 31, 0.72); }
+.pdp__save { margin-left: 4px; padding: 2px 6px; border-radius: 6px; background: #e3efe5; color: #2f6b45; font-size: 12px; font-weight: 600; }
+.pdp__btn {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; margin-top: 22px; padding: 0 24px;
+  border-radius: 99px; background: var(--pdp-ink); color: #fff; font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: translate 0.3s var(--pdp-ease);
+}
+.pdp__btn:hover { translate: 0 -2px; }
+.pdp__img { display: block; width: 100%; max-height: 280px; object-fit: contain; }
+.pdp__x:focus-visible, .pdp__btn:focus-visible, .pdp__fab:focus-visible { outline: 2px solid var(--pdp-ink); outline-offset: 3px; }
+
+/* Floating button, bottom-left */
+.pdp__fab {
+  position: fixed; left: 18px; bottom: var(--pdp-fab-bottom, 18px); z-index: 80;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px 0 14px;
+  border: 0; border-radius: 99px; background: var(--pdp-ink); color: #f7f5f0;
+  box-shadow: 0 12px 30px rgba(38, 34, 31, 0.25);
+  font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  opacity: 0; translate: 0 12px;
+  transition: opacity 0.35s ease, translate 0.45s var(--pdp-ease), bottom 0.35s ease;
+}
+.pdp__fab.is-in { opacity: 1; translate: 0 0; }
+.pdp__fab:hover { translate: 0 -2px; }
+.pdp__fab-vials { display: inline-flex; gap: 3px; }
+.pdp__fab-vials i { width: 6px; height: 16px; border-radius: 2px; background: #c9a65a; }
+/* Product pages: stay above the sticky add-to-bag bar when it shows (it spans phones). */
+@media (max-width: 989px) { body:has(.pp-sticky.is-shown) .pdp__fab { --pdp-fab-bottom: 86px; } }
+
+@media (max-width: 749px) {
+  .pdp__dialog { grid-template-columns: 1fr; gap: 6px; padding: 28px 22px 24px; text-align: left; }
+  .pdp__media { order: -1; }
+  .pdp__img { max-height: 150px; }
+  .pdp__h { font-size: 36px; }
+  .pdp__price { font-size: 60px; }
+  .pdp__btn { width: 100%; justify-content: center; }
+  .pdp__fab { left: 12px; bottom: var(--pdp-fab-bottom, 12px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pdp__scrim, .pdp__dialog, .pdp__fab, .pdp__btn { transition: none; }
+  .pdp__dialog { translate: -50% -50%; scale: 1; }
+  .pdp__fab { translate: none; }
+}
