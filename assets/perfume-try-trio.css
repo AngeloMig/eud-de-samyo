@@ -130,6 +130,7 @@
   cursor: pointer;
 }
 .ptt__link[hidden] { display: none; }
+.ptt__builder-link { display: inline-flex; align-items: center; gap: 8px; }
 .ptt__link:disabled { opacity: 0.6; cursor: default; }
 .ptt__status { min-height: 20px; margin: 10px 0 0; font-size: 13px; color: var(--ptt-soft); }
 .ptt__status.is-warn { color: #a1665a; }

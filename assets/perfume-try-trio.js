@@ -118,6 +118,8 @@
 
     function update(changed) {
       drawSlots(changed);
+      const builderLink = $('[data-builder-link]');
+      if (builderLink) builderLink.href = builderURL();
       const chosen = picks.map((h) => scents.get(h)).filter((s) => vial(s));
       const n = picks.length;
       const alone = chosen.reduce((a, s) => a + vial(s).price, 0);
